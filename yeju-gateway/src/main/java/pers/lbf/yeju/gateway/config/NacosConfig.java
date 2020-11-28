@@ -6,10 +6,11 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
+ * @Description Nacos配置
  * @date 2020/11/26 20:41
  */
 @Configuration
 @EnableDiscoveryClient
 public class NacosConfig {
+
 }

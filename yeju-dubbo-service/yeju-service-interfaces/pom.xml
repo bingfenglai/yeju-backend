@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>yeju-dubbo-servie</artifactId>
+        <artifactId>yeju-dubbo-service</artifactId>
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
     </parent>
@@ -11,7 +11,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>yeju-verification-code-interfaces</module>
+
+        <module>yeju-auth-service-interfaces</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

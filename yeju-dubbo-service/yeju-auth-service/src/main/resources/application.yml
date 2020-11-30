@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: auth-server
+logging:
+  level:
+    org.apache.bubbo: warn

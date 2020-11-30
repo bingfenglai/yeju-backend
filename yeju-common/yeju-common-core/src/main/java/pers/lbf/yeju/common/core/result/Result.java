@@ -10,55 +10,25 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2020/11/26 22:28
  */
-public class Result<T> implements Serializable {
+public class Result<T> implements Serializable, IResult<T> {
 
     private String message;
     private String code;
     private T data;
 
-    public Result(ServiceStatus serviceStatus){
-        this.message = serviceStatus.getMessage();
-        this.code = serviceStatus.getCode();
+
+    public Result<T> ok(T data) {
+        return new Result<>(ServiceStatus.OK,data);
     }
 
-    public Result(String messsage, String code) {
-        this.message = messsage;
-        this.code = code;
-    }
 
-    public Result(T data) {
+    private Result(ServiceStatus status,T data) {
         this.data = data;
+        this.code = status.getCode();
+        this.message = status.getMessage();
     }
 
     private Result(){ }
-
-
-    /**
-     * 服务调用成功时调用
-     * @return result
-     */
-    public static Result<Object> ok(){
-        Result<Object> result = new Result<>();
-        result.setMessage(ServiceStatus.OK.getMessage());
-        result.setCode(ServiceStatus.OK.getCode());
-        return result;
-    }
-
-    public static Result<Object> error(ServiceStatus status){
-        return new Result<>(status);
-    }
-
-
-
-    public static Result<Object> error(String message, String code){
-        Result<Object> result = new Result<>();
-        result.setMessage(message);
-        result.setCode(code);
-        return result;
-    }
-
-
-
 
     @Override
     public String toString() {
@@ -69,6 +39,7 @@ public class Result<T> implements Serializable {
                 '}';
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
@@ -77,6 +48,7 @@ public class Result<T> implements Serializable {
         this.message = message;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
@@ -85,6 +57,7 @@ public class Result<T> implements Serializable {
         this.code = code;
     }
 
+    @Override
     public T getData() {
         return data;
     }

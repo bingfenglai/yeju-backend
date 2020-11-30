@@ -11,5 +11,10 @@
 
     <artifactId>yeju-rest-api</artifactId>
 
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>yeju-auth-rest-api</module>
+    </modules>
 
 </project>

@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    sentinel:
+      enabled: false
+
+dubbo:
+  registry:
+    address: nacos://${spring.cloud.nacos.server-addr}
+    check: false
+  consumer:
+    check: false
+  application:
+    name: ${spring.application.name}

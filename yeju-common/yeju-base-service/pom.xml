@@ -7,6 +7,8 @@
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
     </parent>
+    <packaging>jar</packaging>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>yeju-base-service</artifactId>
@@ -15,6 +17,12 @@
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-common-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-common-domain</artifactId>
             <version>1.0.0</version>
         </dependency>
 
@@ -57,6 +65,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-apache-dubbo-adapter</artifactId>
+            <version>${sentinel.csp.version}</version>
         </dependency>
 
         <!--            数据连接层 start-->

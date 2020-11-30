@@ -16,20 +16,14 @@
 	<modules>
 		<module>yeju-common-core</module>
 		<module>yeju-base-service</module>
-		<module>yeju-common-base-web</module>
-	</modules>
+		<module>yeju-base-web</module>
+        <module>yeju-common-domain</module>
+    </modules>
 
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>pers.lbf</groupId>
-			<artifactId>yeju-base-service</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-	</dependencies>
 
 
 </project>

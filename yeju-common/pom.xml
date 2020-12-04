@@ -18,7 +18,8 @@
 		<module>yeju-base-service</module>
 		<module>yeju-base-web</module>
         <module>yeju-common-domain</module>
-    </modules>
+		<module>yeju-common-util</module>
+	</modules>
 
 	<properties>
 		<java.version>1.8</java.version>

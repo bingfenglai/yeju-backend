@@ -7,7 +7,7 @@
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
     </parent>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -94,10 +94,22 @@
             <version>${mybatis.plus.version}</version>
         </dependency>
 
+        <!-- pagehelper 分页插件 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.boot.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
     </dependencies>

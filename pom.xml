@@ -53,6 +53,9 @@
         <poi.version>3.17</poi.version>
         <mysql.version>8.0.22</mysql.version>
         <webflux.version>2.3.0.RELEASE</webflux.version>
+        <jwt.version>0.10.7</jwt.version>
+        <joda.version>2.10.5</joda.version>
+        <jackson.version>2.11.2</jackson.version>
     </properties>
 
 
@@ -232,6 +235,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
 <!--            数据连接层 end-->
 
@@ -359,10 +363,30 @@
                 <version>${common-pool.version}</version>
             </dependency>
 
+            <!--jwt所需jar包-->
             <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>cola-common</artifactId>
-                <version>${cola-common.version}</version>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!--            处理日期-->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.version}</version>
             </dependency>
 
 <!--        代码检查    -->
@@ -371,6 +395,21 @@
                 <artifactId>arthas-spring-boot-starter</artifactId>
                 <version>${arthas.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+<!--            日志-->
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+<!--            序列化-->
+            <!--处理json工具包-->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
 
@@ -430,7 +469,7 @@
             <!--	生产环境		-->
             <id>prod</id>
             <properties>
-                <profileActive>pro</profileActive>
+                <profileActive>prod</profileActive>
             </properties>
         </profile>
     </profiles>

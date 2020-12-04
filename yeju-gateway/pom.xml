@@ -55,7 +55,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <dockerDirectory>../docker</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
@@ -72,7 +72,7 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <copy todir="src/main/docker"
+                                <copy todir="../docker"
                                       file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
                             </tasks>
                         </configuration>

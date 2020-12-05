@@ -17,6 +17,8 @@
 package pers.lbf.yeju.redisServer.start;
 
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -32,8 +34,11 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.redisServer.service")
 public class RedisServer {
 
+  private static final Logger logger = LoggerFactory.getLogger(RedisServer.class);
+
   public static void main(String[] args) {
     SpringApplication.run(RedisServer.class, args);
+    logger.info("redisServer start success");
   }
   
 

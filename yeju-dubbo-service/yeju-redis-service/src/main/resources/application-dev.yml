@@ -3,7 +3,6 @@ dubbo:
     name: ${spring.application.name}
   registry:
     address: nacos://${spring.cloud.nacos.config.server-addr}
-    check: false
 spring:
   cloud:
     sentinel:

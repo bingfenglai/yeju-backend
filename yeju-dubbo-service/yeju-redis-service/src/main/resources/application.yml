@@ -2,5 +2,4 @@ spring:
   application:
     name: redis-server
 logging:
-  level:
-    org.apache.bubbo: warn
+  config: config/logback.xml

@@ -1,0 +1,1 @@
+java -jar -Dloader.path=G:\maven_repo  yeju-redis-service-1.0.0.jar

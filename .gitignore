@@ -33,5 +33,6 @@ build/
 .vscode/
 /.mvn/
 /logs
-/docker
-/docker/*.jar
+
+/docker/redisServer/lib
+/docker/redisServer/logs

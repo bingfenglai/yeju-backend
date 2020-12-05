@@ -1,0 +1,21 @@
+dubbo:
+  application:
+    name: ${spring.application.name}
+  registry:
+    address: nacos://${spring.cloud.nacos.config.server-addr}
+spring:
+  cloud:
+    sentinel:
+      enabled: false
+      log:
+        dir: ./logs
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: hewenping
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 1
+    timeout: 3000

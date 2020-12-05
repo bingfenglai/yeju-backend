@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: redis-server
+logging:
+  config: config/logback.xml

@@ -1,1 +1,0 @@
-java -jar  yeju-auth-service-1.0.0.jar

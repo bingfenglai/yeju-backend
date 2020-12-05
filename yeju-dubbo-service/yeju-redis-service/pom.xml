@@ -120,7 +120,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
+                            <classpathPrefix>../lib/</classpathPrefix>
                             <useUniqueVersions>false</useUniqueVersions>
                             <mainClass>pers.lbf.yeju.redisServer.start.RedisServer</mainClass>
                         </manifest>
@@ -148,9 +148,6 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/lib
-                            </outputDirectory>
                             <outputDirectory>
                                 ../../docker/redisServer/lib
                             </outputDirectory>
@@ -190,19 +187,22 @@
                         <configuration>
                             <tasks>
 <!--                                拷贝可执行文件-->
-                                <copy todir="../../docker/redisServer"
+                                <copy todir="../../docker/redisServer/bin"
                                       file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
+<!--                                拷贝执行脚本-->
+                                <copy todir="../../docker/redisServer/bin"
+                                      file="script/start.cmd"/>
 <!--                                拷贝配置文件-->
-                                <copy todir="../../docker/redisServer/config"
+                                <copy todir="../../docker/redisServer/bin/config"
                                       file="src/main/resources/application.yml"/>
 
-                                <copy todir="../../docker/redisServer/config"
+                                <copy todir="../../docker/redisServer/bin/config"
                                       file="src/main/resources/application-dev.yml"/>
 
-                                <copy todir="../../docker/redisServer/config"
+                                <copy todir="../../docker/redisServer/bin/config"
                                       file="src/main/resources/bootstrap.properties"/>
 
-                                <copy todir="../../docker/redisServer/config"
+                                <copy todir="../../docker/redisServer/bin/config"
                                       file="src/main/resources/config/logback.xml"/>
                             </tasks>
                         </configuration>

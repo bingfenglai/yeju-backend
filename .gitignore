@@ -36,3 +36,7 @@ build/
 
 /docker/redisServer/lib
 /docker/redisServer/logs
+/docker
+docker
+/docker/redisServer
+/docker/redisServer/config

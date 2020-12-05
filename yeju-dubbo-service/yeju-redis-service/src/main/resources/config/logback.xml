@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 最好使用绝对路径 -->
-    <property name="LOG_HOME" value="./logs"/>
+    <property name="LOG_HOME" value="../logs"/>
     <property name="baseFileName" value="redisServer"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

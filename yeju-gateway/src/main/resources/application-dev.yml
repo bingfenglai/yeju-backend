@@ -1,14 +1,19 @@
 server:
   port: 81
 spring:
-  application:
-    name: gateway-service
   cloud:
     nacos:
       username: nacos
       password: nacos
       discovery:
         server-addr: 127.0.0.1:8848
-logging:
-  level:
-    com.alibaba.nacos: info
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: authserver
+          uri: lb://authserver
+          predicates:
+            - Path=/authserver/**
+

@@ -14,6 +14,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <mainClassName>pers.lbf.yeju.redisServer.start.RedisServer</mainClassName>
     </properties>
 
     <dependencies>
@@ -72,25 +73,25 @@
 
     <build>
 
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>**/*.properties</exclude>
-                    <exclude>**/*.yml</exclude>
-                    <exclude>**/*.xml</exclude>
-                </excludes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/java</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*.properties</include>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                </includes>-->
+<!--                <filtering>true</filtering>-->
+<!--            </resource>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources</directory>-->
+<!--                <excludes>-->
+<!--                    <exclude>**/*.properties</exclude>-->
+<!--                    <exclude>**/*.yml</exclude>-->
+<!--                    <exclude>**/*.xml</exclude>-->
+<!--                </excludes>-->
+<!--                <filtering>false</filtering>-->
+<!--            </resource>-->
+<!--        </resources>-->
 
 
 
@@ -98,63 +99,64 @@
         <plugins>
 
 
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
 <!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>1.8</source>-->
+<!--                    <target>1.8</target>-->
+<!--                    <fork>true</fork>-->
+<!--                    <skip>true</skip>-->
+<!--                    <encoding>UTF-8</encoding>-->
+<!--                </configuration>-->
 <!--            </plugin>-->
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <fork>true</fork>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <artifactId>maven-jar-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <addClasspath>true</addClasspath>-->
+<!--                            <classpathPrefix>../lib/</classpathPrefix>-->
+<!--                            <useUniqueVersions>false</useUniqueVersions>-->
+<!--                            <mainClass>${mainClassName}</mainClass>-->
+<!--                        </manifest>-->
+<!--                        <manifestEntries>-->
+<!--                            <Class-Path>./</Class-Path>-->
+<!--                        </manifestEntries>-->
+<!--                    </archive>-->
+<!--                    <excludes>-->
+<!--                        <exclude>*.properties</exclude>-->
+<!--                        <exclude>*.properties</exclude>-->
+<!--                        <exclude>*.yml</exclude>-->
+<!--                        <exclude>*.xml</exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>../lib/</classpathPrefix>
-                            <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>pers.lbf.yeju.redisServer.start.RedisServer</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Class-Path>./</Class-Path>
-                        </manifestEntries>
-                    </archive>
-                    <excludes>
-                        <exclude>*.properties</exclude>
-                        <exclude>*.properties</exclude>
-                        <exclude>*.yml</exclude>
-                        <exclude>*.xml</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ../../docker/redisServer/lib
-                            </outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-dependencies</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>-->
+<!--                                ../../docker/${project.build.finalName}/lib-->
+<!--                            </outputDirectory>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
 
 
@@ -162,88 +164,58 @@
 
 
 
-<!--            docker 打包-->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <dockerDirectory>/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
-<!--            迁移到一个统一的目录-->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <configuration>
-                            <tasks>
-<!--                                拷贝可执行文件-->
-                                <copy todir="../../docker/redisServer/bin"
-                                      file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
-<!--                                拷贝执行脚本-->
-                                <copy todir="../../docker/redisServer/bin"
-                                      file="script/start.cmd"/>
-<!--                                拷贝配置文件-->
-                                <copy todir="../../docker/redisServer/bin/config"
-                                      file="src/main/resources/application.yml"/>
+<!--&lt;!&ndash;            docker 打包&ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>docker-maven-plugin</artifactId>-->
+<!--                <version>1.0.0</version>-->
+<!--                <configuration>-->
+<!--                    <dockerDirectory>/docker</dockerDirectory>-->
+<!--                    <resources>-->
+<!--                        <resource>-->
+<!--                            <targetPath>/</targetPath>-->
+<!--                            <directory>${project.build.directory}</directory>-->
+<!--                            <include>${project.build.finalName}.jar</include>-->
+<!--                        </resource>-->
+<!--                    </resources>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--&lt;!&ndash;            迁移到一个统一的目录&ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <configuration>-->
+<!--                            <tasks>-->
+<!--&lt;!&ndash;                                拷贝可执行文件&ndash;&gt;-->
+<!--                                <copy todir="../../docker/${project.build.finalName}/bin"-->
+<!--                                      file="target/${project.artifactId}-${project.version}.${project.packaging}"/>-->
+<!--&lt;!&ndash;                                拷贝执行脚本&ndash;&gt;-->
+<!--                                <copy todir="../../docker/${project.build.finalName}/bin"-->
+<!--                                      file="script/start.cmd"/>-->
+<!--&lt;!&ndash;                                拷贝配置文件&ndash;&gt;-->
+<!--                                <copy todir="../../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/application.yml"/>-->
 
-                                <copy todir="../../docker/redisServer/bin/config"
-                                      file="src/main/resources/application-dev.yml"/>
+<!--                                <copy todir="../../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/application-dev.yml"/>-->
 
-                                <copy todir="../../docker/redisServer/bin/config"
-                                      file="src/main/resources/bootstrap.properties"/>
+<!--                                <copy todir="../../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/bootstrap.properties"/>-->
 
-                                <copy todir="../../docker/redisServer/bin/config"
-                                      file="src/main/resources/config/logback.xml"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--                                <copy todir="../../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/config/logback.xml"/>-->
+<!--                            </tasks>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
-
-    <repositories>
-        <repository>
-            <id>local</id>
-            <url>${env.MAVEN_REPOSITORY}/</url>
-        </repository>
-        <!-- 阿里云仓库,配置Maven仓库，速度快配置在最前面 -->
-        <repository>
-            <id>aliyun</id>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-        </repository>
-        <!-- 国内备选仓库 -->
-        <repository>
-            <id>repo2</id>
-            <url>http://repo2.maven.org/maven2/</url>
-        </repository>
-
-        <!-- Cloudera仓库,如果在阿里云仓库里找不到去Cloudera的仓库里找，主要是CDH版本Hadoop依赖的jar -->
-        <repository>
-            <id>cloudera</id>
-            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-        </repository>
-
-        <!-- Scala仓库,如果前面两个都找不到来仓库找，如果此仓库也找不到，去中央仓库找 -->
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-    </repositories>
 
 </project>

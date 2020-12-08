@@ -4,7 +4,7 @@ import pers.lbf.yeju.common.core.enumes.ServiceStatus;
 
 import java.io.Serializable;
 
-/**
+/**操作响应消息封装类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -62,6 +62,7 @@ public class SimpleResult implements Serializable, IResult<Object> {
         this.message = message;
     }
 
+    @Override
     public String getCode() {
         return code;
     }

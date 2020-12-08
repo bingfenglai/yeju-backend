@@ -40,3 +40,4 @@ build/
 docker
 /docker/redisServer
 /docker/redisServer/config
+/yeju-dubbo-service/logs/

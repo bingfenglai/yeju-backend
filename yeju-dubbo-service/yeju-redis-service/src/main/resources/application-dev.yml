@@ -9,13 +9,15 @@ spring:
       enabled: false
       log:
         dir: ./logs
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    password: hewenping
-    jedis:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 1
-    timeout: 3000
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    password: hewenping
+#    jedis:
+#      pool:
+#        max-active: 8
+#        max-idle: 8
+#        min-idle: 1
+#    timeout: 3000
+#    database: 1
+

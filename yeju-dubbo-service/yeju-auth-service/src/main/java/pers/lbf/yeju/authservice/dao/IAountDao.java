@@ -1,4 +1,4 @@
-package pers.lbf.yeju.authserver.dao;
+package pers.lbf.yeju.authservice.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import pers.lbf.yeju.common.domain.entity.Account;

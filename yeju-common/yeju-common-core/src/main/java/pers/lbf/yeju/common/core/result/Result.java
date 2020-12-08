@@ -4,7 +4,7 @@ import pers.lbf.yeju.common.core.enumes.ServiceStatus;
 
 import java.io.Serializable;
 
-/**
+/**详情查询结果封装类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -17,8 +17,12 @@ public class Result<T> implements Serializable, IResult<T> {
     private T data;
 
 
-    public Result<T> ok(T data) {
+    public static <T> Result<T> ok(T data) {
         return new Result<>(ServiceStatus.OK,data);
+    }
+
+    public static IResult<Object> error(String code,String message){
+        return SimpleResult.faild(code, message);
     }
 
 

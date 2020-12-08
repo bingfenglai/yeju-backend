@@ -1,0 +1,1 @@
+java -jar yeju-gateway-1.0.0.jar

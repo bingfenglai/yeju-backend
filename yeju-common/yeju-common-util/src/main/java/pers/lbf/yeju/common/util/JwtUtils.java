@@ -33,7 +33,7 @@ import java.util.UUID;
  */
 public class JwtUtils {
 
-    private static final String JWT_PAYLOAD_USER_KEY = "user";
+    private static final String JWT_PAYLOAD_USER_KEY = "subject";
 
     /**
      * 私钥加密token

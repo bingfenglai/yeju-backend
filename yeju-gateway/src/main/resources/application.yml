@@ -1,0 +1,5 @@
+logging:
+  config: config/logback.xml
+spring:
+  application:
+    name: gateway-service

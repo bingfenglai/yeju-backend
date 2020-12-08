@@ -1,4 +1,4 @@
-package pers.lbf.yeju.authserver.start;
+package pers.lbf.yeju.authservice.start;
 
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.mybatis.spring.annotation.MapperScan;
@@ -12,7 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Description TODO
  * @date 2020/11/29 20:15
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.authserver")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.authservice")
 @EnableDiscoveryClient
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.authserver.service")
 @MapperScan(basePackages = "pers.lbf.yeju.auth.dao")

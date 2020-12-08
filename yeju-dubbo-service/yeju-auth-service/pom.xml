@@ -13,6 +13,11 @@
 
     <packaging>jar</packaging>
 
+
+    <properties>
+        <mainClassName>pers.lbf.yeju.authservice.start.AuthServer</mainClassName>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>pers.lbf</groupId>
@@ -27,12 +32,101 @@
         </dependency>
     </dependencies>
 
+
     <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                    <exclude>**/*.yml</exclude>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
+
+
+
         <plugins>
+
+
+            <!--            <plugin>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--            </plugin>-->
+
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <fork>true</fork>
+                    <skip>true</skip>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>../lib/</classpathPrefix>
+                            <useUniqueVersions>false</useUniqueVersions>
+                            <mainClass>${mainClassName}</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>./</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <excludes>
+                        <exclude>*.properties</exclude>
+                        <exclude>*.properties</exclude>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.xml</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ../../docker/${project.build.finalName}/lib
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+
+
+
+
+            <!--            docker 打包-->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -48,6 +142,7 @@
                     </resources>
                 </configuration>
             </plugin>
+            <!--            迁移到一个统一的目录-->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -55,8 +150,24 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <copy todir="../../docker"
+                                <!--                                拷贝可执行文件-->
+                                <copy todir="../../docker/${project.build.finalName}/bin"
                                       file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
+                                <!--                                拷贝执行脚本-->
+                                <copy todir="../../docker/${project.build.finalName}/bin"
+                                      file="script/start.cmd"/>
+                                <!--                                拷贝配置文件-->
+                                <copy todir="../../docker/${project.build.finalName}/bin/config"
+                                      file="src/main/resources/application.yml"/>
+
+                                <copy todir="../../docker/${project.build.finalName}/bin/config"
+                                      file="src/main/resources/application-dev.yml"/>
+
+                                <copy todir="../../docker/${project.build.finalName}/bin/config"
+                                      file="src/main/resources/bootstrap.properties"/>
+
+                                <copy todir="../../docker/${project.build.finalName}/bin/config"
+                                      file="src/main/resources/config/logback.xml"/>
                             </tasks>
                         </configuration>
                         <goals>

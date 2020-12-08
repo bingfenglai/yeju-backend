@@ -11,6 +11,10 @@
 
     <artifactId>yeju-gateway</artifactId>
 
+    <properties>
+        <mainClassName>pers.lbf.yeju.gateway.start.GatewayApp</mainClassName>
+    </properties>
+
 <!--    服务网关-->
     <dependencies>
         <dependency>
@@ -41,47 +45,168 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-common-util</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
 
     </dependencies>
 
     <build>
+
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/java</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*.properties</include>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                </includes>-->
+<!--                <filtering>true</filtering>-->
+<!--            </resource>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources</directory>-->
+<!--                <excludes>-->
+<!--                    <exclude>**/*.properties</exclude>-->
+<!--                    <exclude>**/*.yml</exclude>-->
+<!--                    <exclude>**/*.xml</exclude>-->
+<!--                </excludes>-->
+<!--                <filtering>false</filtering>-->
+<!--            </resource>-->
+<!--        </resources>-->
+
+
+
+
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <dockerDirectory>../docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <configuration>
-                            <tasks>
-                                <copy todir="../docker"
-                                      file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
+
+                        <plugin>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-maven-plugin</artifactId>
+                        </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>1.8</source>-->
+<!--                    <target>1.8</target>-->
+<!--                    <fork>true</fork>-->
+<!--                    <skip>true</skip>-->
+<!--                    <encoding>UTF-8</encoding>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <artifactId>maven-jar-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <addClasspath>true</addClasspath>-->
+<!--                            <classpathPrefix>../lib/</classpathPrefix>-->
+<!--                            <useUniqueVersions>false</useUniqueVersions>-->
+<!--                            <mainClass>${mainClassName}</mainClass>-->
+<!--                        </manifest>-->
+<!--                        <manifestEntries>-->
+<!--                            <Class-Path>./</Class-Path>-->
+<!--                        </manifestEntries>-->
+<!--                    </archive>-->
+<!--                    <excludes>-->
+<!--                        <exclude>*.properties</exclude>-->
+<!--                        <exclude>*.yml</exclude>-->
+<!--                        <exclude>*.xml</exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-dependencies</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>-->
+<!--                                ../docker/${project.build.finalName}/lib-->
+<!--                            </outputDirectory>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
+
+
+
+
+
+
+<!--            &lt;!&ndash;            docker 打包&ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>docker-maven-plugin</artifactId>-->
+<!--                <version>1.0.0</version>-->
+<!--                <configuration>-->
+<!--                    <dockerDirectory>/docker</dockerDirectory>-->
+<!--                    <resources>-->
+<!--                        <resource>-->
+<!--                            <targetPath>/</targetPath>-->
+<!--                            <directory>${project.build.directory}</directory>-->
+<!--                            <include>${project.build.finalName}.jar</include>-->
+<!--                        </resource>-->
+<!--                    </resources>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            &lt;!&ndash;            迁移到一个统一的目录&ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <configuration>-->
+<!--                            <tasks>-->
+<!--                                &lt;!&ndash;                                拷贝可执行文件&ndash;&gt;-->
+<!--                                <copy todir="../docker/${project.build.finalName}/bin"-->
+<!--                                      file="target/${project.artifactId}-${project.version}.${project.packaging}"/>-->
+<!--                                &lt;!&ndash;                                拷贝执行脚本&ndash;&gt;-->
+<!--                                <copy todir="../docker/${project.build.finalName}/bin"-->
+<!--                                      file="script/start.cmd"/>-->
+<!--                                &lt;!&ndash;                                拷贝配置文件&ndash;&gt;-->
+<!--                                <copy todir="../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/application.yml"/>-->
+
+<!--                                <copy todir="../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/application-dev.yml"/>-->
+<!--                                <copy todir="../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/application-prod.yml"/>-->
+<!--                                <copy todir="../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/application-test.yml"/>-->
+
+<!--                                <copy todir="../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/bootstrap.properties"/>-->
+<!--                                <copy todir="../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/bootstrap-dev.properties"/>-->
+
+<!--                                <copy todir="../docker/${project.build.finalName}/bin/config"-->
+<!--                                      file="src/main/resources/config/logback.xml"/>-->
+<!--                            </tasks>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

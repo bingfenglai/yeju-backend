@@ -1,7 +1,7 @@
-package pers.lbf.yeju.authserver.service;
+package pers.lbf.yeju.authservice.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
-import pers.lbf.yeju.authserver.service.interfaces.IAuthService;
+import pers.lbf.yeju.authservice.service.interfaces.IAuthService;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.domain.entity.Account;

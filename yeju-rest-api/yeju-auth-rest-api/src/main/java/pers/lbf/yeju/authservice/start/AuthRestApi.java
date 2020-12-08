@@ -1,4 +1,4 @@
-package pers.lbf.yeju.authserver.start;
+package pers.lbf.yeju.authservice.start;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Description TODO
  * @date 2020/11/29 10:51
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.authserver")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.authservice")
 @EnableDiscoveryClient
 public class AuthRestApi {
 

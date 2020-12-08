@@ -26,7 +26,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-/**
+/**jwt 专用加密工具类
  * @Description TODO
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -46,12 +46,14 @@ public class RsaUtils {
     // 当前秘钥支持加密的最大字节数
     public static final int DEFAULT_BUFFERSIZE = (DEFAULT_KEY_SIZE / 8) - 11;
 
-    private static final String PUBLIC_KEY = "";
-
     // 当要加密的内容超过bufferSize，则采用partSplit进行分块加密
     public static final byte[] DEFAULT_SPLIT = "#PART#".getBytes();
 
 
+    /**
+     * 签名算法
+     */
+    private static final String ALGORITHM_RSA_SIGN = "SHA256WithRSA";
 
 
     /**从文件中读取公钥
@@ -176,6 +178,8 @@ public class RsaUtils {
         Files.write(dest.toPath(), bytes);
 
     }
+
+
 
     /**构造器私有化
      * @author 赖柄沣 bingfengdev@aliyun.com

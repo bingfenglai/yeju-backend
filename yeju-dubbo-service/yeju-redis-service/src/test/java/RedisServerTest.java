@@ -19,8 +19,8 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
-import pers.lbf.yeju.redis.service.interfaces.IRedisService;
 import pers.lbf.yeju.redisServer.start.RedisServer;
+import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com

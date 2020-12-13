@@ -11,9 +11,18 @@ spring:
       discovery:
         locator:
           enabled: true
-      routes:
-        - id: authserver
-          uri: lb://authserver
-          predicates:
-            - Path=/authserver/**
+#      routes:
+#        - id: authserver
+#          uri: lb://authserver
+#          predicates:
+#            - Path=/authserver/**
+
+dubbo:
+  registry:
+    address: nacos://${spring.cloud.nacos.discovery.server-addr}
+    check: false
+  consumer:
+    check: false
+  application:
+    name: ${spring.application.name}
 

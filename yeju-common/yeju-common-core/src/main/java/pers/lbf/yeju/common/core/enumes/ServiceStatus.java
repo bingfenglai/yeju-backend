@@ -1,5 +1,7 @@
 package pers.lbf.yeju.common.core.enumes;
 
+import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
+
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -10,7 +12,7 @@ public enum  ServiceStatus {
     /**
      * 一切ok
      */
-    OK("操作成功","00000"),
+    OK(ServiceStatusConstant.SUCCESSFUL_OPERATION,ServiceStatusConstant.SUCCESSFUL_OPERATION_CODE),
 
     /**
      * 未知异常

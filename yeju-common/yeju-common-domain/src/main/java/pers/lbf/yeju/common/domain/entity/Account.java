@@ -1,6 +1,9 @@
 package pers.lbf.yeju.common.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,17 +11,23 @@ import java.util.Date;
 /**
  * 账户表(TableSystemAccount)实体类
  *
- * @author makejava
+ * @author 赖柄沣 bingfengdev@aliyun.com
  * @since 2020-11-29 19:06:02
  */
 
-public class Account implements Serializable {
+public class Account extends Model<Account> implements Serializable {
   private static final long serialVersionUID = -82905495293760971L;
   /** 主键 */
   @TableId
   private Long accountId;
   /** 账号 */
   private String accountNumber;
+
+  /**
+   * 手机号
+   */
+  private String phoneNumber;
+
   /** 账户所属者主键 */
   private Long subjectId;
   /** 账户密码 */
@@ -44,8 +53,10 @@ public class Account implements Serializable {
   /** 备注 */
   private String remark;
   /** 字段版本 */
+  @Version
   private Integer versionNumber;
   /** 删除标识 */
+  @TableLogic
   private Integer isDelete;
 
   public Long getAccountId() {
@@ -174,5 +185,35 @@ public class Account implements Serializable {
 
   public void setIsDelete(Integer isDelete) {
     this.isDelete = isDelete;
+  }
+
+
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  @Override
+  public String toString() {
+    return "Account{" +
+            "accountId=" + accountId +
+            ", accountNumber='" + accountNumber + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", subjectId=" + subjectId +
+            ", accountPassword='" + accountPassword + '\'' +
+            ", lastLoginAddress='" + lastLoginAddress + '\'' +
+            ", lastLoginDate=" + lastLoginDate +
+            ", accountStatus='" + accountStatus + '\'' +
+            ", accountLevel='" + accountLevel + '\'' +
+            ", accountType='" + accountType + '\'' +
+            ", createTime=" + createTime +
+            ", createBy=" + createBy +
+            ", updateTime=" + updateTime +
+            ", changedBy=" + changedBy +
+            ", remark='" + remark + '\'' +
+            '}';
   }
 }

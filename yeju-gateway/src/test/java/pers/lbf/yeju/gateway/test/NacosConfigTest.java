@@ -1,7 +1,6 @@
 package pers.lbf.yeju.gateway.test;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;
@@ -20,12 +19,5 @@ public class NacosConfigTest {
     @Autowired
     private IgnoreWhiteProperties properties;
 
-  @Test
-  public void test1() {
 
-    for (String s : properties.getWhites()) {
-        log.info(String.format("白名单配置：%s",s));
-    }
-
-  }
 }

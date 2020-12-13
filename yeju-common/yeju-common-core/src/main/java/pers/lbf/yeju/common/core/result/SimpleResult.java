@@ -1,5 +1,6 @@
 package pers.lbf.yeju.common.core.result;
 
+import pers.lbf.yeju.common.core.enumes.AuthStatus;
 import pers.lbf.yeju.common.core.enumes.ServiceStatus;
 
 import java.io.Serializable;
@@ -20,13 +21,25 @@ public class SimpleResult implements Serializable, IResult<Object> {
         return new SimpleResult(ServiceStatus.OK);
     }
 
+    public static SimpleResult ok(String message){
+        return new SimpleResult(ServiceStatus.OK.getCode(),message);
+    }
+
     public static SimpleResult error(){
 
         return new SimpleResult(ServiceStatus.UNKNOWN_ERROR);
     }
 
-    public static SimpleResult faild(String message,String code){
+    public static SimpleResult faild(String code,String message){
         return new SimpleResult(message, code);
+    }
+
+    public static SimpleResult faild(ServiceStatus status){
+        return new SimpleResult(status);
+    }
+
+    public static SimpleResult faild(AuthStatus status){
+        return new SimpleResult(status);
     }
 
     private SimpleResult(String message, String code) {
@@ -35,6 +48,11 @@ public class SimpleResult implements Serializable, IResult<Object> {
     }
 
     private SimpleResult(ServiceStatus status) {
+        this.message = status.getMessage();
+        this.code = status.getCode();
+    }
+
+    private SimpleResult(AuthStatus status){
         this.message = status.getMessage();
         this.code = status.getCode();
     }
@@ -49,18 +67,20 @@ public class SimpleResult implements Serializable, IResult<Object> {
                 '}';
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
 
     @Override
     public Object getData() {
-        throw new UnsupportedOperationException("不支持的操作类型");
+        return null;
     }
 
     public void setMessage(String message) {
         this.message = message;
     }
+
 
     @Override
     public String getCode() {

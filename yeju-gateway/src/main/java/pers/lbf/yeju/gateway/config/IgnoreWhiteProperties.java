@@ -20,7 +20,7 @@ public class IgnoreWhiteProperties {
      * 放行白名单，从配置中心加载
      */
     @Value("${ignore.whites}")
-    private List<String> whites;
+    private  List<String> whites;
 
 
     public List<String> getWhites() {

@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.enumes.AuthStatus;
 import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.gateway.security.manager.AuthorityManager;
+import pers.lbf.yeju.gateway.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +47,7 @@ import java.util.Arrays;
 public class AuthenticationSuccessHandler extends WebFilterChainServerAuthenticationSuccessHandler {
 
     @Autowired
-    private AuthorityManager authorityManager;
+    private AuthorizationTokenManager authorityManager;
 
     private final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
 

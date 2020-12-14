@@ -36,7 +36,9 @@ public enum AuthStatus {
     /**
      * 用户名或密码错误
      */
-    authentication_failed("用户名或密码错误", "A0003");
+    authentication_failed("用户名或密码错误", "A0003"),
+
+    logout_success("注销成功","A0004");
 
     private String message;
     private String code;

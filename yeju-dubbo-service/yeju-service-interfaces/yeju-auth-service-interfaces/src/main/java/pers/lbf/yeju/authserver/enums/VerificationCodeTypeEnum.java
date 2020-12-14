@@ -14,27 +14,23 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.security.manager;
+package pers.lbf.yeju.authserver.enums;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pers.lbf.yeju.gateway.security.builder.AuthorityInfoTokenBuilder;
-import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
-
-/**
+/**验证码类型枚举类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/12 23:45
+ * @date 2020/12/14 22:29
  */
-@Component
-public class AuthorityManager {
+public enum VerificationCodeTypeEnum {
 
-    @Autowired
-    private AuthorityInfoTokenBuilder builder;
+    /**
+     * 手机验证码
+     */
+    MOBILE_VERIFICATION_CODE,
 
-
-    public String getAuthorityInfoToken(AuthorityInfo authorityInfo) throws Exception{
-        return builder.build(authorityInfo);
-    }
+    /**
+     * 图片验证码
+     */
+    PICTURE_VERIFICATION_CODE;
 }

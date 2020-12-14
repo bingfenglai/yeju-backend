@@ -14,6 +14,7 @@
 
         <module>yeju-auth-service-interfaces</module>
         <module>yeju-redis-service-interfaces</module>
+        <module>yeju-sms-service-interfaces</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

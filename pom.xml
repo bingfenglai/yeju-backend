@@ -56,6 +56,7 @@
         <jwt.version>0.10.7</jwt.version>
         <joda.version>2.10.5</joda.version>
         <jackson.version>2.11.2</jackson.version>
+        <aliyun.sms.version>1.0.0</aliyun.sms.version>
     </properties>
 
 
@@ -202,6 +203,7 @@
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>aliyun-sms-spring-boot-starter</artifactId>
+                <version>${aliyun.sms.version}</version>
             </dependency>
 
 <!--            数据连接层 start-->

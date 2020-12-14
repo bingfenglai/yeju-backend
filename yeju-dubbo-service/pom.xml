@@ -13,6 +13,7 @@
         <module>yeju-auth-service</module>
         <module>yeju-service-interfaces</module>
         <module>yeju-redis-service</module>
+        <module>yeju-sms-service</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

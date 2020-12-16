@@ -3,22 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>yeju</artifactId>
+        <artifactId>yeju-auth-service-interfaces</artifactId>
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
+        <relativePath>../yeju-auth-service-interfaces/pom.xml</relativePath>
     </parent>
-
-    <packaging>pom</packaging>
-    <modules>
-        <module>yeju-auth-service</module>
-        <module>yeju-redis-service</module>
-        <module>yeju-sms-service</module>
-        <module>yeju-mq-service</module>
-        <module>yeju-customer-service</module>
-    </modules>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>yeju-dubbo-service</artifactId>
+    <artifactId>yeju-customer-service-interfaces</artifactId>
 
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
 </project>

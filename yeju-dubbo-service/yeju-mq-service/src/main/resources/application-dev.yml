@@ -1,0 +1,13 @@
+dubbo:
+  application:
+    name: ${spring.application.name}
+  registry:
+    address: nacos://${spring.cloud.nacos.config.server-addr}
+spring:
+  cloud:
+    sentinel:
+      enabled: false
+      log:
+        dir: ./logs
+
+

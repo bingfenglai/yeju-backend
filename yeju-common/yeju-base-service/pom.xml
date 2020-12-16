@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-apache-dubbo-adapter</artifactId>
-            <version>${sentinel.csp.version}</version>
+
         </dependency>
 
         <!--            数据连接层 start-->

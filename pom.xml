@@ -19,6 +19,7 @@
     <modules>
         <module>yeju-common</module>
         <module>yeju-gateway</module>
+        <module>yeju-dubbo-service-interfaces</module>
         <module>yeju-dubbo-service</module>
         <module>yeju-rest-api</module>
     </modules>
@@ -57,6 +58,7 @@
         <joda.version>2.10.5</joda.version>
         <jackson.version>2.11.2</jackson.version>
         <aliyun.sms.version>1.0.0</aliyun.sms.version>
+        <spring.cloud.security.version>2.2.2.RELEASE</spring.cloud.security.version>
     </properties>
 
 
@@ -117,15 +119,19 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-mail</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
 
 <!--        web层-->
@@ -145,40 +151,50 @@
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
             </dependency>
 
 <!--            服务发现-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+
             </dependency>
 
 <!--            服务流控-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+
             </dependency>
 
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-sentinel-datasource</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+
             </dependency>
 
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
             </dependency>
 
 <!--            sentinel整合dubbo-->
             <dependency>
                 <groupId>com.alibaba.csp</groupId>
                 <artifactId>sentinel-apache-dubbo-adapter</artifactId>
+                <version>${sentinel.csp.version}</version>
             </dependency>
 
 <!--            分布式事务-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
             </dependency>
 
             <dependency>
@@ -234,6 +250,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
@@ -249,9 +266,11 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-oauth2</artifactId>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-security</artifactId>
+                <version>${spring.cloud.security.version}</version>
             </dependency>
 
 <!--            参数校验框架-->

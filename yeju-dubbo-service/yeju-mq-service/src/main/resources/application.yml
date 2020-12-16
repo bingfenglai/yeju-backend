@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: mq-server
+logging:
+  config: config/logback.xml

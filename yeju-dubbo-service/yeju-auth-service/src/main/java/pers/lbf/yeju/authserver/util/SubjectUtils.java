@@ -14,23 +14,35 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.service.interfaces;
+package pers.lbf.yeju.authserver.util;
 
-import pers.lbf.yeju.authserver.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.authserver.pojo.dto.VerityDTO;
-import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.enums.SubjectType;
+import pers.lbf.yeju.common.util.PhoneUtils;
 
-/**验证码服务接口类
+/**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/14 22:26
+ * @date 2020/12/17 9:12
  */
-public interface IVerificationCodeService {
+public class SubjectUtils {
 
-    <T> IResult<VerityDTO<T>> getVerificationCode(VerificationCodeTypeEnum type) throws Exception;
+    private SubjectUtils() {
 
-    IResult<Object> verify(String key,String code) throws Exception;
+    }
 
+    /**获取账户类型
+     * @Description //TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2020/12/17 14:42
+     * @param principal 抽象账户
+     * @return pers.lbf.yeju.common.core.enumes.SubjectType
+     */
+    public static SubjectType getAccountType(String principal){
 
+        boolean phone = PhoneUtils.isPhone(principal);
+
+        return phone? SubjectType.is_mobile:SubjectType.is_system_account;
+    }
 }

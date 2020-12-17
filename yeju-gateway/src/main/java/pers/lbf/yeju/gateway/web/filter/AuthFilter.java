@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.enumes.AuthStatus;
+import pers.lbf.yeju.common.core.enums.AuthStatus;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;

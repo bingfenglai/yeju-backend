@@ -27,7 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.enumes.ServiceStatus;
+import pers.lbf.yeju.common.core.enums.ServiceStatus;
 import pers.lbf.yeju.common.core.exception.RpcServiceException;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import reactor.core.publisher.Mono;

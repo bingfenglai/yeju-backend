@@ -14,21 +14,18 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.pojo;
-
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pers.lbf.yeju.common.core.enums.SubjectType;
+package pers.lbf.yeju.authserver.pojo.dto;
 
 import java.io.Serializable;
 import java.util.List;
 
-/**简单账户对象
+/**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/12 19:13
+ * @date 2020/12/17 9:04
  */
-public class SimpleSubject implements Serializable {
+public class SimpleAccountDTO implements Serializable {
 
     /**
      * 抽象账号，可以是手机、系统账号、邮箱等
@@ -44,14 +41,30 @@ public class SimpleSubject implements Serializable {
     /**
      * 账户类型
      */
-    private SubjectType accountType;
+    private String accountType;
+
+    /**
+     * 账户状态
+     */
+    private String accountStatus;
+
 
     /**
      * 权限集合
      */
-    protected List<SimpleGrantedAuthority> authorities;
+    private List<String> authorityStringList;
 
-    private String accountStatus;
+
+    @Override
+    public String toString() {
+        return "SimpleAccountDTO{" +
+                "Principal='" + principal + '\'' +
+                ", certificate='" + certificate + '\'' +
+                ", accountType='" + accountType + '\'' +
+                ", accountStatus='" + accountStatus + '\'' +
+                ", authorityStringList=" + authorityStringList +
+                '}';
+    }
 
     public String getPrincipal() {
         return principal;
@@ -69,13 +82,12 @@ public class SimpleSubject implements Serializable {
         this.certificate = certificate;
     }
 
-
-    public List<SimpleGrantedAuthority> getAuthorities() {
-        return authorities;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
-        this.authorities = authorities;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public String getAccountStatus() {
@@ -86,22 +98,11 @@ public class SimpleSubject implements Serializable {
         this.accountStatus = accountStatus;
     }
 
-    public SubjectType getAccountType() {
-        return accountType;
+    public List<String> getAuthorityStringList() {
+        return authorityStringList;
     }
 
-    public void setAccountType(SubjectType accountType) {
-        this.accountType = accountType;
-    }
-
-    @Override
-    public String toString() {
-        return "SimpleSubject{" +
-                "Principal='" + principal + '\'' +
-                ", certificate='" + certificate + '\'' +
-                ", accountType=" + accountType +
-                ", authorities=" + authorities +
-                ", accountStatus='" + accountStatus + '\'' +
-                '}';
+    public void setAuthorityStringList(List<String> authorityStringList) {
+        this.authorityStringList = authorityStringList;
     }
 }

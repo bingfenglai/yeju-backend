@@ -17,7 +17,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.authserver")
 @EnableDiscoveryClient
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.authserver.service")
-@MapperScan(basePackages = "pers.lbf.yeju.auth.dao")
+@MapperScan(basePackages = "pers.lbf.yeju.authserver.dao")
 public class AuthServer {
 
   private static final Logger log = LoggerFactory.getLogger(AuthServer.class);

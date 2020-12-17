@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.enumes;
+package pers.lbf.yeju.common.core.enums;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -38,7 +38,14 @@ public enum AuthStatus {
      */
     authentication_failed("用户名或密码错误", "A0003"),
 
-    logout_success("注销成功","A0004");
+    /**
+     * 注销成功
+     */
+    logout_success("注销成功","A0004"),
+
+    NO_ACCOUNT("账号或密码错误","A0005"),
+
+    account_cannot_be_empty("账号不能为空","A0006");
 
     private String message;
     private String code;

@@ -14,23 +14,36 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.service.interfaces;
+package pers.lbf.yeju.common.util;
 
-import pers.lbf.yeju.authserver.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.authserver.pojo.dto.VerityDTO;
-import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.constant.PhoneConstants;
 
-/**验证码服务接口类
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**手机号工具类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/14 22:26
+ * @date 2020/12/17 14:34
  */
-public interface IVerificationCodeService {
-
-    <T> IResult<VerityDTO<T>> getVerificationCode(VerificationCodeTypeEnum type) throws Exception;
-
-    IResult<Object> verify(String key,String code) throws Exception;
+public class PhoneUtils {
 
 
+    public static boolean isPhone(String phone) {
+        String regex = "^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$";
+        if (phone.length() != PhoneConstants.china_mobile_phone_number_length) {
+            return false;
+        } else {
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phone);
+
+            return m.matches();
+        }
+    }
+
+
+    private PhoneUtils() {
+
+    }
 }

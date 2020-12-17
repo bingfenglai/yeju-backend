@@ -16,21 +16,21 @@
  */
 package pers.lbf.yeju.authserver.service.interfaces;
 
-import pers.lbf.yeju.authserver.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.authserver.pojo.dto.VerityDTO;
+import pers.lbf.yeju.authserver.pojo.dto.SimpleAccountDTO;
 import pers.lbf.yeju.common.core.result.IResult;
 
-/**验证码服务接口类
+/**账户服务接口类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/14 22:26
+ * @Description
+ * @date 2020/12/16 10:14
  */
-public interface IVerificationCodeService {
+public interface IAccountService {
 
-    <T> IResult<VerityDTO<T>> getVerificationCode(VerificationCodeTypeEnum type) throws Exception;
-
-    IResult<Object> verify(String key,String code) throws Exception;
-
-
+    /**
+     * 根据账户查找账户及权限信息
+     * @param principal 抽象账户
+     * @return account
+     */
+    IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws RuntimeException;
 }

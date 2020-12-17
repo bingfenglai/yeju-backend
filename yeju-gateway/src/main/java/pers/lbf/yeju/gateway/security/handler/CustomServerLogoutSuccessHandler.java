@@ -27,7 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.common.core.enumes.AuthStatus;
+import pers.lbf.yeju.common.core.enums.AuthStatus;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import reactor.core.publisher.Mono;
 

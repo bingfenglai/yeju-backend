@@ -1,4 +1,4 @@
-package pers.lbf.yeju.common.core.enumes;
+package pers.lbf.yeju.common.core.enums;
 
 import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
 

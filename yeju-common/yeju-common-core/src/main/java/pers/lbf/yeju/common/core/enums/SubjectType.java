@@ -14,23 +14,22 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.service.interfaces;
+package pers.lbf.yeju.common.core.enums;
 
-import pers.lbf.yeju.authserver.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.authserver.pojo.dto.VerityDTO;
-import pers.lbf.yeju.common.core.result.IResult;
-
-/**验证码服务接口类
+/**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/14 22:26
+ * @Description 当前登录对象账号类型
+ * @date 2020/12/12 18:09
  */
-public interface IVerificationCodeService {
+public enum SubjectType {
+    /**
+     * 手机登录
+     */
+    is_mobile,
 
-    <T> IResult<VerityDTO<T>> getVerificationCode(VerificationCodeTypeEnum type) throws Exception;
-
-    IResult<Object> verify(String key,String code) throws Exception;
-
-
+    /**
+     * 系统账号
+     */
+    is_system_account;
 }

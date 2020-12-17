@@ -14,43 +14,29 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.pojo;
 
-import java.io.Serializable;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import pers.lbf.yeju.authserver.service.interfaces.IAccountService;
+import pers.lbf.yeju.authserver.start.AuthServer;
+import pers.lbf.yeju.common.core.result.IResult;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/14 22:38
+ * @date 2020/12/17 9:50
  */
-public class VerityDTO<T> implements Serializable {
+@SpringBootTest(classes = AuthServer.class)
+public class AccountServiceTest {
 
-    private String token;
+    @Autowired
+    private IAccountService accountService;
 
-    private T code;
-
-    @Override
-    public String toString() {
-        return "VerityDTO{" +
-                "token='" + token + '\'' +
-                ", code=" + code +
-                '}';
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public T getCode() {
-        return code;
-    }
-
-    public void setCode(T code) {
-        this.code = code;
+    @Test
+    public void test1(){
+        IResult hehe = accountService.findSimpleAccountByPrincipal("hehe");
+        System.out.println(hehe.toString());
     }
 }

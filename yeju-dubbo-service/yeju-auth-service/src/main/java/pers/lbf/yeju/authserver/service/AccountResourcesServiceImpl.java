@@ -2,7 +2,7 @@ package pers.lbf.yeju.authserver.service;
 
 
 import org.apache.dubbo.config.annotation.DubboService;
-import pers.lbf.yeju.authserver.service.interfaces.IAccountResourcesService;
+import pers.lbf.yeju.authserver.interfaces.interfaces.IAccountResourcesService;
 
 
 /**

@@ -14,23 +14,23 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.enums;
+package pers.lbf.yeju.gateway.security.enums;
 
-/**验证码类型枚举类
+/**登录方式枚举
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/14 22:29
+ * @date 2020/12/19 14:20
  */
-public enum VerificationCodeTypeEnum {
+public enum LoginWay {
+    /**
+     * 账号密码登录
+     */
+    usernameAndPassword,
 
     /**
-     * 手机验证码
+     * 手机号加6尾数字验证码登录
      */
-    MOBILE_VERIFICATION_CODE,
+    phoneNumberAndVerificationCode
 
-    /**
-     * 图片验证码
-     */
-    PICTURE_VERIFICATION_CODE;
-}
+    }

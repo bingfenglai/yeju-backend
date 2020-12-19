@@ -1,4 +1,4 @@
-package pers.lbf.yeju.authserver.service.interfaces;
+package pers.lbf.yeju.authserver.interfaces.interfaces;
 
 /**
  * 这是一张冗余的关系表。主要是用来便于权限查询(AccountResources)表服务接口

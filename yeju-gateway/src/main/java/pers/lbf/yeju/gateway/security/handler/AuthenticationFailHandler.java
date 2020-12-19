@@ -25,8 +25,8 @@ import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.ServerAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.enums.AuthStatus;
 import pers.lbf.yeju.common.core.result.SimpleResult;
+import pers.lbf.yeju.common.core.status.enums.AuthStatus;
 import reactor.core.publisher.Mono;
 
 /**认证不通过处理器

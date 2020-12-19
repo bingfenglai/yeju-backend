@@ -14,23 +14,43 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.enums;
+package pers.lbf.yeju.authserver.interfaces.dto;
 
-/**登录账户类型
+import java.io.Serializable;
+
+/**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/6 18:03
+ * @date 2020/12/14 22:38
  */
-public enum PrincipalType {
+public class VerityDTO<T> implements Serializable {
 
-    /**
-     * 手机号
-     */
-    mobile,
+    private String token;
 
-    /**
-     * 系统账户
-     */
-    system_account;
+    private T code;
+
+    @Override
+    public String toString() {
+        return "VerityDTO{" +
+                "token='" + token + '\'' +
+                ", code=" + code +
+                '}';
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public T getCode() {
+        return code;
+    }
+
+    public void setCode(T code) {
+        this.code = code;
+    }
 }

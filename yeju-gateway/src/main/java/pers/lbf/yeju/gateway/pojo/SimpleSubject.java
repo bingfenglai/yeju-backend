@@ -17,7 +17,7 @@
 package pers.lbf.yeju.gateway.pojo;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pers.lbf.yeju.common.core.enums.SubjectType;
+import pers.lbf.yeju.common.core.status.enums.SubjectType;
 
 import java.io.Serializable;
 import java.util.List;

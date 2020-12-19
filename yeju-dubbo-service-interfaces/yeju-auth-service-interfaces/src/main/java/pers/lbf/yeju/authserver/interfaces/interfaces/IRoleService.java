@@ -14,35 +14,18 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.util;
+package pers.lbf.yeju.authserver.interfaces.interfaces;
 
-import pers.lbf.yeju.common.core.status.enums.SubjectType;
-import pers.lbf.yeju.common.util.PhoneUtils;
+import pers.lbf.yeju.common.core.result.IResult;
 
-/**
+/**角色服务接口类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/17 9:12
+ * @date 2020/12/12 23:55
  */
-public class SubjectUtils {
+public interface IRoleService {
 
-    private SubjectUtils() {
 
-    }
-
-    /**获取账户类型
-     * @Description //TODO
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2020/12/17 14:42
-     * @param principal 抽象账户
-     * @return pers.lbf.yeju.common.core.enumes.SubjectType
-     */
-    public static SubjectType getAccountType(String principal){
-
-        boolean phone = PhoneUtils.isPhone(principal);
-
-        return phone? SubjectType.is_mobile:SubjectType.is_system_account;
-    }
+    IResult getRoleByPrincipal(String principal);
 }

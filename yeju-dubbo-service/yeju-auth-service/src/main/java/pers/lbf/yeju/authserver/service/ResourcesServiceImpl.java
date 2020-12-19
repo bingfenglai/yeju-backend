@@ -1,7 +1,7 @@
 package pers.lbf.yeju.authserver.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
-import pers.lbf.yeju.authserver.service.interfaces.IResourcesService;
+import pers.lbf.yeju.authserver.interfaces.interfaces.IResourcesService;
 import pers.lbf.yeju.common.core.result.IResult;
 
 import java.util.ArrayList;

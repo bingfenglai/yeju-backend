@@ -16,10 +16,19 @@
  */
 package pers.lbf.yeju.gateway.security.manager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.gateway.security.enums.LoginWay;
+import pers.lbf.yeju.gateway.security.pojo.AuthenticationToken;
+import pers.lbf.yeju.gateway.security.service.CustomUserDetailsServiceImpl;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /**登录对象身份验证管理器
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -29,8 +38,47 @@ import reactor.core.publisher.Mono;
  */
 @Component
 public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuthenticationManager {
+
+    private final Scheduler scheduler = Schedulers.boundedElastic();
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    private CustomUserDetailsServiceImpl userDetailsService;
+
+    /**自定义认证方法
+     * @Description //TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2020/12/19 14:42
+     * @param authentication token
+     * @return reactor.core.publisher.Mono<org.springframework.security.core.Authentication>
+     */
     @Override
-    protected Mono<UserDetails> retrieveUser(String s) {
+    public Mono<Authentication> authenticate(Authentication authentication){
+
+
+        AuthenticationToken token = (AuthenticationToken) authentication;
+        String account = token.getName();
+        String key = token.getVerificationCodeKey();
+        String host = token.getHost();
+        String code;
+        if (token.getLoginWay().equals(LoginWay.usernameAndPassword)){
+            code = token.getVerificationCode();
+        }
+
+
+
         return null;
+    }
+
+    /**
+     * 获取用户信息
+     * @param username u
+     * @return userDetails
+     */
+    @Override
+    protected Mono<UserDetails> retrieveUser(String username) {
+        return userDetailsService.findByUsername(username);
     }
 }

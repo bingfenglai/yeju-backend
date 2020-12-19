@@ -1,6 +1,6 @@
 package pers.lbf.yeju.common.core.result;
 
-import pers.lbf.yeju.common.core.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatus;
 
 import java.io.Serializable;
 

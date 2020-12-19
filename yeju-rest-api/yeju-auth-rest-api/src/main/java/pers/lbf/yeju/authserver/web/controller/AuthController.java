@@ -2,8 +2,8 @@ package pers.lbf.yeju.authserver.web.controller;
 
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
+import pers.lbf.yeju.authserver.interfaces.interfaces.IAuthService;
 import pers.lbf.yeju.authserver.pojo.LoginVO;
-import pers.lbf.yeju.authserver.service.interfaces.IAuthService;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 

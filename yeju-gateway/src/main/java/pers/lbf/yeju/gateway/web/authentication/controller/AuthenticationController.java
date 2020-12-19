@@ -19,9 +19,9 @@ package pers.lbf.yeju.gateway.web.authentication.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pers.lbf.yeju.common.core.enums.AuthStatus;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
+import pers.lbf.yeju.common.core.status.enums.AuthStatus;
 
 /**认证控制器
  * @author 赖柄沣 bingfengdev@aliyun.com

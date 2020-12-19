@@ -14,43 +14,26 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.pojo.dto;
-
-import java.io.Serializable;
+package pers.lbf.yeju.common.core.status.insterfaces;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/14 22:38
+ * @date 2020/12/20 0:12
  */
-public class VerityDTO<T> implements Serializable {
+public interface Status {
 
-    private String token;
+    /**
+     * 状态消息
+     * @return msg
+     */
+     String getMessage();
 
-    private T code;
+    /**
+     * 状态编码
+     * @return code
+     */
+    String getCode();
 
-    @Override
-    public String toString() {
-        return "VerityDTO{" +
-                "token='" + token + '\'' +
-                ", code=" + code +
-                '}';
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public T getCode() {
-        return code;
-    }
-
-    public void setCode(T code) {
-        this.code = code;
-    }
 }

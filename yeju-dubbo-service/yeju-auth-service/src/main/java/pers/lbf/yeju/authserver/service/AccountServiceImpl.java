@@ -17,16 +17,19 @@
 package pers.lbf.yeju.authserver.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.authserver.dao.IAccountDao;
-import pers.lbf.yeju.authserver.pojo.dto.SimpleAccountDTO;
-import pers.lbf.yeju.authserver.service.interfaces.IAccountService;
+import pers.lbf.yeju.authserver.enums.AccountStatus;
+import pers.lbf.yeju.authserver.interfaces.dto.SimpleAccountDTO;
+import pers.lbf.yeju.authserver.interfaces.interfaces.IAccountService;
 import pers.lbf.yeju.authserver.util.SubjectUtils;
-import pers.lbf.yeju.common.core.enums.AuthStatus;
-import pers.lbf.yeju.common.core.enums.SubjectType;
-import pers.lbf.yeju.common.core.exception.RpcServiceException;
+import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.SubjectType;
 import pers.lbf.yeju.common.domain.entity.Account;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 
@@ -43,7 +46,6 @@ public class AccountServiceImpl implements IAccountService {
     private IAccountDao accountDao;
 
 
-
     /**
      * 根据账户查找账户及权限信息
      *
@@ -52,6 +54,7 @@ public class AccountServiceImpl implements IAccountService {
      */
     @Override
     public IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws RuntimeException {
+        //1。判断账户类型
         SubjectType accountType = SubjectUtils.getAccountType(principal);
 
 
@@ -64,30 +67,69 @@ public class AccountServiceImpl implements IAccountService {
 
         QueryWrapper<Account> accountQueryWrapper  = new QueryWrapper<>();
 
-        Account account = null;
-
+        //构造条件
         if (accountType.equals(SubjectType.is_mobile)){
             accountQueryWrapper.eq(true,"phone_number",principal);
-            account = accountDao.selectOne(accountQueryWrapper);
+
+        }else {
+            accountQueryWrapper.eq(true,"account_number",principal);
+
         }
 
+        //2.获取账号主体信息
+        Account account =account = accountDao.selectOne(accountQueryWrapper);
+
+        //账号不存在
         if (account==null){
             throw RpcServiceException.getInstance(
-                    AuthStatus.account_cannot_be_empty.getMessage(),
-                    AuthStatus.account_cannot_be_empty.getCode(),
+                    AuthStatus.NO_ACCOUNT.getMessage(),
+                    AuthStatus.NO_ACCOUNT.getCode(),
                     YejuStringUtils.split(principal),
                     ""
             );
-
-
         }
 
+        SimpleAccountDTO accountDTO = new SimpleAccountDTO();
+        accountDTO.setPrincipal(principal);
+        accountDTO.setAccountType(accountType);
+        accountDTO.setAccountStatus(account.getAccountStatus());
+        accountDTO.setCertificate(account.getAccountPassword());
 
+        return Result.ok(accountDTO);
+    }
 
+    /**
+     * 更新密码
+     *
+     * @param principal   抽象账号
+     * @param newPassword 新密码
+     * @throws RuntimeException e
+     */
+    @Override
+    public IResult<Boolean> updatePassword(String principal, String newPassword) throws RuntimeException {
 
+        SubjectType accountType = SubjectUtils.getAccountType(principal);
 
+        QueryWrapper<Account> accountQueryWrapper  = new QueryWrapper<>();
 
+        if (accountType.equals(SubjectType.is_mobile)){
+            accountQueryWrapper.eq(true,"phone_number",principal);
 
-        return null;
+        }else {
+            accountQueryWrapper.eq(true,"account_number",principal);
+
+        }
+        Account account = accountDao.selectOne(accountQueryWrapper);
+
+        assert account != null:
+                RpcServiceException
+                        .getInstance(AccountStatus.accountDoesNotExist);
+
+        account.setAccountPassword(newPassword);
+
+        UpdateWrapper<Account> updateWrapper = new UpdateWrapper<Account>();
+        //updateWrapper.
+
+        return Result.ok(true);
     }
 }

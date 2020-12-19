@@ -49,12 +49,12 @@ public class SubjectDetails extends SimpleSubject implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return Objects.equals(this.getAccountStatus(), AccountStatusConstant.enable);
+        return Objects.equals(this.getAccountStatus(), AccountStatusConstant.ENABLE);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return Objects.equals(this.getAccountStatus(), AccountStatusConstant.enable);
+        return Objects.equals(this.getAccountStatus(), AccountStatusConstant.ENABLE);
     }
 
     @Override
@@ -64,6 +64,6 @@ public class SubjectDetails extends SimpleSubject implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return Objects.equals(this.getAccountStatus(), AccountStatusConstant.enable);
+        return Objects.equals(this.getAccountStatus(), AccountStatusConstant.ENABLE);
     }
 }

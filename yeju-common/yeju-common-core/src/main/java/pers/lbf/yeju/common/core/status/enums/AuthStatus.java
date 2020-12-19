@@ -14,7 +14,11 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.enums;
+package pers.lbf.yeju.common.core.status.enums;
+
+import pers.lbf.yeju.common.core.status.insterfaces.Status;
+
+import java.io.Serializable;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -22,7 +26,7 @@ package pers.lbf.yeju.common.core.enums;
  * @Description TODO
  * @date 2020/12/8 19:43
  */
-public enum AuthStatus {
+public enum AuthStatus implements Status, Serializable {
     /**
      * 生成token失败
      */
@@ -45,12 +49,15 @@ public enum AuthStatus {
 
     NO_ACCOUNT("账号或密码错误","A0005"),
 
-    account_cannot_be_empty("账号不能为空","A0006");
+    account_cannot_be_empty("账号不能为空","A0006"),
+
+    unauthorized("无权限访问该资源！","A0007");
 
     private String message;
     private String code;
 
 
+    @Override
     public String getMessage() {
         return message;
     }
@@ -59,6 +66,7 @@ public enum AuthStatus {
         this.message = message;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
@@ -70,5 +78,13 @@ public enum AuthStatus {
     AuthStatus(String message, String code) {
         this.message = message;
         this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthStatus{" +
+                "message='" + message + '\'' +
+                ", code='" + code + '\'' +
+                '}';
     }
 }

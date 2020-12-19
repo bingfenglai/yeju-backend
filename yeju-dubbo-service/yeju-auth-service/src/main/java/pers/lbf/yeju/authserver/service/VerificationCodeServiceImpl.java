@@ -17,10 +17,10 @@
 package pers.lbf.yeju.authserver.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
-import pers.lbf.yeju.authserver.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.authserver.pojo.dto.VerityDTO;
-import pers.lbf.yeju.authserver.service.interfaces.IVerificationCodeService;
-import pers.lbf.yeju.common.core.exception.RpcServiceException;
+import pers.lbf.yeju.authserver.interfaces.dto.VerityDTO;
+import pers.lbf.yeju.authserver.interfaces.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.authserver.interfaces.interfaces.IVerificationCodeService;
+import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 
 /**验证码服务

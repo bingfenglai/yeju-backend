@@ -24,13 +24,13 @@ package pers.lbf.yeju.common.core.constant;
 public class AccountStatusConstant {
 
   /** 启用 */
-  public static final String enable = "1";
+  public static final String ENABLE = "1";
 
   /** 未启用 */
-  public static final String unenable = "0";
+  public static final String UN_ENABLE = "0";
 
   /** 冻结 */
-  public static final String freeze = "2";
+  public static final String FREEZE = "2";
 
 
 }

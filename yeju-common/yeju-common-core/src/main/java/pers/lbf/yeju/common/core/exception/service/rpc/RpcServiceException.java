@@ -1,6 +1,8 @@
-package pers.lbf.yeju.common.core.exception;
+package pers.lbf.yeju.common.core.exception.service.rpc;
 
-import pers.lbf.yeju.common.core.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.status.insterfaces.Status;
 
 /**rpc远程调用异常
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -8,7 +10,7 @@ import pers.lbf.yeju.common.core.enums.ServiceStatus;
  * @Description TODO
  * @date 2020/11/26 21:58
  */
-public class RpcServiceException extends RuntimeException {
+public class RpcServiceException extends ServiceException {
 
     /**
      * 错误消息提示
@@ -31,9 +33,20 @@ public class RpcServiceException extends RuntimeException {
     private String module;
 
 
+
     public static RpcServiceException getInstance(String message, String exceptionCode) {
         return new RpcServiceException(message, exceptionCode);
     }
+
+    public static RpcServiceException getInstance(Status status){
+        return new RpcServiceException(status.getMessage(), status.getCode());
+    }
+
+    public static RpcServiceException getInstance(Status status,Object[] params, String module){
+        return new RpcServiceException(status.getMessage(), status.getCode());
+    }
+
+
 
     public static RpcServiceException getInstance(String message, String exceptionCode, Object[] params, String module) {
         return new RpcServiceException(message, exceptionCode, params, module);
@@ -60,59 +73,46 @@ public class RpcServiceException extends RuntimeException {
         this.exceptionCode = exceptionCode;
     }
 
-    public RpcServiceException(String message, Throwable cause, String exceptionCode, Object[] params, String module) {
-        super(message, cause);
-        this.message = message;
-        this.exceptionCode = exceptionCode;
-        this.params = params;
-        this.module = module;
-    }
+   
 
-    public RpcServiceException(Throwable cause, String message, String exceptionCode, Object[] params, String module) {
-        super(cause);
-        this.message = message;
-        this.exceptionCode = exceptionCode;
-        this.params = params;
-        this.module = module;
-    }
-
-    public RpcServiceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, String exceptionCode, Object[] parmas, String module) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.message = message;
-        this.exceptionCode = exceptionCode;
-        this.params = parmas;
-        this.module = module;
-    }
+   
 
     @Override
     public String getMessage() {
         return message;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }
 
+    @Override
     public String getExceptionCode() {
         return exceptionCode;
     }
 
+    @Override
     public void setExceptionCode(String exceptionCode) {
         this.exceptionCode = exceptionCode;
     }
 
+    @Override
     public Object[] getParams() {
         return params;
     }
 
+    @Override
     public void setParams(Object[] params) {
         this.params = params;
     }
 
+    @Override
     public String getModule() {
         return module;
     }
 
+    @Override
     public void setModule(String module) {
         this.module = module;
     }

@@ -14,7 +14,9 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.pojo.dto;
+package pers.lbf.yeju.authserver.interfaces.dto;
+
+import pers.lbf.yeju.common.core.status.enums.SubjectType;
 
 import java.io.Serializable;
 import java.util.List;
@@ -41,7 +43,7 @@ public class SimpleAccountDTO implements Serializable {
     /**
      * 账户类型
      */
-    private String accountType;
+    private SubjectType accountType;
 
     /**
      * 账户状态
@@ -54,17 +56,6 @@ public class SimpleAccountDTO implements Serializable {
      */
     private List<String> authorityStringList;
 
-
-    @Override
-    public String toString() {
-        return "SimpleAccountDTO{" +
-                "Principal='" + principal + '\'' +
-                ", certificate='" + certificate + '\'' +
-                ", accountType='" + accountType + '\'' +
-                ", accountStatus='" + accountStatus + '\'' +
-                ", authorityStringList=" + authorityStringList +
-                '}';
-    }
 
     public String getPrincipal() {
         return principal;
@@ -82,11 +73,22 @@ public class SimpleAccountDTO implements Serializable {
         this.certificate = certificate;
     }
 
-    public String getAccountType() {
+    @Override
+    public String toString() {
+        return "SimpleAccountDTO{" +
+                "principal='" + principal + '\'' +
+                ", certificate='" + certificate + '\'' +
+                ", accountType=" + accountType +
+                ", accountStatus='" + accountStatus + '\'' +
+                ", authorityStringList=" + authorityStringList +
+                '}';
+    }
+
+    public SubjectType getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(SubjectType accountType) {
         this.accountType = accountType;
     }
 

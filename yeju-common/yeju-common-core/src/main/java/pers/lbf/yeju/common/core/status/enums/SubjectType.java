@@ -14,23 +14,22 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.enums;
+package pers.lbf.yeju.common.core.status.enums;
 
-/**登录凭证类型
+/**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/6 18:09
+ * @Description 当前登录对象账号类型
+ * @date 2020/12/12 18:09
  */
-public enum CertificateType {
+public enum SubjectType {
+    /**
+     * 手机登录
+     */
+    is_mobile,
 
     /**
-     * 手机验证码
+     * 系统账号
      */
-    Phone_verification_code,
-
-    /**
-     * 密码
-     */
-    password;
+    is_system_account
 }

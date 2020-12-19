@@ -1,4 +1,4 @@
-package pers.lbf.yeju.authserver.service.interfaces;
+package pers.lbf.yeju.authserver.interfaces.interfaces;
 
 import pers.lbf.yeju.common.core.result.IResult;
 

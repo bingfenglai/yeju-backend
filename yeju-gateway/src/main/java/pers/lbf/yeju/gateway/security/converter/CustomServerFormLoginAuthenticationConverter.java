@@ -14,15 +14,19 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.security.handler;
+package pers.lbf.yeju.gateway.security.converter;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authentication.ServerFormLoginAuthenticationConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.gateway.security.pojo.AuthenticationToken;
 import reactor.core.publisher.Mono;
 
-/**
+import java.util.Objects;
+
+/**将表单参数转换为AuthenticationToken
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -37,6 +41,18 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
 
     @Override
     public Mono<Authentication> convert(ServerWebExchange exchange) {
-        return super.convert(exchange);
+
+        HttpHeaders headers = exchange.getRequest().getHeaders();
+        String hostName = Objects.requireNonNull(headers.getHost()).getHostName();
+        String key = headers.getFirst("verificationCodeKey");
+
+
+        return exchange.getFormData().map(data -> {
+            String principal = data.getFirst("principal");
+            String certificate = data.getFirst("certificate");
+            String code = data.getFirst("verificationCode");
+
+            return new AuthenticationToken(principal, certificate, hostName, key, code);
+        });
     }
 }

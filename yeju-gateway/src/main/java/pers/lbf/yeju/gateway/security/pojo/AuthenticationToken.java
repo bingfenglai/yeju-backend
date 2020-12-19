@@ -18,6 +18,7 @@ package pers.lbf.yeju.gateway.security.pojo;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import pers.lbf.yeju.gateway.security.enums.LoginWay;
 
 import java.util.Collection;
 
@@ -29,6 +30,43 @@ import java.util.Collection;
  */
 public class AuthenticationToken extends UsernamePasswordAuthenticationToken {
 
+    /**
+     * web登录的验证码
+     */
+    private String verificationCode;
+
+    /**
+     * 验证码在缓存中的key
+     */
+    private String verificationCodeKey;
+
+    /**
+     * IP地址
+     */
+    private String host;
+
+    /**
+     * 登录方式
+     */
+    private LoginWay loginWay;
+
+
+
+    public AuthenticationToken(Object principal, Object credentials, String host, String verificationCodeKey, String verificationCode){
+        super(principal, credentials);
+        this.verificationCode = verificationCode;
+        this.host = host;
+        this.verificationCodeKey = verificationCodeKey;
+        loginWay = LoginWay.usernameAndPassword;
+    }
+
+    public AuthenticationToken(Object principal, Object credentials,String host,String verificationCodeKey){
+        super(principal, credentials);
+        this.host = host;
+        this.loginWay = LoginWay.phoneNumberAndVerificationCode;
+        this.verificationCodeKey = verificationCodeKey;
+    }
+
 
     public AuthenticationToken(Object principal, Object credentials) {
         super(principal, credentials);
@@ -36,5 +74,38 @@ public class AuthenticationToken extends UsernamePasswordAuthenticationToken {
 
     public AuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
+    }
+
+    public String getVerificationCode() {
+
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public String getVerificationCodeKey() {
+        return verificationCodeKey;
+    }
+
+    public void setVerificationCodeKey(String verificationCodeKey) {
+        this.verificationCodeKey = verificationCodeKey;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public LoginWay getLoginWay() {
+        return loginWay;
+    }
+
+    public void setLoginWay(LoginWay loginWay) {
+        this.loginWay = loginWay;
     }
 }

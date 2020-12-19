@@ -21,15 +21,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.DelegatingReactiveAuthenticationManager;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;
+import pers.lbf.yeju.gateway.security.converter.CustomServerFormLoginAuthenticationConverter;
 import pers.lbf.yeju.gateway.security.handler.AuthenticationFailHandler;
 import pers.lbf.yeju.gateway.security.handler.AuthenticationSuccessHandler;
-import pers.lbf.yeju.gateway.security.handler.CustomHttpBasicServerAuthenticationEntryPoint;
+import pers.lbf.yeju.gateway.security.handler.CustomServerLogoutHandler;
+import pers.lbf.yeju.gateway.security.handler.CustomServerLogoutSuccessHandler;
+import pers.lbf.yeju.gateway.security.manager.CustomAuthenticationManager;
+import pers.lbf.yeju.gateway.security.manager.CustomAuthorizationManager;
+
+import java.util.LinkedList;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -42,16 +51,61 @@ public class SpringSecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SpringSecurityConfig.class);
 
+    /**
+     * 放行白名单
+     */
     @Autowired
     private IgnoreWhiteProperties ignoreWhiteProperties;
 
+    /**
+     * 认证成功处理器
+     */
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    /**
+     * 认证失败处理器
+     */
     @Autowired
     private AuthenticationFailHandler authenticationFailHandler;
-    @Autowired
-    private CustomHttpBasicServerAuthenticationEntryPoint customHttpBasicServerAuthenticationEntryPoint;
 
+    /**
+     * 登录参数接收转换器
+     */
+    @Autowired
+    private CustomServerFormLoginAuthenticationConverter authenticationConverter;
+
+    /**
+     * 鉴权管理器
+     */
+    @Autowired
+    private CustomAuthorizationManager authorizationManager;
+
+    /**
+     * 认证管理器
+     */
+    @Autowired
+    private CustomAuthenticationManager authenticationManager;
+
+    /**
+     * 登出处理器
+     */
+    @Autowired
+    private CustomServerLogoutHandler logoutHandler;
+
+    /**
+     * 登出成功处理器
+     */
+    @Autowired
+    private CustomServerLogoutSuccessHandler logoutSuccessHandler;
+
+
+    /**
+     * 构建过滤器链
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
 
@@ -60,33 +114,62 @@ public class SpringSecurityConfig {
 
         String[] whites =ignoreWhiteProperties.getWhites().toArray(new String[0]);
 
-        http
+        SecurityWebFilterChain chain = http
                 .authorizeExchange()
                 //无需进行权限过滤的请求路径
                 .pathMatchers(whites).permitAll()
                 //option 请求默认放行
                 .pathMatchers(String.valueOf(HttpMethod.OPTIONS)).permitAll()
-                .anyExchange().authenticated()
+                //访问鉴权
+                .anyExchange().access(authorizationManager)
                 .and()
-                .httpBasic()
-                .and()
+                //认证路径
                 .formLogin().loginPage("/auth/login")
+                //认证管理器
+                .authenticationManager(authenticationManager)
                 //认证成功
                 .authenticationSuccessHandler(authenticationSuccessHandler)
                 //登陆验证失败
                 .authenticationFailureHandler(authenticationFailHandler)
-                //基于http的接口请求鉴权失败
-                .and().exceptionHandling().authenticationEntryPoint(customHttpBasicServerAuthenticationEntryPoint)
+                .and()
+                //登出
+                .logout().logoutUrl("/auth/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .logoutHandler(logoutHandler)
                 //关闭跨域请求保护
-                .and() .csrf().disable()
-                .logout().disable();
+                .and().csrf().disable()
+                .httpBasic().disable()
+                .build();
 
-        return http.build();
+        // 设置自定义登录参数转换器
+        chain.getWebFilters()
+                .filter(webFilter -> webFilter instanceof AuthenticationWebFilter)
+                .subscribe(webFilter -> {
+                    AuthenticationWebFilter filter = (AuthenticationWebFilter) webFilter;
+                    filter.setServerAuthenticationConverter(authenticationConverter);
+                });
+
+        return chain;
     }
 
-
+    /**
+     * 注册用户信息验证管理器，可按需求添加多个按顺序执行
+     * @return ReactiveAuthenticationManager
+     */
     @Bean
-    public PasswordEncoder initPasswordEncoder() {
+    public ReactiveAuthenticationManager reactiveAuthenticationManager() {
+        LinkedList<ReactiveAuthenticationManager> managers = new LinkedList<>();
+        managers.add(authenticationManager);
+        return new DelegatingReactiveAuthenticationManager(managers);
+    }
+
+    /**
+     * BCrypt密码编码
+     * @return BCryptPasswordEncoder
+     */
+    @Bean
+    public PasswordEncoder bcryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-}
+
+   }

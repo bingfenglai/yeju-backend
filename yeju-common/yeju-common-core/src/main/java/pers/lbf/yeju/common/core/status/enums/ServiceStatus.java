@@ -1,6 +1,9 @@
-package pers.lbf.yeju.common.core.enums;
+package pers.lbf.yeju.common.core.status.enums;
 
 import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
+import pers.lbf.yeju.common.core.status.insterfaces.Status;
+
+import java.io.Serializable;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -8,7 +11,7 @@ import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
  * @Description TODO
  * @date 2020/11/26 22:14
  */
-public enum  ServiceStatus {
+public enum  ServiceStatus implements Status, Serializable {
     /**
      * 一切ok
      */
@@ -38,6 +41,7 @@ public enum  ServiceStatus {
         this.code = code;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
@@ -46,11 +50,21 @@ public enum  ServiceStatus {
         this.message = message;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ServiceStatus{" +
+                "message='" + message + '\'' +
+                ", code='" + code + '\'' +
+                '}';
     }
 }

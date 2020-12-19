@@ -14,23 +14,23 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.service.interfaces;
+package pers.lbf.yeju.authserver.interfaces.enums;
 
-import pers.lbf.yeju.authserver.pojo.dto.SimpleAccountDTO;
-import pers.lbf.yeju.common.core.result.IResult;
-
-/**账户服务接口类
+/**登录账户类型
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description
- * @date 2020/12/16 10:14
+ * @Description TODO
+ * @date 2020/12/6 18:03
  */
-public interface IAccountService {
+public enum PrincipalType {
 
     /**
-     * 根据账户查找账户及权限信息
-     * @param principal 抽象账户
-     * @return account
+     * 手机号
      */
-    IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws RuntimeException;
+    mobile,
+
+    /**
+     * 系统账户
+     */
+    system_account;
 }

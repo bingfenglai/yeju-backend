@@ -18,7 +18,8 @@
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.authserver.service.interfaces.IAccountService;
+import pers.lbf.yeju.authserver.interfaces.dto.SimpleAccountDTO;
+import pers.lbf.yeju.authserver.interfaces.interfaces.IAccountService;
 import pers.lbf.yeju.authserver.start.AuthServer;
 import pers.lbf.yeju.common.core.result.IResult;
 
@@ -31,12 +32,15 @@ import pers.lbf.yeju.common.core.result.IResult;
 @SpringBootTest(classes = AuthServer.class)
 public class AccountServiceTest {
 
+
     @Autowired
     private IAccountService accountService;
 
+
+
     @Test
     public void test1(){
-        IResult hehe = accountService.findSimpleAccountByPrincipal("hehe");
+        IResult<SimpleAccountDTO> hehe = accountService.findSimpleAccountByPrincipal("969391");
         System.out.println(hehe.toString());
     }
 }

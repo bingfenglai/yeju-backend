@@ -18,7 +18,6 @@ package pers.lbf.yeju.gateway.security.handler;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.server.authentication.HttpBasicServerAuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +27,6 @@ import reactor.core.publisher.Mono;
  * @Description TODO
  * @date 2020/12/10 23:00
  */
-@Component
 public class CustomHttpBasicServerAuthenticationEntryPoint extends HttpBasicServerAuthenticationEntryPoint {
 
     /**

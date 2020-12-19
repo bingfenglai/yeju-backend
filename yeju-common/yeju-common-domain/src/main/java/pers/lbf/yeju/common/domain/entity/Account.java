@@ -2,6 +2,7 @@ package pers.lbf.yeju.common.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @since 2020-11-29 19:06:02
  */
-
+@TableName("table_system_account")
 public class Account extends Model<Account> implements Serializable {
   private static final long serialVersionUID = -82905495293760971L;
   /** 主键 */

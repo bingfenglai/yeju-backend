@@ -14,18 +14,31 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.service.interfaces;
+package pers.lbf.yeju.authserver.interfaces.interfaces;
 
+import pers.lbf.yeju.authserver.interfaces.dto.SimpleAccountDTO;
 import pers.lbf.yeju.common.core.result.IResult;
 
-/**角色服务接口类
+/**账户服务接口类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/12 23:55
+ * @Description
+ * @date 2020/12/16 10:14
  */
-public interface IRoleService {
+public interface IAccountService {
 
+    /**
+     * 根据账户查找账户及权限信息
+     * @param principal 抽象账户
+     * @return account
+     */
+    IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws RuntimeException;
 
-    IResult getRoleByPrincipal(String principal);
+    /**
+     * 更新密码
+     * @param principal 抽象账号
+     * @param newPassword 新密码
+     * @throws RuntimeException e
+     */
+    IResult<Boolean> updatePassword(String principal,String newPassword) throws RuntimeException;
 }

@@ -16,12 +16,19 @@
  */
 package pers.lbf.yeju.authserver.service;
 
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pers.lbf.yeju.authserver.interfaces.dto.VerityDTO;
 import pers.lbf.yeju.authserver.interfaces.enums.VerificationCodeTypeEnum;
 import pers.lbf.yeju.authserver.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
+
+import java.util.Arrays;
 
 /**验证码服务
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -31,13 +38,30 @@ import pers.lbf.yeju.common.core.result.IResult;
  */
 @DubboService(interfaceClass = IVerificationCodeService.class)
 public class VerificationCodeServiceImpl implements IVerificationCodeService {
+    private final Logger logger = LoggerFactory.getLogger(VerificationCodeServiceImpl.class);
+
+    @DubboReference
+    private IRedisService redisService;
+
     @Override
     public <T> IResult<VerityDTO<T>> getVerificationCode(VerificationCodeTypeEnum type) throws RpcServiceException {
         return null;
     }
 
     @Override
-    public IResult<Object> verify(String key, String code) throws RpcServiceException {
-        return null;
+    public IResult<Boolean> verify(String key, String code) throws RpcServiceException {
+        String c = "";
+        try {
+             c  = (String) redisService.getCacheObject(key);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            logger.error(Arrays.toString(e.getStackTrace()));
+            return Result.ok(false);
+        }
+
+        boolean flag = c.equalsIgnoreCase(code);
+
+        return Result.ok(flag);
     }
 }

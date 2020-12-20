@@ -17,6 +17,7 @@
 package pers.lbf.yeju.common.core.exception.service;
 
 import pers.lbf.yeju.common.core.status.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.status.insterfaces.Status;
 
 
 /**
@@ -52,14 +53,14 @@ public class ServiceException extends RuntimeException{
         return new ServiceException(message, exceptionCode);
     }
 
-    public static ServiceException getInstance(String message, String exceptionCode, Object[] params, String module) {
-        return new ServiceException(message, exceptionCode, params, module);
-    }
-
     public static ServiceException getInstance() {
         return new ServiceException();
     }
 
+    public ServiceException(Status status){
+        this.exceptionCode = status.getCode();
+        this.message =status.getMessage();
+    }
     public ServiceException() {
         this.message = ServiceStatus.UNKNOWN_ERROR.getMessage();
         this.exceptionCode = ServiceStatus.UNKNOWN_ERROR.getCode();

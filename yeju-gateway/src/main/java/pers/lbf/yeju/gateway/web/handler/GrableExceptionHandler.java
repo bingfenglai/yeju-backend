@@ -21,16 +21,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.cloud.gateway.support.NotFoundException;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
-import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.common.core.status.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.gateway.pojo.ErrorAndExceptionResult;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -38,8 +42,8 @@ import reactor.core.publisher.Mono;
  * @Description TODO
  * @date 2020/12/9 22:04
  */
-//@Configuration
-//@Order(-2)
+@Configuration
+@Order(-2)
 public class GrableExceptionHandler implements ErrorWebExceptionHandler {
 
     private static final Logger log =  LoggerFactory.getLogger(GrableExceptionHandler.class);
@@ -62,28 +66,46 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
         }
 
         String message;
+        String code;
+        IResult<String> result = null;
         if (ex instanceof NotFoundException){
             message = "服务不存在";
+            code = "404";
         }
         else if (ex instanceof ResponseStatusException) {
             ResponseStatusException responseStatusException = (ResponseStatusException) ex;
-            message = responseStatusException.getMessage();
-        }
-        else if (ex instanceof RpcServiceException){
             message = ex.getMessage();
+            code = ((ResponseStatusException) ex).getStatus().toString();
+        }
+        else if (ex instanceof ServiceException){
+            message = ex.getMessage();
+            code = ((ServiceException) ex).getExceptionCode();
+
         }
         else {
             message = "内部服务错误，请联系客服"+ex.getMessage();
+            code = "e9999";
+        }
+        String path = String.valueOf(exchange.getRequest().getPath());
+
+        if (ex instanceof ServiceException){
+            log.info("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+            log.info(Arrays.toString(ex.getStackTrace()));
+        }else {
+            log.error("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
         }
 
-        log.error("[网关异常处理]请求路径:{},异常信息:{}", exchange.getRequest().getPath(), ex.getMessage());
+
 
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         response.setStatusCode(HttpStatus.OK);
-        SimpleResult result = SimpleResult.faild(message, ServiceStatus.UNKNOWN_ERROR.getCode());
+        result = ErrorAndExceptionResult.getInstance(code,message,path);
+        IResult<String> finalResult = result;
+
         return response.writeWith(Mono.fromSupplier(() -> {
             DataBufferFactory bufferFactory = response.bufferFactory();
-            return bufferFactory.wrap(JacksonUtils.toJsonBytes(result));
+            return bufferFactory.wrap(JacksonUtils.toJsonBytes(finalResult));
         }));
 
     }

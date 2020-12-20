@@ -51,7 +51,13 @@ public enum AuthStatus implements Status, Serializable {
 
     account_cannot_be_empty("账号不能为空","A0006"),
 
-    unauthorized("无权限访问该资源！","A0007");
+    unauthorized("无权限访问该资源！","A0007"),
+
+    passwordCanNotBeBlank("密码不能为空","A0008" ),
+
+    accountCannotBeEmpty("账号不能为空","A0009" ),
+
+    verificationCodeError("验证码错误","A0010" );
 
     private String message;
     private String code;

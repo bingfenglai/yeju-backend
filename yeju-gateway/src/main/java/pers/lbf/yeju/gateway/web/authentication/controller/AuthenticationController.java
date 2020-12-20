@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import reactor.core.publisher.Mono;
 
 /**认证控制器
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -34,9 +35,8 @@ import pers.lbf.yeju.common.core.status.enums.AuthStatus;
 public class AuthenticationController {
 
     @GetMapping("/login")
-    public String login() {
-
-        return "gateway login";
+    public Mono<SimpleResult> login() {
+        return Mono.just(SimpleResult.faild(AuthStatus.NO_TOKEN));
     }
 
     /**

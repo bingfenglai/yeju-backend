@@ -21,12 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.DelegatingReactiveAuthenticationManager;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;
@@ -47,6 +47,7 @@ import java.util.LinkedList;
  * @date 2020/12/10 21:25
  */
 @EnableWebFluxSecurity
+@Configuration
 public class SpringSecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SpringSecurityConfig.class);
@@ -84,6 +85,7 @@ public class SpringSecurityConfig {
     /**
      * 认证管理器
      */
+
     @Autowired
     private CustomAuthenticationManager authenticationManager;
 
@@ -141,6 +143,8 @@ public class SpringSecurityConfig {
                 .httpBasic().disable()
                 .build();
 
+
+        http.addFilterAt(getAuthenticationWebFilter(),SecurityWebFiltersOrder.AUTHENTICATION);
         // 设置自定义登录参数转换器
         chain.getWebFilters()
                 .filter(webFilter -> webFilter instanceof AuthenticationWebFilter)
@@ -156,20 +160,16 @@ public class SpringSecurityConfig {
      * 注册用户信息验证管理器，可按需求添加多个按顺序执行
      * @return ReactiveAuthenticationManager
      */
-    @Bean
+    //@Bean
     public ReactiveAuthenticationManager reactiveAuthenticationManager() {
         LinkedList<ReactiveAuthenticationManager> managers = new LinkedList<>();
+
         managers.add(authenticationManager);
         return new DelegatingReactiveAuthenticationManager(managers);
     }
 
-    /**
-     * BCrypt密码编码
-     * @return BCryptPasswordEncoder
-     */
     @Bean
-    public PasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthenticationWebFilter getAuthenticationWebFilter(){
+        return new AuthenticationWebFilter(authenticationManager);
     }
-
    }

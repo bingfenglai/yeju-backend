@@ -25,6 +25,15 @@ public class Result<T> implements Serializable, IResult<T> {
         return SimpleResult.faild(code, message);
     }
 
+    public static <T> IResult<T> failed(String code, String message,T data){
+        return new Result<>(code,message,data);
+    }
+
+    private Result(String code, String message,T data){
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
 
     private Result(ServiceStatus status,T data) {
         this.data = data;

@@ -29,4 +29,9 @@ public final class VerificationCodeConstant {
      */
     public static final String TOKEN_PREFEX = "yeju_verify:";
 
+    /**
+     * 验证码长度
+     */
+    public static final Integer CODE_LENGTH = 6;
+
 }

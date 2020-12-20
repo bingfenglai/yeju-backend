@@ -18,56 +18,16 @@ package pers.lbf.yeju.gateway.security.pojo;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import pers.lbf.yeju.gateway.security.enums.LoginWay;
 
 import java.util.Collection;
 
-/**存储登录对象信息的token
+/**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/14 15:07
+ * @date 2020/12/20 22:27
  */
 public class AuthenticationToken extends UsernamePasswordAuthenticationToken {
-
-    /**
-     * web登录的验证码
-     */
-    private String verificationCode;
-
-    /**
-     * 验证码在缓存中的key
-     */
-    private String verificationCodeKey;
-
-    /**
-     * IP地址
-     */
-    private String host;
-
-    /**
-     * 登录方式
-     */
-    private LoginWay loginWay;
-
-
-
-    public AuthenticationToken(Object principal, Object credentials, String host, String verificationCodeKey, String verificationCode){
-        super(principal, credentials);
-        this.verificationCode = verificationCode;
-        this.host = host;
-        this.verificationCodeKey = verificationCodeKey;
-        loginWay = LoginWay.usernameAndPassword;
-    }
-
-    public AuthenticationToken(Object principal, Object credentials,String host,String verificationCodeKey){
-        super(principal, credentials);
-        this.host = host;
-        this.loginWay = LoginWay.phoneNumberAndVerificationCode;
-        this.verificationCodeKey = verificationCodeKey;
-    }
-
-
     public AuthenticationToken(Object principal, Object credentials) {
         super(principal, credentials);
     }
@@ -76,36 +36,18 @@ public class AuthenticationToken extends UsernamePasswordAuthenticationToken {
         super(principal, credentials, authorities);
     }
 
-    public String getVerificationCode() {
-
-        return verificationCode;
+    @Override
+    public Object getDetails() {
+        return super.getDetails();
     }
 
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
+    @Override
+    public void setDetails(Object details) {
+        super.setDetails(details);
     }
 
-    public String getVerificationCodeKey() {
-        return verificationCodeKey;
-    }
-
-    public void setVerificationCodeKey(String verificationCodeKey) {
-        this.verificationCodeKey = verificationCodeKey;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public LoginWay getLoginWay() {
-        return loginWay;
-    }
-
-    public void setLoginWay(LoginWay loginWay) {
-        this.loginWay = loginWay;
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        super.setAuthenticated(isAuthenticated);
     }
 }

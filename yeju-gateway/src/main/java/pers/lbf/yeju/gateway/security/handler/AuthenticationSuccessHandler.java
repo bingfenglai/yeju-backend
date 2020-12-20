@@ -73,7 +73,13 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         String token = "";
         String tokenPrefix = "yeju_";
         SimpleResult result;
+
+        logger.info(authentication.getPrincipal().toString());
+
+
         AuthorityInfo authorityInfo = (AuthorityInfo) authentication.getPrincipal();
+
+
         try {
             token = authorityManager.getAuthorityInfoToken(authorityInfo);
             httpHeaders.add("Authorization",tokenPrefix+token);

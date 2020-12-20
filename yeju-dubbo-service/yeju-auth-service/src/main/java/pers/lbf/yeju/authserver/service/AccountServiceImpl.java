@@ -81,7 +81,7 @@ public class AccountServiceImpl implements IAccountService {
 
         //账号不存在
         if (account==null){
-            throw RpcServiceException.getInstance(
+            throw new RpcServiceException(
                     AuthStatus.NO_ACCOUNT.getMessage(),
                     AuthStatus.NO_ACCOUNT.getCode(),
                     YejuStringUtils.split(principal),
@@ -122,8 +122,7 @@ public class AccountServiceImpl implements IAccountService {
         Account account = accountDao.selectOne(accountQueryWrapper);
 
         assert account != null:
-                RpcServiceException
-                        .getInstance(AccountStatus.accountDoesNotExist);
+                new RpcServiceException(AccountStatus.accountDoesNotExist);
 
         account.setAccountPassword(newPassword);
 

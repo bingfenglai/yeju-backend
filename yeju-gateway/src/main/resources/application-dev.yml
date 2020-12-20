@@ -11,11 +11,11 @@ spring:
       discovery:
         locator:
           enabled: true
-#      routes:
-#        - id: authserver
-#          uri: lb://authserver
-#          predicates:
-#            - Path=/authserver/**
+      routes:
+        - id: authserver
+          uri: lb://authserver
+          predicates:
+            - Path=/authserver/**
 
 dubbo:
   registry:

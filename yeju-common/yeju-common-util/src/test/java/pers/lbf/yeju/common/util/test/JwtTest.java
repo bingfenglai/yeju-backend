@@ -40,7 +40,7 @@ public class JwtTest {
 
             Payload<User> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey("publicKey.txt"),User.class);
             if (payload.getUserInfo()==null){
-        System.out.println(payload.toString());
+                System.out.println(payload.toString());
                 System.out.println("======null");
             }else {
                 System.out.println("!!!!!!!!!!!!!!!!!!");

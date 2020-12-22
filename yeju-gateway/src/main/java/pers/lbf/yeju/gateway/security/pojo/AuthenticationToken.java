@@ -50,4 +50,6 @@ public class AuthenticationToken extends UsernamePasswordAuthenticationToken {
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         super.setAuthenticated(isAuthenticated);
     }
+
+
 }

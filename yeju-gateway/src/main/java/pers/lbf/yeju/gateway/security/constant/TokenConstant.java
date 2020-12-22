@@ -14,23 +14,41 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.interfaces.enums;
+package pers.lbf.yeju.gateway.security.constant;
 
-/**登录凭证类型
+import java.io.Serializable;
+
+/**令牌常量
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/6 18:09
+ * @date 2020/12/22 13:31
  */
-public enum CertificateType {
+public class TokenConstant implements Serializable {
 
     /**
-     * 手机验证码
+     * 令牌前缀
      */
-    Phone_verification_code,
+    private static String prefixToken = "yeju_";
 
     /**
-     * 密码
+     * 分割符
      */
-    password;
+    private static String splitString = "_";
+
+    public static String getSplitString() {
+        return splitString;
+    }
+
+    public static void setSplitString(String splitString) {
+        TokenConstant.splitString = splitString;
+    }
+
+    public static String getPrefixToken() {
+        return prefixToken;
+    }
+
+    public static void setPrefixToken(String prefixToken) {
+        TokenConstant.prefixToken = prefixToken;
+    }
 }

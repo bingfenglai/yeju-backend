@@ -14,23 +14,30 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.interfaces.enums;
+package pers.lbf.yeju.common.util.test;
 
-/**登录账户类型
+import org.junit.Test;
+import pers.lbf.yeju.common.util.RsaUtils;
+
+import java.util.UUID;
+
+/**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/6 18:03
+ * @date 2020/12/22 12:59
  */
-public enum PrincipalType {
+public class RsaTest {
 
-    /**
-     * 手机号
-     */
-    mobile,
+    private static final String publicKeyFilePath = "RSAPublicKey.rsa";
+    private static final String privateKeyFilePath = "RSAPrivateKey.rsa";
 
-    /**
-     * 系统账户
-     */
-    system_account;
+    @Test
+    public void init() {
+        try {
+            RsaUtils.generateKey(publicKeyFilePath,privateKeyFilePath, UUID.randomUUID().toString(),2048);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -42,6 +42,9 @@ public final class Rsa2Utils {
     public static final String ALGORITHM_RSA_SIGN = "SHA256WithRSA";
     public static final int ALGORITHM_RSA_PRIVATE_KEY_LENGTH = 2048;
 
+    private static final String publicKeyFilePath = "rsa2PublicKey.rsa";
+    private static final String privateKeyFilePath = "rsa2PrivateKey.rsa";
+
     private Rsa2Utils() {
     }
 
@@ -242,13 +245,13 @@ public final class Rsa2Utils {
 
 
     public static String getPublicKey(){
-        byte[] bytes = FileUtils.readFile("./publicKey.txt");
+        byte[] bytes = FileUtils.readFile(publicKeyFilePath);
         assert bytes != null;
         return new String(bytes);
     }
 
     public static String getPrivateKey(){
-        byte[] bytes = FileUtils.readFile("./privateKey.txt");
+        byte[] bytes = FileUtils.readFile(privateKeyFilePath);
         assert bytes != null;
         return new String(bytes);
     }
@@ -270,9 +273,9 @@ public final class Rsa2Utils {
     //
     //        String s = buildRSAEncryptByPublicKey("ABCabc123测试", publicKey1);
 
-    //        File dest = new File("./publicKey.txt");
-    //        FileUtils.writeFile("./publicKey.txt",publicKey1);
-    //        FileUtils.writeFile("./privateKey.txt",privateKey1);
+    //
+    //
+    //
 
         System.out.println(getPublicKey());
 

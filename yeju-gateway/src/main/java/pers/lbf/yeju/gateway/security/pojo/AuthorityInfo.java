@@ -57,10 +57,14 @@ public class AuthorityInfo implements Serializable {
         return simpleGrantedAuthorityList;
     }
 
-    private void setSimpleGrantedAuthorityList(List<String> authorityList) {
+    private void init(List<String> authorityList) {
         for (String s : authorityList) {
             simpleGrantedAuthorityList.add(new SimpleGrantedAuthority(s));
         }
+    }
+
+    public void setSimpleGrantedAuthorityList(List<SimpleGrantedAuthority> simpleGrantedAuthorityList) {
+        this.simpleGrantedAuthorityList = simpleGrantedAuthorityList;
     }
 
     @Override
@@ -85,7 +89,7 @@ public class AuthorityInfo implements Serializable {
 
     public void setAuthorityList(List<String> authorityList) {
         this.authorityList = authorityList;
-        this.setSimpleGrantedAuthorityList(authorityList);
+
     }
 
 

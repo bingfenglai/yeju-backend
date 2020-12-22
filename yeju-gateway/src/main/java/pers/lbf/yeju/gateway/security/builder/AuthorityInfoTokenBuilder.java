@@ -18,7 +18,7 @@ package pers.lbf.yeju.gateway.security.builder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import pers.lbf.yeju.common.util.JwtUtils;
@@ -37,9 +37,10 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @RefreshScope
+@ConfigurationProperties(prefix = "rsa")
 public class AuthorityInfoTokenBuilder {
 
-    @Value("rsa.privateKeyFilePath")
+
     private String privateKeyFilePath;
 
     private final Logger logger = LoggerFactory.getLogger(AuthorityInfoTokenBuilder.class);
@@ -55,6 +56,8 @@ public class AuthorityInfoTokenBuilder {
      */
     public  String build( @Valid @NotNull(message = "权限主体不能为null")
                                   AuthorityInfo authorityInfo) throws Exception{
+        logger.info("私钥路径 {}",privateKeyFilePath);
+
         String token;
         if (authorityInfo.getTimeUnit()==null||authorityInfo.getExpiration()==null){
             token = JwtUtils.generateTokenExpireInMinutes(
@@ -79,4 +82,11 @@ public class AuthorityInfoTokenBuilder {
         return token;
     }
 
+    public String getPrivateKeyFilePath() {
+        return privateKeyFilePath;
+    }
+
+    public void setPrivateKeyFilePath(String privateKeyFilePath) {
+        this.privateKeyFilePath = privateKeyFilePath;
+    }
 }

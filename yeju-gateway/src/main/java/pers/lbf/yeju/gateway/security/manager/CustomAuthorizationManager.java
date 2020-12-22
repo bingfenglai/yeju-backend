@@ -18,21 +18,23 @@ package pers.lbf.yeju.gateway.security.manager;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.gateway.exception.GatewayException;
+import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
+import java.util.List;
 
 /**鉴权管理器
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -45,27 +47,72 @@ import java.util.Collection;
 public class CustomAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    @Autowired
+    private AuthorizationTokenManager tokenManager;
+
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
 
+        log.info("开始解析Token");
+        log.info("开始从请求头中或许token");
+        ServerHttpRequest request = authorizationContext.getExchange().getRequest();
+        HttpHeaders headers = request.getHeaders();
+        String token = headers.getFirst("Authorization");
 
-        return mono.map(auth -> {
-            ServerWebExchange exchange = authorizationContext.getExchange();
-            ServerHttpRequest request = exchange.getRequest();
+        if (token==null){
+            throw new GatewayException(AuthStatus.NO_TOKEN);
+        }
 
-            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-            for (GrantedAuthority authority : authorities) {
-                String authorityAuthority = authority.getAuthority();
-                String path = request.getURI().getPath();
-                if (antPathMatcher.match(authorityAuthority, path)) {
-                    log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
-                    return new AuthorizationDecision(true);
-                }else {
-                    log.info(String.format("用户请求API校验 未通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
-                }
+        AuthorityInfo authorityInfo = null;
+        try {
+             authorityInfo = tokenManager.getAuthorityInfo(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (authorityInfo == null){
+            throw new GatewayException(AuthStatus.tokenHasExpired);
+        }
+
+        List<String> authorityList = authorityInfo.getAuthorityList();
+//        authorityList = new ArrayList<>();
+//        authorityList.add("*:**");
+
+        if (authorityList == null || authorityList.size() == 0) {
+            log.info("用户 {} 请求API校验 未通过",authorityInfo.getPrincipal());
+            throw new GatewayException(AuthStatus.unauthorized);
+        }
+
+        String path1 = request.getURI().getPath();
+        log.info("用户请求路径：{}",path1);
+        for (String s : authorityList) {
+            if (antPathMatcher.match(s, path1)) {
+                log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", s, path1));
+                return Mono.just(new AuthorizationDecision(true));
             }
-            return new AuthorizationDecision(false);
-        }).defaultIfEmpty(new AuthorizationDecision(false));
+
+        }
+        log.info("用户 {} 请求API校验通过",authorityInfo.getPrincipal());
+        return Mono.just(new AuthorizationDecision(true));
+
+
+//        return mono.map(auth -> {
+//            ServerWebExchange exchange = authorizationContext.getExchange();
+//            ServerHttpRequest request = exchange.getRequest();
+//
+//            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+//            for (GrantedAuthority authority : authorities) {
+//                String authorityAuthority = authority.getAuthority();
+//                String path = request.getURI().getPath();
+//                if (antPathMatcher.match(authorityAuthority, path)) {
+//                    log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
+//                    return new AuthorizationDecision(true);
+//                }else {
+//                    log.info(String.format("用户请求API校验 未通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
+//                }
+//            }
+//            return new AuthorizationDecision(false);
+//        }).defaultIfEmpty(new AuthorizationDecision(false));
 
     }
 

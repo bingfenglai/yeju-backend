@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.gateway.security.constant.TokenConstant;
 import pers.lbf.yeju.gateway.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
 import reactor.core.publisher.Mono;
@@ -71,7 +72,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
         byte[] dataBytes={};
         String token = "";
-        String tokenPrefix = "yeju_";
+        String tokenPrefix = TokenConstant.getPrefixToken();
         SimpleResult result;
 
         logger.info(authentication.getPrincipal().toString());

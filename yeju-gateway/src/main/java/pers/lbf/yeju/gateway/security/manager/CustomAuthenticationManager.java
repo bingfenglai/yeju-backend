@@ -87,28 +87,34 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
         String credentials = (String) loginToken.getCredentials();
 
         if (loginToken.getLoginWay().equals(LoginWay.usernameAndPassword)) {
-          String code = loginToken.getVerificationCode();
-          AuthenticationToken authenticationToken = new AuthenticationToken(account, credentials);
-          Mono<UserDetails> userDetailsMono = userDetailsService.findByUsername(account);
-          AuthorityInfo info = new AuthorityInfo();
-          UserDetails userDetails = userDetailsMono.block(Duration.ofSeconds(3));
+            String code = loginToken.getVerificationCode();
+            IResult<Boolean> result = verificationCodeService.verify(key, code);
+
+//            if (!result.getData()){
+//                throw new GatewayException(AuthStatus.verificationCodeError);
+//            }
 
 
-          assert userDetails != null;
-          info.setPrincipal(userDetails.getUsername());
-          Collection<? extends GrantedAuthority> grantedAuthorities = userDetails.getAuthorities();
-          if (grantedAuthorities != null&& grantedAuthorities.size() > 0) {
-              ArrayList<String> authorities = new ArrayList<>(grantedAuthorities.size());
-              for (GrantedAuthority grantedAuthority : grantedAuthorities) {
-                  String authority = grantedAuthority.getAuthority();
-                  authorities.add(authority);
-              }
-              info.setAuthorityList(authorities);
-          }
+            Mono<UserDetails> userDetailsMono = retrieveUser(account);
+            UserDetails userDetails = userDetailsMono.block();
 
-          authenticationToken.setDetails(info);
-          authenticationToken.setAuthenticated(false);
-          return super.authenticate(authenticationToken);
+            assert userDetails != null;
+            boolean flag = passwordEncoder.matches(credentials, userDetails.getPassword());
+
+            //密码不匹配
+            if (!flag) {
+                throw new GatewayException(AuthStatus.NO_ACCOUNT);
+            }
+
+            Mono<AuthorityInfo> authorityInfoMono = getAuthorityInfo(account);
+
+
+
+            AuthorityInfo info = authorityInfoMono.block(Duration.ofSeconds(3));
+            AuthenticationToken authenticationToken = new AuthenticationToken(info, credentials);
+            authenticationToken.setDetails(info);
+
+          return Mono.just(authenticationToken);
         }
 
         if (loginToken.getLoginWay().equals(LoginWay.phoneNumberAndVerificationCode)){
@@ -119,8 +125,15 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
                 throw new GatewayException(AuthStatus.verificationCodeError);
             }
 
+
+            Mono<AuthorityInfo> authorityInfoMono = getAuthorityInfo(account);
+
+            AuthorityInfo authorityInfo = authorityInfoMono.block();
+
+
             AuthenticationToken authenticationToken = new AuthenticationToken(account, credentials);
-            authenticationToken.setAuthenticated(true);
+            authenticationToken.setDetails(authorityInfo);
+
             return Mono.just(authenticationToken);
         }
 
@@ -138,6 +151,45 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
     @Override
     protected Mono<UserDetails> retrieveUser(String username) {
         return userDetailsService.findByUsername(username);
+    }
+
+
+    /**
+     * 获取授权信息体
+     * @param username
+     * @return
+     */
+    private Mono<AuthorityInfo> getAuthorityInfo(String username){
+        Mono<UserDetails> userDetailsMono = userDetailsService.findByUsername(username);
+
+        UserDetails userDetails = userDetailsMono.block(Duration.ofSeconds(3));
+
+        assert userDetails != null;
+        AuthorityInfo info = getAuthorityInfoByUserDetails(userDetails);
+
+        return Mono.just(info);
+
+
+
+    }
+
+    private AuthorityInfo getAuthorityInfoByUserDetails(UserDetails userDetails){
+        AuthorityInfo info = new AuthorityInfo();
+
+        info.setPrincipal(userDetails.getUsername());
+
+        Collection<? extends GrantedAuthority> grantedAuthorities = userDetails.getAuthorities();
+        if (grantedAuthorities != null&& grantedAuthorities.size() > 0) {
+            ArrayList<String> authorities = new ArrayList<>(grantedAuthorities.size());
+            for (GrantedAuthority grantedAuthority : grantedAuthorities) {
+                String authority = grantedAuthority.getAuthority();
+                authorities.add(authority);
+            }
+            info.setAuthorityList(authorities);
+        }
+
+        return info;
+
     }
 
 

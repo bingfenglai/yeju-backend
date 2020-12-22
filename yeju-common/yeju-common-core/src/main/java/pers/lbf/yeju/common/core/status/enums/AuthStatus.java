@@ -57,7 +57,9 @@ public enum AuthStatus implements Status, Serializable {
 
     accountCannotBeEmpty("账号不能为空","A0009" ),
 
-    verificationCodeError("验证码错误","A0010" );
+    verificationCodeError("验证码错误","A0010" ),
+
+    tokenHasExpired("令牌已过期","A0011" );
 
     private String message;
     private String code;

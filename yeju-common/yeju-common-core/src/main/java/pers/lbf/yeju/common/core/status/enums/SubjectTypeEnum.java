@@ -22,7 +22,7 @@ package pers.lbf.yeju.common.core.status.enums;
  * @Description 当前登录对象账号类型
  * @date 2020/12/12 18:09
  */
-public enum SubjectType {
+public enum SubjectTypeEnum {
     /**
      * 手机登录
      */

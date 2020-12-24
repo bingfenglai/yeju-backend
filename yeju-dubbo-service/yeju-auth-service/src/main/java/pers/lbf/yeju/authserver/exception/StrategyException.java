@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.exception;
+package pers.lbf.yeju.authserver.exception;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
@@ -23,37 +23,34 @@ import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/20 16:13
+ * @date 2020/12/23 13:30
  */
-public class GatewayException extends ServiceException {
+public class StrategyException extends ServiceException {
 
-
-
-    public GatewayException() {
-        super();
+    public StrategyException(IStatus statusEnum) {
+        super(statusEnum);
     }
 
-    public GatewayException(String message, String exceptionCode, Object[] params, String module) {
+    public StrategyException() {
+    }
+
+    public StrategyException(String message, String exceptionCode, Object[] params, String module) {
         super(message, exceptionCode, params, module);
     }
 
-    public GatewayException(String message, String exceptionCode) {
+    public StrategyException(String message, String exceptionCode) {
         super(message, exceptionCode);
     }
 
-    public GatewayException(IStatus statusEnum){
-        super(statusEnum.getMessage(), statusEnum.getCode());
-    }
-
-    public GatewayException(String message, Throwable cause, String exceptionCode, Object[] params, String module) {
+    public StrategyException(String message, Throwable cause, String exceptionCode, Object[] params, String module) {
         super(message, cause, exceptionCode, params, module);
     }
 
-    public GatewayException(Throwable cause, String message, String exceptionCode, Object[] params, String module) {
+    public StrategyException(Throwable cause, String message, String exceptionCode, Object[] params, String module) {
         super(cause, message, exceptionCode, params, module);
     }
 
-    public GatewayException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, String exceptionCode, Object[] parmas, String module) {
+    public StrategyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, String exceptionCode, Object[] parmas, String module) {
         super(message, cause, enableSuppression, writableStackTrace, exceptionCode, parmas, module);
     }
 }

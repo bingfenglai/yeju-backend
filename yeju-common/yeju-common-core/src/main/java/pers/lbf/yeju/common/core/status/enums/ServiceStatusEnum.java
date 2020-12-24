@@ -1,7 +1,7 @@
 package pers.lbf.yeju.common.core.status.enums;
 
 import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
-import pers.lbf.yeju.common.core.status.insterfaces.Status;
+import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2020/11/26 22:14
  */
-public enum  ServiceStatus implements Status, Serializable {
+public enum ServiceStatusEnum implements IStatus, Serializable {
     /**
      * 一切ok
      */
@@ -36,7 +36,7 @@ public enum  ServiceStatus implements Status, Serializable {
     private String code;
 
 
-    ServiceStatus(String message, String code) {
+    ServiceStatusEnum(String message, String code) {
         this.message = message;
         this.code = code;
     }

@@ -16,7 +16,7 @@
  */
 package pers.lbf.yeju.authserver.interfaces.dto;
 
-import pers.lbf.yeju.common.core.status.enums.SubjectType;
+import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,7 +43,7 @@ public class SimpleAccountDTO implements Serializable {
     /**
      * 账户类型
      */
-    private SubjectType accountType;
+    private SubjectTypeEnum accountType;
 
     /**
      * 账户状态
@@ -84,11 +84,11 @@ public class SimpleAccountDTO implements Serializable {
                 '}';
     }
 
-    public SubjectType getAccountType() {
+    public SubjectTypeEnum getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(SubjectType accountType) {
+    public void setAccountType(SubjectTypeEnum accountType) {
         this.accountType = accountType;
     }
 

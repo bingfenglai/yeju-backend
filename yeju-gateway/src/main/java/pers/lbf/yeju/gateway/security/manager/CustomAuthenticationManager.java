@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.gateway.security.manager;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
@@ -28,7 +29,8 @@ import org.springframework.stereotype.Component;
 import pers.lbf.yeju.authserver.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.gateway.config.VerificationCodeConfig;
 import pers.lbf.yeju.gateway.exception.GatewayException;
 import pers.lbf.yeju.gateway.security.enums.LoginWay;
 import pers.lbf.yeju.gateway.security.pojo.AuthenticationToken;
@@ -50,6 +52,7 @@ import java.util.Collection;
  * @date 2020/12/14 15:27
  */
 @Component
+@Slf4j
 public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuthenticationManager {
 
     private final Scheduler scheduler = Schedulers.boundedElastic();
@@ -57,6 +60,9 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 
     @Autowired
     private CustomUserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private VerificationCodeConfig verificationCodeConfig;
 
     @DubboReference
     private IVerificationCodeService verificationCodeService;
@@ -87,25 +93,41 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
         String credentials = (String) loginToken.getCredentials();
 
         if (loginToken.getLoginWay().equals(LoginWay.usernameAndPassword)) {
-            String code = loginToken.getVerificationCode();
-            IResult<Boolean> result = verificationCodeService.verify(key, code);
 
-//            if (!result.getData()){
-//                throw new GatewayException(AuthStatus.verificationCodeError);
-//            }
+            if (verificationCodeConfig.isEnable()) {
+              String code = loginToken.getVerificationCode();
+              IResult<Boolean> result = verificationCodeService.verify(key, code);
+
+              if (!result.getData()) {
+                  throw new GatewayException(AuthStatusEnum.verificationCodeError);
+              }
+            }
 
 
             Mono<UserDetails> userDetailsMono = retrieveUser(account);
             UserDetails userDetails = userDetailsMono.block();
+
 
             assert userDetails != null;
             boolean flag = passwordEncoder.matches(credentials, userDetails.getPassword());
 
             //密码不匹配
             if (!flag) {
-                throw new GatewayException(AuthStatus.NO_ACCOUNT);
+                throw new GatewayException(AuthStatusEnum.NO_ACCOUNT);
             }
 
+            //验证账户是否可用
+            if (!userDetails.isEnabled()){
+                throw new GatewayException(AuthStatusEnum.accountIsNotActivated);
+            }
+            if (!userDetails.isAccountNonExpired()){
+                throw new GatewayException(AuthStatusEnum.accountHasExpired);
+            }
+            if (!userDetails.isAccountNonLocked()){
+                throw new GatewayException(AuthStatusEnum.accountIsFrozen);
+            }
+
+            log.info("开始对用户 {} 授权",userDetails.getUsername());
             Mono<AuthorityInfo> authorityInfoMono = getAuthorityInfo(account);
 
 
@@ -121,18 +143,16 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 
             IResult<Boolean> result = verificationCodeService.verify(account, credentials);
 
-            if (!result.getData()){
-                throw new GatewayException(AuthStatus.verificationCodeError);
-            }
+//            if (!result.getData()){
+//                throw new GatewayException(AuthStatus.verificationCodeError);
+//            }
 
 
             Mono<AuthorityInfo> authorityInfoMono = getAuthorityInfo(account);
 
             AuthorityInfo authorityInfo = authorityInfoMono.block();
 
-
-            AuthenticationToken authenticationToken = new AuthenticationToken(account, credentials);
-            authenticationToken.setDetails(authorityInfo);
+            AuthenticationToken authenticationToken = new AuthenticationToken(authorityInfo, credentials);
 
             return Mono.just(authenticationToken);
         }

@@ -30,7 +30,7 @@ import org.springframework.security.web.server.authentication.WebFilterChainServ
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.gateway.security.constant.TokenConstant;
 import pers.lbf.yeju.gateway.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
@@ -90,7 +90,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
             logger.error("生成token发生错误，用户凭证：{}",authorityInfo.getPrincipal());
             logger.error(Arrays.toString(e.getStackTrace()));
 
-            result = SimpleResult.faild(AuthStatus.GEN_TOKEN_FAIL);
+            result = SimpleResult.faild(AuthStatusEnum.GEN_TOKEN_FAIL);
         }
         dataBytes = JacksonUtils.toJsonBytes(result);
 

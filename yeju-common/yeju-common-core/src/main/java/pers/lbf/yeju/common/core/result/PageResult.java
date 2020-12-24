@@ -16,7 +16,7 @@
  */
 package pers.lbf.yeju.common.core.result;
 
-import pers.lbf.yeju.common.core.status.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 
 import java.io.Serializable;
 import java.util.List;
@@ -62,7 +62,7 @@ public class PageResult<T>  implements IResult<T>, Serializable {
 
     public static <T> PageResult<T> ok(Integer count, Integer currentPage, Integer size,List<T> list){
         return new PageResult<>
-                (ServiceStatus.OK.getCode(), ServiceStatus.OK.getMessage(), count, currentPage, size, list);
+                (ServiceStatusEnum.OK.getCode(), ServiceStatusEnum.OK.getMessage(), count, currentPage, size, list);
     }
 
     public static <T> PageResult<T> error(String code,String message){

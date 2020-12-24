@@ -26,7 +26,7 @@ import org.springframework.security.web.server.authentication.ServerAuthenticati
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import reactor.core.publisher.Mono;
 
 /**认证不通过处理器
@@ -58,7 +58,7 @@ public class AuthenticationFailHandler implements ServerAuthenticationFailureHan
 
         //设置body
         byte[] dataBytes ={};
-        SimpleResult result = SimpleResult.faild(AuthStatus.authentication_failed);
+        SimpleResult result = SimpleResult.faild(AuthStatusEnum.authentication_failed);
         dataBytes = JacksonUtils.toJsonBytes(result);
 
 

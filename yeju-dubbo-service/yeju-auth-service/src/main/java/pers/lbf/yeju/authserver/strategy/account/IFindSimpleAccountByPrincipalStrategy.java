@@ -14,26 +14,25 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.status.insterfaces;
+package pers.lbf.yeju.authserver.strategy.account;
 
-/**
+import pers.lbf.yeju.authserver.interfaces.dto.SimpleAccountDTO;
+
+/**查询账户信息策略接口
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/20 0:12
+ * @date 2020/12/23 10:21
  */
-public interface Status {
+public interface IFindSimpleAccountByPrincipalStrategy {
 
-    /**
-     * 状态消息
-     * @return msg
+    /**查询账户信息策略接口方法
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2020/12/23 11:54
+     * @param principal 抽象账户
+     * @return SimpleAccountDTO
+     * @throws RuntimeException e
      */
-     String getMessage();
-
-    /**
-     * 状态编码
-     * @return code
-     */
-    String getCode();
-
+    SimpleAccountDTO findSimpleAccountByPrincipal(String principal) throws RuntimeException;
 }

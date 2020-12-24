@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;
 import reactor.core.publisher.Mono;
@@ -47,7 +47,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
 
         if (authorizations == null) {
-           return setUnauthorizedResponse(exchange,AuthStatus.NO_TOKEN);
+           return setUnauthorizedResponse(exchange, AuthStatusEnum.NO_TOKEN);
         }
 
        // String token = authorizations.get(0);
@@ -57,7 +57,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 
-    private Mono<Void> setUnauthorizedResponse(ServerWebExchange exchange, AuthStatus status) {
+    private Mono<Void> setUnauthorizedResponse(ServerWebExchange exchange, AuthStatusEnum status) {
         ServerHttpResponse response = exchange.getResponse();
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         response.setStatusCode(HttpStatus.OK);

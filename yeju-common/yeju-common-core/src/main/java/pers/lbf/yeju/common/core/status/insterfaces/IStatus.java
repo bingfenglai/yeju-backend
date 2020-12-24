@@ -14,35 +14,26 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.util;
-
-import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
-import pers.lbf.yeju.common.util.PhoneUtils;
+package pers.lbf.yeju.common.core.status.insterfaces;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/17 9:12
+ * @date 2020/12/20 0:12
  */
-public class SubjectUtils {
+public interface IStatus {
 
-    private SubjectUtils() {
-
-    }
-
-    /**获取账户类型
-     * @Description //TODO
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2020/12/17 14:42
-     * @param principal 抽象账户
-     * @return pers.lbf.yeju.common.core.enumes.SubjectType
+    /**
+     * 状态消息
+     * @return msg
      */
-    public static SubjectTypeEnum getAccountType(String principal){
+     String getMessage();
 
-        boolean phone = PhoneUtils.isPhone(principal);
+    /**
+     * 状态编码
+     * @return code
+     */
+    String getCode();
 
-        return phone? SubjectTypeEnum.is_mobile: SubjectTypeEnum.is_system_account;
-    }
 }

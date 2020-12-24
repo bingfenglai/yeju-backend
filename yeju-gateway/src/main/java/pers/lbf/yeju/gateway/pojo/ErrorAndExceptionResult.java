@@ -17,7 +17,7 @@
 package pers.lbf.yeju.gateway.pojo;
 
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.common.core.status.insterfaces.Status;
+import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 import java.io.Serializable;
 
@@ -33,8 +33,8 @@ public class ErrorAndExceptionResult implements IResult<String>, Serializable {
     private String message;
     private String path;
 
-    public static ErrorAndExceptionResult getInstance(Status status,String path) {
-        return new ErrorAndExceptionResult(status, path);
+    public static ErrorAndExceptionResult getInstance(IStatus statusEnum, String path) {
+        return new ErrorAndExceptionResult(statusEnum, path);
     }
 
     public static ErrorAndExceptionResult getInstance(String code, String message, String path){
@@ -42,9 +42,9 @@ public class ErrorAndExceptionResult implements IResult<String>, Serializable {
     }
 
 
-    private ErrorAndExceptionResult(Status status,String path) {
-        this.code = status.getCode();
-        this.message = status.getMessage();
+    private ErrorAndExceptionResult(IStatus statusEnum, String path) {
+        this.code = statusEnum.getCode();
+        this.message = statusEnum.getMessage();
         this.path = path;
     }
 

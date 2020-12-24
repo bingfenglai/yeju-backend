@@ -1,7 +1,7 @@
 package pers.lbf.yeju.common.core.result;
 
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
-import pers.lbf.yeju.common.core.status.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 
 import java.io.Serializable;
 
@@ -18,27 +18,27 @@ public class SimpleResult implements Serializable, IResult<Object> {
 
 
     public static SimpleResult ok(){
-        return new SimpleResult(ServiceStatus.OK);
+        return new SimpleResult(ServiceStatusEnum.OK);
     }
 
     public static SimpleResult ok(String message){
-        return new SimpleResult(ServiceStatus.OK.getCode(),message);
+        return new SimpleResult(ServiceStatusEnum.OK.getCode(),message);
     }
 
     public static SimpleResult error(){
 
-        return new SimpleResult(ServiceStatus.UNKNOWN_ERROR);
+        return new SimpleResult(ServiceStatusEnum.UNKNOWN_ERROR);
     }
 
     public static SimpleResult faild(String code,String message){
         return new SimpleResult(message, code);
     }
 
-    public static SimpleResult faild(ServiceStatus status){
+    public static SimpleResult faild(ServiceStatusEnum status){
         return new SimpleResult(status);
     }
 
-    public static SimpleResult faild(AuthStatus status){
+    public static SimpleResult faild(AuthStatusEnum status){
         return new SimpleResult(status);
     }
 
@@ -47,12 +47,12 @@ public class SimpleResult implements Serializable, IResult<Object> {
         this.code = code;
     }
 
-    private SimpleResult(ServiceStatus status) {
+    private SimpleResult(ServiceStatusEnum status) {
         this.message = status.getMessage();
         this.code = status.getCode();
     }
 
-    private SimpleResult(AuthStatus status){
+    private SimpleResult(AuthStatusEnum status){
         this.message = status.getMessage();
         this.code = status.getCode();
     }

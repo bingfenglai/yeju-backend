@@ -17,7 +17,7 @@
 package pers.lbf.yeju.gateway.pojo;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pers.lbf.yeju.common.core.status.enums.SubjectType;
+import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
 
 import java.io.Serializable;
 import java.util.List;
@@ -44,7 +44,7 @@ public class SimpleSubject implements Serializable {
     /**
      * 账户类型
      */
-    private SubjectType accountType;
+    private SubjectTypeEnum accountType;
 
     /**
      * 权限集合
@@ -86,11 +86,11 @@ public class SimpleSubject implements Serializable {
         this.accountStatus = accountStatus;
     }
 
-    public SubjectType getAccountType() {
+    public SubjectTypeEnum getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(SubjectType accountType) {
+    public void setAccountType(SubjectTypeEnum accountType) {
         this.accountType = accountType;
     }
 

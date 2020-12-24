@@ -1,6 +1,6 @@
 package pers.lbf.yeju.common.core.result;
 
-import pers.lbf.yeju.common.core.status.enums.ServiceStatus;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 
 import java.io.Serializable;
 
@@ -18,7 +18,7 @@ public class Result<T> implements Serializable, IResult<T> {
 
 
     public static <T> Result<T> ok(T data) {
-        return new Result<>(ServiceStatus.OK,data);
+        return new Result<>(ServiceStatusEnum.OK,data);
     }
 
     public static IResult<Object> error(String code,String message){
@@ -35,7 +35,7 @@ public class Result<T> implements Serializable, IResult<T> {
         this.data = data;
     }
 
-    private Result(ServiceStatus status,T data) {
+    private Result(ServiceStatusEnum status, T data) {
         this.data = data;
         this.code = status.getCode();
         this.message = status.getMessage();

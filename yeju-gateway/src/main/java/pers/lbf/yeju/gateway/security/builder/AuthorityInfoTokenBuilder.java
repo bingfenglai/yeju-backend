@@ -18,11 +18,12 @@ package pers.lbf.yeju.gateway.security.builder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
+import pers.lbf.yeju.gateway.config.RsaPrivateKeyConfig;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
 
 import javax.validation.Valid;
@@ -37,11 +38,10 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @RefreshScope
-@ConfigurationProperties(prefix = "rsa")
 public class AuthorityInfoTokenBuilder {
 
-
-    private String privateKeyFilePath;
+    @Autowired
+    private RsaPrivateKeyConfig rsaPrivateKeyConfig;
 
     private final Logger logger = LoggerFactory.getLogger(AuthorityInfoTokenBuilder.class);
 
@@ -56,37 +56,29 @@ public class AuthorityInfoTokenBuilder {
      */
     public  String build( @Valid @NotNull(message = "权限主体不能为null")
                                   AuthorityInfo authorityInfo) throws Exception{
-        logger.info("私钥路径 {}",privateKeyFilePath);
+        logger.info("私钥路径 {}", rsaPrivateKeyConfig.getPath());
 
         String token;
         if (authorityInfo.getTimeUnit()==null||authorityInfo.getExpiration()==null){
             token = JwtUtils.generateTokenExpireInMinutes(
-                    authorityInfo, RsaUtils.getPrivateKey(privateKeyFilePath),
+                    authorityInfo, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                     60 * 12 * 7);
-            logger.info("账户{}生成token成功：{}",authorityInfo.getPrincipal(),token);
+            logger.info("账户 {} 生成token {}",authorityInfo.getPrincipal(),token!=null? "成功":"失败");
             return token;
         }
 
         if (TimeUnit.SECONDS.equals(authorityInfo.getTimeUnit())){
             token = JwtUtils.generateTokenExpireInSeconds(
-                    authorityInfo,RsaUtils.getPrivateKey(privateKeyFilePath),
+                    authorityInfo,RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                     authorityInfo.getExpiration());
             logger.info("账户{}生成token成功：{}",authorityInfo.getPrincipal(),token);
             return token;
         }
 
         token =  JwtUtils.generateTokenExpireInMinutes(
-            authorityInfo, RsaUtils.getPrivateKey(privateKeyFilePath),
+            authorityInfo, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                 authorityInfo.getExpiration());
         logger.info("账户{}生成token成功：{}",authorityInfo.getPrincipal(),token);
         return token;
-    }
-
-    public String getPrivateKeyFilePath() {
-        return privateKeyFilePath;
-    }
-
-    public void setPrivateKeyFilePath(String privateKeyFilePath) {
-        this.privateKeyFilePath = privateKeyFilePath;
     }
 }

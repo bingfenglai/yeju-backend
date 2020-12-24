@@ -50,7 +50,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 
     @Override
     public IResult<Boolean> verify(String key, String code) throws RpcServiceException {
-        String c = "";
+        String c;
         try {
              c  = (String) redisService.getCacheObject(key);
 
@@ -60,7 +60,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
             return Result.ok(false);
         }
 
-        boolean flag = c.equalsIgnoreCase(code);
+        boolean flag = code.equals(c);
 
         return Result.ok(flag);
     }

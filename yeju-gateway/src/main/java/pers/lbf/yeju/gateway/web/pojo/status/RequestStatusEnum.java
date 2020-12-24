@@ -14,9 +14,9 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.authserver.enums;
+package pers.lbf.yeju.gateway.web.pojo.status;
 
-import pers.lbf.yeju.common.core.status.insterfaces.Status;
+import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 import java.io.Serializable;
 
@@ -24,21 +24,36 @@ import java.io.Serializable;
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/20 0:14
+ * @date 2020/12/20 16:18
  */
-public enum AccountStatus implements Status, Serializable {
+public enum RequestStatusEnum implements IStatus, Serializable {
 
     /**
-     * 账号不存在
+     * 非法的请求
      */
-    accountDoesNotExist("账号不存在","ac001");
+    illegalRequest("请求非法，请勿恶意访问！","req01");
 
     private String message;
     private String code;
 
-
-    AccountStatus(String message, String code) {
+    RequestStatusEnum(String message, String code) {
         this.message = message;
+        this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return "RequestStatus{" +
+                "message='" + message + '\'' +
+                ", code='" + code + '\'' +
+                '}';
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -60,21 +75,5 @@ public enum AccountStatus implements Status, Serializable {
     @Override
     public String getCode() {
         return this.code;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    @Override
-    public String toString() {
-        return "AccountStatus{" +
-                "message='" + message + '\'' +
-                ", code='" + code + '\'' +
-                '}';
     }
 }

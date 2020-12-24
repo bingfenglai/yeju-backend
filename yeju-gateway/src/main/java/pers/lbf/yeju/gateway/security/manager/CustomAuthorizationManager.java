@@ -29,7 +29,7 @@ import org.springframework.security.web.server.authorization.AuthorizationContex
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.gateway.exception.GatewayException;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
 import reactor.core.publisher.Mono;
@@ -60,7 +60,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         String token = headers.getFirst("Authorization");
 
         if (token==null){
-            throw new GatewayException(AuthStatus.NO_TOKEN);
+            throw new GatewayException(AuthStatusEnum.NO_TOKEN);
         }
 
         AuthorityInfo authorityInfo = null;
@@ -71,16 +71,16 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         }
 
         if (authorityInfo == null){
-            throw new GatewayException(AuthStatus.tokenHasExpired);
+            throw new GatewayException(AuthStatusEnum.tokenHasExpired);
         }
 
         List<String> authorityList = authorityInfo.getAuthorityList();
 //        authorityList = new ArrayList<>();
 //        authorityList.add("*:**");
-
+        log.info("开始对用户 {} 鉴权",authorityInfo.getPrincipal());
         if (authorityList == null || authorityList.size() == 0) {
             log.info("用户 {} 请求API校验 未通过",authorityInfo.getPrincipal());
-            throw new GatewayException(AuthStatus.unauthorized);
+            throw new GatewayException(AuthStatusEnum.unauthorized);
         }
 
         String path1 = request.getURI().getPath();
@@ -124,7 +124,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         return check(authentication, object)
                 .filter(AuthorizationDecision::isGranted)
                 .switchIfEmpty(Mono.defer(() -> {
-                    SimpleResult result = SimpleResult.faild(AuthStatus.unauthorized);
+                    SimpleResult result = SimpleResult.faild(AuthStatusEnum.unauthorized);
                     String body = JSONObject.toJSONString(result);
                     return Mono.error(new AccessDeniedException(body));
                 }))

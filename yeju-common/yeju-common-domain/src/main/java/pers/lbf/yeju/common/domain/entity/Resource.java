@@ -16,7 +16,7 @@ import java.util.Date;
  * @since 2020-12-13 09:42:12
  */
 @TableName("table_system_resources")
-public class Resources extends Model<Resources> {
+public class Resource extends Model<Resource> {
   // 主键
   @TableId
   private Long resourceId;

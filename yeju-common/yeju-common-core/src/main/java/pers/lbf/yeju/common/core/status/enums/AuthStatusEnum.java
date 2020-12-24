@@ -16,7 +16,7 @@
  */
 package pers.lbf.yeju.common.core.status.enums;
 
-import pers.lbf.yeju.common.core.status.insterfaces.Status;
+import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 import java.io.Serializable;
 
@@ -26,7 +26,7 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2020/12/8 19:43
  */
-public enum AuthStatus implements Status, Serializable {
+public enum AuthStatusEnum implements IStatus, Serializable {
     /**
      * 生成token失败
      */
@@ -59,7 +59,13 @@ public enum AuthStatus implements Status, Serializable {
 
     verificationCodeError("验证码错误","A0010" ),
 
-    tokenHasExpired("令牌已过期","A0011" );
+    tokenHasExpired("令牌已过期","A0011" ),
+
+    accountHasExpired("账户已过期","A0012" ),
+
+    accountIsFrozen("账户已冻结","A0013" ),
+
+    accountIsNotActivated("账户未启用","A0014" );
 
     private String message;
     private String code;
@@ -83,7 +89,7 @@ public enum AuthStatus implements Status, Serializable {
         this.code = code;
     }
 
-    AuthStatus(String message, String code) {
+    AuthStatusEnum(String message, String code) {
         this.message = message;
         this.code = code;
     }

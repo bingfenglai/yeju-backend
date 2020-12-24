@@ -1,7 +1,7 @@
 package pers.lbf.yeju.common.core.exception.service.rpc;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.status.insterfaces.Status;
+import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 /**rpc远程调用异常
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -11,8 +11,8 @@ import pers.lbf.yeju.common.core.status.insterfaces.Status;
  */
 public class RpcServiceException extends ServiceException {
 
-    public RpcServiceException(Status status) {
-        super(status);
+    public RpcServiceException(IStatus statusEnum) {
+        super(statusEnum);
 
     }
 

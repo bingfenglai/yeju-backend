@@ -2,9 +2,17 @@ dubbo:
   application:
     name: ${spring.application.name}
   registry:
-    address: nacos://${spring.cloud.nacos.config.server-addr}
+    address: nacos://${spring.cloud.nacos.server-addr}
+  provider:
+    port: 20881
 spring:
   cloud:
+    nacos:
+      server-addr: 8.129.77.225:8848
+      discovery:
+        namespace: ed63a92c-9b8c-4169-9a60-bc19059ae061
+      config:
+        namespace: b6649ae6-6781-4a30-94a0-132f823a00eb
     sentinel:
       enabled: false
       log:
@@ -20,4 +28,3 @@ spring:
 #        min-idle: 1
 #    timeout: 3000
 #    database: 1
-

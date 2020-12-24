@@ -22,11 +22,11 @@ import org.springframework.security.web.server.authentication.ServerFormLoginAut
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.gateway.exception.GatewayException;
 import pers.lbf.yeju.gateway.security.pojo.LoginRequestToken;
-import pers.lbf.yeju.gateway.web.pojo.status.RequestStatus;
+import pers.lbf.yeju.gateway.web.pojo.status.RequestStatusEnum;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -52,7 +52,7 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
         String key = headers.getFirst("verificationCodeKey");
 
         if (YejuStringUtils.isEmpty(key)){
-            throw new GatewayException(RequestStatus.illegalRequest);
+            throw new GatewayException(RequestStatusEnum.illegalRequest);
         }
 
         return exchange.getFormData().map(data -> {
@@ -62,7 +62,7 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
 
             //账号判空
             if(YejuStringUtils.isEmpty(principal)){
-                throw new RpcServiceException(AuthStatus.accountCannotBeEmpty);
+                throw new RpcServiceException(AuthStatusEnum.accountCannotBeEmpty);
             }
 
 
@@ -72,13 +72,13 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
             //手机号+验证码登录的情况
             if ((code == null || "".equals(code))) {
                 if(YejuStringUtils.isEmpty(certificate)){
-                    throw new RpcServiceException(AuthStatus.passwordCanNotBeBlank);
+                    throw new RpcServiceException(AuthStatusEnum.passwordCanNotBeBlank);
                 }
 
                 if (certificate.length()==6) {
                     return new LoginRequestToken(principal, certificate, hostName, key);
                 }else {
-                    throw new GatewayException(AuthStatus.verificationCodeError);
+                    throw new GatewayException(AuthStatusEnum.verificationCodeError);
                 }
             }
 

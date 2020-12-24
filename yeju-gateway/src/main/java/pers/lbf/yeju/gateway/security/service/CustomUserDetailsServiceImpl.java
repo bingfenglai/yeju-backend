@@ -17,6 +17,7 @@
 package pers.lbf.yeju.gateway.security.service;
 
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsPasswordService;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,10 +26,12 @@ import pers.lbf.yeju.authserver.interfaces.dto.SimpleAccountDTO;
 import pers.lbf.yeju.authserver.interfaces.interfaces.IAccountService;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.gateway.pojo.SubjectDetails;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
 
 /**获取(更新)用户信息接口
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -57,18 +60,23 @@ public class CustomUserDetailsServiceImpl implements ReactiveUserDetailsService,
         boolean flag = YejuStringUtils.isEmpty(s);
 
         assert !flag: ServiceException.getInstance(
-                AuthStatus.account_cannot_be_empty.getMessage(),
-                AuthStatus.account_cannot_be_empty.getCode());
+                AuthStatusEnum.account_cannot_be_empty.getMessage(),
+                AuthStatusEnum.account_cannot_be_empty.getCode());
 
         IResult<SimpleAccountDTO> result = accountService.findSimpleAccountByPrincipal(s);
         SimpleAccountDTO simpleAccountDTO = result.getData();
         SubjectDetails userDetails = new SubjectDetails();
 
+        ArrayList<SimpleGrantedAuthority> subAuthorities = new ArrayList<SimpleGrantedAuthority>();
+        for (String s1 : simpleAccountDTO.getAuthorityStringList()) {
+            subAuthorities.add(new SimpleGrantedAuthority(s1));
+        }
+
         userDetails.setPrincipal(s);
         userDetails.setCertificate(simpleAccountDTO.getCertificate());
         userDetails.setAccountStatus(simpleAccountDTO.getAccountStatus());
         userDetails.setAccountType(simpleAccountDTO.getAccountType());
-
+        userDetails.setAuthorities(subAuthorities);
         return Mono.just(userDetails);
     }
 

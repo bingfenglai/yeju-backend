@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.common.core.status.enums.AuthStatus;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import reactor.core.publisher.Mono;
 
 /**认证控制器
@@ -36,7 +36,7 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public Mono<SimpleResult> login() {
-        return Mono.just(SimpleResult.faild(AuthStatus.NO_TOKEN));
+        return Mono.just(SimpleResult.faild(AuthStatusEnum.NO_TOKEN));
     }
 
     /**
@@ -49,7 +49,7 @@ public class AuthenticationController {
     @GetMapping("/unauthc")
     public IResult unauthc(){
 
-        return  SimpleResult.faild(AuthStatus.NO_TOKEN);
+        return  SimpleResult.faild(AuthStatusEnum.NO_TOKEN);
     }
 
 

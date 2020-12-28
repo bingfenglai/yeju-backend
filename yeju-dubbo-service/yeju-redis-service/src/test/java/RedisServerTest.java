@@ -15,12 +15,16 @@
  *
  */
 
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 import pers.lbf.yeju.redisServer.start.RedisServer;
 import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
+
+import java.util.Arrays;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -32,7 +36,10 @@ import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
 @SpringBootTest(classes = RedisServer.class)
 public class RedisServerTest {
 
-    @DubboReference
+    private static final Logger logger = LoggerFactory.getLogger(RedisServerTest.class);
+
+
+    @Autowired
     private IRedisService redisService;
 
 
@@ -42,14 +49,16 @@ public class RedisServerTest {
         try {
             redisService.addCacheObject("name","zhangming");
         } catch (Exception e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
         try {
             Object name = redisService.getCacheObject("name");
-            System.out.println(name.toString());
+            assert name != null;
+            logger.info("尝试从redis数据库获取值：{}",name);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            logger.error(Arrays.toString(e.getStackTrace()));
         }
 
     }
@@ -63,7 +72,8 @@ public class RedisServerTest {
             System.out.println(a.toString());
             Assert.state(a.toString().equals("b"),"failed");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            logger.error(Arrays.toString(e.getStackTrace()));
         }
     }
 

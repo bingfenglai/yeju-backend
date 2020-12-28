@@ -91,7 +91,10 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
         if (ex instanceof ServiceException){
             log.info("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
-        }else {
+        }else if (ex instanceof ResponseStatusException) {
+            log.info("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+            log.info(Arrays.toString(ex.getStackTrace()));
+        } else {
             log.error("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.error(Arrays.toString(ex.getStackTrace()));
         }

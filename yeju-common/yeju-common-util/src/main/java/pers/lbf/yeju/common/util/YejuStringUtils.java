@@ -151,6 +151,47 @@ public class YejuStringUtils extends StringUtils {
     }
 
     /**
+     *判单输入参数是否全为null
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2020/12/28 16:13
+     * @param objects objects
+     * @return boolean
+     */
+    public static boolean isAllNull(Object... objects){
+
+        for (Object object : objects) {
+            if (object!=null){
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     *判单输入参数是否有一个为null
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2020/12/28 16:13
+     * @param object objects
+     * @return boolean
+     */
+    public static boolean isOneNull(Object... object) {
+        for (Object o : object) {
+          if (o==null){
+              return true;
+          }
+        }
+        return false;
+    }
+
+
+
+
+    /**
      * * 判断一个对象是否非空
      *
      * @param object Object

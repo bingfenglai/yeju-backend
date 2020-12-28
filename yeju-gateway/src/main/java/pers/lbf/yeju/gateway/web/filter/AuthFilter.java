@@ -27,6 +27,7 @@ import java.util.List;
  */
 
 @Slf4j
+@Deprecated
 public class AuthFilter implements GlobalFilter, Ordered {
 
     @Autowired

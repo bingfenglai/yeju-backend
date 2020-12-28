@@ -14,10 +14,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Description TODO
  * @date 2020/11/29 20:15
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.authserver")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.authserver.**")
 @EnableDiscoveryClient
-@EnableDubbo(scanBasePackages = "pers.lbf.yeju.authserver.service")
-@MapperScan(basePackages = "pers.lbf.yeju.authserver.dao")
+@EnableDubbo(scanBasePackages = "pers.lbf.yeju.authserver.**.service")
+@MapperScan(basePackages = "pers.lbf.yeju.authserver.**.dao")
 public class AuthServer {
 
   private static final Logger log = LoggerFactory.getLogger(AuthServer.class);

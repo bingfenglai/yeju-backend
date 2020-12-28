@@ -22,6 +22,7 @@ package pers.lbf.yeju.authserver.constant;
  * @Description TODO
  * @date 2020/12/14 22:44
  */
+@Deprecated
 public final class VerificationCodeConstant {
 
     /**

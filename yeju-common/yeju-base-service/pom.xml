@@ -7,7 +7,7 @@
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
     </parent>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -68,6 +68,12 @@
 
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+
+        </dependency>
+
         <!--            数据连接层 start-->
 
         <dependency>
@@ -110,6 +116,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-redis-service-interfaces</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
         </dependency>
 
     </dependencies>

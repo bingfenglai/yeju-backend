@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
 
 import java.util.Collection;
@@ -36,6 +37,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/12/4 11:33
  */
 @DubboService(interfaceClass = IRedisService.class)
+@Service
 public class RedisServiceImpl implements IRedisService {
 
     private final Logger log = LoggerFactory.getLogger(RedisServiceImpl.class);

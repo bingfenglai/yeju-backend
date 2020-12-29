@@ -66,6 +66,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @param timeUnit 时间粒度
      */
     @Override
+    @Async
     public <T> void addCacheObject(String key, T value, Long timeout, TimeUnit timeUnit) throws Exception {
         log.info(String.format("开始存值 %s %s %d ",key, value,timeout));
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
@@ -182,6 +183,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @param dataMap map data
      */
     @Override
+    @Async
     public <T> void addCacheMap(String key, Map<String, T> dataMap) throws Exception {
         redisTemplate.opsForHash().putAll(key, dataMap);
     }
@@ -205,6 +207,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @param value value
      */
     @Override
+    @Async
     public <T> void addCacheMapValue(String key, String hKey, T value) throws Exception {
         redisTemplate.opsForHash().put(key, hKey, value);
     }

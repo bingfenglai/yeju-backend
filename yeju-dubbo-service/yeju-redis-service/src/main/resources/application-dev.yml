@@ -11,13 +11,13 @@ spring:
       server-addr: 8.129.77.225:8848
       discovery:
         namespace: ed63a92c-9b8c-4169-9a60-bc19059ae061
-        log-name: ../log/nacos.log
+        log-name: ../pers.lbf.yeju.common.log/nacos.pers.lbf.yeju.common.log
       config:
         namespace: b6649ae6-6781-4a30-94a0-132f823a00eb
     sentinel:
       enabled: false
       log:
-        dir: ../log
+        dir: ../pers.lbf.yeju.common.log
 #  redis:
 #    host: 127.0.0.1
 #    port: 6379

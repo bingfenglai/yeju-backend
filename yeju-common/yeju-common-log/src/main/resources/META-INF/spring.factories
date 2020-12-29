@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  pers.lbf.yeju.common.log.dao.LoginLogDao,\
+  pers.lbf.yeju.common.log.service.LoginLogServiceImpl
+
+  

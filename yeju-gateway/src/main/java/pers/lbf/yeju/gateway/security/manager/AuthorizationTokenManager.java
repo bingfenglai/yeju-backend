@@ -65,5 +65,9 @@ public class AuthorizationTokenManager {
         return payload.getUserInfo();
     }
 
-
+    public AuthorityInfoTokenBuilder getBuilder(AuthorityInfo authorityInfo,Long expireAt) {
+        builder.setAuthorityInfo(authorityInfo);
+        builder.setExpireAt(expireAt);
+        return builder;
+    }
 }

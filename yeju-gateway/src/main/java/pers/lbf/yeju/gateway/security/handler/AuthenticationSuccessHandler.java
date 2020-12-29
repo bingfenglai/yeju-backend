@@ -29,11 +29,14 @@ import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.WebFilterChainServerAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.gateway.security.constant.TokenConstant;
 import pers.lbf.yeju.gateway.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
+import pers.lbf.yeju.gateway.security.pojo.LoginRepo;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -71,9 +74,13 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         //设置body
 
         byte[] dataBytes={};
+        //令牌
         String token = "";
+
+        //过期时间，单位 分钟
+        Long expires = getTokenExpiresTime(exchange);
         String tokenPrefix = TokenConstant.getPrefixToken();
-        SimpleResult result;
+        IResult<Object> result;
 
         logger.info(authentication.getPrincipal().toString());
 
@@ -82,9 +89,14 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
 
         try {
-            token = authorityManager.getAuthorityInfoToken(authorityInfo);
-            httpHeaders.add("Authorization",tokenPrefix+token);
-            result = SimpleResult.ok("登录成功");
+//            token = authorityManager.getAuthorityInfoToken(authorityInfo);
+//            httpHeaders.add("Authorization",tokenPrefix+token);
+//            result = SimpleResult.ok("登录成功");
+            token = authorityManager.getBuilder(authorityInfo, expires).build();
+            LoginRepo loginRepo = new LoginRepo();
+            loginRepo.setAccessToken(tokenPrefix+token);
+            loginRepo.setExpiresAt(expires);
+            result = Result.ok(loginRepo);
 
         } catch (Exception e) {
             logger.error("生成token发生错误，用户凭证：{}",authorityInfo.getPrincipal());
@@ -96,6 +108,21 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
         DataBuffer bodyDataBuffer = response.bufferFactory().wrap(dataBytes);
         return response.writeWith(Mono.just(bodyDataBuffer));
+
+    }
+
+
+    private Long getTokenExpiresTime(ServerWebExchange exchange){
+
+
+
+        HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
+        String userAgent = requestHeaders.getFirst("User-Agent");
+        if ("client".equalsIgnoreCase(userAgent)) {
+            return TokenConstant.AppTokenExpiresAt;
+        }else {
+            return TokenConstant.PcTokenExpiresAt;
+        }
 
     }
 

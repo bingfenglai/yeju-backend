@@ -22,7 +22,7 @@ public class SimpleResult implements Serializable, IResult<Object> {
     }
 
     public static SimpleResult ok(String message){
-        return new SimpleResult(ServiceStatusEnum.OK.getCode(),message);
+        return new SimpleResult(message,ServiceStatusEnum.OK.getCode());
     }
 
     public static SimpleResult error(){

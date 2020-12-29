@@ -33,6 +33,8 @@ public class VerificationCodeConfig {
 
     private boolean enable;
 
+    private Integer length;
+
     public boolean isEnable() {
 
         return enable;
@@ -42,10 +44,24 @@ public class VerificationCodeConfig {
         this.enable = "true".equals(enable);
     }
 
+
     @Override
     public String toString() {
         return "VerificationCodeConfig{" +
                 "enable=" + enable +
+                ", length=" + length +
                 '}';
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public Integer getLength() {
+        return length;
+    }
+
+    public void setLength(Integer length) {
+        this.length = length;
     }
 }

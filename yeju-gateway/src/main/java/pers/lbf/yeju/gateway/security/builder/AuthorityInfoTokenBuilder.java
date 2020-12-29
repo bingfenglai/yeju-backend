@@ -45,6 +45,16 @@ public class AuthorityInfoTokenBuilder {
 
     private final Logger logger = LoggerFactory.getLogger(AuthorityInfoTokenBuilder.class);
 
+
+    private Long defaultExpiresAt  = 60L;
+
+    private Long expireAt;
+
+
+    private AuthorityInfo authorityInfo;
+
+
+
     /**
      * @Description //TODO
      * @author 赖柄沣 bingfengdev@aliyun.com
@@ -59,10 +69,13 @@ public class AuthorityInfoTokenBuilder {
         logger.info("私钥路径 {}", rsaPrivateKeyConfig.getPath());
 
         String token;
+        if (this.expireAt==null){
+            this.expireAt = this.defaultExpiresAt;
+        }
         if (authorityInfo.getTimeUnit()==null||authorityInfo.getExpiration()==null){
-            token = JwtUtils.generateTokenExpireInMinutes(
+            token = JwtUtils.generateTokenExpireInSeconds(
                     authorityInfo, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
-                    60 * 12 * 7);
+                    Math.toIntExact(this.expireAt));
             logger.info("账户 {} 生成token {}",authorityInfo.getPrincipal(),token!=null? "成功":"失败");
             return token;
         }
@@ -80,5 +93,33 @@ public class AuthorityInfoTokenBuilder {
                 authorityInfo.getExpiration());
         logger.info("账户{}生成token成功：{}",authorityInfo.getPrincipal(),token);
         return token;
+    }
+
+    public String build() throws Exception {
+        return this.build(this.getAuthorityInfo());
+    }
+
+    public Long getDefaultExpiresAt() {
+        return defaultExpiresAt;
+    }
+
+    public void setDefaultExpiresAt(Long defaultExpiresAt) {
+        this.defaultExpiresAt = defaultExpiresAt;
+    }
+
+    public Long getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(Long expireAt) {
+        this.expireAt = expireAt;
+    }
+
+    public AuthorityInfo getAuthorityInfo() {
+        return authorityInfo;
+    }
+
+    public void setAuthorityInfo(AuthorityInfo authorityInfo) {
+        this.authorityInfo = authorityInfo;
     }
 }

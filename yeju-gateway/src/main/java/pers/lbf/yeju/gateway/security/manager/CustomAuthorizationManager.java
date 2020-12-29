@@ -105,10 +105,10 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
 //                String authorityAuthority = authority.getAuthority();
 //                String path = request.getURI().getPath();
 //                if (antPathMatcher.match(authorityAuthority, path)) {
-//                    log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
+//                    pers.lbf.yeju.common.log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
 //                    return new AuthorizationDecision(true);
 //                }else {
-//                    log.info(String.format("用户请求API校验 未通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
+//                    pers.lbf.yeju.common.log.info(String.format("用户请求API校验 未通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
 //                }
 //            }
 //            return new AuthorizationDecision(false);

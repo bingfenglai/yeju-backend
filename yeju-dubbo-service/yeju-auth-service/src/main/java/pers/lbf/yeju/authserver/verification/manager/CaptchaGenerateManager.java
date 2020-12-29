@@ -34,6 +34,7 @@ import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -94,7 +95,7 @@ public class CaptchaGenerateManager {
         String key = captchaConfig.getPrefix()+UUID.randomUUID().toString();
 
         log.info("将验证码存入缓存");
-        redisService.addCacheObject(key,map.get(VerificationConstant.CODE_VALUE));
+        redisService.addCacheObject(key,map.get(VerificationConstant.CODE_VALUE),captchaConfig.getTimeout(), TimeUnit.MINUTES);
         log.info("构造dto");
         VerityDTO<String> verity = new VerityDTO<>();
 

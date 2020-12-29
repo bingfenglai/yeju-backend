@@ -36,6 +36,13 @@ public class TokenConstant implements Serializable {
      */
     private static String splitString = "_";
 
+    /**
+     * app 令牌过期时间 单位 秒
+     */
+    public static final Long AppTokenExpiresAt = 60 * 60 * 7L;
+
+    public static final Long PcTokenExpiresAt = 60 * 10L;
+
     public static String getSplitString() {
         return splitString;
     }

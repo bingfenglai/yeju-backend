@@ -37,6 +37,17 @@ public class EasyCaptchaConfig implements Serializable {
     private Integer height;
     private Integer length;
 
+    private Long timeout;
+
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
+    }
+
     /**
      * 验证码存储在redis中的key的前缀
      */

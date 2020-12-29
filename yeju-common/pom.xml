@@ -19,7 +19,8 @@
 		<module>yeju-base-web</module>
         <module>yeju-common-domain</module>
 		<module>yeju-common-util</module>
-	</modules>
+        <module>yeju-common-log</module>
+    </modules>
 
 	<properties>
 		<java.version>1.8</java.version>

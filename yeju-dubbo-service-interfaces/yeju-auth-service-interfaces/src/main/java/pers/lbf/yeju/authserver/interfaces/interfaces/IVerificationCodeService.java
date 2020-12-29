@@ -29,7 +29,7 @@ import pers.lbf.yeju.common.core.result.IResult;
  */
 public interface IVerificationCodeService {
 
-    IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException, Exception;
+    IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException;
 
     IResult<Boolean> verify(String key,String code) throws ServiceException;
 

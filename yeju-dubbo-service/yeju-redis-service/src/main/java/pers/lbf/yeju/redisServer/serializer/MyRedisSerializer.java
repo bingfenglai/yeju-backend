@@ -35,6 +35,7 @@ import java.nio.charset.StandardCharsets;
  * @Description TODO
  * @date 2020/12/4 16:32
  */
+@Deprecated
 public class MyRedisSerializer<T> implements RedisSerializer<T> {
 
 

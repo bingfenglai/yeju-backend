@@ -34,8 +34,7 @@ import pers.lbf.yeju.redisServer.serializer.MyRedisSerializer;
  * @Description TODO
  * @date 2020/12/4 16:26
  */
-//@Configuration
-//@EnableCaching
+@Deprecated
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean

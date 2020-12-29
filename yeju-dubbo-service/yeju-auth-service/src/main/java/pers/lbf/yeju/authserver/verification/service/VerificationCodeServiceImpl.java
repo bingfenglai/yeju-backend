@@ -24,6 +24,7 @@ import pers.lbf.yeju.authserver.interfaces.dto.VerityDTO;
 import pers.lbf.yeju.authserver.interfaces.enums.VerificationCodeTypeEnum;
 import pers.lbf.yeju.authserver.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.authserver.verification.config.EasyCaptchaConfig;
+import pers.lbf.yeju.authserver.verification.enums.VerificationCodeStatusEnum;
 import pers.lbf.yeju.authserver.verification.manager.CaptchaGenerateManager;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -54,9 +55,15 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
 
 
     @Override
-    public  IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws Exception {
+    public  IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException{
 
-        VerityDTO<String> verityDTO = captchaGenerateManager.generateVerityCode(type);
+        VerityDTO<String> verityDTO;
+        try {
+            verityDTO = captchaGenerateManager.generateVerityCode(type);
+        } catch (Exception e) {
+            throw ServiceException.getInstance(VerificationCodeStatusEnum.GEN_FAILED);
+        }
+
         if (verityDTO.getCode().length()==captchaConfig.getLength()){
             verityDTO.setCode("");
         }

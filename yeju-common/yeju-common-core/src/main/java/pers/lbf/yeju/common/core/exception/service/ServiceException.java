@@ -53,6 +53,10 @@ public class ServiceException extends RuntimeException{
         return new ServiceException(message, exceptionCode);
     }
 
+    public static ServiceException getInstance(IStatus status) {
+        return new ServiceException(status);
+    }
+
     public static ServiceException getInstance() {
         return new ServiceException();
     }

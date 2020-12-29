@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.redis.config;
+package pers.lbf.yeju.base.redis.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -30,7 +30,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import pers.lbf.yeju.service.redis.serializer.MyRedisSerializer;
+import pers.lbf.yeju.base.redis.serializer.MyRedisSerializer;
 
 /**redisTemplate连接以及序列化配置
  * @author 赖柄沣 bingfengdev@aliyun.com

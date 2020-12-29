@@ -813,10 +813,6 @@ public class Convert {
         {
             return (String) obj;
         }
-        else if (obj instanceof byte[] || obj instanceof Byte[])
-        {
-            return str((Byte[]) obj, charset);
-        }
         else if (obj instanceof ByteBuffer)
         {
             return str((ByteBuffer) obj, charset);

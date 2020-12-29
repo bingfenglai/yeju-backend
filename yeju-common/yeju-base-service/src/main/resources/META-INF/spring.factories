@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  pers.lbf.yeju.service.redis.config.RedisConfig,\
-  pers.lbf.yeju.service.redis.service.NativeRedisServiceImpl
+  pers.lbf.yeju.base.redis.config.RedisConfig,\
+  pers.lbf.yeju.base.redis.service.NativeRedisServiceImpl
 
   

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.redis.service;
+package pers.lbf.yeju.base.redis.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

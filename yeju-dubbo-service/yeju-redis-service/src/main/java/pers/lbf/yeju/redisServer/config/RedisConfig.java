@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -34,7 +35,7 @@ import pers.lbf.yeju.redisServer.serializer.MyRedisSerializer;
  * @Description TODO
  * @date 2020/12/4 16:26
  */
-@Deprecated
+@Configuration
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean

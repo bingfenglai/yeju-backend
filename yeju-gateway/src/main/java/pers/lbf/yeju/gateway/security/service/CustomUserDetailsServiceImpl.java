@@ -22,8 +22,8 @@ import org.springframework.security.core.userdetails.ReactiveUserDetailsPassword
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.authserver.interfaces.dto.SimpleAccountDTO;
-import pers.lbf.yeju.authserver.interfaces.interfaces.IAccountService;
+import pers.lbf.yeju.authrestapi.interfaces.dto.SimpleAccountDTO;
+import pers.lbf.yeju.authrestapi.interfaces.interfaces.IAccountService;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;

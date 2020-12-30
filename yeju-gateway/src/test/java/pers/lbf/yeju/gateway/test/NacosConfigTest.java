@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;
-import pers.lbf.yeju.gateway.start.GatewayApp;
+import pers.lbf.yeju.gateway.start.YejuGatewayApp;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -12,7 +12,7 @@ import pers.lbf.yeju.gateway.start.GatewayApp;
  * @Description TODO
  * @date 2020/11/26 17:24
  */
-@SpringBootTest(classes = GatewayApp.class)
+@SpringBootTest(classes = YejuGatewayApp.class)
 @Slf4j
 public class NacosConfigTest {
 

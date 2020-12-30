@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: authServer
+logging:
+  config: config/logback.xml
+

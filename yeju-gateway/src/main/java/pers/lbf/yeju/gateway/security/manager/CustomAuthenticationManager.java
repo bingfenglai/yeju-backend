@@ -26,7 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.authserver.interfaces.interfaces.IVerificationCodeService;
+import pers.lbf.yeju.authrestapi.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;

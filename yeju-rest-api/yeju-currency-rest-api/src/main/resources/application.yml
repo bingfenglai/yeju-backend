@@ -1,0 +1,19 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /platform
+spring:
+  application:
+    name: platform-api
+
+dubbo:
+  registry:
+    address: nacos://${spring.cloud.nacos.server-addr}
+    check: false
+  consumer:
+    check: false
+  application:
+    name: ${spring.application.name}
+
+logging:
+  config: classpath:config/logback.xml

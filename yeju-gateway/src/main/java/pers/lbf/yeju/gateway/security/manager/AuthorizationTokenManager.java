@@ -45,6 +45,7 @@ public class AuthorizationTokenManager {
     @Autowired
     private AuthorityInfoTokenBuilder builder;
 
+    @Deprecated
     public String getAuthorityInfoToken(AuthorityInfo authorityInfo) throws Exception{
         return builder.build(authorityInfo);
     }

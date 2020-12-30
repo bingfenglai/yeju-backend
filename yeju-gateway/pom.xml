@@ -12,7 +12,7 @@
     <artifactId>yeju-gateway</artifactId>
 
     <properties>
-        <mainClassName>pers.lbf.yeju.gateway.start.GatewayApp</mainClassName>
+        <mainClassName>pers.lbf.yeju.gateway.start.YejuGatewayApp</mainClassName>
     </properties>
 
 <!--    服务网关-->

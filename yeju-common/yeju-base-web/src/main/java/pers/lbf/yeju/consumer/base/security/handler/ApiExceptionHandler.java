@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.web.handler;
+package pers.lbf.yeju.consumer.base.security.handler;
 
 import com.alibaba.nacos.common.utils.JacksonUtils;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.gateway.pojo.ErrorAndExceptionResult;
+import pers.lbf.yeju.consumer.base.security.pojo.ErrorAndExceptionResult;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -43,9 +43,9 @@ import java.util.Arrays;
  */
 @Configuration
 @Order(-2)
-public class GrableExceptionHandler implements ErrorWebExceptionHandler {
+public class ApiExceptionHandler implements ErrorWebExceptionHandler {
 
-    private static final Logger log =  LoggerFactory.getLogger(GrableExceptionHandler.class);
+    private static final Logger log =  LoggerFactory.getLogger(ApiExceptionHandler.class);
 
     /**
      * Handle the given exception. A completion signal through the return value
@@ -66,17 +66,16 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
 
         String message;
         String code;
-        IResult<String> result = null;
+        IResult<String> result;
+        if (ex instanceof ResponseStatusException) {
+            if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())){
+                message = "服务不存在";
+                code = "404";
 
-         if (ex instanceof ResponseStatusException) {
-             if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())){
-                 message = "服务不存在";
-                 code = "404";
-
-             }else {
-                 message = ex.getMessage();
-                 code = String.valueOf(((ResponseStatusException) ex).getStatus());
-             }
+            }else {
+                message = ex.getMessage();
+                code = String.valueOf(((ResponseStatusException) ex).getStatus());
+            }
 
         }
         else if (ex instanceof ServiceException){
@@ -91,13 +90,13 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
         String path = String.valueOf(exchange.getRequest().getPath());
 
         if (ex instanceof ServiceException){
-            log.info("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+            log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
         }else if (ex instanceof ResponseStatusException) {
-            log.info("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+            log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
         } else {
-            log.error("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+            log.error("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.error(Arrays.toString(ex.getStackTrace()));
         }
 

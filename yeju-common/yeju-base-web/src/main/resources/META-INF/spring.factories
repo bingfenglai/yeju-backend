@@ -1,11 +1,11 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  pers.lbf.yeju.security.config.IgnoreWhiteProperties,\
-  pers.lbf.yeju.security.config.PropertiesConfig,\
-  pers.lbf.yeju.security.config.RsaPublicKeyConfig,\
-  pers.lbf.yeju.security.config.SecurityConfig, \
-  pers.lbf.yeju.security.handler.ApiExceptionHandler, \
-  pers.lbf.yeju.security.manger.AuthorizationTokenManager, \
-  pers.lbf.yeju.security.manger.CustomAuthorizationManager
+  pers.lbf.yeju.consumer.base.security.config.IgnoreWhiteProperties,\
+  pers.lbf.yeju.consumer.config.PropertiesConfig,\
+  pers.lbf.yeju.consumer.base.security.config.RsaPublicKeyConfig,\
+  pers.lbf.yeju.consumer.base.security.config.SecurityConfig, \
+  pers.lbf.yeju.consumer.base.security.handler.ApiExceptionHandler, \
+  pers.lbf.yeju.consumer.base.security.manger.AuthorizationTokenManager, \
+  pers.lbf.yeju.consumer.base.security.manger.CustomAuthorizationManager
 
 
   

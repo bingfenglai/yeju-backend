@@ -35,7 +35,7 @@ public enum AuthStatusEnum implements IStatus, Serializable {
     /**
      * 没有携带token，或者token不合法
      */
-    NO_TOKEN("请先登录", "A0001"),
+    NO_TOKEN("令牌已过期，请重新登录", "A0001"),
 
     /**
      * 用户名或密码错误

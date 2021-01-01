@@ -36,7 +36,7 @@ import java.util.Map;
  * @Description TODO
  * @date 2020/12/20 15:33
  */
-
+@Deprecated
 public class CurrentErrorWebExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     public CurrentErrorWebExceptionHandler(ErrorAttributes errorAttributes, ResourceProperties resourceProperties, ErrorProperties errorProperties, ApplicationContext applicationContext) {

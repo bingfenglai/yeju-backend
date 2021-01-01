@@ -2,5 +2,5 @@ spring:
   application:
     name: authServer
 logging:
-  config: config/logback.xml
+  config: classpath:config/logback.xml
 

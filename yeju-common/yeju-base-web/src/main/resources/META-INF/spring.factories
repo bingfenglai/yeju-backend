@@ -5,7 +5,9 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   pers.lbf.yeju.consumer.base.security.config.SecurityConfig, \
   pers.lbf.yeju.consumer.base.security.handler.ApiExceptionHandler, \
   pers.lbf.yeju.consumer.base.security.manger.AuthorizationTokenManager, \
-  pers.lbf.yeju.consumer.base.security.manger.CustomAuthorizationManager
+  pers.lbf.yeju.consumer.base.security.manger.CustomAuthorizationManager,\
+  pers.lbf.yeju.consumer.base.log.aspect.LogAspect,\
+  pers.lbf.yeju.consumer.base.log.service.AsyncLoginLogServiceImpl
 
 
   

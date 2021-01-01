@@ -23,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pers.lbf.yeju.authrestapi.interfaces.dto.VerityDTO;
 import pers.lbf.yeju.authrestapi.interfaces.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.currency.provider.start.YejuCurrencyServiceProviderApplication;
-import pers.lbf.yeju.currency.provider.verification.manager.CaptchaGenerateManager;
+import pers.lbf.yeju.provider.currency.start.YejuCurrencyServiceProviderApplication;
+import pers.lbf.yeju.provider.currency.verification.manager.CaptchaGenerateManager;
 import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
 
 /**

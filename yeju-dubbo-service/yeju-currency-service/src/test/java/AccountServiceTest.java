@@ -21,7 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pers.lbf.yeju.authrestapi.interfaces.dto.SimpleAccountDTO;
 import pers.lbf.yeju.authrestapi.interfaces.interfaces.IAccountService;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.currency.provider.start.YejuCurrencyServiceProviderApplication;
+import pers.lbf.yeju.provider.currency.start.YejuCurrencyServiceProviderApplication;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com

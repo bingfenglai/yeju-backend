@@ -15,7 +15,7 @@
 
 
     <properties>
-        <mainClassName>pers.lbf.yeju.currency.provider.start.YejuCurrencyServiceProviderApplication</mainClassName>
+        <mainClassName>pers.lbf.yeju.provider.currency.start.YejuCurrencyServiceProviderApplication</mainClassName>
     </properties>
 
     <dependencies>

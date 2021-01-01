@@ -29,6 +29,11 @@ public class OperationLog extends Model<OperationLog> {
   private String operatorType;
   /** 操作者名字 */
   private String operatorName;
+
+  /**
+   * 操作者id
+   */
+  private String operatorId;
   /** 部门名称 */
   private String departmentName;
   /** 请求路径 */
@@ -186,4 +191,11 @@ public class OperationLog extends Model<OperationLog> {
     this.lastIpNumber = lastIpNumber;
   }
 
+  public String getOperatorId() {
+    return operatorId;
+  }
+
+  public void setOperatorId(String operatorId) {
+    this.operatorId = operatorId;
+  }
 }

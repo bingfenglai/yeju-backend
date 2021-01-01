@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: log-server
+logging:
+  config: classpath:config/logback.xml
+

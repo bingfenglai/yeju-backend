@@ -15,6 +15,7 @@
         <module>yeju-sms-service</module>
         <module>yeju-mq-service</module>
         <module>yeju-customer-service</module>
+        <module>yeju-log-service</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.logserver.interfaces.dto;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,10 +29,15 @@ import java.util.Date;
 public class AddOperationLogDTO implements Serializable {
 
     /** 模块标题 */
+    @NotNull(message = "模块标题 不能为空")
     private String title;
+
     /** 业务类型0其他1新增2修改3删除 */
+    @NotNull(message = "业务类型 不能为空")
     private Integer businessType;
+
     /** 方法名称 */
+    @NotNull(message = "方法名称 不能为空")
     private String method;
     /** 请求方式 */
     private String requestMethod;
@@ -60,6 +66,11 @@ public class AddOperationLogDTO implements Serializable {
     /** 访问ip最后一位数字，用作分区标识 */
     private Integer lastIpNumber;
 
+    /**
+     * 操作者id
+     */
+    private String operatorId;
+
     @Override
     public String toString() {
         return "AddOperationLogDTO{" +
@@ -78,8 +89,15 @@ public class AddOperationLogDTO implements Serializable {
                 ", operationStatus=" + operationStatus +
                 ", errorMessage='" + errorMessage + '\'' +
                 ", operationTime=" + operationTime +
-                ", lastIpNumber=" + lastIpNumber +
                 '}';
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
     }
 
     public String getTitle() {

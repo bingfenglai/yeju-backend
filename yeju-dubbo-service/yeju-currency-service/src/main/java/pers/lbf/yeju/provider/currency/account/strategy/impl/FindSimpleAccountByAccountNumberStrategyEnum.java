@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pers.lbf.yeju.authrestapi.interfaces.dto.SimpleAccountDTO;
-import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
 import pers.lbf.yeju.common.domain.entity.Account;
@@ -30,7 +30,6 @@ import pers.lbf.yeju.provider.currency.account.strategy.IFindSimpleAccountByPrin
 import pers.lbf.yeju.provider.currency.resource.dao.IResourcesDao;
 import pers.lbf.yeju.provider.currency.util.SpringContextUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,7 +68,7 @@ public enum FindSimpleAccountByAccountNumberStrategyEnum implements IFindSimpleA
      * @date 2020/12/23 11:54
      */
     @Override
-    public SimpleAccountDTO findSimpleAccountByPrincipal(String accountNumber) throws RuntimeException {
+    public SimpleAccountDTO findSimpleAccountByPrincipal(String accountNumber) throws ServiceException {
 
         //1.构造条件
         QueryWrapper<Account> accountQueryWrapper  = new QueryWrapper<>();
@@ -80,14 +79,14 @@ public enum FindSimpleAccountByAccountNumberStrategyEnum implements IFindSimpleA
 
         //账号不存在
         if (account==null){
-            throw new RpcServiceException(
+            throw new ServiceException(
                     AuthStatusEnum.NO_ACCOUNT.getMessage(),
                     AuthStatusEnum.NO_ACCOUNT.getCode(),
                     YejuStringUtils.split(accountNumber),
                     ""
             );
         }
-        List<String> resourceCodeList = new ArrayList<>();
+        List<String> resourceCodeList;
 
         resourceCodeList = resourcesDao.findResourceListByAccount(accountNumber);
 

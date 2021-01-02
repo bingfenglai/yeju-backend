@@ -19,6 +19,7 @@ package pers.lbf.yeju.gateway.security.manager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,6 +38,8 @@ import pers.lbf.yeju.gateway.security.pojo.AuthenticationToken;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
 import pers.lbf.yeju.gateway.security.pojo.LoginRequestToken;
 import pers.lbf.yeju.gateway.security.service.CustomUserDetailsServiceImpl;
+import pers.lbf.yeju.logserver.interfaces.ILoginLogService;
+import pers.lbf.yeju.logserver.interfaces.dto.AddLoginLogDTO;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -44,6 +47,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 /**登录对象身份验证管理器
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -53,16 +57,20 @@ import java.util.Collection;
  */
 @Component
 @Slf4j
+@EnableAsync
 public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuthenticationManager {
 
     private final Scheduler scheduler = Schedulers.boundedElastic();
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    private CustomUserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private VerificationCodeConfig verificationCodeConfig;
+
+    @Autowired
+    private ILoginLogService loginLogService;
 
     @DubboReference
     private IVerificationCodeService verificationCodeService;
@@ -92,6 +100,15 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
         String host = loginToken.getHost();
         String credentials = (String) loginToken.getCredentials();
 
+
+        AddLoginLogDTO addLoginLogDTO = new AddLoginLogDTO();
+        addLoginLogDTO.setAccount(account);
+        addLoginLogDTO.setSubjectName("");
+        addLoginLogDTO.setIp(host);
+        addLoginLogDTO.setAccentTime(new Date());
+
+
+
         if (loginToken.getLoginWay().equals(LoginWay.usernameAndPassword)) {
 
             if (verificationCodeConfig.isEnable()) {
@@ -99,35 +116,52 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
               IResult<Boolean> result = verificationCodeService.verify(key, code);
 
               if (!result.getData()) {
+                  addLoginLogDTO.setLoginStatus(0);
+                  addLoginLogDTO.setMessage(AuthStatusEnum.verificationCodeError.getMessage());
+                  loginLogService.addLog(addLoginLogDTO);
                   throw new GatewayException(AuthStatusEnum.verificationCodeError);
               }
             }
 
 
             Mono<UserDetails> userDetailsMono = retrieveUser(account);
-            UserDetails userDetails = userDetailsMono.block();
+            UserDetails userDetails = userDetailsMono.block(Duration.ofSeconds(3));
 
 
-            assert userDetails != null;
+            assert userDetails != null: new ServiceException(AuthStatusEnum.NO_ACCOUNT);
+
+
             boolean flag = passwordEncoder.matches(credentials, userDetails.getPassword());
 
             //密码不匹配
             if (!flag) {
+                addLoginLogDTO.setLoginStatus(0);
+                addLoginLogDTO.setMessage(AuthStatusEnum.NO_ACCOUNT.getMessage());
+                loginLogService.addLog(addLoginLogDTO);
                 throw new GatewayException(AuthStatusEnum.NO_ACCOUNT);
             }
 
             //验证账户是否可用
             if (!userDetails.isEnabled()){
+                addLoginLogDTO.setLoginStatus(0);
+                addLoginLogDTO.setMessage(AuthStatusEnum.accountIsNotActivated.getMessage());
+                loginLogService.addLog(addLoginLogDTO);
                 throw new GatewayException(AuthStatusEnum.accountIsNotActivated);
             }
             if (!userDetails.isAccountNonExpired()){
+                addLoginLogDTO.setLoginStatus(0);
+                addLoginLogDTO.setMessage(AuthStatusEnum.accountHasExpired.getMessage());
+                loginLogService.addLog(addLoginLogDTO);
                 throw new GatewayException(AuthStatusEnum.accountHasExpired);
             }
             if (!userDetails.isAccountNonLocked()){
+                addLoginLogDTO.setLoginStatus(0);
+                addLoginLogDTO.setMessage(AuthStatusEnum.accountIsFrozen.getMessage());
+                loginLogService.addLog(addLoginLogDTO);
                 throw new GatewayException(AuthStatusEnum.accountIsFrozen);
             }
 
-            log.info("开始对用户 {} 授权",userDetails.getUsername());
+            log.info("开始对用户 {} 授权", userDetails.getUsername());
             Mono<AuthorityInfo> authorityInfoMono = getAuthorityInfo(account);
 
 
@@ -136,6 +170,9 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
             AuthenticationToken authenticationToken = new AuthenticationToken(info, credentials);
             authenticationToken.setDetails(info);
 
+            addLoginLogDTO.setLoginStatus(1);
+            addLoginLogDTO.setMessage("登录成功");
+            loginLogService.addLog(addLoginLogDTO);
           return Mono.just(authenticationToken);
         }
 

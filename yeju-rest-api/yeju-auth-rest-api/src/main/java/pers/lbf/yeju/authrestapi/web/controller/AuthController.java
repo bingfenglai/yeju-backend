@@ -1,7 +1,6 @@
 package pers.lbf.yeju.authrestapi.web.controller;
 
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.authrestapi.interfaces.interfaces.IAuthService;
 import pers.lbf.yeju.authrestapi.pojo.LoginVO;
@@ -40,7 +39,9 @@ public class AuthController {
 
 
     @GetMapping("get_info")
-    public Mono<IResult<Object>> getInfo(@RequestParam @NotNull(message = "id不能为空") @Validated Long id){
+    public Mono<IResult<Object>> getInfo(
+            @RequestParam
+            @NotNull(message = "id不能为空") @Valid Long id){
         return Mono.just(SimpleResult.ok(String.valueOf(id)));
     }
 }

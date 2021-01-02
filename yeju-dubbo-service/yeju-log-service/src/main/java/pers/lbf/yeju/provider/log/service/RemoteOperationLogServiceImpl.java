@@ -33,7 +33,7 @@ import pers.lbf.yeju.provider.log.dao.OperationLogDao;
  * @date 2021/1/1 19:19
  */
 @DubboService(interfaceClass = IOperationLogService.class)
-public class OperationLogServiceImpl implements IOperationLogService {
+public class RemoteOperationLogServiceImpl implements IOperationLogService {
     
     @Autowired
     private OperationLogDao operationLogDao;

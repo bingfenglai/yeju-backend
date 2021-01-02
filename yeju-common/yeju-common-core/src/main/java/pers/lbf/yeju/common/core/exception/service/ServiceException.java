@@ -62,8 +62,10 @@ public class ServiceException extends RuntimeException{
     }
 
     public ServiceException(IStatus statusEnum){
+        super(statusEnum.getMessage());
         this.exceptionCode = statusEnum.getCode();
         this.message = statusEnum.getMessage();
+
     }
     public ServiceException() {
         this.message = ServiceStatusEnum.UNKNOWN_ERROR.getMessage();
@@ -71,6 +73,7 @@ public class ServiceException extends RuntimeException{
     }
 
     public ServiceException(String message, String exceptionCode, Object[] params, String module) {
+        super(message);
         this.message = message;
         this.exceptionCode = exceptionCode;
         this.params = params;
@@ -78,6 +81,7 @@ public class ServiceException extends RuntimeException{
     }
 
     public ServiceException(String message, String exceptionCode){
+        super(message);
         this.message = message;
         this.exceptionCode = exceptionCode;
     }

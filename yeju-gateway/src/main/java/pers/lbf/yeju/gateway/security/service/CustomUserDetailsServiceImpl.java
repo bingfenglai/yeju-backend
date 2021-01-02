@@ -55,7 +55,7 @@ public class CustomUserDetailsServiceImpl implements ReactiveUserDetailsService,
      * @return reactor.core.publisher.Mono<org.springframework.security.core.userdetails.UserDetails>
      */
     @Override
-    public Mono<UserDetails> findByUsername(String s) throws RuntimeException{
+    public Mono<UserDetails> findByUsername(String s) throws ServiceException{
 
         boolean flag = YejuStringUtils.isEmpty(s);
 

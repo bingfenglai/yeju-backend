@@ -29,6 +29,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.gateway.pojo.ErrorAndExceptionResult;
 import reactor.core.publisher.Mono;
@@ -79,11 +80,23 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
              }
 
         }
+         else if (ex instanceof RpcServiceException){
+             message = ex.getMessage();
+             code = ((RpcServiceException) ex).getExceptionCode();
+         }
+
         else if (ex instanceof ServiceException){
             message = ex.getMessage();
             code = ((ServiceException) ex).getExceptionCode();
 
         }
+
+        else if (ex instanceof RuntimeException){
+            log.info(ex.getClass().getName());
+            message = ex.getLocalizedMessage();
+            code = "e9998";
+         }
+
         else {
             message = "内部服务错误，请联系客服"+ex.getMessage();
             code = "e9999";

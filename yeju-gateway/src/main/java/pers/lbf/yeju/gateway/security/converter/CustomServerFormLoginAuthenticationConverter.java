@@ -35,7 +35,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.Objects;
 
 /**将表单参数转换为AuthenticationToken
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -65,7 +64,6 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
         log.info("登录IP {}",hostAddress);
 
         HttpHeaders headers = exchange.getRequest().getHeaders();
-        String hostName = Objects.requireNonNull(headers.getHost()).getHostName();
         String key = headers.getFirst("verificationCodeKey");
 
         if (YejuStringUtils.isEmpty(key)){
@@ -95,14 +93,14 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
 
                 if (certificate != null
                     && certificate.length() == verificationCodeConfig.getLength()) {
-                  return new LoginRequestToken(principal, certificate, hostName, key);
+                  return new LoginRequestToken(principal, certificate, hostAddress, key);
                 } else {
                   throw new GatewayException(AuthStatusEnum.verificationCodeError);
 
                 }
               }
 
-              return new LoginRequestToken(principal, certificate, hostName, key, code);
+              return new LoginRequestToken(principal, certificate, hostAddress, key, code);
             });
     }
 }

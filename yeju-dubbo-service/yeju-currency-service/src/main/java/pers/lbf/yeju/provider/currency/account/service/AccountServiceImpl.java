@@ -22,13 +22,12 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.authrestapi.interfaces.dto.SimpleAccountDTO;
 import pers.lbf.yeju.authrestapi.interfaces.interfaces.IAccountService;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
-import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
 import pers.lbf.yeju.common.domain.entity.Account;
-import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.provider.currency.account.dao.IAccountDao;
 import pers.lbf.yeju.provider.currency.account.enums.AccountStatusEnumEnum;
 import pers.lbf.yeju.provider.currency.account.factory.AccountStrategyFactory;
@@ -57,16 +56,17 @@ public class AccountServiceImpl implements IAccountService {
      * @return account
      */
     @Override
-    public IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws RuntimeException {
+    public IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws ServiceException {
         //1。判断账户类型
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);
 
-        assert accountType != null
-                : new RpcServiceException(
-                AuthStatusEnum.NO_ACCOUNT.getMessage(),
-                AuthStatusEnum.NO_ACCOUNT.getCode(),
-                YejuStringUtils.split(principal),
-                AccountServiceImpl.class.getName());
+//        assert accountType != null
+//                : new RpcServiceException(
+//                AuthStatusEnum.NO_ACCOUNT.getMessage(),
+//                AuthStatusEnum.NO_ACCOUNT.getCode(),
+//                YejuStringUtils.split(principal),
+//                AccountServiceImpl.class.getName());
+
 
         IFindSimpleAccountByPrincipalStrategy strategy
                 = AccountStrategyFactory.getStrategy(accountType);
@@ -85,7 +85,7 @@ public class AccountServiceImpl implements IAccountService {
      * @throws RuntimeException e
      */
     @Override
-    public IResult<Boolean> updatePassword(String principal, String newPassword) throws RuntimeException {
+    public IResult<Boolean> updatePassword(String principal, String newPassword) throws ServiceException {
 
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);
 

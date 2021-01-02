@@ -17,6 +17,7 @@
 package pers.lbf.yeju.authrestapi.interfaces.interfaces;
 
 import pers.lbf.yeju.authrestapi.interfaces.dto.SimpleAccountDTO;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 
 /**账户服务接口类
@@ -32,7 +33,7 @@ public interface IAccountService {
      * @param principal 抽象账户
      * @return account
      */
-    IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws RuntimeException;
+    IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws ServiceException;
 
     /**
      * 更新密码
@@ -40,5 +41,5 @@ public interface IAccountService {
      * @param newPassword 新密码
      * @throws RuntimeException e
      */
-    IResult<Boolean> updatePassword(String principal,String newPassword) throws RuntimeException;
+    IResult<Boolean> updatePassword(String principal,String newPassword) throws ServiceException;
 }

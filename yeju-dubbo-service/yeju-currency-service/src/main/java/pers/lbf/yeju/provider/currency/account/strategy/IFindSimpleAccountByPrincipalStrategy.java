@@ -17,6 +17,7 @@
 package pers.lbf.yeju.provider.currency.account.strategy;
 
 import pers.lbf.yeju.authrestapi.interfaces.dto.SimpleAccountDTO;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 
 /**查询账户信息策略接口
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -34,5 +35,5 @@ public interface IFindSimpleAccountByPrincipalStrategy {
      * @return SimpleAccountDTO
      * @throws RuntimeException e
      */
-    SimpleAccountDTO findSimpleAccountByPrincipal(String principal) throws RuntimeException;
+    SimpleAccountDTO findSimpleAccountByPrincipal(String principal) throws ServiceException;
 }

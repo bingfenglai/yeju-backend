@@ -32,7 +32,7 @@ import pers.lbf.yeju.provider.log.dao.LoginLogDao;
  * @date 2021/1/1 17:05
  */
 @DubboService(interfaceClass = ILoginLogService.class)
-public class AsynchronousLoginLogServiceImpl implements ILoginLogService {
+public class RemoteLoginLogServiceImpl implements ILoginLogService {
 
     @Autowired
     private LoginLogDao loginLogDao;

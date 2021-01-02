@@ -1,1 +1,1 @@
-java -jar yeju-auth-service-1.0.0.jar
+java -jar yeju-currency-service-1.0.0.jar

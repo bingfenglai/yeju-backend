@@ -2,4 +2,4 @@ spring:
   application:
     name: mq-server
 logging:
-  config: config/logback.xml
+  config: classpath:config/logback.xml

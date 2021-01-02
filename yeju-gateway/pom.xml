@@ -80,16 +80,9 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-auth-service-interfaces</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-redis-service-interfaces</artifactId>
             <version>1.0.0</version>
         </dependency>
 

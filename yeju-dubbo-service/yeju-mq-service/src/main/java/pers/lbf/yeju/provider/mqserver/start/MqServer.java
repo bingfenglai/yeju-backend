@@ -14,9 +14,10 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.mqserver.start;
+package pers.lbf.yeju.provider.mqserver.start;
 
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -27,9 +28,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Description TODO
  * @date 2020/12/15 10:31
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.mqserver")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider.mqserver")
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.mqserver.service")
 @EnableDiscoveryClient
+@EnableRabbit
 public class MqServer {
 
   public static void main(String[] args) {

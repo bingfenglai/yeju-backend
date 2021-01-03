@@ -1,2 +1,1 @@
-logPath = "../log/start.log"
-nohup java -jar yeju-gateway-1.0.0.jar --log.path=${logPath} &
+nohup java -Xms128m -Xmx192m -jar yeju-gateway-1.0.0.jar >> /app/yeju/yeju-gateway-1.0.0/log/start.log 2>&1 &

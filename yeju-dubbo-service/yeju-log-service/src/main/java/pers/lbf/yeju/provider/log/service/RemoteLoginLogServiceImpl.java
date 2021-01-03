@@ -19,6 +19,7 @@ package pers.lbf.yeju.provider.log.service;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.domain.entity.LoginLog;
 import pers.lbf.yeju.logserver.interfaces.ILoginLogService;
@@ -32,6 +33,7 @@ import pers.lbf.yeju.provider.log.dao.LoginLogDao;
  * @date 2021/1/1 17:05
  */
 @DubboService(interfaceClass = ILoginLogService.class)
+@Service
 public class RemoteLoginLogServiceImpl implements ILoginLogService {
 
     @Autowired

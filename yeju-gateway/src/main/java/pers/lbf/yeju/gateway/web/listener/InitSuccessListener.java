@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;
-import pers.lbf.yeju.gateway.config.RsaPrivateKeyConfig;
-import pers.lbf.yeju.gateway.config.RsaPublicKeyConfig;
-import pers.lbf.yeju.gateway.config.VerificationCodeConfig;
+import pers.lbf.yeju.gateway.config.*;
 
 /**成功时输出一些日志
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -32,6 +29,9 @@ public class InitSuccessListener implements ApplicationListener<WebServerInitial
     @Autowired
     private VerificationCodeConfig verificationCodeConfig;
 
+    @Autowired
+    private LoginLogMqExchangeConfig mqExchangeConfig;
+
     @Override
     public void onApplicationEvent(WebServerInitializedEvent event) {
         int port = event.getWebServer().getPort();
@@ -40,6 +40,8 @@ public class InitSuccessListener implements ApplicationListener<WebServerInitial
         log.info(rsaPrivateKeyConfig.toString());
         log.info(rsaPublicKeyConfig.toString());
         log.info(verificationCodeConfig.toString());
+        log.info("=================================");
+        log.info("消息中间件配置：{}",mqExchangeConfig.toString());
 
     }
 }

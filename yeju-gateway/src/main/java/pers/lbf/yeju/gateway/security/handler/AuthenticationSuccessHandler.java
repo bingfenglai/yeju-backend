@@ -35,8 +35,8 @@ import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.gateway.security.constant.TokenConstant;
 import pers.lbf.yeju.gateway.security.manager.AuthorizationTokenManager;
-import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
-import pers.lbf.yeju.gateway.security.pojo.LoginRepo;
+import pers.lbf.yeju.gateway.security.pojo.AuthorityInfoBean;
+import pers.lbf.yeju.gateway.security.pojo.LoginRepoBean;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -85,21 +85,21 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         logger.info(authentication.getPrincipal().toString());
 
 
-        AuthorityInfo authorityInfo = (AuthorityInfo) authentication.getPrincipal();
+        AuthorityInfoBean authorityInfoBean = (AuthorityInfoBean) authentication.getPrincipal();
 
 
         try {
 //            token = authorityManager.getAuthorityInfoToken(authorityInfo);
 //            httpHeaders.add("Authorization",tokenPrefix+token);
 //            result = SimpleResult.ok("登录成功");
-            token = authorityManager.getBuilder(authorityInfo, expires).build();
-            LoginRepo loginRepo = new LoginRepo();
-            loginRepo.setAccessToken(tokenPrefix+token);
-            loginRepo.setExpiresAt(expires);
-            result = Result.ok(loginRepo);
+            token = authorityManager.getBuilder(authorityInfoBean, expires).build();
+            LoginRepoBean loginRepoBean = new LoginRepoBean();
+            loginRepoBean.setAccessToken(tokenPrefix+token);
+            loginRepoBean.setExpiresAt(expires);
+            result = Result.ok(loginRepoBean);
 
         } catch (Exception e) {
-            logger.error("生成token发生错误，用户凭证：{}",authorityInfo.getPrincipal());
+            logger.error("生成token发生错误，用户凭证：{}", authorityInfoBean.getPrincipal());
             logger.error(Arrays.toString(e.getStackTrace()));
 
             result = SimpleResult.faild(AuthStatusEnum.GEN_TOKEN_FAIL);

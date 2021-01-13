@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
 import pers.lbf.yeju.gateway.config.RsaPrivateKeyConfig;
-import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
+import pers.lbf.yeju.gateway.security.pojo.AuthorityInfoBean;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -51,7 +51,7 @@ public class AuthorityInfoTokenBuilder {
     private Long expireAt;
 
 
-    private AuthorityInfo authorityInfo;
+    private AuthorityInfoBean authorityInfoBean;
 
 
 
@@ -60,38 +60,38 @@ public class AuthorityInfoTokenBuilder {
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2020/12/12 23:42
-     * @param authorityInfo 权限信息载体
+     * @param authorityInfoBean 权限信息载体
      * @return pers.lbf.yeju.gateway.security.pojo.AuthorityInfoToken
      * @throws Exception e
      */
     public  String build( @Valid @NotNull(message = "权限主体不能为null")
-                                  AuthorityInfo authorityInfo) throws Exception{
+                                  AuthorityInfoBean authorityInfoBean) throws Exception{
         logger.info("私钥路径 {}", rsaPrivateKeyConfig.getPath());
 
         String token;
         if (this.expireAt==null){
             this.expireAt = this.defaultExpiresAt;
         }
-        if (authorityInfo.getTimeUnit()==null||authorityInfo.getExpiration()==null){
+        if (authorityInfoBean.getTimeUnit()==null|| authorityInfoBean.getExpiration()==null){
             token = JwtUtils.generateTokenExpireInSeconds(
-                    authorityInfo, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
+                    authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                     Math.toIntExact(this.expireAt));
-            logger.info("账户 {} 生成token {}",authorityInfo.getPrincipal(),token!=null? "成功":"失败");
+            logger.info("账户 {} 生成token {}", authorityInfoBean.getPrincipal(),token!=null? "成功":"失败");
             return token;
         }
 
-        if (TimeUnit.SECONDS.equals(authorityInfo.getTimeUnit())){
+        if (TimeUnit.SECONDS.equals(authorityInfoBean.getTimeUnit())){
             token = JwtUtils.generateTokenExpireInSeconds(
-                    authorityInfo,RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
-                    authorityInfo.getExpiration());
-            logger.info("账户{}生成token成功：{}",authorityInfo.getPrincipal(),token);
+                    authorityInfoBean,RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
+                    authorityInfoBean.getExpiration());
+            logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(),token);
             return token;
         }
 
         token =  JwtUtils.generateTokenExpireInMinutes(
-            authorityInfo, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
-                authorityInfo.getExpiration());
-        logger.info("账户{}生成token成功：{}",authorityInfo.getPrincipal(),token);
+                authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
+                authorityInfoBean.getExpiration());
+        logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(),token);
         return token;
     }
 
@@ -115,11 +115,11 @@ public class AuthorityInfoTokenBuilder {
         this.expireAt = expireAt;
     }
 
-    public AuthorityInfo getAuthorityInfo() {
-        return authorityInfo;
+    public AuthorityInfoBean getAuthorityInfo() {
+        return authorityInfoBean;
     }
 
-    public void setAuthorityInfo(AuthorityInfo authorityInfo) {
-        this.authorityInfo = authorityInfo;
+    public void setAuthorityInfo(AuthorityInfoBean authorityInfoBean) {
+        this.authorityInfoBean = authorityInfoBean;
     }
 }

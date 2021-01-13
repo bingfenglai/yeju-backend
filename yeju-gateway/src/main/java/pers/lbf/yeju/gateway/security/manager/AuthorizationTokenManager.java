@@ -27,7 +27,7 @@ import pers.lbf.yeju.gateway.config.RsaPublicKeyConfig;
 import pers.lbf.yeju.gateway.exception.GatewayException;
 import pers.lbf.yeju.gateway.security.builder.AuthorityInfoTokenBuilder;
 import pers.lbf.yeju.gateway.security.constant.TokenConstant;
-import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
+import pers.lbf.yeju.gateway.security.pojo.AuthorityInfoBean;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -46,11 +46,11 @@ public class AuthorizationTokenManager {
     private AuthorityInfoTokenBuilder builder;
 
     @Deprecated
-    public String getAuthorityInfoToken(AuthorityInfo authorityInfo) throws Exception{
-        return builder.build(authorityInfo);
+    public String getAuthorityInfoToken(AuthorityInfoBean authorityInfoBean) throws Exception{
+        return builder.build(authorityInfoBean);
     }
 
-    public AuthorityInfo getAuthorityInfo(String authenticationToken) throws Exception {
+    public AuthorityInfoBean getAuthorityInfo(String authenticationToken) throws Exception {
 
         //判断token是否合法
         boolean flag = authenticationToken.startsWith(TokenConstant.getPrefixToken());
@@ -62,12 +62,12 @@ public class AuthorizationTokenManager {
         //获取真正的token
         String token = authenticationToken.substring(TokenConstant.getPrefixToken().length());
 
-        Payload<AuthorityInfo> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey(rsaPublicKeyConfig.getPath()), AuthorityInfo.class);
+        Payload<AuthorityInfoBean> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey(rsaPublicKeyConfig.getPath()), AuthorityInfoBean.class);
         return payload.getUserInfo();
     }
 
-    public AuthorityInfoTokenBuilder getBuilder(AuthorityInfo authorityInfo,Long expireAt) {
-        builder.setAuthorityInfo(authorityInfo);
+    public AuthorityInfoTokenBuilder getBuilder(AuthorityInfoBean authorityInfoBean, Long expireAt) {
+        builder.setAuthorityInfo(authorityInfoBean);
         builder.setExpireAt(expireAt);
         return builder;
     }

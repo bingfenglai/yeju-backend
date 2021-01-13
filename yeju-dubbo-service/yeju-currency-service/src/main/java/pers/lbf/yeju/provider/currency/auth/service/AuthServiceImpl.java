@@ -1,10 +1,10 @@
 package pers.lbf.yeju.provider.currency.auth.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
-import pers.lbf.yeju.authrestapi.interfaces.interfaces.IAuthService;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.domain.entity.Account;
+import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IAuthService;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com

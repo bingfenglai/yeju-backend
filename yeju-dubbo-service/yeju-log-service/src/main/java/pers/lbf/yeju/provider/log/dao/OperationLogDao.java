@@ -23,7 +23,7 @@ import pers.lbf.yeju.common.domain.entity.OperationLog;
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2021/1/1 19:21
+ * @date 2021/1/13 21:26
  */
 public interface OperationLogDao extends BaseMapper<OperationLog> {
 }

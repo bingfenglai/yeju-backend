@@ -54,12 +54,12 @@ public class LoginLogSender {
          */
         @Override
         public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-            System.err.println("correlationData: " + correlationData);
-            System.err.println("ack: " + ack);
-            if(!ack){
-                //做一些补偿机制等
-                System.err.println("异常处理....");
 
+            log.info("correlationData: {}",correlationData);
+            log.info("isAck: {}",ack);
+            if(!ack){
+                String id = correlationData.getId();
+                log.info("消息 {} 处理失败", id);
             }
         }
     };
@@ -71,8 +71,18 @@ public class LoginLogSender {
         log.info("replyText: {}",replyText);
       };
 
-    //发送消息方法调用: 构建Message消息
+    /**
+     * 消息发送方法
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/1/13 20:19
+     * @param message 消息对象
+     * @param properties 消息信息存储结构
+     * @return void
+     * @throws RuntimeException e
+     */
     public void send(Object message, Map<String, Object> properties) throws RuntimeException {
+
         MessageHeaders messageHeaders = new MessageHeaders(properties);
         //注意导包
         Message<Object> msg = MessageBuilder.createMessage(message, messageHeaders);

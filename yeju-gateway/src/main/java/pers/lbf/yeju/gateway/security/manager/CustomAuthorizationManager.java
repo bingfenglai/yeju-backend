@@ -31,7 +31,7 @@ import org.springframework.util.AntPathMatcher;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.gateway.exception.GatewayException;
-import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
+import pers.lbf.yeju.gateway.security.pojo.AuthorityInfoBean;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -63,23 +63,23 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
             throw new GatewayException(AuthStatusEnum.NO_TOKEN);
         }
 
-        AuthorityInfo authorityInfo = null;
+        AuthorityInfoBean authorityInfoBean = null;
         try {
-             authorityInfo = tokenManager.getAuthorityInfo(token);
+             authorityInfoBean = tokenManager.getAuthorityInfo(token);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (authorityInfo == null){
+        if (authorityInfoBean == null){
             throw new GatewayException(AuthStatusEnum.tokenHasExpired);
         }
 
-        List<String> authorityList = authorityInfo.getAuthorityList();
+        List<String> authorityList = authorityInfoBean.getAuthorityList();
 //        authorityList = new ArrayList<>();
 //        authorityList.add("*:**");
-        log.info("开始对用户 {} 鉴权",authorityInfo.getPrincipal());
+        log.info("开始对用户 {} 鉴权", authorityInfoBean.getPrincipal());
         if (authorityList == null || authorityList.size() == 0) {
-            log.info("用户 {} 请求API校验 未通过",authorityInfo.getPrincipal());
+            log.info("用户 {} 请求API校验 未通过", authorityInfoBean.getPrincipal());
             throw new GatewayException(AuthStatusEnum.unauthorized);
         }
 
@@ -92,7 +92,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
             }
 
         }
-        log.info("用户 {} 请求API校验通过",authorityInfo.getPrincipal());
+        log.info("用户 {} 请求API校验通过", authorityInfoBean.getPrincipal());
         return Mono.just(new AuthorizationDecision(true));
 
 

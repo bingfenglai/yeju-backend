@@ -19,11 +19,9 @@ package pers.lbf.yeju.provider.log.start;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import pers.lbf.yeju.provider.log.config.LoginLogMqConfig;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -38,8 +36,6 @@ import pers.lbf.yeju.provider.log.config.LoginLogMqConfig;
 @Slf4j
 public class LogApplication {
 
-  @Autowired
-  private  LoginLogMqConfig config;
 
   public static void main(String[] args) {
     SpringApplication.run(LogApplication.class,args);

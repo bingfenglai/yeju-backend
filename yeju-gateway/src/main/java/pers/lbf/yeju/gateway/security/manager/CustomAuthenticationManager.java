@@ -27,15 +27,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.authrestapi.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.gateway.config.VerificationCodeConfig;
 import pers.lbf.yeju.gateway.exception.GatewayException;
 import pers.lbf.yeju.gateway.security.enums.LoginWay;
 import pers.lbf.yeju.gateway.security.pojo.AuthenticationToken;
-import pers.lbf.yeju.gateway.security.pojo.AuthorityInfo;
+import pers.lbf.yeju.gateway.security.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.gateway.security.pojo.LoginRequestToken;
 import pers.lbf.yeju.gateway.security.service.CustomUserDetailsServiceImpl;
 import pers.lbf.yeju.logserver.interfaces.ILoginLogService;
@@ -162,11 +162,11 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
             }
 
             log.info("开始对用户 {} 授权", userDetails.getUsername());
-            Mono<AuthorityInfo> authorityInfoMono = getAuthorityInfo(account);
+            Mono<AuthorityInfoBean> authorityInfoMono = getAuthorityInfo(account);
 
 
 
-            AuthorityInfo info = authorityInfoMono.block(Duration.ofSeconds(3));
+            AuthorityInfoBean info = authorityInfoMono.block(Duration.ofSeconds(3));
             AuthenticationToken authenticationToken = new AuthenticationToken(info, credentials);
             authenticationToken.setDetails(info);
 
@@ -185,11 +185,11 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 //            }
 
 
-            Mono<AuthorityInfo> authorityInfoMono = getAuthorityInfo(account);
+            Mono<AuthorityInfoBean> authorityInfoMono = getAuthorityInfo(account);
 
-            AuthorityInfo authorityInfo = authorityInfoMono.block();
+            AuthorityInfoBean authorityInfoBean = authorityInfoMono.block();
 
-            AuthenticationToken authenticationToken = new AuthenticationToken(authorityInfo, credentials);
+            AuthenticationToken authenticationToken = new AuthenticationToken(authorityInfoBean, credentials);
 
             return Mono.just(authenticationToken);
         }
@@ -216,13 +216,13 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
      * @param username
      * @return
      */
-    private Mono<AuthorityInfo> getAuthorityInfo(String username){
+    private Mono<AuthorityInfoBean> getAuthorityInfo(String username){
         Mono<UserDetails> userDetailsMono = userDetailsService.findByUsername(username);
 
         UserDetails userDetails = userDetailsMono.block(Duration.ofSeconds(3));
 
         assert userDetails != null;
-        AuthorityInfo info = getAuthorityInfoByUserDetails(userDetails);
+        AuthorityInfoBean info = getAuthorityInfoByUserDetails(userDetails);
 
         return Mono.just(info);
 
@@ -230,8 +230,8 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 
     }
 
-    private AuthorityInfo getAuthorityInfoByUserDetails(UserDetails userDetails){
-        AuthorityInfo info = new AuthorityInfo();
+    private AuthorityInfoBean getAuthorityInfoByUserDetails(UserDetails userDetails){
+        AuthorityInfoBean info = new AuthorityInfoBean();
 
         info.setPrincipal(userDetails.getUsername());
 

@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pers.lbf.yeju.authrestapi.interfaces.dto.VerityDTO;
-import pers.lbf.yeju.authrestapi.interfaces.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.authrestapi.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.VerityDTO;
+import pers.lbf.yeju.consumer.authrestapi.interfaces.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IVerificationCodeService;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;

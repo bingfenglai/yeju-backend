@@ -22,9 +22,10 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.consumer.base.log.message.sender.OperationLogMessageSender;
+import pers.lbf.yeju.logserver.interfaces.dto.AddOperationLogDTO;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -37,7 +38,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LogAspect {
 
-    private  final Logger logger = LoggerFactory.getLogger(LogAspect.class);
+    @Autowired
+    private OperationLogMessageSender sender;
 
 
     /**
@@ -69,11 +71,16 @@ public class LogAspect {
 
     /**
      * 日志处理逻辑
-     * @param joinPoint
-     * @param object
+     * @param joinPoint 切入点
+     * @param object 方法执行返回值
      */
     public void handle(JoinPoint joinPoint, Object object){
         log.info(joinPoint.toString());
+        log.info(object.toString());
+        AddOperationLogDTO operationLogDTO = new AddOperationLogDTO();
+        operationLogDTO.setResult(object.toString());
+
+        sender.send(operationLogDTO,null);
     }
 
     /**
@@ -82,7 +89,12 @@ public class LogAspect {
      * @param e
      */
     public void handle(JoinPoint joinPoint, Exception e) {
-        log.warn(joinPoint.toString());
 
+        log.info("开始处理操作日志");
+        LogAspect.log.warn(joinPoint.toString());
+        AddOperationLogDTO operationLogDTO = new AddOperationLogDTO();
+        operationLogDTO.setErrorMessage(e.getMessage());
+
+        sender.send(operationLogDTO,null);
     }
 }

@@ -37,6 +37,7 @@ public class AsyncLoginLogServiceImpl {
     @DubboReference
     private ILoginLogService loginLogService;
 
+    @Deprecated
     @Async
     public void addLog(AddLoginLogDTO loginLogDTO) throws ServiceException {
         if (loginLogDTO==null){

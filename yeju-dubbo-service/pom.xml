@@ -11,7 +11,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>yeju-currency-service</module>
-        <module>yeju-redis-service</module>
         <module>yeju-sms-service</module>
         <module>yeju-mq-service</module>
         <module>yeju-customer-service</module>

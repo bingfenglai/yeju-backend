@@ -137,7 +137,11 @@ public class NativeRedisServiceImpl implements IRedisService {
     @Override
     public <T> Long addCacheList(String key, List<T> dataList) throws Exception {
         Long count = redisTemplate.opsForList().rightPush(key, dataList);
-        return count==null ? 0L : count;
+        if (count==null){
+            log.warn("redis 添加list 失败");
+            return 0L;
+        }
+        return count;
     }
 
     /**
@@ -162,7 +166,11 @@ public class NativeRedisServiceImpl implements IRedisService {
     @Override
     public <T> long addCacheSet(String key, Set<T> dataSet) throws Exception {
         Long count = redisTemplate.opsForSet().add(key, dataSet);
-        return count==null ? 0 : count;
+        if (count==null){
+            log.warn("redis 添加list 失败");
+            return 0L;
+        }
+        return count;
     }
 
     /**

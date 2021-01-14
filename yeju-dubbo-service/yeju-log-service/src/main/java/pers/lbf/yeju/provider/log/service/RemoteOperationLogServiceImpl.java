@@ -16,8 +16,10 @@
  */
 package pers.lbf.yeju.provider.log.service;
 
+import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.domain.entity.OperationLog;
@@ -25,24 +27,28 @@ import pers.lbf.yeju.logserver.interfaces.IOperationLogService;
 import pers.lbf.yeju.logserver.interfaces.dto.AddOperationLogDTO;
 import pers.lbf.yeju.provider.log.dao.OperationLogDao;
 
-/**
+/**操作日志服务
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2021/1/13 21:16
+ * @date 2021/1/1 19:19
  */
 @Service
-public class OperationLogServiceImpl implements IOperationLogService {
+@DubboService(interfaceClass = IOperationLogService.class)
+public class RemoteOperationLogServiceImpl implements IOperationLogService {
     
     @Autowired
     private OperationLogDao operationLogDao;
     
     @Override
-    public void addOperationLog(AddOperationLogDTO operationLogDTO) throws ServiceException {
+    public void addOperationLog( @Validated AddOperationLogDTO operationLogDTO) throws ServiceException {
+        
         if (operationLogDTO==null){
             throw new ServiceException(ParameStatusEnum.Parameter_cannot_be_empty);
         }
+
         OperationLog operationLog = new OperationLog();
+        
         operationLog.setTitle(operationLogDTO.getTitle());
         operationLog.setBusinessType(operationLogDTO.getBusinessType());
         operationLog.setMethod(operationLogDTO.getMethod());
@@ -59,8 +65,7 @@ public class OperationLogServiceImpl implements IOperationLogService {
         operationLog.setErrorMessage(operationLogDTO.getErrorMessage());
         operationLog.setOperationTime(operationLogDTO.getOperationTime());
         operationLog.setLastIpNumber(operationLogDTO.getLastIpNumber());
-        operationLog.setOperatorId(operationLogDTO.getOperatorId());
-
+        
         operationLogDao.insert(operationLog);
         
     }

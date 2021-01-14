@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.currency.log.service;
+package pers.lbf.yeju.provider.log.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.domain.entity.LoginLog;
 import pers.lbf.yeju.logserver.interfaces.ILoginLogService;
 import pers.lbf.yeju.logserver.interfaces.dto.AddLoginLogDTO;
-import pers.lbf.yeju.provider.currency.log.dao.LoginLogDao;
+import pers.lbf.yeju.provider.log.dao.LoginLogDao;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com

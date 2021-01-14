@@ -17,7 +17,12 @@
 package pers.lbf.yeju.consumer.currency.platform.employ.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.consumer.currency.platform.employ.pojo.vo.EmployInfoVO;
+import reactor.core.publisher.Mono;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -28,4 +33,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/employ")
 public class EmployController {
+
+
+    @GetMapping("/getInfoByAccount/{account}")
+    public Mono<IResult<EmployInfoVO>> getEmployInfoByAccount(@PathVariable String account){
+
+        return Mono.empty();
+    }
 }

@@ -14,17 +14,16 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.currency.log.dao;
+package pers.lbf.yeju.consumer.currency.platform.employ.pojo.vo;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.LoginLog;
+import java.io.Serializable;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/29 11:30
+ * @date 2021/1/14 16:54
  */
+public class EmployInfoVO implements Serializable {
 
-public interface LoginLogDao extends BaseMapper<LoginLog> {
 }

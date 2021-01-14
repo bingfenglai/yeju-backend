@@ -1,1 +1,0 @@
-java -jar yeju-redis-service-1.0.0.jar

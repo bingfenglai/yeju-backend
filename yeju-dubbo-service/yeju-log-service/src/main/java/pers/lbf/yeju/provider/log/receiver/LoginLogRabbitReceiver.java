@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.currency.log.receiver;
+package pers.lbf.yeju.provider.log.receiver;
 
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;

@@ -14,16 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.currency.log.dao;
+package pers.lbf.yeju.provider.log.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.OperationLog;
+import pers.lbf.yeju.common.domain.entity.LoginLog;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2021/1/1 19:21
+ * @date 2020/12/29 11:30
  */
-public interface OperationLogDao extends BaseMapper<OperationLog> {
+
+public interface LoginLogDao extends BaseMapper<LoginLog> {
 }

@@ -2,7 +2,7 @@ package pers.lbf.yeju.provider.currency.account.service;
 
 
 import org.apache.dubbo.config.annotation.DubboService;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IAccountResourcesService;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountResourcesService;
 
 
 /**

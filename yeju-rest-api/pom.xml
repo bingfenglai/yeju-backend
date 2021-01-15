@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>yeju-auth-rest-api</module>
+
         <module>yeju-currency-rest-api</module>
     </modules>
 

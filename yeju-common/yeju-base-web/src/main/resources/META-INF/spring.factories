@@ -10,7 +10,9 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   pers.lbf.yeju.consumer.base.log.service.AsyncLoginLogServiceImpl,\
   pers.lbf.yeju.consumer.base.log.service.AsyncOperationLogServiceImpl,\
   pers.lbf.yeju.consumer.base.log.message.sender.OperationLogMessageSender,\
-  pers.lbf.yeju.consumer.base.log.message.config.OperationLogMqExchangeConfig
+  pers.lbf.yeju.consumer.base.log.message.config.OperationLogMqExchangeConfig,\
+  pers.lbf.yeju.consumer.config.swagger.SwaggerConfiguration,\
+  pers.lbf.yeju.consumer.config.swagger.SwaggerPropertiesConfig
 
 
   

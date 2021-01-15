@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
+import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 import java.util.Collection;
 import java.util.List;

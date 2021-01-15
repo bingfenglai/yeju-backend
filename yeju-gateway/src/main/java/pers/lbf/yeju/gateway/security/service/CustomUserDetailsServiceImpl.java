@@ -26,9 +26,9 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.SimpleAccountDTO;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IAccountService;
 import pers.lbf.yeju.gateway.pojo.SubjectDetails;
+import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;

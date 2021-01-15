@@ -18,7 +18,7 @@ package pers.lbf.yeju.consumer.base.log.service;
 
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Service;
-import pers.lbf.yeju.logserver.interfaces.IOperationLogService;
+import pers.lbf.yeju.service.interfaces.log.IOperationLogService;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com

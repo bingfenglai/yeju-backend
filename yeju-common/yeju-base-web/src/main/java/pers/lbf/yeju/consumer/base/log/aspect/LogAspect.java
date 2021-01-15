@@ -25,7 +25,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pers.lbf.yeju.consumer.base.log.message.sender.OperationLogMessageSender;
-import pers.lbf.yeju.logserver.interfaces.dto.AddOperationLogDTO;
+import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -77,7 +77,7 @@ public class LogAspect {
     public void handle(JoinPoint joinPoint, Object object){
         log.info(joinPoint.toString());
         log.info(object.toString());
-        AddOperationLogDTO operationLogDTO = new AddOperationLogDTO();
+        AddOperationLogRequestBean operationLogDTO = new AddOperationLogRequestBean();
         operationLogDTO.setResult(object.toString());
 
         sender.send(operationLogDTO,null);
@@ -92,7 +92,7 @@ public class LogAspect {
 
         log.info("开始处理操作日志");
         LogAspect.log.warn(joinPoint.toString());
-        AddOperationLogDTO operationLogDTO = new AddOperationLogDTO();
+        AddOperationLogRequestBean operationLogDTO = new AddOperationLogRequestBean();
         operationLogDTO.setErrorMessage(e.getMessage());
 
         sender.send(operationLogDTO,null);

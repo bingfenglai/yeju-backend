@@ -21,11 +21,11 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.VerityDTO;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.enums.VerificationCodeTypeEnum;
 import pers.lbf.yeju.provider.currency.start.YejuCurrencyServiceProviderApplication;
 import pers.lbf.yeju.provider.currency.verification.manager.CaptchaGenerateManager;
-import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
+import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
+import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com

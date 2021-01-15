@@ -22,7 +22,7 @@ import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
 import pers.lbf.yeju.common.domain.entity.Account;
 import pers.lbf.yeju.common.util.YejuStringUtils;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.SimpleAccountDTO;
+import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
 import pers.lbf.yeju.provider.currency.account.dao.IAccountDao;
 import pers.lbf.yeju.provider.currency.account.strategy.IFindSimpleAccountByPrincipalStrategy;
 import pers.lbf.yeju.provider.currency.resource.dao.IResourcesDao;

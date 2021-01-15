@@ -2,7 +2,7 @@ package pers.lbf.yeju.provider.currency.resource.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IResourcesService;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
 
 import java.util.ArrayList;
 

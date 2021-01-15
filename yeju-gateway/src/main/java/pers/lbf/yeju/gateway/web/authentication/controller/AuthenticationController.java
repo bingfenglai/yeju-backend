@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.VerityDTO;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IVerificationCodeService;
+import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
+import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;

@@ -1,7 +1,6 @@
-
 spring:
   application:
-    name: authServer
+    name: currency-provider
 logging:
   config: classpath:config/logback.xml
 

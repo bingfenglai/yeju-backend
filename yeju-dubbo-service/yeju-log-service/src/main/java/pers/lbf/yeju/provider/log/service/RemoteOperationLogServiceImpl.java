@@ -23,9 +23,9 @@ import org.springframework.validation.annotation.Validated;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.domain.entity.OperationLog;
-import pers.lbf.yeju.logserver.interfaces.IOperationLogService;
-import pers.lbf.yeju.logserver.interfaces.dto.AddOperationLogDTO;
 import pers.lbf.yeju.provider.log.dao.OperationLogDao;
+import pers.lbf.yeju.service.interfaces.log.IOperationLogService;
+import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
 
 /**操作日志服务
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -41,7 +41,7 @@ public class RemoteOperationLogServiceImpl implements IOperationLogService {
     private OperationLogDao operationLogDao;
     
     @Override
-    public void addOperationLog( @Validated AddOperationLogDTO operationLogDTO) throws ServiceException {
+    public void addOperationLog( @Validated AddOperationLogRequestBean operationLogDTO) throws ServiceException {
         
         if (operationLogDTO==null){
             throw new ServiceException(ParameStatusEnum.Parameter_cannot_be_empty);

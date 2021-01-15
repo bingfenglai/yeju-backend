@@ -22,9 +22,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.domain.entity.LoginLog;
-import pers.lbf.yeju.logserver.interfaces.ILoginLogService;
-import pers.lbf.yeju.logserver.interfaces.dto.AddLoginLogDTO;
 import pers.lbf.yeju.provider.log.dao.LoginLogDao;
+import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
+import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -41,7 +41,7 @@ public class RemoteLoginLogServiceImpl implements ILoginLogService {
 
     @Override
     @Async
-    public void addLog(AddLoginLogDTO loginLogDTO) throws ServiceException {
+    public void addLog(AddLoginLogRequestBean loginLogDTO) throws ServiceException {
         LoginLog loginLog = new LoginLog();
 
         loginLog.setAccount(loginLogDTO.getAccount());

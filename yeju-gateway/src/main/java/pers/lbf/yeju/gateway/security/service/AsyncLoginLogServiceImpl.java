@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.gateway.message.LoginLogSender;
-import pers.lbf.yeju.logserver.interfaces.ILoginLogService;
-import pers.lbf.yeju.logserver.interfaces.dto.AddLoginLogDTO;
+import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
+import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
 
 /**异步登录日志服务
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -45,7 +45,7 @@ public class AsyncLoginLogServiceImpl implements ILoginLogService {
 
     @Async
     @Override
-    public void addLog(AddLoginLogDTO loginLogDTO) throws ServiceException {
+    public void addLog(AddLoginLogRequestBean loginLogDTO) throws ServiceException {
         if (loginLogDTO==null){
             throw new ServiceException(ParameStatusEnum.Parameter_cannot_be_empty);
         }

@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-
+        <module>yeju-customer-service-interfaces</module>
         <module>yeju-auth-service-interfaces</module>
         <module>yeju-redis-service-interfaces</module>
         <module>yeju-sms-service-interfaces</module>

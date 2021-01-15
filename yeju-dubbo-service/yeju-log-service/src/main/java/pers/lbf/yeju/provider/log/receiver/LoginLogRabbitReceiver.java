@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.logserver.interfaces.ILoginLogService;
-import pers.lbf.yeju.logserver.interfaces.dto.AddLoginLogDTO;
+import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
+import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
 
 import java.util.Map;
 
@@ -53,7 +53,7 @@ public class LoginLogRabbitReceiver {
     )
     )
     @RabbitHandler
-    public void onOrderMessage(@Payload AddLoginLogDTO loginDTO,
+    public void messageHandler(@Payload AddLoginLogRequestBean loginDTO,
                                Channel channel,
                                @Headers Map<String, Object> headers) throws Exception {
 

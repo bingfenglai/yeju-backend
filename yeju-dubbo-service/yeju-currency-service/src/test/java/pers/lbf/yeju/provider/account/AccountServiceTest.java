@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.SimpleAccountDTO;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IAccountService;
+import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import pers.lbf.yeju.provider.currency.start.YejuCurrencyServiceProviderApplication;
 
 /**

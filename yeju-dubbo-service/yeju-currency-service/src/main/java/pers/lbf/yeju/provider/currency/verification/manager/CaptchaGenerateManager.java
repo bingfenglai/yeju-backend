@@ -20,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.VerityDTO;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.enums.VerificationCodeTypeEnum;
 import pers.lbf.yeju.provider.currency.verification.config.EasyCaptchaConfig;
 import pers.lbf.yeju.provider.currency.verification.constant.VerificationConstant;
 import pers.lbf.yeju.provider.currency.verification.strategy.ICaptchaGenerateStrategy;
@@ -29,7 +27,9 @@ import pers.lbf.yeju.provider.currency.verification.strategy.impl.ImageCaptchaCo
 import pers.lbf.yeju.provider.currency.verification.strategy.impl.MapImageCapchaCodeGenerateStrategy;
 import pers.lbf.yeju.provider.currency.verification.strategy.impl.MapNumberCaptchaCodeGenerateStrategy;
 import pers.lbf.yeju.provider.currency.verification.strategy.impl.NumberCaptchaCodeGenerateStrategy;
-import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
+import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
+import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 import java.util.Map;
 import java.util.UUID;

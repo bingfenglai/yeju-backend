@@ -16,10 +16,10 @@
  */
 package pers.lbf.yeju.consumer.currency.platform.employ.web.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.consumer.currency.platform.employ.pojo.vo.EmployInfoVO;
 import reactor.core.publisher.Mono;
@@ -30,14 +30,14 @@ import reactor.core.publisher.Mono;
  * @Description TODO
  * @date 2020/12/30 16:06
  */
-@Controller
+@RestController
 @RequestMapping("/employ")
 public class EmployController {
 
-
     @GetMapping("/getInfoByAccount/{account}")
     public Mono<IResult<EmployInfoVO>> getEmployInfoByAccount(@PathVariable String account){
-
         return Mono.empty();
     }
+
+
 }

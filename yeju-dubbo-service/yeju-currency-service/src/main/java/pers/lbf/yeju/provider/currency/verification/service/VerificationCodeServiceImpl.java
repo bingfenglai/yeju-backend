@@ -23,13 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.dto.VerityDTO;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.consumer.authrestapi.interfaces.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.provider.currency.verification.config.EasyCaptchaConfig;
 import pers.lbf.yeju.provider.currency.verification.enums.VerificationCodeStatusEnum;
 import pers.lbf.yeju.provider.currency.verification.manager.CaptchaGenerateManager;
-import pers.lbf.yeju.redisserver.service.interfaces.IRedisService;
+import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
+import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
+import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
+FROM openjdk18-openshift:latest
 USER root
 ADD ./dist/yeju-gateway-1.0.0.jar /data/yeju-gateway-1.0.0.jar
 COPY ./bin/config/ /data/config

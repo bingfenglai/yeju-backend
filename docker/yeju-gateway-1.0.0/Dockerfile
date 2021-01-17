@@ -1,4 +1,4 @@
-FROM openjdk18-openshift:latest
+FROM onedata-docker.pkg.coding.net/yeju/docker_repo/openjdk18-openshift
 USER root
 ADD ./dist/yeju-gateway-1.0.0.jar /data/yeju-gateway-1.0.0.jar
 COPY ./bin/config/ /data/config

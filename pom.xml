@@ -18,10 +18,11 @@
 
     <modules>
         <module>yeju-common</module>
-        <module>yeju-gateway</module>
         <module>yeju-dubbo-service-interfaces</module>
-        <module>yeju-dubbo-service</module>
+        <module>yeju-service-provider</module>
         <module>yeju-rest-api</module>
+        <module>yeju-gateway</module>
+
     </modules>
 
     <properties>

@@ -1,0 +1,1 @@
+docker run -p 81:81 --name yeju_consumer -d yeju/docker_repo/yeju-all-rest-api:1.0.0

@@ -7,15 +7,15 @@
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>yeju-rest-api</artifactId>
 
     <packaging>pom</packaging>
-
     <modules>
-
-        <module>yeju-all-rest-api</module>
+        <module>yeju-all-service-provider</module>
+        <module>yeju-log-service-provider</module>
     </modules>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>yeju-dubbo-service</artifactId>
+
 
 </project>

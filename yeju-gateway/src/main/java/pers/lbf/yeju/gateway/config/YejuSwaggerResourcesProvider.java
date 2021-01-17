@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * TODO
+ * TODO 有个bug,gateway先启动，获取不到api doc
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/1/15 17:20
@@ -79,6 +79,8 @@ public class YejuSwaggerResourcesProvider implements SwaggerResourcesProvider {
         routeHosts.forEach(instance -> {
             // 拼接url
             String url =  "/" + instance.toLowerCase() + SWAGGER2URL;
+            log.info("==================开始获取api doc====================");
+            log.info("获取api doc {}",url);
             if (!dealed.contains(url)) {
                 dealed.add(url);
                 SwaggerResource swaggerResource = new SwaggerResource();

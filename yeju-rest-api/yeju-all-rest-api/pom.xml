@@ -3,114 +3,41 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>yeju</artifactId>
+        <artifactId>yeju-rest-api</artifactId>
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <artifactId>yeju-all-rest-api</artifactId>
 
-    <artifactId>yeju-gateway</artifactId>
 
     <properties>
-        <mainClassName>pers.lbf.yeju.gateway.start.YejuGatewayApp</mainClassName>
-        <profile.id.prod>prod</profile.id.prod>
+        <mainClassName>pers.lbf.yeju.consumer.start.YejuConsumerApplication</mainClassName>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
-<!--    服务网关-->
     <dependencies>
 
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-base-web</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
 
-        <!--            dubbo 依赖 服务调用-->
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>${dubbo.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!--            服务配置中心-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <version>${spring-cloud-alibaba.version}</version>
-        </dependency>
-
-        <!--            服务发现-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>${spring-cloud-alibaba.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-common-util</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-common-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-auth-service-interfaces</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-log-service-interfaces</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
-
-
     </dependencies>
 
 
     <profiles>
-<!--        开发测试环境打包-->
+        <!--        开发测试环境打包-->
         <profile>
             <id>dev</id>
             <activation>
@@ -136,7 +63,7 @@
 
         </profile>
 
-<!--        生产环境打包-->
+        <!--        生产环境打包-->
         <profile>
             <id>prod</id>
             <build>
@@ -148,7 +75,7 @@
                         <version>1.0.0</version>
                         <configuration>
                             <imageName>${project.groupId}/${project.artifactId}</imageName>
-                            <dockerDirectory>/docker</dockerDirectory>
+                            <dockerDirectory>../docker</dockerDirectory>
                             <resources>
                                 <resource>
                                     <targetPath>/</targetPath>
@@ -205,14 +132,14 @@
                                 </goals>
                                 <configuration>
                                     <outputDirectory>
-                                        ../docker/${project.build.finalName}/lib
+                                        ../../docker/${project.build.finalName}/lib
                                     </outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
 
-                                <!--            迁移到一个统一的目录-->
+                    <!--            迁移到一个统一的目录-->
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <executions>
@@ -221,42 +148,38 @@
                                 <configuration>
                                     <tasks>
                                         <!--                                拷贝可执行文件-->
-                                        <copy todir="../docker/${project.build.finalName}/dist"
+                                        <copy todir="../../docker/${project.build.finalName}/dist"
                                               file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
                                         <!--                                拷贝执行脚本-->
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../../docker/${project.build.finalName}/"
                                               file="script/dockerBuild.sh"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../../docker/${project.build.finalName}/"
                                               file="script/dockerBuild.cmd"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../../docker/${project.build.finalName}/"
                                               file="script/Dockerfile"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin"
+                                        <copy todir="../../docker/${project.build.finalName}/bin"
                                               file="script/start.cmd"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin"
+                                        <copy todir="../../docker/${project.build.finalName}/bin"
                                               file="script/start.sh"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../../docker/${project.build.finalName}/"
                                               file="script/dockerRun.cmd"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../../docker/${project.build.finalName}/"
                                               file="script/dockerRun.sh"/>
 
                                         <!--                                拷贝配置文件-->
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
+                                        <copy todir="../../docker/${project.build.finalName}/bin/config"
                                               file="src/main/resources/application.yml"/>
 
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
-                                              file="src/main/resources/application-${profile.id.prod}.yml"/>
+                                        <copy todir="../../docker/${project.build.finalName}/bin/config"
+                                              file="src/main/resources/application-prod.yml"/>
 
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
+                                        <copy todir="../../docker/${project.build.finalName}/bin/config"
                                               file="src/main/resources/bootstrap.properties"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
-                                              file="src/main/resources/bootstrap-${profile.id.prod}.properties"/>
-
-<!--                                        拷贝密钥文件-->
+                                        <copy todir="../../docker/${project.build.finalName}/bin/config"
+                                              file="src/main/resources/bootstrap-prod.properties"/>
+                                        <!--                                        拷贝密钥文件-->
                                         <copy todir="../docker/${project.build.finalName}/bin"
                                               file="src/main/resources/publicKey.txt"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin"
-                                              file="src/main/resources/privateKey.txt"/>
-
                                     </tasks>
                                 </configuration>
                                 <goals>
@@ -274,6 +197,7 @@
                         <directory>src/main/resources</directory>
                         <includes>
                             <include>config/logback.xml</include>
+                            <include>publicKey.txt</include>
                         </includes>
                         <excludes>
                             <exclude>**/*.properties</exclude>
@@ -286,7 +210,5 @@
         </profile>
 
     </profiles>
-
-
 
 </project>

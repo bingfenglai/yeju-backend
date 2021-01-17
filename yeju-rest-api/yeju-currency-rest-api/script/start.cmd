@@ -1,1 +1,0 @@
-java -Xms128m -Xmx192m -jar yeju-currency-rest-api-1.0.0.jar

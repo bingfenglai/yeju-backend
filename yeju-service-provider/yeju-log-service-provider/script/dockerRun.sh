@@ -1,0 +1,1 @@
+docker run -p 81:81 --name yeju_provider -d yeju/docker_repo/yeju-log-service-provider:1.0.0

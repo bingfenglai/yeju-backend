@@ -1,0 +1,1 @@
+docker build -t yeju/docker_repo/yeju-log-service-provider:1.0.0 -f Dockerfile .

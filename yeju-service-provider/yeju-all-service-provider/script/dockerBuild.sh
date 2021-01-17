@@ -1,0 +1,1 @@
+docker build -t yeju/docker_repo/yeju-all-service-provider:1.0.0 -f Dockerfile .

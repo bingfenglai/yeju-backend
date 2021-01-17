@@ -1,1 +1,1 @@
-java -jar yeju-gateway-1.0.0.jar
+java -Xms128m -Xmx256m -jar ../dist/yeju-gateway-1.0.0.jar

@@ -460,6 +460,7 @@
      如果后面的仓库都找不到，会去setting.xml中央仓库里找
       -->
     <repositories>
+
         <!-- 阿里云仓库,配置Maven仓库，速度快配置在最前面 -->
         <repository>
             <id>aliyun</id>
@@ -493,6 +494,14 @@
             <properties>
                 <profileActive>dev</profileActive>
             </properties>
+            <distributionManagement>
+                <repository>
+                    <!--必须与 settings.xml 的 id 一致-->
+                    <id>onedata-yeju-maven_repo</id>
+                    <name>maven_repo</name>
+                    <url>https://onedata-maven.pkg.coding.net/repository/yeju/maven_repo/</url>
+                </repository>
+            </distributionManagement>
             <!--	默认激活的环境		-->
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -506,8 +515,23 @@
             </properties>
         </profile>
         <profile>
-            <!--	生产环境		-->
+            <!--	软件包生产环境		-->
             <id>prod</id>
+            <properties>
+                <profileActive>prod</profileActive>
+            </properties>
+            <distributionManagement>
+                <repository>
+                    <!--必须与 settings.xml 的 id 一致-->
+                    <id>onedata-yeju-maven_repo</id>
+                    <name>maven_repo</name>
+                    <url>https://onedata-maven.pkg.coding.net/repository/yeju/maven_repo/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+
+        <profile>
+            <id>images-prod</id>
             <properties>
                 <profileActive>prod</profileActive>
             </properties>

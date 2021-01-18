@@ -136,9 +136,145 @@
 
         </profile>
 
-<!--        生产环境打包-->
+<!--       软件包 生产环境打包-->
         <profile>
             <id>prod</id>
+            <properties>
+                <dist.rootPath>./dist/software</dist.rootPath>
+            </properties>
+            <build>
+                <plugins>
+                    <!--            docker 打包-->
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>1.0.0</version>
+                        <configuration>
+                            <imageName>${project.groupId}/${project.artifactId}</imageName>
+                            <dockerDirectory>/docker</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.jar</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                            <fork>true</fork>
+                            <skip>true</skip>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>${env.MAVEN_REPOSITORY}</classpathPrefix>
+                                    <useUniqueVersions>false</useUniqueVersions>
+                                    <mainClass>${mainClassName}</mainClass>
+                                </manifest>
+                                <manifestEntries>
+                                    <Class-Path>${env.MAVEN_REPOSITORY}</Class-Path>
+                                </manifestEntries>
+                            </archive>
+                            <excludes>
+                                <exclude>*.properties</exclude>
+                                <exclude>*.yml</exclude>
+                                <exclude>*.xml</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+
+                                <!--            迁移配置文件、启动脚本-->
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <configuration>
+                                    <tasks>
+                                        <!--                                拷贝可执行文件-->
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/dist"
+                                              file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
+                                        <!--                                拷贝执行脚本-->
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
+                                              file="script/dockerBuild.sh"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
+                                              file="script/dockerBuild.cmd"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
+                                              file="script/Dockerfile"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
+                                              file="script/start.cmd"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
+                                              file="script/start.sh"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
+                                              file="script/dockerRun.cmd"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
+                                              file="script/dockerRun.sh"/>
+
+                                        <!--                                拷贝配置文件-->
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
+                                              file="src/main/resources/application.yml"/>
+
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
+                                              file="src/main/resources/application-${profile.id.prod}.yml"/>
+
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
+                                              file="src/main/resources/bootstrap.properties"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
+                                              file="src/main/resources/bootstrap-${profile.id.prod}.properties"/>
+
+<!--                                        拷贝密钥文件-->
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
+                                              file="src/main/resources/publicKey.txt"/>
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
+                                              file="src/main/resources/privateKey.txt"/>
+
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                </plugins>
+
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>config/logback.xml</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/*.properties</exclude>
+                            <exclude>**/*.yml</exclude>
+                        </excludes>
+                        <filtering>false</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+<!--        镜像（无需maven依赖打包）-->
+        <profile>
+            <id>images-prod</id>
+            <properties>
+                <dist.rootPath>./dist/images</dist.rootPath>
+            </properties>
             <build>
                 <plugins>
                     <!--            docker 打包-->
@@ -205,14 +341,14 @@
                                 </goals>
                                 <configuration>
                                     <outputDirectory>
-                                        ../docker/${project.build.finalName}/lib
+                                        ../${dist.rootPath}/${project.build.finalName}/lib
                                     </outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
 
-                                <!--            迁移到一个统一的目录-->
+                    <!--            迁移到一个统一的目录-->
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <executions>
@@ -221,40 +357,40 @@
                                 <configuration>
                                     <tasks>
                                         <!--                                拷贝可执行文件-->
-                                        <copy todir="../docker/${project.build.finalName}/dist"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/dist"
                                               file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
                                         <!--                                拷贝执行脚本-->
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
                                               file="script/dockerBuild.sh"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
                                               file="script/dockerBuild.cmd"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
                                               file="script/Dockerfile"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
                                               file="script/start.cmd"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
                                               file="script/start.sh"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
                                               file="script/dockerRun.cmd"/>
-                                        <copy todir="../docker/${project.build.finalName}/"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
                                               file="script/dockerRun.sh"/>
 
                                         <!--                                拷贝配置文件-->
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
                                               file="src/main/resources/application.yml"/>
 
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
                                               file="src/main/resources/application-${profile.id.prod}.yml"/>
 
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
                                               file="src/main/resources/bootstrap.properties"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin/config"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
                                               file="src/main/resources/bootstrap-${profile.id.prod}.properties"/>
 
-<!--                                        拷贝密钥文件-->
-                                        <copy todir="../docker/${project.build.finalName}/bin"
+                                        <!--                                        拷贝密钥文件-->
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
                                               file="src/main/resources/publicKey.txt"/>
-                                        <copy todir="../docker/${project.build.finalName}/bin"
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
                                               file="src/main/resources/privateKey.txt"/>
 
                                     </tasks>

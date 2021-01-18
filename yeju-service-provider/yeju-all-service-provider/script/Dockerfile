@@ -5,4 +5,4 @@ COPY ./bin/config/ /data/config
 COPY ./lib/ /lib
 RUN chmod +x /data/yeju-all-service-provider-1.0.0.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/data/yeju-all-service-provider-1.0.0.jar"]
-EXPOSE 81 81
+EXPOSE 20885

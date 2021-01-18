@@ -1,8 +1,8 @@
 FROM onedata-docker.pkg.coding.net/yeju/docker_repo/openjdk18-openshift
 USER root
-ADD ./dist/yeju-gateway-1.0.0.jar /data/yeju-gateway-1.0.0.jar
+ADD ./dist/*.jar /data/app.jar
 COPY ./bin/config/ /data/config
 COPY ./lib/ /lib
-RUN chmod +x /data/yeju-gateway-1.0.0.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/data/yeju-gateway-1.0.0.jar"]
+RUN chmod +x /data/app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/data/app"]
 EXPOSE 81 81

@@ -292,20 +292,11 @@
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/dist"
                                               file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
                                         <!--                                拷贝执行脚本-->
-                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
-                                              file="script/dockerBuild.sh"/>
-                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
-                                              file="script/dockerBuild.cmd"/>
-                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
-                                              file="script/Dockerfile"/>
+
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
                                               file="script/start.cmd"/>
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
                                               file="script/start.sh"/>
-                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
-                                              file="script/dockerRun.cmd"/>
-                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/"
-                                              file="script/dockerRun.sh"/>
 
                                         <!--                                拷贝配置文件-->
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"

@@ -24,12 +24,3 @@ mvn package
 mvn package -P prod
 ```
 
-### 3. 打包容器化软件包（含lib）
-
-此环境的软件包**不依赖**于maven私有仓库当中的jar。打成镜像时连同lib目录下的依赖一同打进镜像。
-
-```shell
-mvn package -P images-prod
-```
-
-2、3步骤不能颠倒。

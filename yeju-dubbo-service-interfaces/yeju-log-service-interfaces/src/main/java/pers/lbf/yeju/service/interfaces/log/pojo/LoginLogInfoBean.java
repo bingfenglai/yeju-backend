@@ -14,38 +14,47 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.base.log.anotation;
+package pers.lbf.yeju.service.interfaces.log.pojo;
 
-import pers.lbf.yeju.common.core.constant.OperationType;
-import pers.lbf.yeju.common.core.constant.OperatorType;
+import java.util.Date;
 
-import java.lang.annotation.*;
-
-/**日志切入点 注解
+/**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2021/1/1 16:05
+ * @date 2021/1/19 10:59
  */
-@Target({ ElementType.PARAMETER, ElementType.METHOD })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Log {
+public interface LoginLogInfoBean {
+    
+    
+    void setLoginLogId(Long loginLogId);
+
+    void setAccount(String account);
+
+    void setSubjectName(String subjectName);
+
+    void setIp(String ip);
+
+    void setLoginStatus(Integer loginStatus);
+
+    void setMessage(String message);
+
+    void setAccentTime(Date accentTime);
 
 
-    /**
-     * 操作类型
-     */
-    OperationType operationType() default OperationType.OTHER;
+    Long getLoginLogId();
 
-    /**
-     * 操作者类型
-     */
-    OperatorType operatorType() default OperatorType.UNKNOWN;
+    String getAccount();
 
-    boolean SaveRequestData() default false;
+    String getSubjectName();
 
+    String getIp();
 
+    Integer getLoginStatus();
+
+    String getMessage();
 
 
+    Date getAccentTime();
 }

@@ -17,14 +17,12 @@
 package pers.lbf.yeju.gateway.security.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.gateway.message.LoginLogSender;
-import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
 
 /**异步登录日志服务
@@ -35,29 +33,23 @@ import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
  */
 @Service
 @Slf4j
-public class AsyncLoginLogServiceImpl implements ILoginLogService {
-
-    @DubboReference
-    private ILoginLogService loginLogService;
+public class AsyncLoginLogServiceImpl implements AsyncLoginLogService {
 
     @Autowired
     private LoginLogSender loginSender;
 
-    @Async
     @Override
+    @Async
     public void addLog(AddLoginLogRequestBean loginLogDTO) throws ServiceException {
         if (loginLogDTO==null){
             throw new ServiceException(ParameStatusEnum.Parameter_cannot_be_empty);
         }
 
-        //loginLogService.addLog(loginLogDTO);
         try {
             log.info("发送登录日志");
             loginSender.send(loginLogDTO,null);
         } catch (Exception e) {
             log.info("发送登录日志异常，{}",e.getMessage());
-            log.info("尝试PRC服务调用 登录日志");
-            loginLogService.addLog(loginLogDTO);
         }
     }
 }

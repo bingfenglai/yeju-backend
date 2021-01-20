@@ -14,16 +14,24 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.currency.platform.employ.pojo.vo;
-
-import java.io.Serializable;
+package pers.lbf.yeju.consumer.base.util;
 
 /**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2021/1/14 16:54
+ * @date 2021/1/19 15:55
  */
-public class EmployInfoVO implements Serializable {
+public class ServerUtils {
+
+    private ServerUtils(){
+
+    }
+
+    private  void getRequestAttributes(){
+
+    }
+
 
 }

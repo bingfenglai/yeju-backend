@@ -87,7 +87,7 @@
 
 
     <logger name="pers.lbf.yeju" level="INFO"/>
-
+    <logger name="pers.lbf.yeju.provider.log.dao" level="debug"/>
 
     <!--info和error分开打印-->
     <root level="INFO">

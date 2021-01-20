@@ -36,9 +36,9 @@ import pers.lbf.yeju.gateway.security.enums.LoginWay;
 import pers.lbf.yeju.gateway.security.pojo.AuthenticationToken;
 import pers.lbf.yeju.gateway.security.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.gateway.security.pojo.LoginRequestToken;
+import pers.lbf.yeju.gateway.security.service.AsyncLoginLogService;
 import pers.lbf.yeju.gateway.security.service.CustomUserDetailsServiceImpl;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
-import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -70,7 +70,7 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
     private VerificationCodeConfig verificationCodeConfig;
 
     @Autowired
-    private ILoginLogService loginLogService;
+    private AsyncLoginLogService loginLogService;
 
     @DubboReference
     private IVerificationCodeService verificationCodeService;

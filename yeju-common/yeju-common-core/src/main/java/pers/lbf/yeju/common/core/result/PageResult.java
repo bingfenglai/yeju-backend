@@ -27,7 +27,7 @@ import java.util.List;
  * @Description TODO
  * @date 2020/12/7 20:37
  */
-public class PageResult<T>  implements IResult<T>, Serializable {
+public class PageResult<T>implements Serializable {
 
     /**
      * 错误码
@@ -42,17 +42,17 @@ public class PageResult<T>  implements IResult<T>, Serializable {
     /**
      * 总记录数
      */
-    private Integer count;
+    private Long count;
 
     /**
      * 当前页码
      */
-    private Integer currentPage;
+    private Long currentPage;
 
     /**
      * 每页显示的条数
      */
-    private Integer size;
+    private Long size;
 
     /**
      * 记录列表
@@ -60,8 +60,8 @@ public class PageResult<T>  implements IResult<T>, Serializable {
     private List<T> list;
 
 
-    public static <T> PageResult<T> ok(Integer count, Integer currentPage, Integer size,List<T> list){
-        return new PageResult<>
+    public static <T> PageResult<T> ok(Long count, Long currentPage, Long size,List<T> list){
+        return new PageResult<T>
                 (ServiceStatusEnum.OK.getCode(), ServiceStatusEnum.OK.getMessage(), count, currentPage, size, list);
     }
 
@@ -74,7 +74,7 @@ public class PageResult<T>  implements IResult<T>, Serializable {
         this.message = message;
     }
 
-    private PageResult(String code, String message, Integer count, Integer currentPage, Integer size, List<T> list) {
+    public PageResult(String code, String message, Long count, Long currentPage, Long size, List<T> list) {
         this.code = code;
         this.message = message;
         this.count = count;
@@ -83,27 +83,27 @@ public class PageResult<T>  implements IResult<T>, Serializable {
         this.list = list;
     }
 
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
-    public Integer getCurrentPage() {
+    public Long getCurrentPage() {
         return currentPage;
     }
 
-    public void setCurrentPage(Integer currentPage) {
+    public void setCurrentPage(Long currentPage) {
         this.currentPage = currentPage;
     }
 
-    public Integer getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -115,20 +115,16 @@ public class PageResult<T>  implements IResult<T>, Serializable {
         this.list = list;
     }
 
-    @Override
+
     public String getCode() {
         return this.code;
     }
 
-    @Override
+
     public String getMessage() {
         return this.message;
     }
 
-    @Override
-    public T getData() {
-        throw new UnsupportedOperationException("不支持此方法");
-    }
 
     public void setCode(String code) {
         this.code = code;

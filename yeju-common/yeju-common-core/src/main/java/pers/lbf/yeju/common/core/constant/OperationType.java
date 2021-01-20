@@ -14,38 +14,58 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.base.log.anotation;
+package pers.lbf.yeju.common.core.constant;
 
-import pers.lbf.yeju.common.core.constant.OperationType;
-import pers.lbf.yeju.common.core.constant.OperatorType;
-
-import java.lang.annotation.*;
-
-/**日志切入点 注解
+/**业务操作类型
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2021/1/1 16:05
+ * @date 2021/1/19 16:13
  */
-@Target({ ElementType.PARAMETER, ElementType.METHOD })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Log {
-
+public enum OperationType {
 
     /**
-     * 操作类型
+     * 其他
      */
-    OperationType operationType() default OperationType.OTHER;
+    OTHER(0),
+    /**
+     * 新增
+     */
+    INSTER(1),
 
     /**
-     * 操作者类型
+     * 修改
      */
-    OperatorType operatorType() default OperatorType.UNKNOWN;
+    UPDATE(2),
 
-    boolean SaveRequestData() default false;
+    /**
+     * 逻辑删除
+     */
+    DELETE(3),
+
+    /**
+     * 查询
+     */
+    SELECT(4),
+
+    /**
+     * 授权
+     */
+    AUTHZ(5);
 
 
 
+    private Integer value;
 
+    OperationType(Integer value) {
+        this.value = value;
+    }
+
+    public Integer getValue() {
+
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 }

@@ -14,38 +14,16 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.base.log.anotation;
+package pers.lbf.yeju.service.interfaces.employee.pojo;
 
-import pers.lbf.yeju.common.core.constant.OperationType;
-import pers.lbf.yeju.common.core.constant.OperatorType;
+import java.io.Serializable;
 
-import java.lang.annotation.*;
-
-/**日志切入点 注解
+/**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2021/1/1 16:05
+ * @date 2021/1/18 20:33
  */
-@Target({ ElementType.PARAMETER, ElementType.METHOD })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Log {
-
-
-    /**
-     * 操作类型
-     */
-    OperationType operationType() default OperationType.OTHER;
-
-    /**
-     * 操作者类型
-     */
-    OperatorType operatorType() default OperatorType.UNKNOWN;
-
-    boolean SaveRequestData() default false;
-
-
-
-
+public class SimpleEmployeeInfoBean implements Serializable {
 }

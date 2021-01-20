@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.provider.log.start;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.mybatis.spring.annotation.MapperScan;
@@ -23,13 +24,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+import java.util.TimeZone;
+
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
  * @date 2021/1/1 16:51
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider.log")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider")
 @EnableDiscoveryClient
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.log.service")
 @MapperScan("pers.lbf.yeju.provider.log.dao")
@@ -39,6 +42,8 @@ public class LogApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(LogApplication.class,args);
+    JSONObject.defaultTimeZone = TimeZone.getTimeZone("Asia/Shanghai");
+
     log.info("############################################");
     log.info("#------------日志服务提供者启动成功！----------#");
     log.info("############################################");

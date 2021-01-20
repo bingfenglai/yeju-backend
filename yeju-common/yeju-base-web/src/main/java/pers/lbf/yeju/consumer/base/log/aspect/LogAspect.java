@@ -18,14 +18,22 @@ package pers.lbf.yeju.consumer.base.log.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.common.core.constant.OperationStatus;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.consumer.base.log.anotation.Log;
 import pers.lbf.yeju.consumer.base.log.message.sender.OperationLogMessageSender;
 import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
+
+import java.lang.reflect.Method;
+import java.util.Date;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -45,7 +53,7 @@ public class LogAspect {
     /**
      * 定义切入点
      */
-    @Pointcut("@annotation(pers.lbf.yeju.consumer.base.log.anotation.Log)")
+    @Pointcut("execution(public * pers.lbf.yeju..*Controller.*(..))")
     public void logAspect() {
 
     }
@@ -75,10 +83,14 @@ public class LogAspect {
      * @param object 方法执行返回值
      */
     public void handle(JoinPoint joinPoint, Object object){
-        log.info(joinPoint.toString());
-        log.info(object.toString());
+
         AddOperationLogRequestBean operationLogDTO = new AddOperationLogRequestBean();
-        operationLogDTO.setResult(object.toString());
+        Log log = getAnnotationLog(joinPoint,operationLogDTO);
+        if (log != null) {
+            operationLogDTO.setBusinessType(log.operationType().getValue());
+            operationLogDTO.setOperatorType(log.operatorType().getName());
+        }
+        operationLogDTO.setOperationStatus(OperationStatus.success.getValue());
 
         sender.send(operationLogDTO,null);
     }
@@ -93,8 +105,44 @@ public class LogAspect {
         log.info("开始处理操作日志");
         LogAspect.log.warn(joinPoint.toString());
         AddOperationLogRequestBean operationLogDTO = new AddOperationLogRequestBean();
-        operationLogDTO.setErrorMessage(e.getMessage());
+
+
+        if (e instanceof ServiceException){
+                operationLogDTO.setErrorMessage(e.getMessage());
+
+        }
 
         sender.send(operationLogDTO,null);
     }
+
+
+    /**获取方法上面的log注解
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/1/19 15:30
+     * @param joinPoint 切入点
+     * @param operationLogDTO
+     * @return pers.lbf.yeju.consumer.base.log.anotation.Log
+     */
+    private Log getAnnotationLog(JoinPoint joinPoint, AddOperationLogRequestBean operationLogDTO) {
+
+        Signature signature = joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        Method method = methodSignature.getMethod();
+        if (method != null) {
+            String className = method.getClass().getName();
+            String methodName = method.getName();
+
+            String s = className +
+                    "." + methodName;
+            operationLogDTO.setMethod(s);
+            operationLogDTO.setOperationTime(new Date());
+            return method.getAnnotation(Log.class);
+        }
+
+
+        return null;
+    }
+
+
 }

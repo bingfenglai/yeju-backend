@@ -355,13 +355,6 @@
             </dependency>
 
 
-            <!-- pagehelper 分页插件 -->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.boot.version}</version>
-            </dependency>
-
             <!-- io常用工具类 -->
             <dependency>
                 <groupId>commons-io</groupId>
@@ -528,13 +521,6 @@
                     <url>https://onedata-maven.pkg.coding.net/repository/yeju/maven_repo/</url>
                 </repository>
             </distributionManagement>
-        </profile>
-
-        <profile>
-            <id>images-prod</id>
-            <properties>
-                <profileActive>prod</profileActive>
-            </properties>
         </profile>
 
     </profiles>

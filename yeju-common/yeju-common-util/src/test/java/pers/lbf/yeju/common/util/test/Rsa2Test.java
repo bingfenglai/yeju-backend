@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.common.util.test;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import pers.lbf.yeju.common.util.FileUtils;
@@ -36,18 +37,17 @@ public class Rsa2Test {
 
     @Before
     public void init() {
+        Map<String, String> map = Rsa2Utils.initRSAKey(2048);
+        Assert.assertNotNull(map.get("publicKey"));
+        Assert.assertNotNull(map.get("privateKey"));
+        FileUtils.writeFile("rsa2PublicKey.rsa",map.get("publicKey"));
+        FileUtils.writeFile("rsa2PrivateKey.rsa",map.get("privateKey"));
         this.privateKey = Rsa2Utils.getPrivateKey();
         this.publicKey = Rsa2Utils.getPublicKey();
     }
 
-    @Test
-    public void test0(){
-        Map<String, String> map = Rsa2Utils.initRSAKey(2048);
-        System.out.println(map.get("publicKey"));
-        System.out.println(map.get("privateKey"));
-        FileUtils.writeFile("rsa2PublicKey.rsa",map.get("publicKey"));
-        FileUtils.writeFile("rsa2PrivateKey.rsa",map.get("privateKey"));
-    }
+
+
 
     @Test
     public void test1(){

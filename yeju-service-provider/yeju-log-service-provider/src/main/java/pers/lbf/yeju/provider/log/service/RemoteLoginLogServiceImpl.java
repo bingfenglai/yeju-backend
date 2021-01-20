@@ -16,15 +16,23 @@
  */
 package pers.lbf.yeju.provider.log.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.domain.entity.LoginLog;
 import pers.lbf.yeju.provider.log.dao.LoginLogDao;
+import pers.lbf.yeju.provider.log.pojo.SimpleLoginLogInfoBean;
 import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
+import pers.lbf.yeju.service.interfaces.log.pojo.LoginLogInfoBean;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -35,6 +43,7 @@ import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
 @DubboService(interfaceClass = ILoginLogService.class)
 @Service
 public class RemoteLoginLogServiceImpl implements ILoginLogService {
+
 
     @Autowired
     private LoginLogDao loginLogDao;
@@ -52,9 +61,38 @@ public class RemoteLoginLogServiceImpl implements ILoginLogService {
         loginLog.setAccentTime(loginLogDTO.getAccentTime());
         loginLog.setLastIpNumber(loginLogDTO.getLastIpNumber());
 
-
         loginLogDao.insert(loginLog);
 
+    }
+
+    @Override
+    public PageResult<LoginLogInfoBean> findList(Long currentPage,Long size) throws ServiceException {
+        Page<LoginLog> page = new Page<>();
+        if (currentPage != null&&currentPage>1) {
+            page.setCurrent(currentPage);
+        }
+        if (size != null && size > 0){
+            page.setSize(size);
+        }
+
+        QueryWrapper<LoginLog> wrapper = new QueryWrapper<>();
+        wrapper.select("login_log_id","account","subject_name","ip","login_status","message","accent_time");
+        Page<LoginLog> logPage = loginLogDao.selectPage(page, wrapper);
+        List<LoginLogInfoBean> simpleLoginLogList = new LinkedList<>();
+        for (LoginLog loginLog : logPage.getRecords()) {
+            LoginLogInfoBean simpleLoginLog = new SimpleLoginLogInfoBean();
+            simpleLoginLog.setLoginLogId(loginLog.getLoginLogId());
+            simpleLoginLog.setAccount(loginLog.getAccount());
+            simpleLoginLog.setSubjectName(loginLog.getSubjectName());
+            simpleLoginLog.setIp(loginLog.getIp());
+            simpleLoginLog.setLoginStatus(loginLog.getLoginStatus());
+            simpleLoginLog.setMessage(loginLog.getMessage());
+            simpleLoginLog.setAccentTime(loginLog.getAccentTime());
+            simpleLoginLogList.add(simpleLoginLog);
+            
+        }
+
+        return PageResult.ok(logPage.getTotal(),logPage.getCurrent(),logPage.getSize(),simpleLoginLogList);
 
     }
 }

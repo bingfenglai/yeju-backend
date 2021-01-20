@@ -27,6 +27,7 @@ import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
  */
 public interface IOperationLogService {
 
+
     void addOperationLog(AddOperationLogRequestBean operationLogDTO) throws ServiceException;
 
 }

@@ -14,23 +14,36 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.base.log.service;
+package pers.lbf.yeju.common.core.constant;
 
-import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.stereotype.Service;
-import pers.lbf.yeju.service.interfaces.log.IOperationLogService;
-
-/**
+/** 操作状态编码
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2021/1/13 20:13
+ * @date 2021/1/19 16:38
  */
-@Service
-public class AsyncOperationLogServiceImpl {
+public enum OperationStatus {
 
-    @DubboReference
-    private IOperationLogService operationLogService;
+    /**
+     * 成功
+     */
+    success(0),
 
+    /**
+     * 异常
+     */
+    abnormal(1);
 
+    private Integer value;
+
+    OperationStatus(Integer value) {
+        this.value = value;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 }

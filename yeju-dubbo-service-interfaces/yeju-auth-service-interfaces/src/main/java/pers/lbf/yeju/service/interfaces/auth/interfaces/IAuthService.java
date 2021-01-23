@@ -30,7 +30,7 @@ public interface IAuthService {
      * 获取验证码
      * @return r
      */
-    IResult getVerificationCode();
+    IResult<String> getVerificationCode();
 
 
 }

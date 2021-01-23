@@ -45,7 +45,7 @@ public class LoginLogController {
     public Mono<PageResult<LoginLogInfoBean>> getList(
             @Validated @NotNull @PathVariable Long currentPage,
             @Validated @NotNull(message = "每页显示大小不能为空") @RequestParam Long size){
-        PageResult<LoginLogInfoBean> pageResult = loginLogService.findList(1L,10L);
+        PageResult<LoginLogInfoBean> pageResult = loginLogService.findList(currentPage,size);
         return Mono.just(pageResult);
     }
 }

@@ -10,37 +10,44 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>yeju-all-service-provider</artifactId>
-
     <packaging>jar</packaging>
 
 
     <properties>
-        <mainClassName>pers.lbf.yeju.provider.currency.start.YejuCurrencyServiceProviderApplication</mainClassName>
+        <mainClassName>pers.lbf.yeju.provider.start.YejuCurrencyServiceProviderApplication</mainClassName>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-employe-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-base-service</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-auth-service-interfaces</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-redis-service-interfaces</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-common-util</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
 

@@ -72,13 +72,13 @@
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-common-util</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-common-core</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
 
@@ -91,13 +91,13 @@
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-auth-service-interfaces</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-log-service-interfaces</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
@@ -279,6 +279,7 @@
                         <directory>src/main/resources</directory>
                         <includes>
                             <include>config/logback.xml</include>
+                            <include>banner.txt</include>
                         </includes>
                         <excludes>
                             <exclude>**/*.properties</exclude>

@@ -1,4 +1,4 @@
-package pers.lbf.yeju.provider.account;/*
+/*
  * Copyright 2020 赖柄沣 bingfengdev@aliyun.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +14,26 @@ package pers.lbf.yeju.provider.account;/*
  * limitations under the License.
  *
  */
+package pers.lbf.yeju.provider.account.strategy;
 
-import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.provider.account.service.AccountServiceImpl;
-import pers.lbf.yeju.provider.start.YejuCurrencyServiceProviderApplication;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 
-/**
+/**查询账户信息策略接口
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/17 9:50
+ * @date 2020/12/23 10:21
  */
-@SpringBootTest(classes = YejuCurrencyServiceProviderApplication.class)
-public class AccountServiceTest {
+public interface IFindSimpleAccountByPrincipalStrategy {
 
-
-    private final IAccountService accountService = new AccountServiceImpl();
-
-
-
-    //@Test
-    public void test1(){
-        IResult<SimpleAccountDTO> hehe = accountService.findSimpleAccountByPrincipal("969391");
-        System.out.println(hehe.toString());
-    }
+    /**查询账户信息策略接口方法
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2020/12/23 11:54
+     * @param principal 抽象账户
+     * @return SimpleAccountDTO
+     * @throws RuntimeException e
+     */
+    SimpleAccountDTO findSimpleAccountByPrincipal(String principal) throws ServiceException;
 }

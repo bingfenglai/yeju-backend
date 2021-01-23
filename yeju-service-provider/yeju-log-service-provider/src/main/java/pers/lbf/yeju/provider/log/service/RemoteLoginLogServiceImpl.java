@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -65,6 +66,7 @@ public class RemoteLoginLogServiceImpl implements ILoginLogService {
 
     }
 
+    @Cacheable(value = "log:login",keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<LoginLogInfoBean> findList(Long currentPage,Long size) throws ServiceException {
         Page<LoginLog> page = new Page<>();

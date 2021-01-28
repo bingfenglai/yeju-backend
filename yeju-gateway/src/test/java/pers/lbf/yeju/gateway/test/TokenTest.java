@@ -39,8 +39,16 @@ import java.util.List;
 @Slf4j
 public class TokenTest {
 
+
+    /** TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/1/24 0:46
+     * @return void
+     */
     @Test
     public void generateTestToken() {
+
         AuthorityInfoBean authorityInfoBean = new AuthorityInfoBean();
         authorityInfoBean.setPrincipal("969391");
         List<String> list = new ArrayList<>();
@@ -56,5 +64,11 @@ public class TokenTest {
             e.printStackTrace();
         }
         FileUtils.writeFile("token", TokenConstant.getPrefixToken() +token);
+    }
+
+
+    public String test2(String token){
+
+        return token;
     }
 }

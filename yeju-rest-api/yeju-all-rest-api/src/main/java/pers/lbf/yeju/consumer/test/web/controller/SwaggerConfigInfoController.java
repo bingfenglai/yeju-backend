@@ -16,12 +16,21 @@
  */
 package pers.lbf.yeju.consumer.test.web.controller;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.consumer.config.swagger.SwaggerPropertiesConfig;
 import reactor.core.publisher.Mono;
+
+import javax.validation.constraints.Min;
 
 /** 测试用API
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -29,14 +38,46 @@ import reactor.core.publisher.Mono;
  * @Description TODO
  * @date 2021/1/15 0:32
  */
+@ApiModel(value = "测试用API",description = "测试用API")
 @RestController
 @RequestMapping("/test")
+@Validated
 public class SwaggerConfigInfoController {
+
+    @ApiModelProperty(value="swagger config info")
     @Autowired
     private SwaggerPropertiesConfig config;
 
+    @ApiOperation(value = "获取详情",notes = "说明",httpMethod = "GET")
     @GetMapping("/swaggerInfo")
-    public Mono<String> getSwaggerInfo(){
+    public Mono<String> getSwaggerInfo()throws ServiceException {
         return Mono.just(config.toString());
     }
+
+    @ApiOperation(value = "获取SwaggerConfigInfoController分页数据",
+            notes = "SwaggerConfigInfoController分页接口说明",
+            httpMethod = "GET")
+    @GetMapping("/getSwaggerConfigInfoControllerPage/{currentPage}")
+    public Mono<PageResult> getSwaggerConfigInfoControllerPage(
+            @ApiParam(name = "当前页")
+            @PathVariable Long currentPage,
+            @ApiParam(name = "每页显示条数")
+            @RequestParam Long size
+                                                )throws ServiceException {
+        return Mono.empty();
+    }
+
+
+    @ApiOperation(value = "获取SwaggerDetails",notes = "SwaggerDetails说明",httpMethod = "GET")
+    @GetMapping("/createSwaggerDetails")
+    public Mono<IResult> getSwaggerDetailsInfo(
+             @Min(value = 10,message = "hheheheheh")
+            @RequestParam Long id
+    )throws ServiceException {
+
+        return Mono.just(SimpleResult.ok());
+    }
+
+    
+    
 }

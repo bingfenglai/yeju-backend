@@ -523,6 +523,13 @@
             </distributionManagement>
         </profile>
 
+        <profile>
+            <id>image</id>
+            <properties>
+                <profileActive>image</profileActive>
+            </properties>
+        </profile>
+
     </profiles>
 
 

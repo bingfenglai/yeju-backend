@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: oos-server
+logging:
+  config: classpath:config/logback.xml
+

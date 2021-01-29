@@ -60,6 +60,7 @@
         <jackson.version>2.11.2</jackson.version>
         <aliyun.sms.version>1.0.0</aliyun.sms.version>
         <spring.cloud.security.version>2.2.2.RELEASE</spring.cloud.security.version>
+        <minio.version>8.0.3</minio.version>
         <yeju.version>1.0.0</yeju.version>
     </properties>
 
@@ -430,6 +431,13 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+<!--            minio 分布式存储依赖-->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
 
 

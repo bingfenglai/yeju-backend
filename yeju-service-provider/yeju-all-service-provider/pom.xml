@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>yeju-dubbo-service</artifactId>
+        <artifactId>yeju-service-provider</artifactId>
         <groupId>pers.lbf</groupId>
         <version>1.0.0</version>
     </parent>
@@ -183,7 +183,7 @@
                             <execution>
                                 <phase>package</phase>
                                 <configuration>
-                                    <tasks>
+                                    <target>
                                         <!--                                拷贝可执行文件-->
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/dist"
                                               file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
@@ -216,7 +216,7 @@
                                               file="src/main/resources/bootstrap-prod.properties"/>
 
 
-                                    </tasks>
+                                    </target>
                                 </configuration>
                                 <goals>
                                     <goal>run</goal>

@@ -215,7 +215,7 @@
                             <execution>
                                 <phase>package</phase>
                                 <configuration>
-                                    <tasks>
+                                    <target>
                                         <!--                                拷贝可执行文件-->
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/dist"
                                               file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
@@ -253,7 +253,7 @@
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
                                               file="src/main/resources/privateKey.txt"/>
 
-                                    </tasks>
+                                    </target>
                                 </configuration>
                                 <goals>
                                     <goal>run</goal>

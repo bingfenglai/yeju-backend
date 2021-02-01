@@ -28,10 +28,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @version 1.0
  * @date 2021/1/29 16:53
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider.oos")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider")
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.oos.service")
 @EnableDiscoveryClient
-@MapperScan(basePackages = "pers.lbf.yeju.provider.oos.dao")
+@MapperScan(  "pers.lbf.yeju.provider.oos.dao.**Dao")
 @Slf4j
 public class OosProviderApplication {
 
@@ -40,6 +40,7 @@ public class OosProviderApplication {
         log.info("############################################");
         log.info("#------------对象存储服务提供者启动成功！----------#");
         log.info("############################################");
+
     }
     
 }

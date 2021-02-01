@@ -16,8 +16,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider")
 @EnableDiscoveryClient
-@EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.currency.**.service")
-@MapperScan(basePackages = "pers.lbf.yeju.provider.currency.**.dao")
+@EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.**.service")
+@MapperScan(basePackages = "pers.lbf.yeju.provider.**.dao")
 public class YejuCurrencyServiceProviderApplication {
 
   private static final Logger log = LoggerFactory.getLogger(YejuCurrencyServiceProviderApplication.class);

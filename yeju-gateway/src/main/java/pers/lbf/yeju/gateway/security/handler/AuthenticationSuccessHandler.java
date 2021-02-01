@@ -59,7 +59,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
      * 认证成功之后，返回授权token
      * @param webFilterExchange e
      * @param authentication authc
-     * @return token
+     * @return 1
      */
     @Override
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication){
@@ -89,8 +89,8 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
 
         try {
-//            token = authorityManager.getAuthorityInfoToken(authorityInfo);
-//            httpHeaders.add("Authorization",tokenPrefix+token);
+//            1 = authorityManager.getAuthorityInfoToken(authorityInfo);
+//            httpHeaders.add("Authorization",tokenPrefix+1);
 //            result = SimpleResult.ok("登录成功");
             token = authorityManager.getBuilder(authorityInfoBean, expires).build();
             LoginRepoBean loginRepoBean = new LoginRepoBean();

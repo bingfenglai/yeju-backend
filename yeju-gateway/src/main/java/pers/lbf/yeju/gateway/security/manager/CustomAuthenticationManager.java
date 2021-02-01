@@ -87,7 +87,7 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2020/12/19 14:42
-     * @param authentication token
+     * @param authentication 1
      * @return reactor.core.publisher.Mono<org.springframework.security.core.Authentication>
      */
     @Override

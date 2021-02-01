@@ -19,7 +19,6 @@ package pers.lbf.yeju.consumer.config.swagger;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,13 +48,10 @@ public class SwaggerConfiguration extends Swagger2WebFluxConfiguration {
     @Autowired
     private  SwaggerPropertiesConfig config;
 
-    @Value("${server.servlet.context-path}")
-    private String applicationContext;
-
     @Bean
     public Docket createRestApi() {
 
-        return new Docket(DocumentationType.OAS_30).pathMapping(applicationContext)
+        return new Docket(DocumentationType.OAS_30).pathMapping("/yeju-all-rest-api")
                 // 定义是否开启swagger，false为关闭，可以通过变量控制
                 .enable(config.getEnable())
                 .apiInfo(createApiInfo())

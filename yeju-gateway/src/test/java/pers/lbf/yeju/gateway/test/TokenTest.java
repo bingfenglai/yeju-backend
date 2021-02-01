@@ -58,12 +58,12 @@ public class TokenTest {
         try {
              token = JwtUtils.generateTokenExpireInMinutes(authorityInfoBean,
                     RsaUtils.getPrivateKey("privateKey.txt"), 60 * 24 * 180);
-             log.info("access token generated successfully");
+             log.info("access 1 generated successfully");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FileUtils.writeFile("token", TokenConstant.getPrefixToken() +token);
+        FileUtils.writeFile("1", TokenConstant.getPrefixToken() +token);
     }
 
 

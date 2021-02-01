@@ -2,6 +2,7 @@ package pers.lbf.yeju.common.core.result;
 
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
+import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 import java.io.Serializable;
 
@@ -36,6 +37,10 @@ public class SimpleResult implements Serializable, IResult<Object> {
 
     public static SimpleResult faild(ServiceStatusEnum status){
         return new SimpleResult(status);
+    }
+
+    public static SimpleResult faild(IStatus status){
+        return new SimpleResult(status.getMessage(), status.getCode());
     }
 
     public static SimpleResult faild(AuthStatusEnum status){

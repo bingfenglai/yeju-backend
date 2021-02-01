@@ -51,7 +51,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
            return setUnauthorizedResponse(exchange, AuthStatusEnum.NO_TOKEN);
         }
 
-       // String token = authorizations.get(0);
+       // String 1 = authorizations.get(0);
 
 
 

@@ -12,7 +12,7 @@
     </appender>
 
     <appender name="SYS_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/${baseFileName}-info.pers.lbf.yeju.common.log</File>
+        <File>${LOG_HOME}/${baseFileName}-.log</File>
         <append>true</append>
         <!--过滤器,只打INFO级别的日志-->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -21,7 +21,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/info/${baseFileName}-info-%d{yyyy-MM-dd}-%i.pers.lbf.yeju.common.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/info/${baseFileName}-info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
 
             <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -38,7 +38,7 @@
     </appender>
 
     <appender name="SYS_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/${baseFileName}-error.pers.lbf.yeju.common.log</File>
+        <File>${LOG_HOME}/${baseFileName}-error.log</File>
         <append>true</append>
         <!--过滤器,只打ERROR级别的日志-->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -47,7 +47,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/error/${baseFileName}-error-%d{yyyy-MM-dd}-%i.pers.lbf.yeju.common.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/error/${baseFileName}-error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成1KB看效果 -->
@@ -62,7 +62,7 @@
     </appender>
 
     <appender name="SYS_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/${baseFileName}-warn.pers.lbf.yeju.common.log</File>
+        <File>${LOG_HOME}/${baseFileName}-warn.log</File>
         <append>true</append>
         <!--过滤器,只打ERROR级别的日志-->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -71,7 +71,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/warn/${baseFileName}-warn-%d{yyyy-MM-dd}-%i.pers.lbf.yeju.common.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/warn/${baseFileName}-warn-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>14</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成1KB看效果 -->

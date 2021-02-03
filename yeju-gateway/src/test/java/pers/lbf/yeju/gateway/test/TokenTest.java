@@ -63,7 +63,7 @@ public class TokenTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FileUtils.writeFile("1", TokenConstant.getPrefixToken() +token);
+        FileUtils.writeFile("token", TokenConstant.getPrefixToken() +token);
     }
 
 

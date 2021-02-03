@@ -17,19 +17,19 @@
 package pers.lbf.yeju.consumer.oos.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.consumer.oos.minio.MinioHelper;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
+import java.io.File;
 import java.io.IOException;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.Paths;
 
 /**
  * TODO
@@ -42,37 +42,44 @@ import java.nio.file.StandardOpenOption;
 @Slf4j
 public class LocalObjectUploadServiceImpl implements ILocalObjectUploadService {
 
+    @Resource
+    private MinioHelper minioHelper;
+
     @Override
     public Mono<IResult<String>> upload(FilePart filePart) throws ServiceException {
-        log.info("原文件名：{}",filePart.filename());
-        Path tempFile = null;
 
-        try {
-            tempFile = Files.createTempFile("yeju_", filePart.filename());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Mono<Void> mono = filePart.transferTo(new File(filePart.filename()));
+
+        mono.doFinally(signalType -> {
+           log.info("***************开始上传到 oos **********");
+            try {
+                minioHelper.upload(filePart.filename());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                try {
+                    Files.delete(Paths.get(filePart.filename()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }finally {
+                    boolean flag = ! Files.exists(Paths.get(filePart.filename()));
+                    if (flag) {
+                        log.info("删除主机文件成功");
+                    } else {
+                        log.warn("删除主机文件失败");
+                    }
+                }
 
 
+            }
+        }).subscribe();
 
-        assert tempFile != null;
-        log.info("新文件名：{}",tempFile.getFileName());
 
-
-        AsynchronousFileChannel channel =
-                null;
-        try {
-            channel = AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assert channel != null;
-        Path finalTempFile = tempFile;
-        DataBufferUtils.write(filePart.content(), channel, 0)
-                .doOnComplete(() -> {
-                    log.info("文件{}上传成功！", finalTempFile.getFileName());
-                });
-
-        return Mono.just(Result.ok(tempFile.getFileName().toString()));
+        return Mono.just(Result.ok(""));
     }
+
+
+
+
 }

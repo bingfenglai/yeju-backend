@@ -19,7 +19,6 @@
 		<module>yeju-base-web</module>
         <module>yeju-common-domain</module>
 		<module>yeju-common-util</module>
-        <module>yeju-common-oos-minio</module>
     </modules>
 
 	<properties>

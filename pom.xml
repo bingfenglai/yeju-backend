@@ -60,7 +60,7 @@
         <jackson.version>2.11.2</jackson.version>
         <aliyun.sms.version>1.0.0</aliyun.sms.version>
         <spring.cloud.security.version>2.2.2.RELEASE</spring.cloud.security.version>
-        <minio.version>8.0.3</minio.version>
+        <minio.version>8.0.0</minio.version>
         <yeju.version>1.0.0</yeju.version>
     </properties>
 

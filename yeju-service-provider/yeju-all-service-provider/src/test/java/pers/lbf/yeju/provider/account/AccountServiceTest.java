@@ -18,7 +18,7 @@ package pers.lbf.yeju.provider.account;/*
 import org.springframework.boot.test.context.SpringBootTest;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.provider.account.service.AccountServiceImpl;
-import pers.lbf.yeju.provider.start.YejuCurrencyServiceProviderApplication;
+import pers.lbf.yeju.provider.start.YejuProviderApplication;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 
@@ -28,7 +28,7 @@ import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
  * @Description TODO
  * @date 2020/12/17 9:50
  */
-@SpringBootTest(classes = YejuCurrencyServiceProviderApplication.class)
+@SpringBootTest(classes = YejuProviderApplication.class)
 public class AccountServiceTest {
 
 

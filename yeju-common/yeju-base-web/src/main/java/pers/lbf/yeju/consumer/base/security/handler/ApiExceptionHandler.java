@@ -29,8 +29,8 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.ErrorAndExceptionResult;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.consumer.base.security.pojo.ErrorAndExceptionResult;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;

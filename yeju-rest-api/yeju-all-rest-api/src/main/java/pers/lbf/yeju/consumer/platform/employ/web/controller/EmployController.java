@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
  * @date 2020/12/30 16:06
  */
 @RestController
-@RequestMapping("/employ")
+@RequestMapping("/platform/employ")
 public class EmployController {
 
     @GetMapping("/getInfoByAccount/{account}")

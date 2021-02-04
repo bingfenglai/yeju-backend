@@ -3,3 +3,5 @@ logging:
 spring:
   application:
     name: gateway-service
+  main:
+    allow-bean-definition-overriding: true

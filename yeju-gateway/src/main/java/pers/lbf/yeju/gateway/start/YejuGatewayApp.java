@@ -2,7 +2,6 @@ package pers.lbf.yeju.gateway.start;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pers.lbf.yeju.gateway.web.filter.AuthFilter;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -17,9 +16,6 @@ public class YejuGatewayApp {
         SpringApplication.run(YejuGatewayApp.class,args);
     }
 
-    //@Bean
-    public AuthFilter initAuthFilter() {
-        return new AuthFilter();
-    }
+
 
 }

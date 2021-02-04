@@ -21,7 +21,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.provider.start.YejuCurrencyServiceProviderApplication;
+import pers.lbf.yeju.provider.start.YejuProviderApplication;
 import pers.lbf.yeju.provider.verification.manager.CaptchaGenerateManager;
 import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
 import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
@@ -33,7 +33,7 @@ import pers.lbf.yeju.service.interfaces.redis.IRedisService;
  * @Description TODO
  * @date 2020/12/25 12:50
  */
-@SpringBootTest(classes = YejuCurrencyServiceProviderApplication.class)
+@SpringBootTest(classes = YejuProviderApplication.class)
 @Slf4j
 public class CaptchaTest {
 

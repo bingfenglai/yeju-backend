@@ -68,9 +68,21 @@ public class AddOperationLogRequestBean implements Serializable {
      */
     private String operatorId;
 
+    private Long executeTime;
+
+    public Long getExecuteTime() {
+        return executeTime;
+    }
+
+
+
+    public void setExecuteTime(Long executeTime) {
+        this.executeTime = executeTime;
+    }
+
     @Override
     public String toString() {
-        return "AddOperationLogDTO{" +
+        return "AddOperationLogRequestBean{" +
                 "title='" + title + '\'' +
                 ", businessType=" + businessType +
                 ", method='" + method + '\'' +
@@ -86,6 +98,8 @@ public class AddOperationLogRequestBean implements Serializable {
                 ", operationStatus=" + operationStatus +
                 ", errorMessage='" + errorMessage + '\'' +
                 ", operationTime=" + operationTime +
+                ", operatorId='" + operatorId + '\'' +
+                ", executeTime=" + executeTime +
                 '}';
     }
 

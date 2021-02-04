@@ -44,3 +44,9 @@ create table table_system_resource_md5
 alter table tabel_system_resource_md5
     add primary key (id);
 /*====================================================================*/
+
+
+/*====================================================================*/
+添加操作耗时字段
+alter table table_system_operation_log
+    add execute_time bigint null comment '操作耗时 单位 ms';

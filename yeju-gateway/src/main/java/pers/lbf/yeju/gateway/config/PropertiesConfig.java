@@ -12,6 +12,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationPropertiesScan(basePackages = "pers.lbf.yeju.gateway.config")
+@ConfigurationPropertiesScan(basePackages = "pers.lbf.yeju.gateway.**.config")
 public class PropertiesConfig {
 }

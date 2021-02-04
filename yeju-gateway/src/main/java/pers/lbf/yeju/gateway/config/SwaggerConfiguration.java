@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -41,6 +42,7 @@ import java.util.*;
  */
 @EnableOpenApi
 @Configuration
+@Primary
 public class SwaggerConfiguration extends Swagger2WebFluxConfiguration {
 
     @Autowired

@@ -1,23 +1,25 @@
 package pers.lbf.yeju.gateway.web.filter;
 
-import com.alibaba.nacos.common.utils.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBufferFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.result.SimpleResult;
+import pers.lbf.yeju.common.core.constant.OperationStatus;
+import pers.lbf.yeju.common.core.constant.OperationType;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.gateway.config.IgnoreWhiteProperties;
+import pers.lbf.yeju.gateway.message.operationlog.OperationLogMessageSender;
+import pers.lbf.yeju.gateway.util.HttpUtils;
+import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Objects;
 
 /**鉴权过滤器
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -27,53 +29,89 @@ import java.util.List;
  */
 
 @Slf4j
-@Deprecated
 public class AuthFilter implements GlobalFilter, Ordered {
+
+    private static final String START_TIME = "startTime";
 
     @Autowired
     private IgnoreWhiteProperties properties;
+
+    @Autowired
+    private OperationLogMessageSender sender;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("走了鉴权全局过滤");
         String path = exchange.getRequest().getURI().getPath();
+        ServerHttpRequest request = exchange.getRequest();
+        String ip = HttpUtils.getIpAddress(request);
+        // GET POST PUT DELETE
+        String methodName = Objects.requireNonNull(exchange.getRequest().getMethod()).name();
+
+
+
+        String info = String.format("Method:{%s} Host:{%s} Path:{%s} Query:{%s}",
+                methodName,
+                ip,
+                path,
+                exchange.getRequest().getQueryParams());
+
+        log.info(info);
 
         //1.跳过白名单
-        if (YejuStringUtils.matches(path,properties.getWhites())){
-            log.info(properties.getWhites().toString());
-            return chain.filter(exchange);
+        if (!YejuStringUtils.matches(path,properties.getWhites())&&request.getHeaders().get("Authorization")==null){
+            //2.1 token不存在直接抛出异常，走全局异常处理
+            log.info("{},请求路径{}，鉴权不通过", HttpUtils.getIpAddress(request),path);
+            throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
-        List<String> authorizations = exchange.getRequest().getHeaders().get("Authorization");
+        //2.2 token存在则放行
+
+        //记录开始时间戳
+        exchange.getAttributes().put(START_TIME, System.currentTimeMillis());
+        return chain.filter(exchange).then( Mono.fromRunnable(() -> {
+            Long startTime = exchange.getAttribute(START_TIME);
+            if (startTime != null) {
+                //计算 执行时间
+                long executeTime = (System.currentTimeMillis() - startTime);
+                log.info(exchange.getRequest().getURI().getRawPath() + " : " + executeTime + "ms");
+
+                AddOperationLogRequestBean operationLogRequestBean = new AddOperationLogRequestBean();
+                operationLogRequestBean.setOperationTime(new Date());
+                operationLogRequestBean.setOperationStatus(OperationStatus.success.getValue());
+                operationLogRequestBean.setIp(ip);
+                operationLogRequestBean.setBusinessType(getBusinessType(methodName));
+                operationLogRequestBean.setMethod(path);
+                operationLogRequestBean.setRequestMethod(methodName);
+                operationLogRequestBean.setExecuteTime(executeTime);
+                sender.send(operationLogRequestBean,null);
+            }
+        }));
+    }
 
 
-        if (authorizations == null) {
-           return setUnauthorizedResponse(exchange, AuthStatusEnum.NO_TOKEN);
+    public Integer getBusinessType(String requestMethodName){
+        if ("GET".equalsIgnoreCase(requestMethodName)){
+            return OperationType.SELECT.getValue();
         }
 
-       // String 1 = authorizations.get(0);
+        if ("DELETE".equalsIgnoreCase(requestMethodName)){
+            return OperationType.DELETE.getValue();
+        }
 
+        if ("POST".equalsIgnoreCase(requestMethodName)){
+            return OperationType.INSTER.getValue();
+        }
 
+        if ("PUT".equalsIgnoreCase(requestMethodName)){
+            return OperationType.UPDATE.getValue();
+        }
 
-        return chain.filter(exchange);
+        return OperationType.OTHER.getValue();
+
     }
 
-    private Mono<Void> setUnauthorizedResponse(ServerWebExchange exchange, AuthStatusEnum status) {
-        ServerHttpResponse response = exchange.getResponse();
-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        response.setStatusCode(HttpStatus.OK);
 
-        log.info("[鉴权异常处理]请求路径:{}", exchange.getRequest().getPath());
-
-        SimpleResult result = SimpleResult.faild(status.getCode(), status.getMessage());
-
-        return response.writeWith(
-            Mono.fromSupplier(
-                () -> {
-                  DataBufferFactory bufferFactory = response.bufferFactory();
-                  return bufferFactory.wrap(JacksonUtils.toJsonBytes(result));
-                }));
-    }
 
     @Override
     public int getOrder() {

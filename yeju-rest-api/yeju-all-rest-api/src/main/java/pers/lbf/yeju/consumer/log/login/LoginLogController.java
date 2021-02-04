@@ -19,9 +19,7 @@ package pers.lbf.yeju.consumer.log.login;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pers.lbf.yeju.common.core.constant.OperationType;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.consumer.base.log.anotation.Log;
 import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.LoginLogInfoBean;
 import reactor.core.publisher.Mono;
@@ -40,7 +38,7 @@ public class LoginLogController {
     @DubboReference
     private ILoginLogService loginLogService;
 
-    @Log(operationType = OperationType.SELECT)
+
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<LoginLogInfoBean>> getList(
             @Validated @NotNull @PathVariable Long currentPage,

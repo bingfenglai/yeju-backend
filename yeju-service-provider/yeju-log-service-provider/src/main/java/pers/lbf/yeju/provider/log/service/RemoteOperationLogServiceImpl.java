@@ -65,6 +65,7 @@ public class RemoteOperationLogServiceImpl implements IOperationLogService {
         operationLog.setErrorMessage(operationLogDTO.getErrorMessage());
         operationLog.setOperationTime(operationLogDTO.getOperationTime());
         operationLog.setLastIpNumber(operationLogDTO.getLastIpNumber());
+        operationLog.setExecuteTime(operationLogDTO.getExecuteTime());
         
         operationLogDao.insert(operationLog);
         

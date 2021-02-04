@@ -30,8 +30,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
+import pers.lbf.yeju.common.core.result.ErrorAndExceptionResult;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.gateway.pojo.ErrorAndExceptionResult;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;

@@ -55,6 +55,19 @@ public class OperationLog extends Model<OperationLog> {
   /** 访问ip最后一位数字，用作分区标识 */
   private Integer lastIpNumber;
 
+  /**
+   *操作耗时
+   */
+  private Long executeTime;
+
+  public Long getExecuteTime() {
+    return executeTime;
+  }
+
+  public void setExecuteTime(Long executeTime) {
+    this.executeTime = executeTime;
+  }
+
   public Long getOperationLogId() {
     return operationLogId;
   }

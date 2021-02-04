@@ -14,21 +14,35 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.oos.service;
+package pers.lbf.yeju.service.interfaces.oos.pojo;
 
-import org.springframework.http.codec.multipart.FilePart;
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
-import reactor.core.publisher.Mono;
+import java.io.Serializable;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/2 0:03
+ * @date 2021/2/4 1:21
  */
-public interface ILocalObjectUploadService {
+public class SaveMd5Args implements Serializable {
 
-    Mono<IResult<String>> upload(FilePart filePart ) throws ServiceException;
+    String md5;
+    String resourceUrl;
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
+
+    public String getResourceUrl() {
+        return resourceUrl;
+    }
+
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl;
+    }
 }

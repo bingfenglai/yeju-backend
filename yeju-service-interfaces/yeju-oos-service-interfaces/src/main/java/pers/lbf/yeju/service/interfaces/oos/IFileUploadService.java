@@ -18,6 +18,7 @@ package pers.lbf.yeju.service.interfaces.oos;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.oos.pojo.SaveMd5Args;
 
 /** 文件上传服务接口
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -45,6 +46,8 @@ public interface IFileUploadService {
      * @return file url
      */
     IResult<Object> isExited(String fileMd5) throws ServiceException;
+
+    void saveMd5(SaveMd5Args saveMd5Args) throws ServiceException;
 
 
 }

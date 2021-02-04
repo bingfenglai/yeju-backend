@@ -16,14 +16,10 @@
  */
 package pers.lbf.yeju.common.util;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -106,29 +102,31 @@ public class Md5Utils {
      */
     public static String encode(File source) {
 
-        String result = "";
-        FileInputStream in = null;
-        FileChannel ch = null;
-
-        try {
-            in = new FileInputStream(source);
-            ch = in.getChannel();
-            ByteBuffer byteBuffer = ch.map(FileChannel.MapMode.READ_ONLY, 0, source.length());
-            messageDigest.update(byteBuffer);
-            result = byteArrayToHexString(messageDigest.digest());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                assert in != null;
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            IOUtils.closeQuietly(ch, in);
+        if (!source.isFile())
+        {
+            return null;
         }
-
-        return result;
+        MessageDigest digest;
+        FileInputStream in;
+        byte[] buffer = new byte[1024];
+        int len;
+        try
+        {
+            digest = MessageDigest.getInstance("MD5");
+            in = new FileInputStream(source);
+            while ((len = in.read(buffer, 0, 1024)) != -1)
+            {
+                digest.update(buffer, 0, len);
+            }
+            in.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(16);
     }
 
     /** 获取文件的md5加密 密文

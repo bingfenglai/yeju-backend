@@ -14,30 +14,23 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.oos.dao;
+package pers.lbf.yeju.consumer.oos.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Select;
-import pers.lbf.yeju.common.domain.entity.ResourceMd5;
+import org.springframework.http.codec.multipart.FilePart;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.Result;
+import reactor.core.publisher.Mono;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/1 16:34
+ * @date 2021/2/2 0:03
  */
-public interface ResourceMd5Dao extends BaseMapper<ResourceMd5> {
+public interface ObjectUploadService {
 
-    /**
-     * 查询md5是否存在
-     * @param resourceMd5 md5值
-     * @return 1 存在 0 不存在
-     */
-    @Select("select t.resource from table_system_resource_md5 t " +
-            " where t.md5=#{resourceMd5}" +
-            " and t.resource_type = 1" +
-            " limit 1")
-    String selectResourceUrlByMd5(String resourceMd5);
+    Mono<Result<String>> upload(FilePart filePart ) throws ServiceException;
 
+    Mono<Result<String>> upload(String fileMd5,FilePart filePart ) throws ServiceException;
 }

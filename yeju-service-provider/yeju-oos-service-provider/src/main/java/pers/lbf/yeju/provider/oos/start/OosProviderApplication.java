@@ -21,6 +21,7 @@ import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /** oos 服务提供者启动类
@@ -31,7 +32,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider")
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.oos.service")
 @EnableDiscoveryClient
-@MapperScan(  "pers.lbf.yeju.provider.oos.dao.**Dao")
+@MapperScan(  "pers.lbf.yeju.provider.oos.dao")
+@EnableCaching
 @Slf4j
 public class OosProviderApplication {
 

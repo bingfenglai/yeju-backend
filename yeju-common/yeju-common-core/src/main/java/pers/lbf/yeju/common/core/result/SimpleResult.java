@@ -47,7 +47,7 @@ public class SimpleResult implements Serializable, IResult<Object> {
         return new SimpleResult(status);
     }
 
-    private SimpleResult(String message, String code) {
+    public SimpleResult(String message, String code) {
         this.message = message;
         this.code = code;
     }

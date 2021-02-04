@@ -55,6 +55,16 @@ public class MinioConfig implements Serializable {
      */
     private String bucketName = "minio";
 
+    private String tempDir;
+
+    public String getTempDir() {
+        return tempDir;
+    }
+
+    public void setTempDir(String tempDir) {
+        this.tempDir = tempDir;
+    }
+
     public String getAccessKey() {
         return accessKey;
     }

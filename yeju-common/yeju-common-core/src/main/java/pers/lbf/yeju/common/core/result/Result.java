@@ -29,7 +29,7 @@ public class Result<T> implements Serializable, IResult<T> {
         return new Result<>(code,message,data);
     }
 
-    private Result(String code, String message,T data){
+    public Result(String code, String message,T data){
         this.code = code;
         this.message = message;
         this.data = data;

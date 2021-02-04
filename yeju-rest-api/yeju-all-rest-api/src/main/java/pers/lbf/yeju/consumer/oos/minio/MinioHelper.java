@@ -21,7 +21,10 @@ import io.minio.ObjectWriteResponse;
 import io.minio.UploadObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * TODO
@@ -46,29 +49,52 @@ public class MinioHelper {
     }
 
     public void upload(Path path) throws Exception{
-        if (minioClient != null){
-            UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
-                    .object("img/" + path.toString())
-                    .filename(path.toString())
-                    .bucket(bucketName)
-                    .build();
-            ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs);
-
-            log.info(response.object());
-        }
+        upload(String.valueOf(path));
     }
 
     public void upload(String path) throws Exception{
         if (minioClient != null){
             UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
-                    .object("img/" + path)
+                    .object(path)
                     .filename(path)
                     .bucket(bucketName)
                     .build();
-            ObjectWriteResponse response = minioClient.uploadObject(uploadObjectArgs);
+            upload(uploadObjectArgs);
+            removeTempFile(path);
 
-            log.info(response.object());
         }
+    }
+
+    public void upload(String path,String object) throws Exception{
+        if (minioClient != null){
+            UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
+                    .object(object)
+                    .filename(path)
+                    .bucket(bucketName)
+                    .build();
+            upload(uploadObjectArgs);
+            removeTempFile(path);
+        }
+    }
+
+    private void upload(UploadObjectArgs args) throws Exception{
+        log.info("======================================");
+        log.info("===            开始上传到 oos        ===");
+        log.info("======================================");
+        ObjectWriteResponse response = minioClient.uploadObject(args);
+        log.info("***************上传到{} oos 成功**********",response.object());
+
+    }
+
+    private void removeTempFile(String path) throws IOException {
+        log.info("***************开始删除临时文件 {}**********",path);
+        if (Files.exists(Paths.get(path))){
+            if (Files.isWritable(Paths.get(path))){
+                Files.delete(Paths.get(path));
+            }
+        }
+
+        log.info("===============删除临时文件 {} 成功**********",path);
     }
 
 

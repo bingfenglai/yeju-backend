@@ -2,6 +2,7 @@ package pers.lbf.yeju.common.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.util.Date;
  * @author laibf
  * @since 2021-02-01 16:26:16
  */
-
+@TableName("table_system_resource_md5")
 public class ResourceMd5 implements Serializable {
     private static final long serialVersionUID = 214179868233570980L;
     @TableId

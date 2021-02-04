@@ -22,13 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.consumer.oos.service.ILocalObjectUploadService;
+import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.consumer.oos.service.ObjectUploadService;
 import pers.lbf.yeju.service.interfaces.oos.IFileUploadService;
 import reactor.core.publisher.Mono;
 
@@ -48,15 +45,25 @@ public class ObjectUploadController {
     private IFileUploadService fileUploadService;
 
     @Autowired
-    private ILocalObjectUploadService localObjectUploadService;
+    private ObjectUploadService localObjectUploadService;
 
 
     @ApiOperation(value = "上传文件",notes = "上传文件说明",httpMethod = "POST")
     @PostMapping("/upload")
-    public Mono<IResult<String>> upload(
+    public Mono<Result<String>> upload(
             @ApiParam("待上传文件") @RequestPart FilePart filePart)throws ServiceException {
 
         return localObjectUploadService.upload(filePart);
+
+    }
+
+    @ApiOperation(value = "上传文件",notes = "快传接口",httpMethod = "POST")
+    @PostMapping("/upload/{fileMd5}")
+    public Mono<Result<String>> upload(
+            @ApiParam("文件md5值") @PathVariable String fileMd5,
+            @ApiParam("待上传文件") @RequestPart FilePart filePart)throws ServiceException {
+
+        return localObjectUploadService.upload(fileMd5,filePart);
 
     }
 

@@ -19,14 +19,17 @@ package pers.lbf.yeju.provider.oos.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.FileStatus;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
+import pers.lbf.yeju.common.domain.entity.ResourceMd5;
 import pers.lbf.yeju.provider.oos.dao.ResourceMd5Dao;
 import pers.lbf.yeju.service.interfaces.oos.IFileUploadService;
+import pers.lbf.yeju.service.interfaces.oos.pojo.SaveMd5Args;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -55,6 +58,7 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
      * @date 2021/1/29 16:28
      */
     @Override
+    @Deprecated
     public void upload(byte[] fileByte, String fileMd5) {
         InputStream in = new ByteArrayInputStream(fileByte);
 
@@ -70,6 +74,7 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
      * @date 2021/1/29 16:31
      */
     @Override
+    @Cacheable(value = "oos:fileMd5",keyGenerator = "yejuKeyGenerator")
     public IResult<Object> isExited(String fileMd5) throws ServiceException {
 
         if (fileMd5 == null||fileMd5.length() == 0) {
@@ -81,5 +86,15 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
             return SimpleResult.faild(FileStatus.NOT_Found);
         }
         return Result.ok(url);
+    }
+
+
+    @Override
+    public void saveMd5(SaveMd5Args args) throws ServiceException {
+        ResourceMd5 resourceMd5 = new ResourceMd5();
+        resourceMd5.setResource(args.getResourceUrl());
+        resourceMd5.setResourceType(1L);
+        resourceMd5.setMd5(args.getMd5());
+        resourceMd5Dao.insert(resourceMd5);
     }
 }

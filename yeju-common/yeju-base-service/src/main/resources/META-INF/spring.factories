@@ -1,7 +1,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   pers.lbf.yeju.provider.base.redis.config.RedisConfig,\
   pers.lbf.yeju.provider.base.redis.service.NativeRedisServiceImpl,\
-  pers.lbf.yeju.provider.config.PropertiesConfig,\
-  pers.lbf.yeju.provider.config.MybatisPlusConfig,\
-  pers.lbf.yeju.provider.config.CacheConfig
+  pers.lbf.yeju.provider.base.config.PropertiesConfig,\
+  pers.lbf.yeju.provider.base.config.MybatisPlusConfig,\
+  pers.lbf.yeju.provider.base.config.CacheConfig
   

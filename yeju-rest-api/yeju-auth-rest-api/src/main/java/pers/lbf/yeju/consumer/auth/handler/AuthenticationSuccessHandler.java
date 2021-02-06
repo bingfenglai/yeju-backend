@@ -37,6 +37,7 @@ import pers.lbf.yeju.consumer.auth.constant.TokenConstant;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
+import pers.lbf.yeju.consumer.auth.sender.SessionInitSender;
 import reactor.core.publisher.Mono;
 
 /**认证通过处理器
@@ -50,6 +51,9 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
     @Autowired
     private AuthorizationTokenManager authorityManager;
+
+    @Autowired
+    private SessionInitSender sessionInitSender;
 
     private final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
 
@@ -105,7 +109,9 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         dataBytes = JacksonUtils.toJsonBytes(result);
 
         DataBuffer bodyDataBuffer = response.bufferFactory().wrap(dataBytes);
+        sessionInitSender.send(authorityInfoBean.getPrincipal(),null);
         return response.writeWith(Mono.just(bodyDataBuffer));
+
 
     }
 

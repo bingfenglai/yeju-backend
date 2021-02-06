@@ -14,15 +14,10 @@
     <artifactId>yeju-base-service</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-common-core</artifactId>
-            <version>${yeju.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju-common-domain</artifactId>
+            <artifactId>yeju-common-util</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 

@@ -3,3 +3,5 @@ logging:
 spring:
   application:
     name: auth-consumer
+server:
+  port: 9002

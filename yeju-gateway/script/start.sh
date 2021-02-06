@@ -1,1 +1,1 @@
-nohup java -Xms128m -Xmx256m -jar ../dist/yeju-gateway-1.0.0.jar >> /app/yeju/yeju-gateway-1.0.0/log/start.log 2>&1 &
+nohup java -Xms128m -Xmx256m -jar ../dist/yeju-gateway-1.0.0.jar >> ./start.log 2>&1 &

@@ -29,6 +29,7 @@ import org.springframework.security.web.server.authorization.AuthorizationContex
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
@@ -124,7 +125,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         return check(authentication, object)
                 .filter(AuthorizationDecision::isGranted)
                 .switchIfEmpty(Mono.defer(() -> {
-                    SimpleResult result = SimpleResult.faild(AuthStatusEnum.unauthorized);
+                    IResult<Object> result = SimpleResult.faild(AuthStatusEnum.unauthorized);
                     String body = JSONObject.toJSONString(result);
                     return Mono.error(new AccessDeniedException(body));
                 }))

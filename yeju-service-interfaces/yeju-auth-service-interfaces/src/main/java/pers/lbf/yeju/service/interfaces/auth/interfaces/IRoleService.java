@@ -16,7 +16,10 @@
  */
 package pers.lbf.yeju.service.interfaces.auth.interfaces;
 
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+
+import java.util.List;
 
 /**角色服务接口类
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -27,5 +30,5 @@ import pers.lbf.yeju.common.core.result.IResult;
 public interface IRoleService {
 
 
-    IResult getRoleByPrincipal(String principal);
+    IResult<List<String>> getRoleListByPrincipal(String principal) throws ServiceException;
 }

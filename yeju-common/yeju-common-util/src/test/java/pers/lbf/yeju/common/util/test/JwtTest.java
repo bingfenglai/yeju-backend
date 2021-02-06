@@ -36,9 +36,9 @@ public class JwtTest {
         user.setName("里斯");
 
         try {
-            String token = JwtUtils.generateTokenExpireInMinutes(user, RsaUtils.getPrivateKey("privateKey.txt"), 3);
+            String token = JwtUtils.generateTokenExpireInMinutes(user, RsaUtils.getPrivateKey("RSAPrivateKey.rsa"), 3);
 
-            Payload<User> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey("publicKey.txt"),User.class);
+            Payload<User> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey("RSAPublicKey.rsa"),User.class);
             if (payload.getUserInfo()==null){
                 System.out.println(payload.toString());
                 System.out.println("======null");

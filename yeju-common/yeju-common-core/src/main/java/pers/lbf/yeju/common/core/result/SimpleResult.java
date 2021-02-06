@@ -18,32 +18,32 @@ public class SimpleResult implements Serializable, IResult<Object> {
     private String code;
 
 
-    public static SimpleResult ok(){
+    public static IResult<Object> ok(){
         return new SimpleResult(ServiceStatusEnum.OK);
     }
 
-    public static SimpleResult ok(String message){
+    public static IResult<Object> ok(String message){
         return new SimpleResult(message,ServiceStatusEnum.OK.getCode());
     }
 
-    public static SimpleResult error(){
+    public static IResult<Object> error(){
 
         return new SimpleResult(ServiceStatusEnum.UNKNOWN_ERROR);
     }
 
-    public static SimpleResult faild(String code,String message){
+    public static IResult<Object> faild(String code,String message){
         return new SimpleResult(message, code);
     }
 
-    public static SimpleResult faild(ServiceStatusEnum status){
+    public static IResult<Object> faild(ServiceStatusEnum status){
         return new SimpleResult(status);
     }
 
-    public static SimpleResult faild(IStatus status){
+    public static IResult<Object> faild(IStatus status){
         return new SimpleResult(status.getMessage(), status.getCode());
     }
 
-    public static SimpleResult faild(AuthStatusEnum status){
+    public static IResult<Object> faild(AuthStatusEnum status){
         return new SimpleResult(status);
     }
 

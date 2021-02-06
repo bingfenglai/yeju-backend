@@ -77,7 +77,6 @@ public class SimpleAccountDTO implements Serializable {
     public String toString() {
         return "SimpleAccountDTO{" +
                 "principal='" + principal + '\'' +
-                ", certificate='" + certificate + '\'' +
                 ", accountType=" + accountType +
                 ", accountStatus='" + accountStatus + '\'' +
                 ", authorityStringList=" + authorityStringList +

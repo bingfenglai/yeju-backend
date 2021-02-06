@@ -33,8 +33,6 @@ import pers.lbf.yeju.common.core.result.ErrorAndExceptionResult;
 import pers.lbf.yeju.common.core.result.IResult;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -91,13 +89,13 @@ public class ApiExceptionHandler implements ErrorWebExceptionHandler {
 
         if (ex instanceof ServiceException){
             log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
-            log.info(Arrays.toString(ex.getStackTrace()));
+            log.info(String.valueOf(ex));
         }else if (ex instanceof ResponseStatusException) {
             log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
-            log.info(Arrays.toString(ex.getStackTrace()));
+            log.info(String.valueOf(ex));
         } else {
             log.error("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
-            log.error(Arrays.toString(ex.getStackTrace()));
+            log.error(String.valueOf(ex));
         }
 
 

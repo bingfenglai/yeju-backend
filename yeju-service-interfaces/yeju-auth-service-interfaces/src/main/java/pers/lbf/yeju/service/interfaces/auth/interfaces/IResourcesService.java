@@ -2,7 +2,7 @@ package pers.lbf.yeju.service.interfaces.auth.interfaces;
 
 import pers.lbf.yeju.common.core.result.IResult;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * (受保护的资源)权限表，包括菜单和API(TableSystemResouces)表服务接口
@@ -12,5 +12,5 @@ import java.util.ArrayList;
  */
 public interface IResourcesService {
 
-    IResult<ArrayList<String>> findAuthorityListByPrincipal(String principal);
+    IResult<List<String>> findAuthorityListByPrincipal(String principal);
 }

@@ -230,11 +230,6 @@
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
                                               file="src/main/resources/bootstrap-${profile.id.prod}.properties"/>
 
-                                        <!--                                        拷贝密钥文件-->
-                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
-                                              file="src/main/resources/publicKey.txt"/>
-                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin"
-                                              file="src/main/resources/privateKey.txt"/>
 
                                     </target>
                                 </configuration>

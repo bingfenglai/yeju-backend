@@ -18,6 +18,7 @@ package pers.lbf.yeju.service.interfaces.auth.interfaces;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
 
 /**账户服务接口类
@@ -42,4 +43,7 @@ public interface IAccountService {
      * @throws RuntimeException e
      */
     IResult<Boolean> updatePassword(String principal,String newPassword) throws ServiceException;
+
+
+    IResult<AccountDetailsInfoBean> findAccountDetailsByPrincipal(String principal) throws ServiceException;
 }

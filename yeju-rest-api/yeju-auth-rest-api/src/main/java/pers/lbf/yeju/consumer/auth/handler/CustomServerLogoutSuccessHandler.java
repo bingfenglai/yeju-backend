@@ -27,6 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import reactor.core.publisher.Mono;
@@ -61,7 +62,7 @@ public class CustomServerLogoutSuccessHandler implements ServerLogoutSuccessHand
         response.setStatusCode(HttpStatus.OK);
         response.getHeaders().set(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
 
-        SimpleResult result = SimpleResult.ok(AuthStatusEnum.logout_success.getMessage());
+        IResult<Object> result = SimpleResult.ok(AuthStatusEnum.logout_success.getMessage());
 
         DataBuffer buffer = response.bufferFactory().wrap(JacksonUtils.toJsonBytes(result));
 

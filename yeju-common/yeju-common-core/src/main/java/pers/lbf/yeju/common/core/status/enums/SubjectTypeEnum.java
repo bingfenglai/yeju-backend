@@ -31,5 +31,10 @@ public enum SubjectTypeEnum {
     /**
      * 系统账号
      */
-    is_system_account
+    is_system_account,
+
+    /**
+     * 未识别出账户类型
+     */
+    is_unknown
 }

@@ -23,5 +23,6 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2021/1/18 20:44
  */
+@Deprecated
 public class PageInfoBean implements Serializable {
 }

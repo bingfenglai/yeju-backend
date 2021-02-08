@@ -16,7 +16,6 @@
  */
 package pers.lbf.yeju.service.interfaces.employee;
 
-import pers.lbf.yeju.common.core.PageInfoBean;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.employee.pojo.SimpleEmployeeInfoBean;
@@ -34,11 +33,11 @@ public interface IEmployeeService {
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/1/18 20:34
-     * @param account  系统账户
+     * @param employeeId  id
      * @return IResult
      * @throws ServiceException e
      */
-    IResult<SimpleEmployeeInfoBean> findInfoByAccount(String account)throws ServiceException;
+    IResult<SimpleEmployeeInfoBean> findInfoByEmployeeId(Long employeeId)throws ServiceException;
 
     /**TODO
      * @author 赖柄沣 bingfengdev@aliyun.com
@@ -48,7 +47,7 @@ public interface IEmployeeService {
      * @return void
      * @throws ServiceException e
      */
-    void RemoveEmployeeByAccount(String account) throws ServiceException;
+    void removeEmployeeByAccount(String account) throws ServiceException;
 
     /**TODO
      * @author 赖柄沣 bingfengdev@aliyun.com
@@ -75,9 +74,8 @@ public interface IEmployeeService {
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/1/18 20:42
-     * @param pageInfoBean 当前页信息
      * @return list
      * @throws ServiceException e
      */
-    IResult<SimpleEmployeeInfoBean> findList(PageInfoBean pageInfoBean) throws ServiceException;
+    IResult<SimpleEmployeeInfoBean> findList() throws ServiceException;
 }

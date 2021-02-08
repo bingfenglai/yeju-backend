@@ -26,18 +26,20 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2020/12/20 0:14
  */
-public enum AccountStatusEnumEnum implements IStatus, Serializable {
+public enum AccountStatusEnum implements IStatus, Serializable {
 
     /**
      * 账号不存在
      */
-    accountDoesNotExist("账号不存在","ac001");
+    accountDoesNotExist("账号不存在","ac001"),
+
+    AccountOwnerTypeNotExist("账户所属者类型不存在","ac002");
 
     private String message;
     private String code;
 
 
-    AccountStatusEnumEnum(String message, String code) {
+    AccountStatusEnum(String message, String code) {
         this.message = message;
         this.code = code;
     }

@@ -2,7 +2,7 @@
 <configuration>
     <!-- 最好使用绝对路径 -->
     <property name="LOG_HOME" value="../logs"/>
-    <property name="baseFileName" value="currencyProvider"/>
+    <property name="baseFileName" value="authProvider"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="UTF-8">

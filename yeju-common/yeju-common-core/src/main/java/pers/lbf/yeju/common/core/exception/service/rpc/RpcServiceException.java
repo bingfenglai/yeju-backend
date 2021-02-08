@@ -1,6 +1,7 @@
 package pers.lbf.yeju.common.core.exception.service.rpc;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 /**rpc远程调用异常
@@ -22,10 +23,27 @@ public class RpcServiceException extends ServiceException {
     }
 
     public RpcServiceException(String message, String exceptionCode, Object[] params, String module) {
-       super(message, exceptionCode, params, module);
+        super(message, exceptionCode, params, module);
+        this.message = message;
+        this.exceptionCode = exceptionCode;
+        this.module = module;
+        this.params = params;
     }
 
     public RpcServiceException(String message, String exceptionCode){
        super(message, exceptionCode);
     }
+
+
+    public static ServiceException getInstance(IStatus status){
+        return new RpcServiceException(status);
+    }
+
+    public static ServiceException getInstance(){
+        return new RpcServiceException(ServiceStatusEnum.UNKNOWN_ERROR);
+    }
+
+
+
+
 }

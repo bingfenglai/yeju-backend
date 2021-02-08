@@ -59,7 +59,7 @@ public class AuthenticationFailHandler implements ServerAuthenticationFailureHan
 
         //设置body
         byte[] dataBytes ={};
-        IResult<Object> result = SimpleResult.faild(AuthStatusEnum.authentication_failed);
+        IResult<Object> result = SimpleResult.failed(AuthStatusEnum.authentication_failed);
         dataBytes = JacksonUtils.toJsonBytes(result);
 
 

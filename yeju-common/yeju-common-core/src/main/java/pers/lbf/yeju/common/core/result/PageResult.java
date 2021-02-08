@@ -27,17 +27,7 @@ import java.util.List;
  * @Description TODO
  * @date 2020/12/7 20:37
  */
-public class PageResult<T>implements Serializable {
-
-    /**
-     * 错误码
-      */
-   private String code;
-
-    /**
-     * 消息提示
-     */
-   private String message;
+public class PageResult<T> extends BaseResult<T> implements Serializable {
 
     /**
      * 总记录数
@@ -116,20 +106,23 @@ public class PageResult<T>implements Serializable {
     }
 
 
+    @Override
     public String getCode() {
         return this.code;
     }
 
 
+    @Override
     public String getMessage() {
         return this.message;
     }
 
-
+    @Override
     public void setCode(String code) {
         this.code = code;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }

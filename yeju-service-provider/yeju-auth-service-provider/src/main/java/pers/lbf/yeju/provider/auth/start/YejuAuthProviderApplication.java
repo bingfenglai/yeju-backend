@@ -14,10 +14,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Description TODO
  * @date 2020/11/29 20:15
  */
-@SpringBootApplication(scanBasePackages = {"pers.lbf.yeju.provider","org.apache.dubbo.config"})
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider")
 @EnableDiscoveryClient
-@EnableDubbo(scanBasePackages = {"pers.lbf.yeju.provider.**.service",
-                                 "org.apache.dubbo.apidocs.core.providers"})
+@EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.**.service")
 @MapperScan(basePackages = "pers.lbf.yeju.provider.auth.**.dao")
 public class YejuAuthProviderApplication {
 

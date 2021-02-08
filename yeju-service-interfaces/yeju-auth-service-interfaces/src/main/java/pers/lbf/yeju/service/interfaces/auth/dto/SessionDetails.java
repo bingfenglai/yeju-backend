@@ -26,13 +26,34 @@ import java.util.List;
  * @version 1.0
  * @date 2021/2/5 16:52
  */
-public class SessionDetails implements Serializable {
+public class SessionDetails<T> implements Serializable {
 
     private AccountDetailsInfoBean accountDetailsInfo;
 
     private List<String> roles;
 
     private List<String> resources;
+
+    private T subjectDetails;
+
+
+    @Override
+    public String toString() {
+        return "SessionDetails{" +
+                "accountDetailsInfo=" + accountDetailsInfo +
+                ", roles=" + roles +
+                ", resources=" + resources +
+                ", subjectDetails=" + subjectDetails +
+                '}';
+    }
+
+    public T getSubjectDetails() {
+        return subjectDetails;
+    }
+
+    public void setSubjectDetails(T subjectDetails) {
+        this.subjectDetails = subjectDetails;
+    }
 
     public AccountDetailsInfoBean getAccountDetailsInfo() {
         return accountDetailsInfo;

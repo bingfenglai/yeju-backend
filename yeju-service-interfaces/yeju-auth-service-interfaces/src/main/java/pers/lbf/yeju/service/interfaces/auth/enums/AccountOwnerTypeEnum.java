@@ -14,12 +14,34 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.auth.employee;
+package pers.lbf.yeju.service.interfaces.auth.enums;
 
-/**
+import java.io.Serializable;
+
+/**账户类型枚举 0内部账户 1客户账户
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/1/20 20:36
+ * @date 2021/2/7 21:49
  */
-public class EmployeeServiceImpl {
+public enum AccountOwnerTypeEnum implements Serializable {
+
+    /**
+     * 内部账号
+     */
+    Internal_account("0"),
+
+    /**
+     * 客户账号
+     */
+    Customer_account("1");
+
+    String value;
+
+    AccountOwnerTypeEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

@@ -83,7 +83,7 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
 
         String url = resourceMd5Dao.selectResourceUrlByMd5(fileMd5);
         if (url == null || url.length() == 0){
-            return SimpleResult.faild(FileStatus.NOT_Found);
+            return SimpleResult.failed(FileStatus.NOT_Found);
         }
         return Result.ok(url);
     }

@@ -10,10 +10,8 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2020/11/26 22:28
  */
-public class Result<T> implements Serializable, IResult<T> {
+public class Result<T> extends BaseResult<T> implements Serializable, IResult<T> {
 
-    private String message;
-    private String code;
     private T data;
 
 
@@ -22,7 +20,7 @@ public class Result<T> implements Serializable, IResult<T> {
     }
 
     public static IResult<Object> error(String code,String message){
-        return SimpleResult.faild(code, message);
+        return SimpleResult.failed(code, message);
     }
 
     public static <T> IResult<T> failed(String code, String message,T data){
@@ -41,12 +39,12 @@ public class Result<T> implements Serializable, IResult<T> {
         this.message = status.getMessage();
     }
 
-    private Result(){ }
+    public Result(){ }
 
     @Override
     public String toString() {
-        return "RpcResult{" +
-                "messsage='" + message + '\'' +
+        return "Result{" +
+                "message='" + message + '\'' +
                 ", code='" + code + '\'' +
                 ", data=" + data +
                 '}';
@@ -57,6 +55,7 @@ public class Result<T> implements Serializable, IResult<T> {
         return message;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }
@@ -66,6 +65,7 @@ public class Result<T> implements Serializable, IResult<T> {
         return code;
     }
 
+    @Override
     public void setCode(String code) {
         this.code = code;
     }

@@ -31,22 +31,22 @@ public class ServiceException extends RuntimeException{
     /**
      * 错误消息提示
      */
-    private String message;
+    protected String message;
 
     /**
      * 异常编码
      */
-    private String exceptionCode;
+    protected String exceptionCode;
 
     /**
      * 服务调用参数
      */
-    private Object[] params;
+    protected Object[] params;
 
     /**
      * 异常所属模块
      */
-    private String module;
+    protected String module;
 
 
     public static ServiceException getInstance(String message, String exceptionCode) {

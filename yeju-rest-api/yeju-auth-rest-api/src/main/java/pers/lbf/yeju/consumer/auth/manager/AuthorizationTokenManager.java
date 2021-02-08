@@ -30,7 +30,7 @@ import pers.lbf.yeju.consumer.auth.constant.TokenConstant;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 
 
-/**
+/** 认证令牌管理器
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO

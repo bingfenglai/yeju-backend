@@ -125,7 +125,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         return check(authentication, object)
                 .filter(AuthorizationDecision::isGranted)
                 .switchIfEmpty(Mono.defer(() -> {
-                    IResult<Object> result = SimpleResult.faild(AuthStatusEnum.unauthorized);
+                    IResult<Object> result = SimpleResult.failed(AuthStatusEnum.unauthorized);
                     String body = JSONObject.toJSONString(result);
                     return Mono.error(new AccessDeniedException(body));
                 }))

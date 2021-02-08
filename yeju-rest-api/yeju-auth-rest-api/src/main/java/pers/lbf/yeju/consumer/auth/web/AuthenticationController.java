@@ -16,14 +16,11 @@
  */
 package pers.lbf.yeju.consumer.auth.web;
 
-import io.swagger.annotations.ApiOperation;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
@@ -34,7 +31,6 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 /**认证控制器
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -49,9 +45,10 @@ public class AuthenticationController {
     @DubboReference
     private IVerificationCodeService codeService;
 
+
     @GetMapping("/login")
     public Mono<IResult<Object>> login() throws Exception{
-        return Mono.just(SimpleResult.faild(AuthStatusEnum.NO_TOKEN));
+        return Mono.just(SimpleResult.failed(AuthStatusEnum.NO_TOKEN));
     }
 
     /**
@@ -64,7 +61,7 @@ public class AuthenticationController {
     @GetMapping("/unauthc")
     public Mono<IResult<Object>> unauthc() throws Exception{
 
-        return  Mono.just(SimpleResult.faild(AuthStatusEnum.NO_TOKEN));
+        return  Mono.just(SimpleResult.failed(AuthStatusEnum.NO_TOKEN));
     }
 
     /**获取图片验证码接口
@@ -102,14 +99,6 @@ public class AuthenticationController {
         return Mono.just(result);
     }
 
-    @ApiOperation(value = "获取账号主体信息",notes = "账号主题信息说明",httpMethod = "GET")
-    @GetMapping("/getAuthzDetailInfo")
-    public Mono<IResult> getAuthzDetailInfo(ServerWebExchange webExchange)throws ServiceException {
-        //获取token
-        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get("Authorization")).get(0);
 
-
-        return Mono.empty();
-    }
 
 }

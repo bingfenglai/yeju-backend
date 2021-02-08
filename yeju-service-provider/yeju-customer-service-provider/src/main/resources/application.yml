@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: yeju-customer-service-provider
+logging:
+  config: classpath:config/logback.xml

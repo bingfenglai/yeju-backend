@@ -30,6 +30,7 @@ import pers.lbf.yeju.provider.base.util.SpringContextUtils;
  * @version 1.0
  * @date 2021/2/5 15:01
  */
+
 public enum PhoneNumberSessionStrategy implements ISessionStrategy {
     /**
      * 枚举类型实现单例模式

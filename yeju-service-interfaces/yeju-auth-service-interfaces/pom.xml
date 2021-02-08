@@ -15,8 +15,8 @@
     <dependencies>
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju-base-api</artifactId>
-            <version>${yeju.version}</version>
+            <artifactId>yeju-common-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

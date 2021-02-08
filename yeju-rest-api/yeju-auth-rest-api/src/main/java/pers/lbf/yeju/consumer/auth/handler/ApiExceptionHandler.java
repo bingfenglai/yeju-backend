@@ -64,7 +64,7 @@ public class ApiExceptionHandler implements ErrorWebExceptionHandler {
 
         String message;
         String code;
-        IResult<String> result;
+        IResult<Object> result;
         if (ex instanceof ResponseStatusException) {
             if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())){
                 message = "服务不存在";
@@ -103,7 +103,7 @@ public class ApiExceptionHandler implements ErrorWebExceptionHandler {
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         response.setStatusCode(HttpStatus.OK);
         result = ErrorAndExceptionResult.getInstance(code,message,path);
-        IResult<String> finalResult = result;
+        IResult<Object> finalResult = result;
 
         return response.writeWith(Mono.fromSupplier(() -> {
             DataBufferFactory bufferFactory = response.bufferFactory();

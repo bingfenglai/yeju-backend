@@ -1,6 +1,5 @@
 package pers.lbf.yeju.common.core.result;
 
-import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
@@ -12,11 +11,7 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2020/11/29 19:40
  */
-public class SimpleResult implements Serializable, IResult<Object> {
-
-    private String message;
-    private String code;
-
+public class SimpleResult extends BaseResult<Object> implements Serializable, IResult<Object> {
 
     public static IResult<Object> ok(){
         return new SimpleResult(ServiceStatusEnum.OK);
@@ -31,20 +26,13 @@ public class SimpleResult implements Serializable, IResult<Object> {
         return new SimpleResult(ServiceStatusEnum.UNKNOWN_ERROR);
     }
 
-    public static IResult<Object> faild(String code,String message){
+    public static IResult<Object> failed(String code, String message){
         return new SimpleResult(message, code);
     }
 
-    public static IResult<Object> faild(ServiceStatusEnum status){
-        return new SimpleResult(status);
-    }
 
-    public static IResult<Object> faild(IStatus status){
+    public static IResult<Object> failed(IStatus status){
         return new SimpleResult(status.getMessage(), status.getCode());
-    }
-
-    public static IResult<Object> faild(AuthStatusEnum status){
-        return new SimpleResult(status);
     }
 
     public SimpleResult(String message, String code) {
@@ -52,17 +40,10 @@ public class SimpleResult implements Serializable, IResult<Object> {
         this.code = code;
     }
 
-    private SimpleResult(ServiceStatusEnum status) {
+    private SimpleResult(IStatus status) {
         this.message = status.getMessage();
         this.code = status.getCode();
     }
-
-    private SimpleResult(AuthStatusEnum status){
-        this.message = status.getMessage();
-        this.code = status.getCode();
-    }
-
-
 
     @Override
     public String toString() {
@@ -78,10 +59,6 @@ public class SimpleResult implements Serializable, IResult<Object> {
     }
 
     @Override
-    public Object getData() {
-        return null;
-    }
-
     public void setMessage(String message) {
         this.message = message;
     }
@@ -92,6 +69,7 @@ public class SimpleResult implements Serializable, IResult<Object> {
         return code;
     }
 
+    @Override
     public void setCode(String code) {
         this.code = code;
     }

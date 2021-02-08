@@ -81,7 +81,7 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 
     }
 
-    /**自定义认证方法
+    /**自定义认证方法 认证逻辑
      * @Description //TODO
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0

@@ -26,10 +26,8 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2020/12/20 15:58
  */
-public class ErrorAndExceptionResult implements IResult<String>, Serializable {
+public class ErrorAndExceptionResult extends BaseResult<Object> implements IResult<Object>, Serializable {
 
-    private String code;
-    private String message;
     private String path;
 
     public static ErrorAndExceptionResult getInstance(IStatus statusEnum, String path) {
@@ -73,15 +71,11 @@ public class ErrorAndExceptionResult implements IResult<String>, Serializable {
     }
 
     @Override
-    public String getData() {
-        return null;
-    }
-
-
     public void setCode(String code) {
         this.code = code;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }

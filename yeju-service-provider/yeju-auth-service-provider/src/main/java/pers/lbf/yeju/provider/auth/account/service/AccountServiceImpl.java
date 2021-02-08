@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -27,13 +28,16 @@ import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
 import pers.lbf.yeju.common.domain.entity.Account;
 import pers.lbf.yeju.provider.auth.account.dao.IAccountDao;
-import pers.lbf.yeju.provider.auth.account.enums.AccountStatusEnumEnum;
+import pers.lbf.yeju.provider.auth.account.enums.AccountStatusEnum;
 import pers.lbf.yeju.provider.auth.account.factory.AccountStrategyFactory;
 import pers.lbf.yeju.provider.auth.account.strategy.IFindSimpleAccountByPrincipalStrategy;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
+import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
+
+import java.util.Objects;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -92,7 +96,7 @@ public class AccountServiceImpl implements IAccountService {
         Account account = accountDao.selectOne(accountQueryWrapper);
 
         assert account != null:
-                new RpcServiceException(AccountStatusEnumEnum.accountDoesNotExist);
+                new RpcServiceException(AccountStatusEnum.accountDoesNotExist);
 
         account.setAccountPassword(newPassword);
 
@@ -126,12 +130,12 @@ public class AccountServiceImpl implements IAccountService {
         }
 
         if (accountType.equals(SubjectTypeEnum.is_unknown)){
-            throw ServiceException.getInstance(AccountStatusEnumEnum.accountDoesNotExist);
+            throw ServiceException.getInstance(AccountStatusEnum.accountDoesNotExist);
         }
 
         Account account = accountDao.selectOne(wrapper);
         if (account == null) {
-            throw ServiceException.getInstance(AccountStatusEnumEnum.accountDoesNotExist);
+            throw ServiceException.getInstance(AccountStatusEnum.accountDoesNotExist);
         }
 
         AccountDetailsInfoBean accountDetails = new AccountDetailsInfoBean();
@@ -146,5 +150,25 @@ public class AccountServiceImpl implements IAccountService {
 
 
         return Result.ok(accountDetails);
+    }
+
+    /**
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/7 21:55
+     * @param principal 抽象账号
+     * @return pers.lbf.yeju.common.core.result.IResult<pers.lbf.yeju.service.interfaces.auth.enums.AccountTypeEnum>
+     */
+    @Override
+    public IResult<AccountOwnerTypeEnum> getAccountType(String principal) throws ServiceException {
+
+        IResult<AccountDetailsInfoBean> infoBeanResult = findAccountDetailsByPrincipal(principal);
+        if (Objects.equals(infoBeanResult.getCode(), ServiceStatusConstant.SUCCESSFUL_OPERATION_CODE)){
+            AccountDetailsInfoBean infoBean = infoBeanResult.getData();
+            if (infoBean.getAccountType()!=null&&infoBean.getAccountType().equalsIgnoreCase(AccountOwnerTypeEnum.Internal_account.getValue())){
+                return Result.ok(AccountOwnerTypeEnum.Internal_account);
+            }
+        }
+        throw  ServiceException.getInstance(AccountStatusEnum.AccountOwnerTypeNotExist);
     }
 }

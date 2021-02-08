@@ -6,7 +6,7 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
-import pers.lbf.yeju.provider.auth.account.enums.AccountStatusEnumEnum;
+import pers.lbf.yeju.provider.auth.account.enums.AccountStatusEnum;
 import pers.lbf.yeju.provider.auth.resource.dao.IResourcesDao;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
@@ -40,7 +40,7 @@ public class ResourcesServiceImpl implements IResourcesService {
         }
 
         if (accountType.equals(SubjectTypeEnum.is_unknown)){
-            throw ServiceException.getInstance(AccountStatusEnumEnum.accountDoesNotExist);
+            throw ServiceException.getInstance(AccountStatusEnum.accountDoesNotExist);
         }
 
         return Result.ok(resourceNameList);

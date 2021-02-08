@@ -67,7 +67,7 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
 
         String message;
         String code;
-        IResult<String> result = null;
+        IResult<Object> result = null;
 
          if (ex instanceof ResponseStatusException) {
              if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())){
@@ -119,7 +119,7 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         response.setStatusCode(HttpStatus.OK);
         result = ErrorAndExceptionResult.getInstance(code,message,path);
-        IResult<String> finalResult = result;
+        IResult<Object> finalResult = result;
 
         return response.writeWith(Mono.fromSupplier(() -> {
             DataBufferFactory bufferFactory = response.bufferFactory();

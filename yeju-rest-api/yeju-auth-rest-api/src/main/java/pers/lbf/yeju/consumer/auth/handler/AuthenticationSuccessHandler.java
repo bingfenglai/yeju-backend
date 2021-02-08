@@ -104,7 +104,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
             logger.error("生成token发生错误，用户凭证：{}", authorityInfoBean.getPrincipal());
             logger.error(String.valueOf(e));
 
-            result = SimpleResult.faild(AuthStatusEnum.GEN_TOKEN_FAIL);
+            result = SimpleResult.failed(AuthStatusEnum.GEN_TOKEN_FAIL);
         }
         dataBytes = JacksonUtils.toJsonBytes(result);
 

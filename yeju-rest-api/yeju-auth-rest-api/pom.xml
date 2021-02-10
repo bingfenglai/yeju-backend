@@ -116,6 +116,11 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-employe-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
     </dependencies>
 
 

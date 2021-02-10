@@ -9,6 +9,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.constant.OperationStatus;
 import pers.lbf.yeju.common.core.constant.OperationType;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
@@ -59,7 +60,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         log.info(info);
 
         //1.跳过白名单
-        if (!YejuStringUtils.matches(path,properties.getWhites())&&request.getHeaders().get("Authorization")==null){
+        if (!YejuStringUtils.matches(path,properties.getWhites())&&request.getHeaders().get(TokenConstant.TOKEN_KEY)==null){
             //2.1 token不存在直接抛出异常，走全局异常处理
             log.info("{},请求路径{}，鉴权不通过", HttpUtils.getIpAddress(request),path);
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);

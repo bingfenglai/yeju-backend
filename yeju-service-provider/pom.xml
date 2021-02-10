@@ -10,7 +10,7 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>yeju-auth-service-provider</module>
+        <module>yeju-all-service-provider</module>
         <module>yeju-log-service-provider</module>
         <module>yeju-oos-service-provider</module>
         <module>yeju-product-service-provider</module>

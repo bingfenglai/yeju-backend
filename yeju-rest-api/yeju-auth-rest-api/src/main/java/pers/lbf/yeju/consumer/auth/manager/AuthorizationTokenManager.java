@@ -19,6 +19,7 @@ package pers.lbf.yeju.consumer.auth.manager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.pojo.Payload;
@@ -26,7 +27,6 @@ import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
 import pers.lbf.yeju.consumer.auth.builder.AuthorityInfoTokenBuilder;
 import pers.lbf.yeju.consumer.auth.config.RsaPublicKeyConfig;
-import pers.lbf.yeju.consumer.auth.constant.TokenConstant;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 
 

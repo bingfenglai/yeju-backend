@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: yeju-auth-service-provider
-logging:
-  config: classpath:config/logback.xml

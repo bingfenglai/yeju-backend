@@ -28,6 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
@@ -58,7 +59,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         log.info("开始从请求头中或许token");
         ServerHttpRequest request = authorizationContext.getExchange().getRequest();
         HttpHeaders headers = request.getHeaders();
-        String token = headers.getFirst("Authorization");
+        String token = headers.getFirst(TokenConstant.TOKEN_KEY);
 
         if (token==null){
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);

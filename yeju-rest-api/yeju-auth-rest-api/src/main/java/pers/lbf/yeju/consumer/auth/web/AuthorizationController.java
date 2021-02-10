@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
@@ -55,7 +56,7 @@ public class AuthorizationController {
     @GetMapping("/getAuthzDetailInfo")
     public Mono<IResult<SessionDetails>> getAuthzDetailInfo(ServerWebExchange webExchange) throws Exception {
         //获取token
-        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get("Authorization")).get(0);
+        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
         AuthorityInfoBean authorityInfo = tokenManager.getAuthorityInfo(authorization);
         String principal = authorityInfo.getPrincipal();
 

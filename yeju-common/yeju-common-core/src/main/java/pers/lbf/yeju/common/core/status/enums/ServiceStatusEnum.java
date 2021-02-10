@@ -20,7 +20,11 @@ public enum ServiceStatusEnum implements IStatus, Serializable {
     /**
      * 未知异常
      */
-    UNKNOWN_ERROR("未知异常","e9999");
+    UNKNOWN_ERROR("未知异常","e9999"),
+
+    no_data_has_been_found("没有查询到相关数据","svc01");
+
+    ;
 
 
 

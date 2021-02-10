@@ -16,21 +16,28 @@
  */
 package pers.lbf.yeju.consumer.auth.web;
 
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
+import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
 import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**认证控制器
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -40,16 +47,45 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthenticationController {
 
     @DubboReference
     private IVerificationCodeService codeService;
+
+    @DubboReference
+    private ISessionService sessionService;
+
+    @Autowired
+    private AuthorizationTokenManager tokenManager;
 
 
     @GetMapping("/login")
     public Mono<IResult<Object>> login() throws Exception{
         return Mono.just(SimpleResult.failed(AuthStatusEnum.NO_TOKEN));
     }
+
+    @ApiOperation(value = "登出方法",notes = "登出方法说明",httpMethod = "DELETE")
+    @DeleteMapping("/logout")
+    public Mono<Object> logout(ServerWebExchange webExchange)throws ServiceException {
+        //获取token
+        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
+        AuthorityInfoBean authorityInfo = null;
+        try {
+            authorityInfo = tokenManager.getAuthorityInfo(authorization);
+        } catch (Exception e) {
+            log.error(String.valueOf(e));
+        }
+        assert authorityInfo != null;
+        String principal = authorityInfo.getPrincipal();
+
+        return Mono.empty().doFinally(signalType -> {
+            // 销毁会话信息
+            sessionService.destroySession(principal);
+        });
+    }
+
+
 
     /**
      * @Description 未登录调用

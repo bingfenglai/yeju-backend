@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
+import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SessionDetails;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import reactor.core.publisher.Mono;
@@ -60,6 +62,27 @@ public class AuthorizationController {
         AuthorityInfoBean authorityInfo = tokenManager.getAuthorityInfo(authorization);
         String principal = authorityInfo.getPrincipal();
 
-        return Mono.just(sessionService.getSubject(principal));
+        IResult<SessionDetails> result = sessionService.initSession(principal);
+        return Mono.just(result);
+    }
+
+    @ApiOperation(value = "刷新令牌",notes = "说明",httpMethod = "GET")
+    @GetMapping("/refreshToken")
+    public Mono<IResult<LoginRepoBean>> refreshToken(ServerWebExchange webExchange) throws Exception {
+        // 获取令牌中的信息
+        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
+        AuthorityInfoBean authorityInfo = tokenManager.getAuthorityInfo(authorization);
+
+
+        Long tokenExpiresTime = tokenManager.getTokenExpiresTime(webExchange);
+        // 生成新的令牌
+        String newToken = tokenManager.getBuilder(authorityInfo, webExchange)
+                .build();
+
+        LoginRepoBean bean = new LoginRepoBean();
+        bean.setExpiresAt(tokenExpiresTime);
+        bean.setAccessToken(newToken);
+
+        return Mono.just(Result.ok(bean));
     }
 }

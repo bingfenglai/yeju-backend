@@ -10,4 +10,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   pers.lbf.yeju.consumer.config.swagger.SwaggerPropertiesConfig
 
 
-  
+
+

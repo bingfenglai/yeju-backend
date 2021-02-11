@@ -27,15 +27,8 @@ public interface ISessionService {
      * @throws ServiceException e
      * @return SessionDetails
      */
-    SessionDetails initSession( String principal) throws ServiceException;
+    IResult<SessionDetails> initSession(String principal) throws ServiceException;
 
-    /**
-     * 获取会话所属主体信息
-     * @param principal 员工账号、用户手机号
-     * @return SubjectDetails
-     * @throws ServiceException s
-     */
-    IResult<SessionDetails> getSubject(String principal) throws ServiceException;
 
 
 

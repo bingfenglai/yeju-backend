@@ -29,7 +29,6 @@ import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.WebFilterChainServerAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
@@ -80,8 +79,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         String token = "";
 
         //过期时间，单位 分钟
-        Long expires = getTokenExpiresTime(exchange);
-        String tokenPrefix = TokenConstant.getPrefixToken();
+        Long expires = authorityManager.getTokenExpiresTime(exchange);
         IResult<Object> result;
 
         logger.info(authentication.getPrincipal().toString());
@@ -96,7 +94,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 //            result = SimpleResult.ok("登录成功");
             token = authorityManager.getBuilder(authorityInfoBean, expires).build();
             LoginRepoBean loginRepoBean = new LoginRepoBean();
-            loginRepoBean.setAccessToken(tokenPrefix+token);
+            loginRepoBean.setAccessToken(token);
             loginRepoBean.setExpiresAt(expires);
             result = Result.ok(loginRepoBean);
 
@@ -116,19 +114,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
     }
 
 
-    private Long getTokenExpiresTime(ServerWebExchange exchange){
 
-
-
-        HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
-        String userAgent = requestHeaders.getFirst("User-Agent");
-        if ("client".equalsIgnoreCase(userAgent)) {
-            return TokenConstant.AppTokenExpiresAt;
-        }else {
-            return TokenConstant.PcTokenExpiresAt;
-        }
-
-    }
 
 
 

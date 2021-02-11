@@ -18,7 +18,9 @@ package pers.lbf.yeju.consumer.auth.manager;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
@@ -71,5 +73,26 @@ public class AuthorizationTokenManager {
         builder.setAuthorityInfo(authorityInfoBean);
         builder.setExpireAt(expireAt);
         return builder;
+    }
+
+    public AuthorityInfoTokenBuilder getBuilder(AuthorityInfoBean authorityInfoBean,ServerWebExchange exchange) {
+        Long expireAt = this.getTokenExpiresTime(exchange);
+        builder.setAuthorityInfo(authorityInfoBean);
+        builder.setExpireAt(expireAt);
+        return builder;
+    }
+
+    public Long getTokenExpiresTime(ServerWebExchange exchange){
+
+
+
+        HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
+        String userAgent = requestHeaders.getFirst("User-Agent");
+        if ("client".equalsIgnoreCase(userAgent)) {
+            return TokenConstant.AppTokenExpiresAt;
+        }else {
+            return TokenConstant.PcTokenExpiresAt;
+        }
+
     }
 }

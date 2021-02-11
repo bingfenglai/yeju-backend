@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
@@ -57,6 +58,7 @@ public class AccountServiceImpl implements IAccountService {
      * @param principal 抽象账户
      * @return account
      */
+    @Cacheable(cacheNames = "SimpleAccountDTO",key = "#principal")
     @Override
     public IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws ServiceException {
         //1。判断账户类型
@@ -79,6 +81,7 @@ public class AccountServiceImpl implements IAccountService {
      * @param newPassword 新密码
      * @throws RuntimeException e
      */
+
     @Override
     public IResult<Boolean> updatePassword(String principal, String newPassword) throws ServiceException {
 

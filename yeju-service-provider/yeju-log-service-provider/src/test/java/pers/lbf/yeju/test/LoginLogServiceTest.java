@@ -19,9 +19,7 @@ package pers.lbf.yeju.test;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.provider.log.start.LogApplication;
 import pers.lbf.yeju.service.interfaces.log.ILoginLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.LoginLogInfoBean;
 
@@ -32,7 +30,7 @@ import pers.lbf.yeju.service.interfaces.log.pojo.LoginLogInfoBean;
  * @version 1.0
  * @date 2021/1/19 10:06
  */
-@SpringBootTest(classes = LogApplication.class)
+//@SpringBootTest(classes = LogApplication.class)
 @Slf4j
 public class LoginLogServiceTest {
 

@@ -17,8 +17,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider")
 @EnableDiscoveryClient
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.**.service")
-@MapperScan(basePackages = {"pers.lbf.yeju.provider.**.dao",
-                            "pers.lbf.yeju.provider.**.**.dao"})
+@MapperScan(basePackages = {"pers.lbf.yeju.provider.**.dao"})
 public class YejuProviderApplication {
 
   private static final Logger log = LoggerFactory.getLogger(YejuProviderApplication.class);

@@ -73,7 +73,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         }
 
         if (authorityInfo == null){
-            throw new ServiceException(AuthStatusEnum.tokenHasExpired);
+            throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         List<String> authorityList = authorityInfo.getAuthorityList();

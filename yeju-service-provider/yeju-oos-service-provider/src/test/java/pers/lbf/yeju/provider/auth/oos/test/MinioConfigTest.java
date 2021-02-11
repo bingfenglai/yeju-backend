@@ -17,10 +17,6 @@
 package pers.lbf.yeju.provider.auth.oos.test;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.provider.oos.config.MinioConfig;
-import pers.lbf.yeju.provider.oos.start.OosProviderApplication;
 
 /**
  * TODO
@@ -29,15 +25,15 @@ import pers.lbf.yeju.provider.oos.start.OosProviderApplication;
  * @version 1.0
  * @date 2021/1/29 23:35
  */
-@SpringBootTest(classes = OosProviderApplication.class)
+//@SpringBootTest(classes = OosProviderApplication.class)
 @Slf4j
 public class MinioConfigTest {
 
-    @Autowired
-    private MinioConfig config;
+    //@Autowired
+    //private MinioConfig config;
 
     //@Test
-    public void getConfigTest(){
-        log.info(config.getEndpoint());
-    }
+    //public void getConfigTest(){
+    //    log.info(config.getEndpoint());
+    //}
 }

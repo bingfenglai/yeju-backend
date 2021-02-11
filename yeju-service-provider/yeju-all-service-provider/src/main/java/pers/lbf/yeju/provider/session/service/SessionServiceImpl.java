@@ -71,7 +71,7 @@ public class SessionServiceImpl implements ISessionService {
      */
     @Cacheable(cacheNames = "yeju:session",key = "#principal")
     @Override
-    public SessionDetails initSession(String principal) throws ServiceException {
+    public IResult<SessionDetails> initSession(String principal) throws ServiceException {
         SessionDetails sessionDetails;
 
         // 1. 查询账户详情信息
@@ -115,29 +115,10 @@ public class SessionServiceImpl implements ISessionService {
         if(resourceListResult.getCode().equals(ServiceStatusConstant.SUCCESSFUL_OPERATION_CODE)){
             sessionDetails.setResources(resourceListResult.getData());
         }
-
-
-
-
-
         log.info("会话初始化成功{}",principal);
 
-        return sessionDetails;
-
-    }
-
-    /**
-     * 获取会话所属主体信息
-     *
-     * @param principal 员工账号、用户手机号
-     * @return SubjectDetails
-     * @throws ServiceException s
-     */
-    @Override
-    public IResult<SessionDetails> getSubject(String principal) throws ServiceException {
-        SessionDetails sessionDetails = initSession(principal);
-
         return Result.ok(sessionDetails);
+
     }
 
 

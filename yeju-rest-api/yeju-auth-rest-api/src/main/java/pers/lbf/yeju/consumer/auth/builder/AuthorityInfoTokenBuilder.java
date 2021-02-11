@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
 import pers.lbf.yeju.consumer.auth.config.RsaPrivateKeyConfig;
@@ -77,7 +78,7 @@ public class AuthorityInfoTokenBuilder {
                     authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                     Math.toIntExact(this.expireAt));
             logger.info("账户 {} 生成token {}", authorityInfoBean.getPrincipal(),token!=null? "成功":"失败");
-            return token;
+            return TokenConstant.getPrefixToken()+token;
         }
 
         if (TimeUnit.SECONDS.equals(authorityInfoBean.getTimeUnit())){
@@ -85,14 +86,15 @@ public class AuthorityInfoTokenBuilder {
                     authorityInfoBean,RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                     authorityInfoBean.getExpiration());
             logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(),token);
-            return token;
+            return TokenConstant.getPrefixToken()+token;
         }
 
         token =  JwtUtils.generateTokenExpireInMinutes(
                 authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                 authorityInfoBean.getExpiration());
         logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(),token);
-        return token;
+
+        return TokenConstant.getPrefixToken()+token;
     }
 
     public String build() throws Exception {

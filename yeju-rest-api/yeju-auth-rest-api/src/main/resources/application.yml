@@ -4,4 +4,4 @@ spring:
   application:
     name: auth-consumer
 server:
-  port: 9003
+  port: 9002

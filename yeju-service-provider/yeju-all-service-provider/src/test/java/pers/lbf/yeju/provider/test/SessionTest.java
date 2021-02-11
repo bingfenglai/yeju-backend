@@ -45,7 +45,7 @@ public class SessionTest {
         sessionService.destroySession(accout);
     }
 
-    @Test
+    //@Test
     public void test2() {
         sessionService.initSession(accout);
     }

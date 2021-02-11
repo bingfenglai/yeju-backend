@@ -59,13 +59,11 @@ public enum AuthStatusEnum implements IStatus, Serializable {
 
     verificationCodeError("验证码错误","A0010" ),
 
-    tokenHasExpired("令牌已过期","A0011" ),
+    accountHasExpired("账户已过期","A0011" ),
 
-    accountHasExpired("账户已过期","A0012" ),
+    accountIsFrozen("账户已冻结","A0012" ),
 
-    accountIsFrozen("账户已冻结","A0013" ),
-
-    accountIsNotActivated("账户未启用","A0014" );
+    accountIsNotActivated("账户未启用","A0013" );
 
     private String message;
     private String code;

@@ -15,11 +15,6 @@ package pers.lbf.yeju.provider.auth.oos.test;/*
  *
  */
 
-import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.provider.oos.service.ObjectUploadServiceImpl;
-import pers.lbf.yeju.provider.oos.start.OosProviderApplication;
-import pers.lbf.yeju.service.interfaces.oos.IFileUploadService;
-
 /**
  * TODO
  *
@@ -27,16 +22,16 @@ import pers.lbf.yeju.service.interfaces.oos.IFileUploadService;
  * @version 1.0
  * @date 2021/2/1 16:59
  */
-@SpringBootTest(classes = OosProviderApplication.class)
+//@SpringBootTest(classes = OosProviderApplication.class)
 public class UploadTest  {
 
 
-    private final IFileUploadService fileUploadService = new ObjectUploadServiceImpl();
+    //private final IFileUploadService fileUploadService = new ObjectUploadServiceImpl();
 
 
    // @Test
     public void test1(){
-        fileUploadService.isExited("1111");
+       // fileUploadService.isExited("1111");
 
     }
 }

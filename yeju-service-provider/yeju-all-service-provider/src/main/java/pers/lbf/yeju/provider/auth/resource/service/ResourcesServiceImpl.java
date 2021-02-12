@@ -16,10 +16,7 @@ import pers.lbf.yeju.provider.auth.resource.dao.IResourcesDao;
 import pers.lbf.yeju.provider.auth.resource.enums.ResourceStatus;
 import pers.lbf.yeju.provider.auth.resource.enums.ResourcesType;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
-import pers.lbf.yeju.service.interfaces.auth.dto.MenuInfoBean;
-import pers.lbf.yeju.service.interfaces.auth.dto.Meta;
-import pers.lbf.yeju.service.interfaces.auth.dto.RouterInfoBean;
-import pers.lbf.yeju.service.interfaces.auth.dto.RouterInfoBeanChild;
+import pers.lbf.yeju.service.interfaces.auth.dto.*;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
 
 import java.util.ArrayList;
@@ -36,14 +33,140 @@ import java.util.List;
 @DubboService(interfaceClass = IResourcesService.class)
 public class ResourcesServiceImpl implements IResourcesService {
 
+    /**
+     * 权限匹配
+     */
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
     
     @Autowired
     private IResourcesDao resourceDao;
 
+
+    /**
+     * 查询所有授权的路由
+     * @param authorities
+     * @return
+     * @throws ServiceException
+     */
+    @Cacheable(cacheNames = "AuthorizedMenuInfo",key = "#authorities.toArray()")
+    @Override
+    public IResult<List<MenuInfoBean>> findAllAuthorizedMenuInfo(List<String> authorities) throws ServiceException {
+
+        QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("resource_type", ResourcesType.is_menu_dir.getValue())
+                .or()
+                .eq("resource_type",ResourcesType.is_menu.getValue());
+        queryWrapper.eq("resource_status", ResourceStatus.able.getValue());
+
+        List<Resource> resources = resourceDao.selectList(queryWrapper);
+
+        List<MenuInfoBean> menuInfoBeanList = new LinkedList<>();
+        List<Resource> authorizedResources = filterByAuthorized(resources, authorities);
+
+        if (authorizedResources.size()==0){
+            throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
+        }
+        for (Resource resource : authorizedResources) {
+            MenuInfoBean menuInfoBean = new MenuInfoBean();
+            menuInfoBean.setIsFrame(resource.getIsFrame());
+            menuInfoBean.setResourceId(resource.getResourceId());
+            menuInfoBean.setResourceName(resource.getResourceName());
+            menuInfoBean.setResourceCode(resource.getResourceCode());
+            menuInfoBean.setParentMenuId(resource.getParentMenuId());
+            menuInfoBean.setOrderNumber(resource.getOrderNumber());
+            menuInfoBean.setPath(resource.getPath());
+            menuInfoBean.setComponent(resource.getComponetPath());
+            menuInfoBean.setCache(resource.getIsCache()==1);
+            menuInfoBean.setResourceStatus(resource.getResourceStatus());
+            menuInfoBean.setVisible(resource.getVisible()==1);
+            menuInfoBean.setIcon(resource.getIcon());
+            menuInfoBeanList.add(menuInfoBean);
+        }
+
+        return Result.ok(menuInfoBeanList);
+    }
+
+    /**
+     * TODO
+     *
+     * @param args
+     * @return
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:36
+     */
+    @Override
+    public void createAuthority(CreateAuthorityArgs args) throws ServiceException {
+
+    }
+
+    /**
+     * TODO
+     *
+     * @param args
+     * @return
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     */
+    @Override
+    public IResult<AuthorityInfoBean> findAuthorityPage(FindPageArgs args) throws ServiceException {
+        return null;
+    }
+
+    /**
+     * TODO
+     *
+     * @param id
+     * @return
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     */
+    @Override
+    public void deleteResource(Long... id) throws ServiceException {
+
+    }
+
+    /**
+     * TODO
+     *
+     * @param args
+     * @return
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     */
+    @Override
+    public IResult<MenuInfoBean> findMenuPage(FindPageArgs args) throws ServiceException {
+        return null;
+    }
+
+    /**
+     * TODO
+     *
+     * @param args
+     * @return
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     */
+    @Override
+    public void createMenu(CreateMenuArgs args) throws ServiceException {
+
+    }
+
+    /** 根据账号查询权限标识符
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 15:50
+     * @param principal
+     * @return pers.lbf.yeju.common.core.result.IResult<java.util.List<java.lang.String>>
+     */
     @Cacheable(cacheNames = "Authority:list",keyGenerator = "yejuKeyGenerator")
     @Override
-    public IResult<List<String>> findAuthorityListByPrincipal(String principal) {
+    public IResult<List<String>> findAuthorityListByPrincipal(String principal) throws ServiceException{
+
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);
         List<String> resourceNameList = null;
         if (accountType.equals(SubjectTypeEnum.is_system_account)){
@@ -62,13 +185,18 @@ public class ResourcesServiceImpl implements IResourcesService {
         return Result.ok(resourceNameList);
     }
 
+
+
+
     @Cacheable(cacheNames = "menu",key = "#authorities")
     @Override
     public IResult<List<MenuInfoBean>> getMenus(List<String> authorities) throws ServiceException {
         if (authorities != null &&! authorities.isEmpty()){
             // 1. 查询顶级菜单
             QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("resource_type", ResourcesType.is_menu.getValue());
+            queryWrapper.eq("resource_type", ResourcesType.is_menu_dir.getValue())
+                    .or()
+                    .eq("resource_type",ResourcesType.is_menu.getValue());
             queryWrapper.eq("resource_status", ResourceStatus.able.getValue());
             queryWrapper.eq("parent_menu_id",0);
             List<Resource> resources = resourceDao.selectList(queryWrapper);
@@ -143,11 +271,13 @@ public class ResourcesServiceImpl implements IResourcesService {
 
     }
 
+
     /**
      * 构建二级菜单
      * @param menuInfoBeanList
      * @return
      */
+    @Deprecated
     private List<RouterInfoBeanChild> buildRouterInfoBeanChild(List<MenuInfoBean> menuInfoBeanList){
         List<RouterInfoBeanChild> childrenList = new ArrayList<>();
         for (MenuInfoBean menuInfoBean : menuInfoBeanList) {
@@ -225,6 +355,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @param menuInfoBeanList 父类菜单列表
      * @return void
      */
+    @Deprecated
     private List<MenuInfoBean> getChildrenMenus(List<MenuInfoBean> menuInfoBeanList){
         LinkedList<Long> parentIds  = new LinkedList<>();
         for (MenuInfoBean menuInfoBean : menuInfoBeanList) {
@@ -245,5 +376,8 @@ public class ResourcesServiceImpl implements IResourcesService {
         return menuInfoBeanList;
 
     }
+
+
+
 
 }

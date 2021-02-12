@@ -51,16 +51,7 @@ public class MenuInfoBean implements Serializable {
     // 菜单图标地址，当资源类型为菜单时需要指定
     private String icon;
 
-    /**
-     * 菜单对应的次级子菜单
-     */
-    private List<MenuInfoBean> children = new ArrayList<>();
-
-
-    public void addChildren(MenuInfoBean menuInfoBean){
-        children.add(menuInfoBean);
-    }
-
+    private Integer isFrame;
 
     @Override
     public String toString() {
@@ -76,9 +67,29 @@ public class MenuInfoBean implements Serializable {
                 ", resourceStatus=" + resourceStatus +
                 ", visible=" + visible +
                 ", icon='" + icon + '\'' +
+                ", isFrame=" + isFrame +
                 ", children=" + children +
                 '}';
     }
+
+    public Integer getIsFrame() {
+        return isFrame;
+    }
+
+    public void setIsFrame(Integer isFrame) {
+        this.isFrame = isFrame;
+    }
+
+    /**
+     * 菜单对应的次级子菜单
+     */
+    private List<MenuInfoBean> children = new ArrayList<>();
+
+
+    public void addChildren(MenuInfoBean menuInfoBean){
+        children.add(menuInfoBean);
+    }
+
 
     public Long getResourceId() {
         return resourceId;

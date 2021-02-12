@@ -59,6 +59,16 @@ public class Resource extends Model<Resource> {
   @TableLogic
   private Integer isDelete;
 
+  private Integer isFrame;
+
+  public Integer getIsFrame() {
+    return isFrame;
+  }
+
+  public void setIsFrame(Integer isFrame) {
+    this.isFrame = isFrame;
+  }
+
   public Long getResourceId() {
     return resourceId;
   }

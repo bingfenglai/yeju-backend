@@ -2,8 +2,7 @@ package pers.lbf.yeju.service.interfaces.auth.interfaces;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.service.interfaces.auth.dto.MenuInfoBean;
-import pers.lbf.yeju.service.interfaces.auth.dto.RouterInfoBean;
+import pers.lbf.yeju.service.interfaces.auth.dto.*;
 
 import java.util.List;
 
@@ -15,8 +14,67 @@ import java.util.List;
  */
 public interface IResourcesService {
 
-    IResult<List<String>> findAuthorityListByPrincipal(String principal);
 
+    IResult<List<MenuInfoBean>> findAllAuthorizedMenuInfo(List<String> authorities) throws ServiceException;
+
+
+    /** TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:36
+     * @param args
+     * @return
+     */
+    void createAuthority(CreateAuthorityArgs args) throws ServiceException;
+
+    /** TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     * @param args
+     * @return
+     */
+    IResult<AuthorityInfoBean> findAuthorityPage(FindPageArgs args) throws ServiceException;
+
+    /** TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     * @param id
+     * @return
+     */
+    void deleteResource(Long... id) throws ServiceException;
+
+    /** TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     * @param args
+     * @return
+     */
+    IResult<MenuInfoBean> findMenuPage(FindPageArgs args) throws ServiceException;
+
+    /** TODO
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:37
+     * @param args
+     * @return
+     */
+    void createMenu(CreateMenuArgs args) throws ServiceException;
+
+
+
+    /** 根据账号获取权限信息
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/12 1:20
+     * @param principal 账号
+     * @return list authorities
+     */
+    IResult<List<String>> findAuthorityListByPrincipal(String principal) throws ServiceException;
+
+    @Deprecated
     IResult<List<MenuInfoBean>> getMenus(List<String> authorities) throws ServiceException;
 
 
@@ -28,5 +86,6 @@ public interface IResourcesService {
      * @param authorities 权限信息
      * @return RouterInfoBeanList 路由列表
      */
+    @Deprecated
     IResult<List<RouterInfoBean>> getRouters(List<String> authorities) throws ServiceException;
 }

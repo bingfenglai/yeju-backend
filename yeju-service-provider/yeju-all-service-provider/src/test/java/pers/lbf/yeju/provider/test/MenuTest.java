@@ -16,8 +16,19 @@
  */
 package pers.lbf.yeju.provider.test;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.provider.start.YejuProviderApplication;
+import pers.lbf.yeju.service.interfaces.auth.dto.RouterInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO
@@ -26,13 +37,22 @@ import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
  * @version 1.0
  * @date 2021/2/10 22:30
  */
-//@SpringBootTest(classes = YejuProviderApplication.class)
-//@RunWith(SpringRunner.class)
-//@Slf4j
+@SpringBootTest(classes = YejuProviderApplication.class)
+@RunWith(SpringRunner.class)
+@Slf4j
 public class MenuTest {
 
     @DubboReference
     private IResourcesService resourcesService;
+
+
+    @Test
+    public void test(){
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("*:**");
+        IResult<List<RouterInfoBean>> routers = resourcesService.getRouters(strings);
+        System.out.println(routers);
+    }
 
 
 }

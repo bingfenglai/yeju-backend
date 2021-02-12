@@ -50,7 +50,7 @@ public interface IResourcesDao extends BaseMapper<Resource> {
 
     @Select(
             "<script> " +
-                    "select t.* from table_system_resources t where t.resource_type = 0 and t.parent_menu_id in"  +
+                    "select t.* from table_system_resources t where (t.resource_type = 0 or t.resource_type = 3) and t.parent_menu_id in"  +
                     " <foreach item='item' index='index' collection='parentMenuIds' open='(' separator=',' close=')'> " +
                     " #{item} " +
                     " </foreach> " +

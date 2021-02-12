@@ -14,35 +14,16 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.auth.resource.enums;
+package pers.lbf.yeju.service.interfaces.auth.dto;
+
+import java.io.Serializable;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/9 12:05
+ * @date 2021/2/12 1:28
  */
-public enum ResourcesType {
-    /**
-     * 权限
-     */
-    is_authority("1"),
-
-    /**
-     * 菜单
-     */
-    is_menu_dir("0"),
-
-    is_menu("3");
-
-    String  value;
-
-    ResourcesType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
+public class FindPageArgs implements Serializable {
 }

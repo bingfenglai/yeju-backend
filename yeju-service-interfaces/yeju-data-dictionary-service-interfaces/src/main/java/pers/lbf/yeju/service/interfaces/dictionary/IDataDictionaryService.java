@@ -14,30 +14,24 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.platform.employ.web.controller;
+package pers.lbf.yeju.service.interfaces.dictionary;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.consumer.platform.employ.pojo.vo.EmployInfoVO;
-import reactor.core.publisher.Mono;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 
-/**
+import java.util.List;
+
+/**数据字典服务接口
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/30 16:06
+ * @date 2021/2/13 14:54
  */
-@RestController
-@RequestMapping("/platform/employ")
-public class EmployController {
+public interface IDataDictionaryService {
 
-    @GetMapping("/getInfoByAccount/{account}")
-    public Mono<IResult<EmployInfoVO>> getEmployInfoByAccount(@PathVariable String account){
-        return Mono.empty();
-    }
+    IResult<String> findDataDictionaryLabelById(Long id) throws ServiceException;
 
+    IResult<List<SimpleDataDictionaryInfoBean>> findSimpleDataDictionaryByDictTypeId(Long id) throws ServiceException;
 
+    IResult<List<SimpleDataDictionaryInfoBean>> findSimpleDataDictionaryByDictType(String type) throws ServiceException;
 }

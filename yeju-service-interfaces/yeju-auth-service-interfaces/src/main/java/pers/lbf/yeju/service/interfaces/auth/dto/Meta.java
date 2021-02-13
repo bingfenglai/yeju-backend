@@ -25,6 +25,7 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2021/2/9 21:23
  */
+@Deprecated
 public class Meta implements Serializable {
 
     private String title;

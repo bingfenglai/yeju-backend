@@ -27,6 +27,7 @@ import java.util.List;
  * @version 1.0
  * @date 2021/2/9 20:37
  */
+@Deprecated
 public class RouterInfoBean implements Serializable {
 
 

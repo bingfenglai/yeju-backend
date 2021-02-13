@@ -85,7 +85,6 @@ public class AuthorizationTokenManager {
     public Long getTokenExpiresTime(ServerWebExchange exchange){
 
 
-
         HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
         String userAgent = requestHeaders.getFirst("User-Agent");
         if ("client".equalsIgnoreCase(userAgent)) {

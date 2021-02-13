@@ -14,18 +14,18 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.employee.dao;
+package pers.lbf.yeju.common.core.args;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.Employee;
+import java.io.Serializable;
 
-/**
- * TODO
- *
+/** 分页查询参数接口
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/7 21:45
+ * @date 2021/2/13 14:37
  */
-public interface IEmployeeDao extends BaseMapper<Employee> {
+public interface IFindPageArgs extends Serializable {
 
+    Long getCurrentPage();
+
+    Long getSize();
 }

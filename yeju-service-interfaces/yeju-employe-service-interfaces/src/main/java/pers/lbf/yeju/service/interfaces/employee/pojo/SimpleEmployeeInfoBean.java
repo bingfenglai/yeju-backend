@@ -31,15 +31,13 @@ public class SimpleEmployeeInfoBean implements Serializable {
     /** 员工姓名 */
     private String name;
     /** 性别0男1女，详见属性表 */
-    private Long gender;
-    /** 性别值 */
-    private String genderValue;
+    private String gender;
+
     /** 手机号 */
     private String phoneNumber;
-    /** 手机区号，比如中国是+86，详见属性表 */
-    private Long phoneNumberPrefix;
+
     /** 手机区号值 */
-    private String phoneNumberPrefixValue;
+    private String phoneNumberPrefix;
     /** 所属领导 */
     private Long leaderId;
     /** 头像地址 */
@@ -47,9 +45,8 @@ public class SimpleEmployeeInfoBean implements Serializable {
     /** 公司邮箱 */
     private String email;
     /** 员工状态1在职0离职 */
-    private Long employeesStatus;
-    /** 员工状态值,见属性表 */
-    private String employeesStatusValue;
+    private String employeesStatus;
+
     /** 创建时间 */
     private Date createTime;
     /** 创建者 */
@@ -71,20 +68,12 @@ public class SimpleEmployeeInfoBean implements Serializable {
         this.name = name;
     }
 
-    public Long getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Long gender) {
+    public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getGenderValue() {
-        return genderValue;
-    }
-
-    public void setGenderValue(String genderValue) {
-        this.genderValue = genderValue;
     }
 
     public String getPhoneNumber() {
@@ -95,20 +84,12 @@ public class SimpleEmployeeInfoBean implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getPhoneNumberPrefix() {
+    public String getPhoneNumberPrefix() {
         return phoneNumberPrefix;
     }
 
-    public void setPhoneNumberPrefix(Long phoneNumberPrefix) {
+    public void setPhoneNumberPrefix(String phoneNumberPrefix) {
         this.phoneNumberPrefix = phoneNumberPrefix;
-    }
-
-    public String getPhoneNumberPrefixValue() {
-        return phoneNumberPrefixValue;
-    }
-
-    public void setPhoneNumberPrefixValue(String phoneNumberPrefixValue) {
-        this.phoneNumberPrefixValue = phoneNumberPrefixValue;
     }
 
     public Long getLeaderId() {
@@ -135,20 +116,12 @@ public class SimpleEmployeeInfoBean implements Serializable {
         this.email = email;
     }
 
-    public Long getEmployeesStatus() {
+    public String getEmployeesStatus() {
         return employeesStatus;
     }
 
-    public void setEmployeesStatus(Long employeesStatus) {
+    public void setEmployeesStatus(String employeesStatus) {
         this.employeesStatus = employeesStatus;
-    }
-
-    public String getEmployeesStatusValue() {
-        return employeesStatusValue;
-    }
-
-    public void setEmployeesStatusValue(String employeesStatusValue) {
-        this.employeesStatusValue = employeesStatusValue;
     }
 
     public Date getCreateTime() {
@@ -195,15 +168,17 @@ public class SimpleEmployeeInfoBean implements Serializable {
     public String toString() {
         return "SimpleEmployeeInfoBean{" +
                 "name='" + name + '\'' +
-                ", genderValue='" + genderValue + '\'' +
+                ", gender='" + gender + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", phoneNumberPrefix=" + phoneNumberPrefix +
-                ", phoneNumberPrefixValue='" + phoneNumberPrefixValue + '\'' +
+                ", phoneNumberPrefix='" + phoneNumberPrefix + '\'' +
+                ", leaderId=" + leaderId +
                 ", avatar='" + avatar + '\'' +
                 ", email='" + email + '\'' +
-                ", employeesStatusValue='" + employeesStatusValue + '\'' +
+                ", employeesStatus='" + employeesStatus + '\'' +
                 ", createTime=" + createTime +
+                ", createBy=" + createBy +
                 ", updateTime=" + updateTime +
+                ", changedBy=" + changedBy +
                 ", employeesNumber=" + employeesNumber +
                 '}';
     }

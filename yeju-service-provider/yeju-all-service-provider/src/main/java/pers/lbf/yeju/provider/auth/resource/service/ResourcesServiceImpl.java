@@ -1,4 +1,5 @@
 package pers.lbf.yeju.provider.auth.resource.service;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,9 @@ import pers.lbf.yeju.common.domain.entity.Resource;
 import pers.lbf.yeju.provider.auth.account.enums.AccountStatusEnum;
 import pers.lbf.yeju.provider.auth.resource.dao.IResourcesDao;
 import pers.lbf.yeju.provider.auth.resource.enums.ResourceStatus;
-import pers.lbf.yeju.provider.auth.resource.enums.ResourcesType;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.service.interfaces.auth.dto.*;
+import pers.lbf.yeju.service.interfaces.auth.enums.ResourceType;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
 
 import java.util.ArrayList;
@@ -53,9 +54,9 @@ public class ResourcesServiceImpl implements IResourcesService {
     public IResult<List<MenuInfoBean>> findAllAuthorizedMenuInfo(List<String> authorities) throws ServiceException {
 
         QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("resource_type", ResourcesType.is_menu_dir.getValue())
+        queryWrapper.eq("resource_type", ResourceType.is_menu_dir.getValue())
                 .or()
-                .eq("resource_type",ResourcesType.is_menu.getValue());
+                .eq("resource_type", ResourceType.is_menu.getValue());
         queryWrapper.eq("resource_status", ResourceStatus.able.getValue());
 
         List<Resource> resources = resourceDao.selectList(queryWrapper);
@@ -80,7 +81,9 @@ public class ResourcesServiceImpl implements IResourcesService {
             menuInfoBean.setResourceStatus(resource.getResourceStatus());
             menuInfoBean.setVisible(resource.getVisible()==1);
             menuInfoBean.setIcon(resource.getIcon());
+            menuInfoBean.setMenuType(resource.getResourceType());
             menuInfoBeanList.add(menuInfoBean);
+
         }
 
         return Result.ok(menuInfoBeanList);
@@ -194,9 +197,9 @@ public class ResourcesServiceImpl implements IResourcesService {
         if (authorities != null &&! authorities.isEmpty()){
             // 1. 查询顶级菜单
             QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("resource_type", ResourcesType.is_menu_dir.getValue())
+            queryWrapper.eq("resource_type", ResourceType.is_menu_dir.getValue())
                     .or()
-                    .eq("resource_type",ResourcesType.is_menu.getValue());
+                    .eq("resource_type", ResourceType.is_menu.getValue());
             queryWrapper.eq("resource_status", ResourceStatus.able.getValue());
             queryWrapper.eq("parent_menu_id",0);
             List<Resource> resources = resourceDao.selectList(queryWrapper);

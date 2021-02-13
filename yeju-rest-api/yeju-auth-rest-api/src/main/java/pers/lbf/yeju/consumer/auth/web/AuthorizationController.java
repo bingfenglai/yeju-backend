@@ -76,7 +76,7 @@ public class AuthorizationController {
 
         Long tokenExpiresTime = tokenManager.getTokenExpiresTime(webExchange);
         // 生成新的令牌
-        String newToken = tokenManager.getBuilder(authorityInfo, webExchange)
+        String newToken = tokenManager.getBuilder(authorityInfo, tokenExpiresTime)
                 .build();
 
         LoginRepoBean bean = new LoginRepoBean();

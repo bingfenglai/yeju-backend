@@ -16,8 +16,10 @@
  */
 package pers.lbf.yeju.service.interfaces.employee;
 
+import pers.lbf.yeju.common.core.args.IFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.employee.pojo.SimpleEmployeeInfoBean;
 
 import java.util.List;
@@ -77,5 +79,5 @@ public interface IEmployeeService {
      * @return list
      * @throws ServiceException e
      */
-    IResult<SimpleEmployeeInfoBean> findList() throws ServiceException;
+    PageResult<SimpleEmployeeInfoBean> findPage(IFindPageArgs args) throws ServiceException;
 }

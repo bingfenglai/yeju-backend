@@ -53,6 +53,19 @@ public class MenuInfoBean implements Serializable {
 
     private Integer isFrame;
 
+    /**
+     * 菜单类型 0菜单目录 3菜单
+     */
+    private String MenuType;
+
+    public String getMenuType() {
+        return MenuType;
+    }
+
+    public void setMenuType(String menuType) {
+        MenuType = menuType;
+    }
+
     @Override
     public String toString() {
         return "MenuInfoBean{" +
@@ -68,6 +81,7 @@ public class MenuInfoBean implements Serializable {
                 ", visible=" + visible +
                 ", icon='" + icon + '\'' +
                 ", isFrame=" + isFrame +
+                ", MenuType='" + MenuType + '\'' +
                 ", children=" + children +
                 '}';
     }

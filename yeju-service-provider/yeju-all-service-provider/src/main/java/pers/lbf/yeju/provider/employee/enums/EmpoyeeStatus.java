@@ -14,18 +14,16 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.employee.dao;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.Employee;
+package pers.lbf.yeju.provider.employee.enums;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/7 21:45
+ * @date 2021/2/13 15:20
  */
-public interface IEmployeeDao extends BaseMapper<Employee> {
+public enum EmpoyeeStatus {
+
 
 }

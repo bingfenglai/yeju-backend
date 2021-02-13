@@ -13,7 +13,7 @@ import java.util.Date;
  * @since 2020-12-31 11:43:41
  */
 @TableName("table_platform_employees")
-public class Employees extends Model<Employees> {
+public class Employee extends Model<Employee> {
   /** 主键 */
   @TableId
   private Long employeesId;
@@ -21,14 +21,11 @@ public class Employees extends Model<Employees> {
   private String name;
   /** 性别0男1女，详见属性表 */
   private Long gender;
-  /** 性别值 */
-  private String genderValue;
+
   /** 手机号 */
   private String phoneNumber;
-  /** 手机区号，比如中国是+86，详见属性表 */
-  private Long phoneNumberPrefix;
   /** 手机区号值 */
-  private String phoneNumberPrefixValue;
+  private String phoneNumberPrefix;
   /** 所属领导 */
   private Long leaderId;
   /** 头像地址 */
@@ -36,9 +33,7 @@ public class Employees extends Model<Employees> {
   /** 公司邮箱 */
   private String email;
   /** 员工状态1在职0离职 */
-  private Long employeesStatus;
-  /** 员工状态值,见属性表 */
-  private String employeesStatusValue;
+  private Long employeeStatus;
   /** 创建时间 */
   private Date createTime;
   /** 创建者 */
@@ -82,13 +77,6 @@ public class Employees extends Model<Employees> {
     this.gender = gender;
   }
 
-  public String getGenderValue() {
-    return genderValue;
-  }
-
-  public void setGenderValue(String genderValue) {
-    this.genderValue = genderValue;
-  }
 
   public String getPhoneNumber() {
     return phoneNumber;
@@ -98,20 +86,12 @@ public class Employees extends Model<Employees> {
     this.phoneNumber = phoneNumber;
   }
 
-  public Long getPhoneNumberPrefix() {
+  public String getPhoneNumberPrefix() {
     return phoneNumberPrefix;
   }
 
-  public void setPhoneNumberPrefix(Long phoneNumberPrefix) {
+  public void setPhoneNumberPrefix(String phoneNumberPrefix) {
     this.phoneNumberPrefix = phoneNumberPrefix;
-  }
-
-  public String getPhoneNumberPrefixValue() {
-    return phoneNumberPrefixValue;
-  }
-
-  public void setPhoneNumberPrefixValue(String phoneNumberPrefixValue) {
-    this.phoneNumberPrefixValue = phoneNumberPrefixValue;
   }
 
   public Long getLeaderId() {
@@ -138,20 +118,12 @@ public class Employees extends Model<Employees> {
     this.email = email;
   }
 
-  public Long getEmployeesStatus() {
-    return employeesStatus;
+  public Long getEmployeeStatus() {
+    return employeeStatus;
   }
 
-  public void setEmployeesStatus(Long employeesStatus) {
-    this.employeesStatus = employeesStatus;
-  }
-
-  public String getEmployeesStatusValue() {
-    return employeesStatusValue;
-  }
-
-  public void setEmployeesStatusValue(String employeesStatusValue) {
-    this.employeesStatusValue = employeesStatusValue;
+  public void setEmployeeStatus(Long employeeStatus) {
+    this.employeeStatus = employeeStatus;
   }
 
   public Date getCreateTime() {

@@ -35,6 +35,7 @@ import pers.lbf.yeju.consumer.platform.resource.pojo.vo.MetaVO;
 import pers.lbf.yeju.consumer.platform.resource.pojo.vo.RouterVO;
 import pers.lbf.yeju.service.interfaces.auth.dto.MenuInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.RouterInfoBean;
+import pers.lbf.yeju.service.interfaces.auth.enums.ResourceType;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
 import reactor.core.publisher.Mono;
 
@@ -92,30 +93,21 @@ public class MenuController {
                 RouterVO routerVO = new RouterVO();
                 if (menuInfoBean.getIsFrame()==0){
 
-                    routerVO.setId(menuInfoBean.getResourceId());
                     routerVO.setRedirect("noRedirect");
-                    routerVO.setComponent(menuInfoBean.getComponent());
                     routerVO.setAlwaysShow(true);
-                    routerVO.setName(menuInfoBean.getResourceCode());
-                    routerVO.setPath(menuInfoBean.getPath());
-                    routerVO.setHidden(!menuInfoBean.getVisible());
-                    MetaVO meta = new MetaVO();
-                    meta.setNoCache(!menuInfoBean.getCache());
-                    meta.setTitle(menuInfoBean.getResourceName());
-                    meta.setIcon(menuInfoBean.getIcon());
-                    routerVO.setMeta(meta);
-                }else {
-                    routerVO.setId(menuInfoBean.getResourceId());
-                    routerVO.setComponent(menuInfoBean.getComponent());
-                    routerVO.setName(menuInfoBean.getResourceCode());
-                    routerVO.setPath(menuInfoBean.getPath());
-                    routerVO.setHidden(!menuInfoBean.getVisible());
-                    MetaVO meta = new MetaVO();
-                    meta.setNoCache(!menuInfoBean.getCache());
-                    meta.setTitle(menuInfoBean.getResourceName());
-                    meta.setIcon(menuInfoBean.getIcon());
-                    routerVO.setMeta(meta);
+
                 }
+                routerVO.setId(menuInfoBean.getResourceId());
+                routerVO.setComponent(menuInfoBean.getComponent());
+                routerVO.setName(menuInfoBean.getResourceCode());
+                routerVO.setPath(menuInfoBean.getPath());
+                routerVO.setHidden(!menuInfoBean.getVisible());
+                MetaVO meta = new MetaVO();
+                meta.setNoCache(!menuInfoBean.getCache());
+                meta.setTitle(menuInfoBean.getResourceName());
+                meta.setIcon(menuInfoBean.getIcon());
+                routerVO.setMeta(meta);
+
                 result.add(routerVO);
 
             }else {
@@ -126,8 +118,13 @@ public class MenuController {
         List<RouterVO> allRouter = new LinkedList<>();
         for (MenuInfoBean menuInfoBean : orMenuListList) {
             RouterVO routerVO = new RouterVO();
+            if (Objects.equals(menuInfoBean.getMenuType(), ResourceType.is_menu_dir.getValue())){
+
+                routerVO.setRedirect("noRedirect");
+                routerVO.setAlwaysShow(true);
+
+            }
             routerVO.setId(menuInfoBean.getResourceId());
-            routerVO.setParentId(menuInfoBean.getParentMenuId());
             routerVO.setComponent(menuInfoBean.getComponent());
             routerVO.setName(menuInfoBean.getResourceCode());
             routerVO.setPath(menuInfoBean.getPath());
@@ -136,7 +133,9 @@ public class MenuController {
             meta.setNoCache(!menuInfoBean.getCache());
             meta.setTitle(menuInfoBean.getResourceName());
             meta.setIcon(menuInfoBean.getIcon());
+            routerVO.setParentId(menuInfoBean.getParentMenuId());
             routerVO.setMeta(meta);
+
 
             allRouter.add(routerVO);
         }

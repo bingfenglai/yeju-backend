@@ -25,6 +25,7 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2021/2/10 1:48
  */
+@Deprecated
 public class RouterInfoBeanChild implements Serializable {
     private String name;
     private String path;

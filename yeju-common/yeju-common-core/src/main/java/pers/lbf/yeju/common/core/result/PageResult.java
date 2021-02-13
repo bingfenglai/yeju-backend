@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.common.core.result;
 
+import pers.lbf.yeju.common.core.args.IFindPageArgs;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class PageResult<T> extends BaseResult<T> implements Serializable {
     /**
      * 总记录数
      */
-    private Long count;
+    private Long total;
 
     /**
      * 当前页码
@@ -55,6 +56,11 @@ public class PageResult<T> extends BaseResult<T> implements Serializable {
                 (ServiceStatusEnum.OK.getCode(), ServiceStatusEnum.OK.getMessage(), count, currentPage, size, list);
     }
 
+    public static <T> PageResult<T> ok(IFindPageArgs args,Long count, List<T> list){
+        return new PageResult<T>
+                (ServiceStatusEnum.OK.getCode(), ServiceStatusEnum.OK.getMessage(), count, args.getCurrentPage(), args.getSize(), list);
+    }
+
     public static <T> PageResult<T> error(String code,String message){
         return new PageResult<T>(code, message);
     }
@@ -64,21 +70,21 @@ public class PageResult<T> extends BaseResult<T> implements Serializable {
         this.message = message;
     }
 
-    public PageResult(String code, String message, Long count, Long currentPage, Long size, List<T> list) {
+    public PageResult(String code, String message, Long total, Long currentPage, Long size, List<T> list) {
         this.code = code;
         this.message = message;
-        this.count = count;
+        this.total = total;
         this.currentPage = currentPage;
         this.size = size;
         this.list = list;
     }
 
-    public Long getCount() {
-        return count;
+    public Long getTotal() {
+        return total;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public void setTotal(Long total) {
+        this.total = total;
     }
 
     public Long getCurrentPage() {
@@ -132,7 +138,7 @@ public class PageResult<T> extends BaseResult<T> implements Serializable {
         return "PageResult{" +
                 "code='" + code + '\'' +
                 ", message='" + message + '\'' +
-                ", count=" + count +
+                ", count=" + total +
                 ", currentPage=" + currentPage +
                 ", size=" + size +
                 ", list=" + list +

@@ -31,8 +31,8 @@ import java.util.List;
  * @date 2020/11/29 20:05
  */
 @DubboService(interfaceClass = ISessionService.class)
-@Service
 @Slf4j
+@Service(value = "sessionService")
 public class SessionServiceImpl implements ISessionService {
 
     @DubboReference

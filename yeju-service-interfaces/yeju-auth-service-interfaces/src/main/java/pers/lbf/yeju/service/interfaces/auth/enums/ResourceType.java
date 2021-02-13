@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.auth.resource.enums;
+package pers.lbf.yeju.service.interfaces.auth.enums;
 
 /**
  * TODO
@@ -23,7 +23,7 @@ package pers.lbf.yeju.provider.auth.resource.enums;
  * @version 1.0
  * @date 2021/2/9 12:05
  */
-public enum ResourcesType {
+public enum ResourceType {
     /**
      * 权限
      */
@@ -38,7 +38,7 @@ public enum ResourcesType {
 
     String  value;
 
-    ResourcesType(String value) {
+    ResourceType(String value) {
         this.value = value;
     }
 

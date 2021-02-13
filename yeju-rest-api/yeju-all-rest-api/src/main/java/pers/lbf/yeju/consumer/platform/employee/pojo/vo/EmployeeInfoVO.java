@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.platform.employ.pojo.vo;
+package pers.lbf.yeju.consumer.platform.employee.pojo.vo;
 
 import java.io.Serializable;
 
@@ -24,6 +24,6 @@ import java.io.Serializable;
  * @Description TODO
  * @date 2021/1/14 16:54
  */
-public class EmployInfoVO implements Serializable {
+public class EmployeeInfoVO implements Serializable {
 
 }

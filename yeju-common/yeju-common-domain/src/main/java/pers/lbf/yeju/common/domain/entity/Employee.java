@@ -69,6 +69,20 @@ public class Employee extends Model<Employee> {
   /** 工号 */
   private Long employeesNumber;
 
+  /**
+   * 员工所属部门
+   */
+  private Long departmentId;
+
+
+  public Long getDepartmentId() {
+    return departmentId;
+  }
+
+  public void setDepartmentId(Long departmentId) {
+    this.departmentId = departmentId;
+  }
+
   public Long getEmployeesId() {
     return employeesId;
   }

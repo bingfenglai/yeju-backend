@@ -33,7 +33,7 @@ import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
  * @Description TODO
  * @date 2021/1/1 19:19
  */
-@Service
+@Service(value = "operationLogService")
 @DubboService(interfaceClass = IOperationLogService.class)
 public class RemoteOperationLogServiceImpl implements IOperationLogService {
     

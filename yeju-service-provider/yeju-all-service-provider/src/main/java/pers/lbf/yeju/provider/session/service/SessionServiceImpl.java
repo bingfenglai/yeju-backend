@@ -19,8 +19,8 @@ import pers.lbf.yeju.service.interfaces.auth.interfaces.IRoleService;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import pers.lbf.yeju.service.interfaces.customer.ICustomerValidService;
 import pers.lbf.yeju.service.interfaces.customer.pojo.SimpleCustomerInfoBean;
-import pers.lbf.yeju.service.interfaces.employee.IEmployeeService;
-import pers.lbf.yeju.service.interfaces.employee.pojo.SimpleEmployeeInfoBean;
+import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
+import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleEmployeeInfoBean;
 
 import java.util.List;
 

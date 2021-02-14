@@ -32,8 +32,10 @@ import pers.lbf.yeju.provider.dict.type.dao.IDataDictionaryTypeDao;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO
@@ -51,6 +53,23 @@ public class DataDictionaryServiceImpl implements IDataDictionaryService {
 
     @Autowired
     private IDataDictionaryTypeDao dictionaryTypeDao;
+
+    @Override
+    public IResult<Map<String, String>> getDictMap(String type) throws ServiceException {
+        Map<String,String> map = new HashMap<>();
+        IResult<List<SimpleDataDictionaryInfoBean>> result =
+               this.findSimpleDataDictionaryByDictType(type);
+
+        List<SimpleDataDictionaryInfoBean> data = result.getData();
+
+        if (data.size()>0){
+            for (SimpleDataDictionaryInfoBean bean : data) {
+                map.put(bean.getDictionaryValue(),bean.getDictionaryLabel());
+            }
+        }
+
+        return Result.ok(map);
+    }
 
     @Override
     public IResult<String> findDataDictionaryLabelById(Long id) throws ServiceException {

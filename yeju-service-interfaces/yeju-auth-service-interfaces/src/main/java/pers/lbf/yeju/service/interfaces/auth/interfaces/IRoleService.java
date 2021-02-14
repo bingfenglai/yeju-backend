@@ -30,5 +30,7 @@ import java.util.List;
 public interface IRoleService {
 
 
+
+
     IResult<List<String>> getRoleListByPrincipal(String principal) throws ServiceException;
 }

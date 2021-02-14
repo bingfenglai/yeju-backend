@@ -18,7 +18,7 @@
         <module>yeju-mq-service-interfaces</module>
         <module>yeju-product-service-interfaces</module>
         <module>yeju-log-service-interfaces</module>
-        <module>yeju-employe-service-interfaces</module>
+        <module>yeju-platform-service-interfaces</module>
         <module>yeju-oos-service-interfaces</module>
         <module>yeju-data-dictionary-service-interfaces</module>
     </modules>

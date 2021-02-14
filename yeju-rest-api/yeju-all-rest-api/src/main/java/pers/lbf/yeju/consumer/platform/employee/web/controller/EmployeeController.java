@@ -26,8 +26,8 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.consumer.platform.employee.pojo.vo.EmployeeInfoVO;
-import pers.lbf.yeju.service.interfaces.employee.IEmployeeService;
-import pers.lbf.yeju.service.interfaces.employee.pojo.SimpleEmployeeInfoBean;
+import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
+import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleEmployeeInfoBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;

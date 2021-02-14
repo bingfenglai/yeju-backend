@@ -26,8 +26,8 @@ import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.provider.start.YejuProviderApplication;
-import pers.lbf.yeju.service.interfaces.employee.IEmployeeService;
-import pers.lbf.yeju.service.interfaces.employee.pojo.SimpleEmployeeInfoBean;
+import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
+import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleEmployeeInfoBean;
 
 /**
  * TODO

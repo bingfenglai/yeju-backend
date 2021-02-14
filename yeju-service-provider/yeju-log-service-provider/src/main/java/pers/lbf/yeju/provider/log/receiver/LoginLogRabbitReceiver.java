@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,7 @@ import java.util.Map;
 public class LoginLogRabbitReceiver {
 
     @Autowired
+    @Qualifier(value = "loginLogService")
     private ILoginLogService loginLogService;
 
     @RabbitListener(bindings = @QueueBinding(

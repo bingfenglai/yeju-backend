@@ -21,6 +21,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 
 import java.util.List;
+import java.util.Map;
 
 /**数据字典服务接口
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -28,6 +29,9 @@ import java.util.List;
  * @date 2021/2/13 14:54
  */
 public interface IDataDictionaryService {
+
+
+    IResult<Map<String,String>>  getDictMap(String type) throws ServiceException;
 
     IResult<String> findDataDictionaryLabelById(Long id) throws ServiceException;
 

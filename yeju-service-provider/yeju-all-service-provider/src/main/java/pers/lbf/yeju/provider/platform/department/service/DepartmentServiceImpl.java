@@ -1,0 +1,107 @@
+/*
+ * Copyright 2020 赖柄沣 bingfengdev@aliyun.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+package pers.lbf.yeju.provider.platform.department.service;
+import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import pers.lbf.yeju.common.core.args.IFindPageArgs;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
+import pers.lbf.yeju.common.domain.entity.Department;
+import pers.lbf.yeju.provider.platform.department.dao.IDepartmentDao;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryService;
+import pers.lbf.yeju.service.interfaces.platfrom.department.IDepartmentService;
+import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleDepartmentInfoBean;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * TODO
+ *
+ * @author 赖柄沣 bingfengdev@aliyun.com
+ * @version 1.0
+ * @date 2021/2/14 23:10
+ */
+@DubboService
+public class DepartmentServiceImpl implements IDepartmentService {
+
+    @Autowired
+    private IDepartmentDao departmentDao;
+
+    @DubboReference
+    private IDataDictionaryService dataDictionaryService;
+
+    @Cacheable(cacheNames = "DepartmentService::findDeptById",key = "#id")
+    @Override
+    public IResult<SimpleDepartmentInfoBean> findDeptById(Long id) throws ServiceException {
+        Department department = departmentDao.selectById(id);
+
+
+
+        if (department != null) {
+            SimpleDepartmentInfoBean bean = new SimpleDepartmentInfoBean();
+
+            bean.setDepartmentId(id);
+            bean.setName(department.getName());
+            bean.setLeaderId(department.getLeaderId());
+            bean.setPhoneNumber(department.getPhoneNumber());
+            bean.setPhoneNumberPrefix(department.getPhoneNumberPrefix());
+            bean.setEmail(department.getEmail());
+            bean.setDepartmentStatus(getDeptStatus(department.getYejuDepartmentStatus()));
+            bean.setCreateTime(department.getCreateTime());
+
+
+        }
+
+
+        throw  ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
+    }
+
+    @Cacheable(cacheNames = "DepartmentService::findPage",keyGenerator = "yejuKeyGenerator")
+    @Override
+    public PageResult<List<SimpleDepartmentInfoBean>> findPage(IFindPageArgs args) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public IResult<Object> addDepartment(SimpleDepartmentInfoBean bean) throws ServiceException {
+        return null;
+    }
+
+    @CachePut(cacheNames = "DepartmentService::findDeptById",key = "#bean.departmentId")
+    @Override
+    public IResult<Object> updateDepartment(SimpleDepartmentInfoBean bean) throws ServiceException {
+        return null;
+    }
+
+
+    private String getDeptStatus(Long deptStatus){
+
+        IResult<Map<String, String>> result = dataDictionaryService.getDictMap(DataDictionaryTypeConstant.DEPARTMENT_STATUS);
+        Map<String, String> map = result.getData();
+        return map.get(deptStatus.toString());
+    }
+
+
+
+}

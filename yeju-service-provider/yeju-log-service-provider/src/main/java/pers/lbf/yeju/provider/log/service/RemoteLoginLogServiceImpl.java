@@ -42,7 +42,7 @@ import java.util.List;
  * @date 2021/1/1 17:05
  */
 @DubboService(interfaceClass = ILoginLogService.class)
-@Service
+@Service(value = "loginLogService")
 public class RemoteLoginLogServiceImpl implements ILoginLogService {
 
 

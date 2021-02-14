@@ -15,7 +15,7 @@
         <module>yeju-oos-service-provider</module>
         <module>yeju-product-service-provider</module>
         <module>yeju-customer-service-provider</module>
-        <module>yeju-employee-service-provider</module>
+        <module>yeju-platform-service-provider</module>
         <module>yeju-session-service-provider</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>

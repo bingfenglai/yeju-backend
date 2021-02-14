@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju-employe-service-interfaces</artifactId>
+            <artifactId>yeju-platform-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 

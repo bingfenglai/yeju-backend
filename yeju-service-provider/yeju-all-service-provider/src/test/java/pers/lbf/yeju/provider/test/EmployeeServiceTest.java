@@ -54,7 +54,7 @@ public class EmployeeServiceTest {
     @Test
     public void test2() {
         BaseFindPageArgs args = new BaseFindPageArgs();
-        PageResult<SimpleEmployeeInfoBean> result = employeeService.findPage(args);
+        PageResult<SimpleEmployeeInfoBean> result = employeeService.findPage(1L,10L );
         log.info(result.getList().toString());
     }
 

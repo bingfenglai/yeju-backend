@@ -14,32 +14,19 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.interfaces;
+package pers.lbf.yeju.service.interfaces.dictionary;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.service.interfaces.auth.dto.SimpleRole;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryTypeBean;
 
-import java.util.List;
-
-/**角色服务接口类
+/** 数据字典类型
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/12 23:55
+ * @date 2021/2/16 17:03
  */
-public interface IRoleService {
+public interface IDataDictionaryTypeService {
 
-    void deleteById(Long id) throws ServiceException;
+    PageResult<SimpleDataDictionaryTypeBean> findPage(Long currentPage, Long size) throws ServiceException;
 
-    void updateById(SimpleRole role) throws ServiceException;
-
-    void create(SimpleRole role) throws ServiceException;
-
-    IResult<SimpleRole> findById(Long id) throws ServiceException;
-
-    PageResult<SimpleRole> findPage(Long currentPage, Long size) throws ServiceException;
-
-    IResult<List<String>> getRoleListByPrincipal(String principal) throws ServiceException;
 }

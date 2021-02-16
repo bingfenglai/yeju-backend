@@ -40,10 +40,9 @@ public class Role implements Serializable {
   private String roleName;
   /** 角色字符串 */
   private String roleCode;
-  /** 角色状态索引 */
+  /** 角色状态 0未启用 1启用 */
   private Long roleStatus;
-  /** 角色状态值0未启用1启用，详见属性表 */
-  private String roleStatusValue;
+
   /** 创建时间 */
   private Date createTime;
   /** 创建者 */
@@ -91,14 +90,6 @@ public class Role implements Serializable {
 
   public void setRoleStatus(Long roleStatus) {
     this.roleStatus = roleStatus;
-  }
-
-  public String getRoleStatusValue() {
-    return roleStatusValue;
-  }
-
-  public void setRoleStatusValue(String roleStatusValue) {
-    this.roleStatusValue = roleStatusValue;
   }
 
   public Date getCreateTime() {
@@ -164,7 +155,6 @@ public class Role implements Serializable {
             ", roleName='" + roleName + '\'' +
             ", roleCode='" + roleCode + '\'' +
             ", roleStatus=" + roleStatus +
-            ", roleStatusValue='" + roleStatusValue + '\'' +
             ", createTime=" + createTime +
             ", createBy=" + createBy +
             ", updateTime=" + updateTime +

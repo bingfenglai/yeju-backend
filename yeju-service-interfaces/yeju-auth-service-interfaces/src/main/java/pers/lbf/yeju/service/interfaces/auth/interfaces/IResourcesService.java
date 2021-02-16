@@ -2,6 +2,7 @@ package pers.lbf.yeju.service.interfaces.auth.interfaces;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.auth.dto.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public interface IResourcesService {
 
+    IResult<List<MenuInfoBean>> findAllMenu() throws ServiceException;
 
     IResult<List<MenuInfoBean>> findAllAuthorizedMenuInfo(List<String> authorities) throws ServiceException;
 
@@ -49,10 +51,11 @@ public interface IResourcesService {
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/12 1:37
-     * @param args
+     * @param currentPage
+     * @param size
      * @return
      */
-    IResult<MenuInfoBean> findMenuPage(FindPageArgs args) throws ServiceException;
+    PageResult<MenuInfoBean> findMenuPage(Long currentPage, Long size) throws ServiceException;
 
     /** TODO
      * @author 赖柄沣 bingfengdev@aliyun.com

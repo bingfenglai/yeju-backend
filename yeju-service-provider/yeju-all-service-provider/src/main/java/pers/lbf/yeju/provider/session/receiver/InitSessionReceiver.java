@@ -20,12 +20,13 @@ import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 
-import javax.annotation.Resource;
 import java.util.Map;
 
 /** session 初始化消息接收者
@@ -37,7 +38,8 @@ import java.util.Map;
 @Slf4j
 public class InitSessionReceiver {
 
-    @Resource
+    @Autowired
+    @Qualifier(value = "sessionService")
     private ISessionService sessionService;
 
 

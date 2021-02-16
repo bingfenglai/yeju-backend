@@ -45,7 +45,10 @@ public class SimpleEmployeeInfoBean implements Serializable {
     /** 公司邮箱 */
     private String email;
     /** 员工状态1在职0离职 */
-    private String employeesStatus;
+    private String employeesStatusStr;
+
+    private Long employeesStatus;
+
 
     /** 创建时间 */
     private Date createTime;
@@ -62,6 +65,14 @@ public class SimpleEmployeeInfoBean implements Serializable {
     private SimpleEmployeeInfoBean leader;
 
     private SimpleDepartmentInfoBean department;
+
+    public Long getEmployeesStatus() {
+        return employeesStatus;
+    }
+
+    public void setEmployeesStatus(Long employeesStatus) {
+        this.employeesStatus = employeesStatus;
+    }
 
     public SimpleDepartmentInfoBean getDepartment() {
         return department;
@@ -135,12 +146,12 @@ public class SimpleEmployeeInfoBean implements Serializable {
         this.email = email;
     }
 
-    public String getEmployeesStatus() {
-        return employeesStatus;
+    public String getEmployeesStatusStr() {
+        return employeesStatusStr;
     }
 
-    public void setEmployeesStatus(String employeesStatus) {
-        this.employeesStatus = employeesStatus;
+    public void setEmployeesStatusStr(String employeesStatusStr) {
+        this.employeesStatusStr = employeesStatusStr;
     }
 
     public Date getCreateTime() {
@@ -193,12 +204,15 @@ public class SimpleEmployeeInfoBean implements Serializable {
                 ", leaderId=" + leaderId +
                 ", avatar='" + avatar + '\'' +
                 ", email='" + email + '\'' +
-                ", employeesStatus='" + employeesStatus + '\'' +
+                ", employeesStatusStr='" + employeesStatusStr + '\'' +
+                ", employeesStatus=" + employeesStatus +
                 ", createTime=" + createTime +
                 ", createBy=" + createBy +
                 ", updateTime=" + updateTime +
                 ", changedBy=" + changedBy +
                 ", employeesNumber=" + employeesNumber +
+                ", leader=" + leader +
+                ", department=" + department +
                 '}';
     }
 }

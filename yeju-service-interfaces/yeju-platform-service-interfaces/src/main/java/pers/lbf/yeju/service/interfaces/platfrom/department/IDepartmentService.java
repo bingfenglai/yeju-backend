@@ -16,10 +16,10 @@
  */
 package pers.lbf.yeju.service.interfaces.platfrom.department;
 
-import pers.lbf.yeju.common.core.args.IFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.platfrom.pojo.DepartmentIdAndName;
 import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleDepartmentInfoBean;
 
 import java.util.List;
@@ -33,11 +33,12 @@ public interface IDepartmentService {
 
     IResult<SimpleDepartmentInfoBean> findDeptById(Long id) throws ServiceException;
 
-    PageResult<List<SimpleDepartmentInfoBean>> findPage(IFindPageArgs args) throws ServiceException;
+    PageResult<SimpleDepartmentInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 
     IResult<Object> addDepartment(SimpleDepartmentInfoBean bean) throws ServiceException;
 
     IResult<Object> updateDepartment(SimpleDepartmentInfoBean bean) throws ServiceException;
 
 
+    IResult<List<DepartmentIdAndName>> findAll() throws ServiceException;
 }

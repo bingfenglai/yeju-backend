@@ -28,14 +28,14 @@ import java.util.List;
 public class MenuInfoBean implements Serializable {
 
     // 主键
-    private Long resourceId;
+    private Long menuId;
     // 资源名
-    private String resourceName;
+    private String menuName;
     // 资源权限字符串
     private String resourceCode;
 
     // 父菜单id,仅当资源类型为0时生效
-    private Long parentMenuId;
+    private Long parentId;
     // 显示顺序，当多个子菜单对应一个父菜单时，需要给定显示顺序
     private Integer orderNumber;
     // 路由地址，当资源为菜单操作时需要记录路由地址
@@ -54,7 +54,7 @@ public class MenuInfoBean implements Serializable {
     private Integer isFrame;
 
     /**
-     * 菜单类型 0菜单目录 3菜单
+     * 菜单类型 0菜单目录 3菜单 2按钮
      */
     private String MenuType;
 
@@ -69,10 +69,10 @@ public class MenuInfoBean implements Serializable {
     @Override
     public String toString() {
         return "MenuInfoBean{" +
-                "resourceId=" + resourceId +
-                ", resourceName='" + resourceName + '\'' +
+                "resourceId=" + menuId +
+                ", resourceName='" + menuName + '\'' +
                 ", resourceCode='" + resourceCode + '\'' +
-                ", parentMenuId=" + parentMenuId +
+                ", parentMenuId=" + parentId +
                 ", orderNumber=" + orderNumber +
                 ", path='" + path + '\'' +
                 ", component='" + component + '\'' +
@@ -105,20 +105,20 @@ public class MenuInfoBean implements Serializable {
     }
 
 
-    public Long getResourceId() {
-        return resourceId;
+    public Long getMenuId() {
+        return menuId;
     }
 
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
     }
 
-    public String getResourceName() {
-        return resourceName;
+    public String getMenuName() {
+        return menuName;
     }
 
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
     }
 
     public String getResourceCode() {
@@ -129,12 +129,12 @@ public class MenuInfoBean implements Serializable {
         this.resourceCode = resourceCode;
     }
 
-    public Long getParentMenuId() {
-        return parentMenuId;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setParentMenuId(Long parentMenuId) {
-        this.parentMenuId = parentMenuId;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public Integer getOrderNumber() {

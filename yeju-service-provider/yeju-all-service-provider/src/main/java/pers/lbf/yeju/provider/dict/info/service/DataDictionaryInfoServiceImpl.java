@@ -17,19 +17,22 @@
 package pers.lbf.yeju.provider.dict.info.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 import pers.lbf.yeju.common.domain.entity.DataDictionaryInfo;
+import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.dict.info.dao.IDataDictionaryInfoDao;
 import pers.lbf.yeju.provider.dict.type.dao.IDataDictionaryTypeDao;
-import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryService;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 
 import java.util.HashMap;
@@ -44,9 +47,9 @@ import java.util.Map;
  * @version 1.0
  * @date 2021/2/13 15:00
  */
-@DubboService(interfaceClass = IDataDictionaryService.class)
+@DubboService(interfaceClass = IDataDictionaryInfoService.class)
 @Slf4j
-public class DataDictionaryServiceImpl implements IDataDictionaryService {
+public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService {
 
     @Autowired
     private IDataDictionaryInfoDao dataDictionaryInfoDao;
@@ -123,5 +126,37 @@ public class DataDictionaryServiceImpl implements IDataDictionaryService {
             throw ServiceException.getInstance("type不能为空",ParameStatusEnum.Parameter_cannot_be_empty.getCode());
         }
 
+    }
+
+    @Cacheable(cacheNames = "IDataDictionaryInfoService:findPage",keyGenerator = "yejuKeyGenerator")
+    @Override
+    public PageResult<SimpleDataDictionaryInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
+        Page<DataDictionaryInfo> page = PageUtil.getPage(DataDictionaryInfo.class, currentPage, size);
+        Page<DataDictionaryInfo> dataDictionaryInfoPage = dataDictionaryInfoDao.selectPage(page, null);
+
+        List<DataDictionaryInfo> dataDictionaryInfoList = dataDictionaryInfoPage.getRecords();
+
+        List<SimpleDataDictionaryInfoBean> result = new LinkedList<>();
+
+        for (DataDictionaryInfo info : dataDictionaryInfoList) {
+            SimpleDataDictionaryInfoBean bean = infoToSimpleBean(info);
+            result.add(bean);
+        }
+
+
+        return PageResult.ok(dataDictionaryInfoPage.getTotal(),currentPage,size,result);
+    }
+
+    private SimpleDataDictionaryInfoBean infoToSimpleBean(DataDictionaryInfo info){
+        SimpleDataDictionaryInfoBean bean = new SimpleDataDictionaryInfoBean();
+        bean.setId(info.getDataDictionaryInfoId());
+        bean.setDictionaryLabel(info.getDictionaryLabel());
+        bean.setDictionaryValue(info.getDictionaryValue());
+        bean.setCssClass(info.getCssClass());
+        bean.setListClass(info.getListClass());
+        bean.setDefaultFlags(info.getIsDefault()==1);
+        bean.setStatus(info.getStatus());
+
+        return bean;
     }
 }

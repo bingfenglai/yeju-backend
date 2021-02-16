@@ -23,7 +23,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import pers.lbf.yeju.common.core.args.IFindPageArgs;
+import org.springframework.context.annotation.Lazy;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -35,7 +35,7 @@ import pers.lbf.yeju.common.domain.entity.Employee;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.provider.platform.employee.dao.IEmployeeDao;
 import pers.lbf.yeju.provider.platform.employee.status.EmployeesStatus;
-import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryService;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 import pers.lbf.yeju.service.interfaces.platfrom.department.IDepartmentService;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
@@ -60,9 +60,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private IEmployeeDao employeeDao;
 
     @DubboReference
-    private IDataDictionaryService dataDictionaryService;
+    private IDataDictionaryInfoService dataDictionaryService;
 
-    @DubboReference
+    @Lazy
+    @DubboReference(check = false,interfaceClass = IDepartmentService.class)
     private IDepartmentService departmentService;
 
     @Cacheable(cacheNames = "EmployeeService::findInfoByAccount",key = "#account")
@@ -88,7 +89,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
             bean.setAvatar(employee.getAvatar());
             bean.setEmail(employee.getEmail());
-            bean.setEmployeesStatus(getEmployeesStatus(employee.getEmployeeStatus()));
+            bean.setEmployeesStatusStr(getEmployeesStatus(employee.getEmployeeStatus()));
             bean.setCreateTime(employee.getCreateTime());
 
             bean.setUpdateTime(employee.getUpdateTime());
@@ -140,7 +141,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         simpleEmployeeInfoBean.setLeaderId(employee.getLeaderId());
         simpleEmployeeInfoBean.setAvatar(employee.getAvatar());
         simpleEmployeeInfoBean.setEmail(employee.getEmail());
-        simpleEmployeeInfoBean.setEmployeesStatus(getEmployeesStatus(employee.getEmployeeStatus()));
+        simpleEmployeeInfoBean.setEmployeesStatusStr(getEmployeesStatus(employee.getEmployeeStatus()));
 
         simpleEmployeeInfoBean.setCreateTime(employee.getCreateTime());
         simpleEmployeeInfoBean.setCreateBy(employee.getCreateBy());
@@ -205,15 +206,17 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/1/18 20:42
+     * @param currentPage
+     * @param size
      */
 
-    @Cacheable(cacheNames = "EmployeeService::findPage",key = "#args")
+    @Cacheable(cacheNames = "EmployeeService::findPage",keyGenerator = "yejuKeyGenerator")
     @Override
-    public PageResult<SimpleEmployeeInfoBean> findPage(IFindPageArgs args) throws ServiceException {
+    public PageResult<SimpleEmployeeInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
 
         Page<Employee> page = new Page<>();
-        page.setCurrent(args.getCurrentPage());
-        page.setSize(args.getSize());
+        page.setCurrent(currentPage);
+        page.setSize(size);
         Page<Employee> employeesPage = employeeDao.selectPage(page, null);
         List<SimpleEmployeeInfoBean> result = new LinkedList<>();
 
@@ -233,14 +236,22 @@ public class EmployeeServiceImpl implements IEmployeeService {
             bean.setLeaderId(employee.getLeaderId());
             bean.setAvatar(employee.getAvatar());
             bean.setEmail(employee.getEmail());
-            bean.setEmployeesStatus(employeeStatusMap.get(employee.getEmployeeStatus().toString()));
-
+            bean.setEmployeesStatusStr(employeeStatusMap.get(employee.getEmployeeStatus().toString()));
+            bean.setEmployeesStatus(employee.getEmployeeStatus());
+            bean.setCreateTime(employee.getCreateTime());
             bean.setEmployeesNumber(employee.getEmployeesNumber());
+
+            if (employee.getDepartmentId()!=null){
+                IResult<SimpleDepartmentInfoBean> deptResult = departmentService.findDeptById(employee.getDepartmentId());
+                if (deptResult.getData()!=null){
+                    bean.setDepartment(deptResult.getData());
+                }
+            }
 
             result.add(bean);
         }
 
-      return PageResult.ok(employeesPage.getTotal(), args.getCurrentPage(), args.getSize(), result);
+      return PageResult.ok(employeesPage.getTotal(), employeesPage.getPages(), employeesPage.getSize(), result);
 
 
     }

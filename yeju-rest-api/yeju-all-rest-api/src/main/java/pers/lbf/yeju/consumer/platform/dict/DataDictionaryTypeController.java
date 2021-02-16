@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.platform.employee.web.controller;
+package pers.lbf.yeju.consumer.platform.dict;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -23,36 +23,30 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.consumer.platform.employee.pojo.vo.EmployeeInfoVO;
-import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
-import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleEmployeeInfoBean;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryTypeService;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryTypeBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
 
 /**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/30 16:06
+ * @date 2021/2/16 16:59
  */
 @RestController
-@RequestMapping("/platform/employee")
-public class EmployeeController {
+@RequestMapping("/platform/dataDictionary/type")
+public class DataDictionaryTypeController {
 
     @DubboReference
-    private IEmployeeService employeeService;
+    private IDataDictionaryTypeService dictionaryTypeService;
 
-    @GetMapping("/getInfoByAccount/{account}")
-    public Mono<IResult<EmployeeInfoVO>> getEmployInfoByAccount(@PathVariable String account){
-        return Mono.empty();
-    }
-
-    @ApiOperation(value = "获取员工列表 分页",notes = "员工列表说明",httpMethod = "GET")
+    @ApiOperation(value = "获取数据字典信息列表 分页",notes = "数据字典列表说明",httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
-    public Mono<PageResult<SimpleEmployeeInfoBean>> findPage(
+    public Mono<PageResult<SimpleDataDictionaryTypeBean>> findPage(
             @Validated @NotNull(message = "每页显示条数")  @ApiParam("当前页") @PathVariable Long currentPage,
             @Validated @NotNull(message = "每页显示大小不能为空") @ApiParam("每页显示条数") @RequestParam Long size
     )throws ServiceException {
@@ -60,8 +54,8 @@ public class EmployeeController {
         args.setCurrentPage(currentPage);
         args.setSize(size);
 
-        return Mono.just(employeeService.findPage(args.getCurrentPage(), args.getSize()));
+        return Mono.just(dictionaryTypeService.findPage(args.getCurrentPage(),args.getSize()));
     }
 
-
+    
 }

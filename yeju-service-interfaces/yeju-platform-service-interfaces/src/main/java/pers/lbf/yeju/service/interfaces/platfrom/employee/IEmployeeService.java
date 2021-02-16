@@ -16,7 +16,6 @@
  */
 package pers.lbf.yeju.service.interfaces.platfrom.employee;
 
-import pers.lbf.yeju.common.core.args.IFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -81,6 +80,8 @@ public interface IEmployeeService {
      * @date 2021/1/18 20:42
      * @return list
      * @throws ServiceException e
+     * @param currentPage
+     * @param size
      */
-    PageResult<SimpleEmployeeInfoBean> findPage(IFindPageArgs args) throws ServiceException;
+    PageResult<SimpleEmployeeInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 }

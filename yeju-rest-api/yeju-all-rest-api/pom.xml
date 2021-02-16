@@ -52,6 +52,12 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-data-dictionary-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
 
 
         <dependency>

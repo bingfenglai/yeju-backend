@@ -32,6 +32,8 @@ public class SimpleDepartmentInfoBean implements Serializable {
 
     private Long departmentId;
 
+    private Long parentId;
+
     //部门名称
     private String name;
     //负责人id
@@ -45,6 +47,8 @@ public class SimpleDepartmentInfoBean implements Serializable {
     private String email;
     //部门状态0未启用1启用
     private String departmentStatus;
+
+    private String departmentStatusStr;
     //创建时间
     private Date createTime;
 
@@ -55,13 +59,6 @@ public class SimpleDepartmentInfoBean implements Serializable {
     private List<SimplePostInfoBean> postList;
 
 
-    public SimpleEmployeeInfoBean getLeader() {
-        return leader;
-    }
-
-    public void setLeader(SimpleEmployeeInfoBean leader) {
-        this.leader = leader;
-    }
 
     public void addPost(SimplePostInfoBean post){
         if (postList == null) {
@@ -71,13 +68,12 @@ public class SimpleDepartmentInfoBean implements Serializable {
     }
 
 
-
-    public List<SimplePostInfoBean> getPostList() {
-        return postList;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setPostList(List<SimplePostInfoBean> postList) {
-        this.postList = postList;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public void addChildren(SimpleDepartmentInfoBean child){
@@ -144,6 +140,14 @@ public class SimpleDepartmentInfoBean implements Serializable {
         this.departmentStatus = departmentStatus;
     }
 
+    public String getDepartmentStatusStr() {
+        return departmentStatusStr;
+    }
+
+    public void setDepartmentStatusStr(String departmentStatusStr) {
+        this.departmentStatusStr = departmentStatusStr;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -152,6 +156,21 @@ public class SimpleDepartmentInfoBean implements Serializable {
         this.createTime = createTime;
     }
 
+    public SimpleEmployeeInfoBean getLeader() {
+        return leader;
+    }
+
+    public void setLeader(SimpleEmployeeInfoBean leader) {
+        this.leader = leader;
+    }
+
+    public List<SimplePostInfoBean> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<SimplePostInfoBean> postList) {
+        this.postList = postList;
+    }
     public List<SimpleDepartmentInfoBean> getChildren() {
         return children;
     }

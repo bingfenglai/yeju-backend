@@ -18,6 +18,7 @@ package pers.lbf.yeju.service.interfaces.dictionary;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2021/2/13 14:54
  */
-public interface IDataDictionaryService {
+public interface IDataDictionaryInfoService {
 
 
     IResult<Map<String,String>>  getDictMap(String type) throws ServiceException;
@@ -38,4 +39,6 @@ public interface IDataDictionaryService {
     IResult<List<SimpleDataDictionaryInfoBean>> findSimpleDataDictionaryByDictTypeId(Long id) throws ServiceException;
 
     IResult<List<SimpleDataDictionaryInfoBean>> findSimpleDataDictionaryByDictType(String type) throws ServiceException;
+
+    PageResult<SimpleDataDictionaryInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 }

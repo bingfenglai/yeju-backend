@@ -1,12 +1,14 @@
 package pers.lbf.yeju.provider.auth.resource.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.AntPathMatcher;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
@@ -15,6 +17,7 @@ import pers.lbf.yeju.common.domain.entity.Resource;
 import pers.lbf.yeju.provider.auth.account.enums.AccountStatusEnum;
 import pers.lbf.yeju.provider.auth.resource.dao.IResourcesDao;
 import pers.lbf.yeju.provider.auth.resource.enums.ResourceStatus;
+import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.service.interfaces.auth.dto.*;
 import pers.lbf.yeju.service.interfaces.auth.enums.ResourceType;
@@ -42,6 +45,36 @@ public class ResourcesServiceImpl implements IResourcesService {
     @Autowired
     private IResourcesDao resourceDao;
 
+    /** 查询所有菜单资源
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/16 16:32
+     * @param
+     * @return pers.lbf.yeju.common.core.result.IResult<java.util.List<pers.lbf.yeju.service.interfaces.auth.dto.MenuInfoBean>>
+     */
+    @Cacheable(cacheNames = "menu",key = "'all'")
+    @Override
+    public IResult<List<MenuInfoBean>> findAllMenu() throws ServiceException {
+
+        QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("resource_status",1);
+        //目录
+        queryWrapper.eq("resource_type",0)
+                .or()
+                //菜单项
+                .eq("resource_type",3)
+                .or()
+                //按钮
+                .eq("resource_type",2);
+        List<Resource> resources = resourceDao.selectList(queryWrapper);
+        List<MenuInfoBean> result = new LinkedList<>();
+        for (Resource resource : resources) {
+            MenuInfoBean bean = buildMenuInfoBean(resource);
+            result.add(bean);
+        }
+
+        return Result.ok(result);
+    }
 
     /**
      * 查询所有授权的路由
@@ -70,10 +103,10 @@ public class ResourcesServiceImpl implements IResourcesService {
         for (Resource resource : authorizedResources) {
             MenuInfoBean menuInfoBean = new MenuInfoBean();
             menuInfoBean.setIsFrame(resource.getIsFrame());
-            menuInfoBean.setResourceId(resource.getResourceId());
-            menuInfoBean.setResourceName(resource.getResourceName());
+            menuInfoBean.setMenuId(resource.getResourceId());
+            menuInfoBean.setMenuName(resource.getResourceName());
             menuInfoBean.setResourceCode(resource.getResourceCode());
-            menuInfoBean.setParentMenuId(resource.getParentMenuId());
+            menuInfoBean.setParentId(resource.getParentMenuId());
             menuInfoBean.setOrderNumber(resource.getOrderNumber());
             menuInfoBean.setPath(resource.getPath());
             menuInfoBean.setComponent(resource.getComponetPath());
@@ -132,17 +165,37 @@ public class ResourcesServiceImpl implements IResourcesService {
     }
 
     /**
-     * TODO
-     *
-     * @param args
+     * @param currentPage
+     * @param size
      * @return
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/12 1:37
      */
     @Override
-    public IResult<MenuInfoBean> findMenuPage(FindPageArgs args) throws ServiceException {
-        return null;
+    public PageResult<MenuInfoBean> findMenuPage(Long currentPage, Long size) throws ServiceException {
+
+        Page<Resource> page = PageUtil.getPage(Resource.class, currentPage, size);
+        QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("resource_status",1);
+        //目录
+        queryWrapper.eq("resource_type",0)
+                .or()
+                //菜单项
+                .eq("resource_type",3)
+                .or()
+                //按钮
+                .eq("resource_type",2);
+        Page<Resource> resourcePage = resourceDao.selectPage(page, queryWrapper);
+        List<Resource> resourceList = resourcePage.getRecords();
+        List<MenuInfoBean> result = new LinkedList<>();
+
+        for (Resource resource : resourceList) {
+            MenuInfoBean bean = buildMenuInfoBean(resource);
+            result.add(bean);
+        }
+
+        return PageResult.ok(page.getTotal(),currentPage,size,result);
     }
 
     /**
@@ -258,7 +311,7 @@ public class ResourcesServiceImpl implements IResourcesService {
         bean.setComponent(resource.getComponent());
         bean.setAlwaysShow(true);
         Meta meta = new Meta();
-        meta.setTitle(resource.getResourceName());
+        meta.setTitle(resource.getMenuName());
         meta.setIcon(resource.getIcon());
         meta.setNoCache(false);
 
@@ -290,7 +343,7 @@ public class ResourcesServiceImpl implements IResourcesService {
             child.setHidden(false);
             child.setComponent(menuInfoBean.getComponent());
             Meta meta = new Meta();
-            meta.setTitle(menuInfoBean.getResourceName());
+            meta.setTitle(menuInfoBean.getMenuName());
             meta.setIcon(menuInfoBean.getIcon());
             meta.setNoCache(false);
             child.setMeta(meta);
@@ -304,16 +357,16 @@ public class ResourcesServiceImpl implements IResourcesService {
 
     private MenuInfoBean buildMenuInfoBean(Resource resource){
         MenuInfoBean menuInfoBean = new MenuInfoBean();
-        menuInfoBean.setResourceId(resource.getResourceId());
-        menuInfoBean.setResourceName(resource.getResourceName());
+        menuInfoBean.setMenuId(resource.getResourceId());
+        menuInfoBean.setMenuName(resource.getResourceName());
         menuInfoBean.setResourceCode(resource.getResourceCode());
-        menuInfoBean.setParentMenuId(resource.getParentMenuId());
+        menuInfoBean.setParentId(resource.getParentMenuId());
         menuInfoBean.setOrderNumber(resource.getOrderNumber());
         menuInfoBean.setPath(resource.getPath());
         menuInfoBean.setComponent(resource.getComponetPath());
-        menuInfoBean.setCache(false);
-        menuInfoBean.setResourceStatus(0);
-        menuInfoBean.setVisible(true);
+        menuInfoBean.setCache(resource.getIsCache()==1);
+        menuInfoBean.setResourceStatus(resource.getResourceStatus());
+        menuInfoBean.setVisible(resource.getVisible()==1);
         menuInfoBean.setIcon(resource.getIcon());
 
         return menuInfoBean;
@@ -362,7 +415,7 @@ public class ResourcesServiceImpl implements IResourcesService {
     private List<MenuInfoBean> getChildrenMenus(List<MenuInfoBean> menuInfoBeanList){
         LinkedList<Long> parentIds  = new LinkedList<>();
         for (MenuInfoBean menuInfoBean : menuInfoBeanList) {
-            parentIds.add(menuInfoBean.getResourceId());
+            parentIds.add(menuInfoBean.getMenuId());
         }
 
         List<Resource> childrenResources = resourceDao.findChildrenResources(parentIds);
@@ -370,7 +423,7 @@ public class ResourcesServiceImpl implements IResourcesService {
         for (MenuInfoBean menuInfoBean : menuInfoBeanList) {
 
             for (Resource childrenResource : childrenResources) {
-                if (menuInfoBean.getResourceId().equals(childrenResource.getParentMenuId())){
+                if (menuInfoBean.getMenuId().equals(childrenResource.getParentMenuId())){
                     menuInfoBean.addChildren(buildMenuInfoBean(childrenResource));
                 }
             }

@@ -126,11 +126,13 @@ public class DepartmentServiceImpl implements IDepartmentService {
                 bean.setParentId(department.getParentDepartmentId());
                 result.add(bean);
             }
-           return Result.ok(result);
+
 
         }
 
-        throw  ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
+        return Result.ok(result);
+
+
 
     }
 

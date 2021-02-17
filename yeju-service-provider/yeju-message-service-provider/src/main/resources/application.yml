@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: yeju-message-service-provider
+dubbo:
+  provider:
+    port: 20889

@@ -14,7 +14,7 @@
         <module>yeju-customer-service-interfaces</module>
         <module>yeju-auth-service-interfaces</module>
         <module>yeju-redis-service-interfaces</module>
-        <module>yeju-sms-service-interfaces</module>
+        <module>yeju-message-service-interfaces</module>
         <module>yeju-mq-service-interfaces</module>
         <module>yeju-product-service-interfaces</module>
         <module>yeju-log-service-interfaces</module>

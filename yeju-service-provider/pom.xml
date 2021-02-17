@@ -17,6 +17,7 @@
         <module>yeju-customer-service-provider</module>
         <module>yeju-platform-service-provider</module>
         <module>yeju-session-service-provider</module>
+        <module>yeju-message-service-provider</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

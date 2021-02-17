@@ -16,13 +16,10 @@
  */
 package pers.lbf.yeju.service.interfaces.platfrom.post;
 
-import pers.lbf.yeju.common.core.args.IFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimplePostInfoBean;
-
-import java.util.List;
 
 /** 职位接口类
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -33,7 +30,7 @@ public interface IPostService {
 
     IResult<SimplePostInfoBean> findPostById(Long id) throws ServiceException;
 
-    PageResult<List<SimplePostInfoBean>> findPage(IFindPageArgs args) throws ServiceException;
+    PageResult<SimplePostInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 
     IResult<Object> addPost(SimplePostInfoBean bean) throws ServiceException;
 

@@ -50,6 +50,9 @@ yeju-oos-service-provider ----> 20884
 #### 产品服务提供方
 yeju-product-service-provider ----> 20888
 
+#### 消息服务提供方
+yeju-message-service-provider  -----20889
+
 
 ### 服务消费方端口规划(http)
 
@@ -61,6 +64,9 @@ yeju-auth-api ----> 9002
 
 #### all-api
 yeju-all-rest-api ----> 9001
+
+#### 消息通知微服务
+yeju-notice -----------> 9003
 
 ## 其他注意事项
 部署时，即使是window系统，也需要关闭防火墙

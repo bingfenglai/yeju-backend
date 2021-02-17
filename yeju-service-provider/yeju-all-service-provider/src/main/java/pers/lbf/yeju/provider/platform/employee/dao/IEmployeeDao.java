@@ -17,6 +17,8 @@
 package pers.lbf.yeju.provider.platform.employee.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import pers.lbf.yeju.common.domain.entity.Employee;
 
 /**
@@ -28,4 +30,20 @@ import pers.lbf.yeju.common.domain.entity.Employee;
  */
 public interface IEmployeeDao extends BaseMapper<Employee> {
 
+    @Select("SELECT \n" +
+            "  t.name \n" +
+            "FROM\n" +
+            "  table_platform_employees t \n" +
+            "WHERE t.employees_number = #{account} \n" +
+            "LIMIT 1 ;")
+    String selectEmployeeNameByEmployeeNumber(@Param("account") String account);
+
+
+    @Select("SELECT \n" +
+            "  t.name \n" +
+            "FROM\n" +
+            "  table_platform_employees t \n" +
+            "WHERE t.phone_number = #{account} \n" +
+            "LIMIT 1 ;")
+    String selectEmployeeNameByPhoneNumber(@Param("account") String account);
 }

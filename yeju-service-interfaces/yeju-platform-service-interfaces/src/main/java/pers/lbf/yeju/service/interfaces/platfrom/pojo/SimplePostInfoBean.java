@@ -36,8 +36,19 @@ public class SimplePostInfoBean implements Serializable {
     private String remark;
     //岗位状态0未启用1启用
     private String postStatus;
+
+    private String postStatusStr;
+
     //创建时间
     private Date createTime;
+
+    public String getPostStatusStr() {
+        return postStatusStr;
+    }
+
+    public void setPostStatusStr(String postStatusStr) {
+        this.postStatusStr = postStatusStr;
+    }
 
     public String getPostName() {
         return postName;

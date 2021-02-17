@@ -108,6 +108,26 @@ public class EmployeeServiceImpl implements IEmployeeService {
         throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
     }
 
+    @Override
+    public IResult<String> findNameByAccount(String account) throws ServiceException {
+        String name = "";
+        if (account == null) {
+            return Result.ok(name);
+        }
+
+        SubjectTypeEnum accountType = SubjectUtils.getAccountType(account);
+        QueryWrapper<Employee> queryWrapper = new QueryWrapper<>();
+
+        if (accountType.equals(SubjectTypeEnum.is_system_account)){
+            name = employeeDao.selectEmployeeNameByEmployeeNumber(account);
+        }else if (accountType.equals(SubjectTypeEnum.is_mobile)){
+            name = employeeDao.selectEmployeeNameByPhoneNumber(account);
+        }
+
+
+        return Result.ok(name);
+    }
+
     /**
      * TODO
      *
@@ -221,7 +241,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         List<SimpleEmployeeInfoBean> result = new LinkedList<>();
 
         if (employeesPage.getTotal()==0){
-            throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
+            return PageResult.ok(employeesPage.getTotal(), employeesPage.getPages(), employeesPage.getSize(), result);
         }
         Map<String, String> genderMap = getDictMap("gender");
 

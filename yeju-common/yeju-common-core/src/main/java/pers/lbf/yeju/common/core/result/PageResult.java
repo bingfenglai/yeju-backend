@@ -51,9 +51,9 @@ public class PageResult<T> extends BaseResult<T> implements Serializable {
     private List<T> list;
 
 
-    public static <T> PageResult<T> ok(Long count, Long currentPage, Long size,List<T> list){
+    public static <T> PageResult<T> ok(Long total, Long currentPage, Long size,List<T> list){
         return new PageResult<T>
-                (ServiceStatusEnum.OK.getCode(), ServiceStatusEnum.OK.getMessage(), count, currentPage, size, list);
+                (ServiceStatusEnum.OK.getCode(), ServiceStatusEnum.OK.getMessage(), total, currentPage, size, list);
     }
 
     public static <T> PageResult<T> ok(IFindPageArgs args,Long count, List<T> list){

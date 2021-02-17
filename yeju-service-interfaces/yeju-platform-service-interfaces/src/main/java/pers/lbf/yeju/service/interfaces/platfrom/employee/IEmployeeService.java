@@ -32,6 +32,7 @@ public interface IEmployeeService {
 
     IResult<SimpleEmployeeInfoBean> findInfoByAccount(String account)throws ServiceException;
 
+    IResult<String> findNameByAccount(String account) throws ServiceException;
 
     /**TODO
      * @author 赖柄沣 bingfengdev@aliyun.com

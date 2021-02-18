@@ -25,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -39,6 +40,8 @@ import pers.lbf.yeju.service.interfaces.auth.dto.MenuInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.RouterInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.enums.ResourceType;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IResourcesService;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
@@ -60,6 +63,9 @@ public class MenuController {
 
     @DubboReference
     private IResourcesService resourcesService;
+
+    @DubboReference
+    private IDataDictionaryInfoService dataDictionaryInfoService;
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
@@ -180,9 +186,16 @@ public class MenuController {
         return Mono.just(Result.ok(result));
     }
 
+    @ApiOperation(value = "获取菜单状态列表",notes = "获取菜单状态列表",httpMethod = "GET")
+    @GetMapping("/status/list")
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList()throws ServiceException {
+        IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.RESOURCE_STATUS);
+        return Mono.just(result);
+    }
+
     private RouterVO recursiveTree(RouterVO parent,List<RouterVO> routerList){
         for (RouterVO router : routerList) {
-            //log.info("父id{} 子的父id{}",parent.getId(),router.getParentId());
+            log.debug("父id{} 子的父id{}",parent.getId(),router.getParentId());
             if (parent.getId().equals(router.getParentId())){
                 recursiveTree(router, routerList);
                 parent.addChildren(router);

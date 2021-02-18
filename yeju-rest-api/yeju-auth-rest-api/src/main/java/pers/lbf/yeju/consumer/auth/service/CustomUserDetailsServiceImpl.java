@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.auth.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsPasswordService;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
  * @date 2020/12/10 23:05
  */
 @Component
+@Slf4j
 public class CustomUserDetailsServiceImpl implements ReactiveUserDetailsService, ReactiveUserDetailsPasswordService {
 
 
@@ -91,7 +93,7 @@ public class CustomUserDetailsServiceImpl implements ReactiveUserDetailsService,
      */
     @Override
     public Mono<UserDetails> updatePassword(UserDetails userDetails, String s) {
-
+        log.info("新密码：{}",s);
         return null;
     }
 }

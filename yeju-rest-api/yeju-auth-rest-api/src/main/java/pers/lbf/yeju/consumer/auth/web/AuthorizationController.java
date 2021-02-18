@@ -30,7 +30,9 @@ import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
+import pers.lbf.yeju.service.interfaces.auth.dto.AuthzSimpleInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SessionDetails;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IAuthzService;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import reactor.core.publisher.Mono;
 
@@ -50,29 +52,40 @@ public class AuthorizationController {
     @DubboReference
     private ISessionService sessionService;
 
+    @DubboReference
+    private IAuthzService authzService;
+
     @Autowired
     private AuthorizationTokenManager tokenManager;
+
+
+    @ApiOperation(value = "获取简单授权信息",notes = "AuthorizationController说明",httpMethod = "GET")
+    @GetMapping("/simple/info")
+    public Mono<IResult<AuthzSimpleInfoBean>> getAuthzSimpleInfo(ServerWebExchange webExchange) throws Exception {
+        //获取token
+        AuthorityInfoBean authorityInfo = getAuthorityInfoBeanByToken(webExchange);
+        String principal = authorityInfo.getPrincipal();
+
+        return Mono.just(authzService.findAuthzInfoByPrincipal(principal));
+    }
 
 
     @ApiOperation(value = "获取账号主体信息",notes = "账号主题信息说明",httpMethod = "GET")
     @GetMapping("/getAuthzDetailInfo")
     public Mono<IResult<SessionDetails>> getAuthzDetailInfo(ServerWebExchange webExchange) throws Exception {
         //获取token
-        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
-        AuthorityInfoBean authorityInfo = tokenManager.getAuthorityInfo(authorization);
+        AuthorityInfoBean authorityInfo = getAuthorityInfoBeanByToken(webExchange);
+
         String principal = authorityInfo.getPrincipal();
 
-        IResult<SessionDetails> result = sessionService.initSession(principal);
-        return Mono.just(result);
+        return Mono.just(sessionService.initSession(principal));
     }
 
     @ApiOperation(value = "刷新令牌",notes = "说明",httpMethod = "GET")
     @GetMapping("/refreshToken")
     public Mono<IResult<LoginRepoBean>> refreshToken(ServerWebExchange webExchange) throws Exception {
         // 获取令牌中的信息
-        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
-        AuthorityInfoBean authorityInfo = tokenManager.getAuthorityInfo(authorization);
-
+        AuthorityInfoBean authorityInfo = getAuthorityInfoBeanByToken(webExchange);
 
         Long tokenExpiresTime = tokenManager.getTokenExpiresTime(webExchange);
         // 生成新的令牌
@@ -84,5 +97,11 @@ public class AuthorizationController {
         bean.setAccessToken(newToken);
 
         return Mono.just(Result.ok(bean));
+    }
+
+
+    private AuthorityInfoBean getAuthorityInfoBeanByToken(ServerWebExchange webExchange) throws Exception {
+        String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
+        return tokenManager.getAuthorityInfo(authorization);
     }
 }

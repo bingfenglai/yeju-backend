@@ -23,11 +23,14 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.consumer.platform.department.pojo.DepartmentTreeVO;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import pers.lbf.yeju.service.interfaces.platfrom.department.IDepartmentService;
 import pers.lbf.yeju.service.interfaces.platfrom.pojo.DepartmentIdAndName;
 import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleDepartmentInfoBean;
@@ -51,6 +54,16 @@ public class DepartmentController {
 
     @DubboReference
     private IDepartmentService departmentService;
+
+    @DubboReference
+    private IDataDictionaryInfoService dataDictionaryInfoService;
+
+    @ApiOperation(value = "获取部门状态列表",notes = "获取部门状态列表",httpMethod = "GET")
+    @GetMapping("/status/list")
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList()throws ServiceException {
+        IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.DEPARTMENT_STATUS);
+        return Mono.just(result);
+    }
 
 
     @ApiOperation(value = "获取DepartmentTree",notes = "DepartmentTree说明",httpMethod = "GET")

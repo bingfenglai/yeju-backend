@@ -23,6 +23,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
@@ -66,7 +67,7 @@ public class NoticeServiceImpl implements INoticeService {
         List<Notice> noticeList = noticePage.getRecords();
         List<SimpleNoticeInfoBean> result = new LinkedList<>();
         Map<String, String> noticeTypeMap = dictionaryInfoService.getDictMap("notice_type").getData();
-        Map<String, String> statusMap = dictionaryInfoService.getDictMap("status").getData();
+        Map<String, String> statusMap = dictionaryInfoService.getDictMap(DataDictionaryTypeConstant.NOTICE_STATUS).getData();
 
         for (Notice notice : noticeList) {
             SimpleNoticeInfoBean bean = this.noticeToSimpleInfoBean(notice);

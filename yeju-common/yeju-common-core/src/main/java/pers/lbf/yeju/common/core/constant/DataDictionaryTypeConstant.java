@@ -41,4 +41,24 @@ public class DataDictionaryTypeConstant {
      * 通知类型
      */
     public static final String NOTICE_TYPE = "notice_type";
+
+    /**
+     * 通知状态
+     */
+    public static final String NOTICE_STATUS = "notice_status";
+
+    /**
+     * 角色状态
+     */
+    public static final String ROLE_STATUS = "role_status";
+
+    /**
+     * 菜单状态
+     */
+    public static final String RESOURCE_STATUS = "resource_status";
+
+    /**
+     * 通用状态
+     */
+    public static final String STATUS = "status";
 }

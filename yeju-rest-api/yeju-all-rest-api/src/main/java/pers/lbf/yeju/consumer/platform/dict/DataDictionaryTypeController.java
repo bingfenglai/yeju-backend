@@ -22,13 +22,18 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryTypeService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryTypeBean;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * TODO
@@ -44,6 +49,9 @@ public class DataDictionaryTypeController {
     @DubboReference
     private IDataDictionaryTypeService dictionaryTypeService;
 
+    @DubboReference
+    private IDataDictionaryInfoService dataDictionaryInfoService;
+
     @ApiOperation(value = "获取数据字典信息列表 分页",notes = "数据字典列表说明",httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<SimpleDataDictionaryTypeBean>> findPage(
@@ -56,6 +64,25 @@ public class DataDictionaryTypeController {
 
         return Mono.just(dictionaryTypeService.findPage(args.getCurrentPage(),args.getSize()));
     }
+
+
+    @ApiOperation(value = "获取通用状态列表",notes = "获取通用状态列表",httpMethod = "GET")
+    @GetMapping("/status/list")
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList()throws ServiceException {
+        IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.STATUS);
+        return Mono.just(result);
+    }
+
+    @ApiOperation(value = "获取通用状态列表",notes = "获取通用状态列表",httpMethod = "GET")
+    @GetMapping("/{type}/list")
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getLabelAndValueList(
+            @ApiParam("字典类型") @Validated @NotNull(message = "字典类型不能为空") @PathVariable("type") String type
+    )throws ServiceException {
+        IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(type);
+        return Mono.just(result);
+    }
+
+
 
     
 }

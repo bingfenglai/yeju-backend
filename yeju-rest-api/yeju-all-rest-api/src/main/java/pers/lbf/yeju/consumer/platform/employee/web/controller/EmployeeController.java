@@ -22,15 +22,19 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.consumer.platform.employee.pojo.vo.EmployeeInfoVO;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
 import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleEmployeeInfoBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -44,6 +48,9 @@ public class EmployeeController {
 
     @DubboReference
     private IEmployeeService employeeService;
+
+    @DubboReference
+    private IDataDictionaryInfoService dataDictionaryInfoService;
 
     @GetMapping("/getInfoByAccount/{account}")
     public Mono<IResult<EmployeeInfoVO>> getEmployInfoByAccount(@PathVariable String account){
@@ -61,6 +68,13 @@ public class EmployeeController {
         args.setSize(size);
 
         return Mono.just(employeeService.findPage(args.getCurrentPage(), args.getSize()));
+    }
+
+    @ApiOperation(value = "获取用户状态列表",notes = "获取用户状态列表",httpMethod = "GET")
+    @GetMapping("/status/list")
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getEmployeeStatusList()throws ServiceException {
+        IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.EMPLOYEE_STATUS);
+        return Mono.just(result);
     }
 
 

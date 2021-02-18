@@ -22,13 +22,18 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleRole;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IRoleService;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * TODO
@@ -44,6 +49,9 @@ public class RoleController {
     @DubboReference
     private IRoleService roleService;
 
+    @DubboReference
+    private IDataDictionaryInfoService dataDictionaryInfoService;
+
     @ApiOperation(value = "获取Role列表 分页",notes = "Role列表说明",httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<SimpleRole>> findPage(
@@ -55,6 +63,13 @@ public class RoleController {
         args.setSize(size);
 
         return Mono.just(roleService.findPage(args.getCurrentPage(),args.getSize()));
+    }
+
+    @ApiOperation(value = "获取角色状态列表",notes = "获取角色状态列表",httpMethod = "GET")
+    @GetMapping("/status/list")
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getRoleStatusInfoList()throws ServiceException {
+        IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.ROLE_STATUS);
+        return Mono.just(result);
     }
 
 }

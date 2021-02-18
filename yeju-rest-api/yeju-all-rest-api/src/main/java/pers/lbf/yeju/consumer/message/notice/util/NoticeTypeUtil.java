@@ -14,24 +14,31 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.notice.start;
+package pers.lbf.yeju.consumer.message.notice.util;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * TODO
- *
+/** 通知消息显示类型工具类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 14:53
+ * @date 2021/2/18 11:02
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer.notice")
-@EnableDiscoveryClient
-public class NoticeApp {
+public class NoticeTypeUtil {
 
-    public static void main(String[] args) {
-        SpringApplication.run(NoticeApp.class, args);
+    private static final Map<String, String> typeMap;
+
+    static {
+        typeMap = new HashMap<>();
+        typeMap.put("1","warning");
+        typeMap.put("2","info");
+    }
+
+    private NoticeTypeUtil() {
+
+    }
+
+    public static String getNoticeType(String type){
+        return typeMap.get(type);
     }
 }

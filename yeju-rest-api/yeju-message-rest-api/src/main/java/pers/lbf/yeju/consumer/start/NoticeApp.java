@@ -14,19 +14,24 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.notice;
+package pers.lbf.yeju.consumer.start;
 
-import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.consumer.start.NoticeApp;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 17:07
+ * @date 2021/2/17 14:53
  */
-@SpringBootTest(classes = NoticeApp.class)
-public class NoticeTest {
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer.notice")
+@EnableDiscoveryClient
+public class NoticeApp {
 
+    public static void main(String[] args) {
+        SpringApplication.run(NoticeApp.class, args);
+    }
 }

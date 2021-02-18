@@ -43,7 +43,7 @@ public interface IResourcesDao extends BaseMapper<Resource> {
      */
     @Select("select t.resource_code from table_system_resources t " +
             " where t.resource_id in (" +
-            " select t1.resource_id from t_r_account_resources" +
+            " select t1.resource_id from t_r_account_resources t1 " +
             " where t1.phone_number = #{phoneNumber})")
     List<String> findResourceListByPhoneNumber(String phoneNumber) throws RuntimeException;
 

@@ -34,6 +34,7 @@ import pers.lbf.yeju.provider.dict.info.dao.IDataDictionaryInfoDao;
 import pers.lbf.yeju.provider.dict.type.dao.IDataDictionaryTypeDao;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -56,6 +57,27 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
 
     @Autowired
     private IDataDictionaryTypeDao dictionaryTypeDao;
+
+    /**
+     * 通过类型名称查找对应的值
+     *
+     * @param type 类型名 如gender
+     * @return list
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/18 12:48
+     */
+    @Override
+    public IResult<List<SimpleLabelAndValueBean>> findLabelAndValueByType(String type) throws ServiceException {
+        LinkedList<SimpleLabelAndValueBean> result = new LinkedList<>();
+        if (type==null|| "".equals(type)){
+            return Result.ok(result);
+        }
+
+        result = dataDictionaryInfoDao.selectLabelAndValueByType(type);
+
+        return Result.ok(result);
+    }
 
     @Override
     public IResult<Map<String, String>> getDictMap(String type) throws ServiceException {

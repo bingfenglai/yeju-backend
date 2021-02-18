@@ -43,6 +43,12 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-message-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>pers.lbf</groupId>

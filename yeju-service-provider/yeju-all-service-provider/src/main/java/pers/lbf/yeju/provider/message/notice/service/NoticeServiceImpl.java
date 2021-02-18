@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.message.service;
+package pers.lbf.yeju.provider.message.notice.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,7 +28,7 @@ import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.domain.entity.Notice;
 import pers.lbf.yeju.provider.base.util.PageUtil;
-import pers.lbf.yeju.provider.message.dao.INoticeDao;
+import pers.lbf.yeju.provider.message.notice.dao.INoticeDao;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
@@ -86,8 +86,7 @@ public class NoticeServiceImpl implements INoticeService {
     public Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList() throws ServiceException {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("status",1);
-        queryWrapper.eq("notice_type",1);
-        queryWrapper.select("title","content");
+        queryWrapper.select("title","content","notice_type");
         queryWrapper.orderByDesc("create_time");
         List<Notice> notices = noticeDao.selectList(queryWrapper);
         List<SimpleNoticeInfoBean> result = new LinkedList<>();
@@ -95,6 +94,7 @@ public class NoticeServiceImpl implements INoticeService {
             SimpleNoticeInfoBean bean = new SimpleNoticeInfoBean();
             bean.setTitle(notice.getTitle());
             bean.setContent(notice.getContent());
+            bean.setNoticeType(notice.getNoticeType());
             result.add(bean);
         }
         return Result.ok(result);

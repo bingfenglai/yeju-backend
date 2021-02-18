@@ -1,4 +1,4 @@
-package pers.lbf.yeju.provider.message.dao;
+package pers.lbf.yeju.provider.message.notice.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import pers.lbf.yeju.common.domain.entity.Notice;

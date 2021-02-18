@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.notice.web;
+package pers.lbf.yeju.consumer.message.notice.web;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,8 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.consumer.base.security.manger.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
-import pers.lbf.yeju.consumer.notice.pojo.NoticeMessage;
+import pers.lbf.yeju.consumer.message.notice.pojo.NoticeMessageVO;
+import pers.lbf.yeju.consumer.message.notice.util.NoticeTypeUtil;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Flux;
@@ -46,7 +47,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class NoticeWebsocketHandler implements WebSocketHandler {
+public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
@@ -80,12 +81,6 @@ public class NoticeWebsocketHandler implements WebSocketHandler {
                    throw new ServiceException(AuthStatusEnum.NO_TOKEN);
                }
 
-//               log.info(token);
-//               NoticeMessage msg = new NoticeMessage();
-//               msg.setTitle("系统停服通知！！！");
-//               msg.setMessage("椰居平台将于2021年2月19日0时开始停服维护，对于给您带来的不便深表歉意");
-//               String s = JSONObject.toJSONString(msg);
-//               session.send(Flux.just(session.textMessage(s))).then().toProcessor();
                this.send(session);
            }
 
@@ -103,15 +98,19 @@ public class NoticeWebsocketHandler implements WebSocketHandler {
 
     private void send(WebSocketSession session) {
         List<SimpleNoticeInfoBean> list = noticeService.findEffectiveNoticeList().getData();
-        List<NoticeMessage> msgList = new LinkedList<>();
+        List<NoticeMessageVO> msgList = new LinkedList<>();
         for (SimpleNoticeInfoBean bean : list) {
-            NoticeMessage message = new NoticeMessage();
+            NoticeMessageVO message = new NoticeMessageVO();
             message.setMessage(bean.getContent());
             message.setTitle(bean.getTitle());
             msgList.add(message);
+            String noticeType = NoticeTypeUtil.getNoticeType(bean.getNoticeType());
+            message.setType(noticeType);
+            log.info(bean.getNoticeType());
         }
 
-        for (NoticeMessage message : msgList) {
+        for (NoticeMessageVO message : msgList) {
+            log.info(message.toString());
             String s = JSONObject.toJSONString(message);
             session.send(Flux.just(session.textMessage(s))).then().toProcessor();
         }

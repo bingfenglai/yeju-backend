@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.notice.pojo;
+package pers.lbf.yeju.consumer.message.notice.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,9 +26,12 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/2/17 17:05
  */
-public class NoticeMessage implements Serializable {
+public class NoticeMessageVO implements Serializable {
     private String title;
     private String message;
+
+    // 通知类型，'warning', 'info',
+    private String type;
 
     private Date date;
     private String from;
@@ -36,13 +39,48 @@ public class NoticeMessage implements Serializable {
     private String sendTo;
 
 
-
     @Override
     public String toString() {
-        return "NoticeMessage{" +
+        return "NoticeMessageVO{" +
                 "title='" + title + '\'' +
                 ", message='" + message + '\'' +
+                ", type='" + type + '\'' +
+                ", date=" + date +
+                ", from='" + from + '\'' +
+                ", sendTo='" + sendTo + '\'' +
                 '}';
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getSendTo() {
+        return sendTo;
+    }
+
+    public void setSendTo(String sendTo) {
+        this.sendTo = sendTo;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTitle() {

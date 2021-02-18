@@ -109,17 +109,19 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 
 
         if (loginToken.getLoginWay().equals(LoginWay.usernameAndPassword)) {
-
+            log.debug("登录方式为账号+密码");
+            // 开启验证码校验
             if (verificationCodeConfig.isEnable()) {
-              String code = loginToken.getVerificationCode();
-              IResult<Boolean> result = verificationCodeService.verify(key, code);
+                log.debug("验证码校验已开启");
+                String code = loginToken.getVerificationCode();
+                IResult<Boolean> result = verificationCodeService.verify(key, code);
 
-              if (!result.getData()) {
-                  addLoginLogRequestBean.setLoginStatus(0);
-                  addLoginLogRequestBean.setMessage(AuthStatusEnum.verificationCodeError.getMessage());
-                  loginLogService.addLog(addLoginLogRequestBean);
-                  throw new ServiceException(AuthStatusEnum.verificationCodeError);
-              }
+                if (!result.getData()) {
+                    addLoginLogRequestBean.setLoginStatus(0);
+                    addLoginLogRequestBean.setMessage(AuthStatusEnum.verificationCodeError.getMessage());
+                    loginLogService.addLog(addLoginLogRequestBean);
+                    throw new ServiceException(AuthStatusEnum.verificationCodeError);
+                }
             }
 
 
@@ -176,12 +178,12 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
         }
 
         if (loginToken.getLoginWay().equals(LoginWay.phoneNumberAndVerificationCode)){
+            log.debug("手机号验证码登录");
+            IResult<Boolean> result = verificationCodeService.verify(key, credentials);
 
-            IResult<Boolean> result = verificationCodeService.verify(account, credentials);
-
-//            if (!result.getData()){
-//                throw new GatewayException(AuthStatus.verificationCodeError);
-//            }
+            if (!result.getData()){
+                throw new ServiceException(AuthStatusEnum.verificationCodeError);
+            }
 
 
             Mono<AuthorityInfoBean> authorityInfoMono = getAuthorityInfo(account);

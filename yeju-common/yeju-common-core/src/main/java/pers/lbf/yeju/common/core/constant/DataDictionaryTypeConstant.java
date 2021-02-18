@@ -36,4 +36,9 @@ public class DataDictionaryTypeConstant {
      * 部门状态
      */
     public static final String DEPARTMENT_STATUS = "department_status";
+
+    /**
+     * 通知类型
+     */
+    public static final String NOTICE_TYPE = "notice_type";
 }

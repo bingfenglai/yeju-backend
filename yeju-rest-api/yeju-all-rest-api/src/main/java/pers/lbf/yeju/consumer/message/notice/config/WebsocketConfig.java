@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.notice.config;
+package pers.lbf.yeju.consumer.message.notice.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ import org.springframework.web.reactive.socket.server.WebSocketService;
 import org.springframework.web.reactive.socket.server.support.HandshakeWebSocketService;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 import org.springframework.web.reactive.socket.server.upgrade.ReactorNettyRequestUpgradeStrategy;
-import pers.lbf.yeju.consumer.notice.web.NoticeWebsocketHandler;
+import pers.lbf.yeju.consumer.message.notice.web.SystemNoticeWebsocketHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +46,7 @@ public class WebsocketConfig {
      * 系统通知消息处理类
      */
     @Autowired
-    private NoticeWebsocketHandler handler;
+    private SystemNoticeWebsocketHandler handler;
 
     @Bean
     public HandlerMapping handlerMapping() {

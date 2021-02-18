@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.notice.web;
+package pers.lbf.yeju.consumer.message.notice.web;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,13 +22,18 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
+import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * TODO
@@ -42,6 +47,9 @@ import javax.validation.constraints.NotNull;
 public class NoticeController {
     @DubboReference
     private INoticeService noticeService;
+
+    @DubboReference
+    private IDataDictionaryInfoService dictionaryInfoService;
     
     @ApiOperation(value = "获取通知列表 分页",notes = "通知列表说明",httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
@@ -55,6 +63,15 @@ public class NoticeController {
     
         return Mono.just(noticeService.findPage(args.getCurrentPage(),args.getSize()));
     }
+
+
+    @ApiOperation(value = "获取NoticeType",notes = "NoticeType说明",httpMethod = "GET")
+    @GetMapping("/type/list")
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getNoticeTypeInfo()throws ServiceException {
+        IResult<List<SimpleLabelAndValueBean>> result = dictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.NOTICE_TYPE);
+        return Mono.just(result);
+    }
+
     
 
 }

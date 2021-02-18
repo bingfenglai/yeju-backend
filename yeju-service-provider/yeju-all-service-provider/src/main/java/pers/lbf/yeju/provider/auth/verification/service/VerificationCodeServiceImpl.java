@@ -52,8 +52,6 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
     @Autowired
     private EasyCaptchaConfig captchaConfig;
 
-
-
     @Override
     public  IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException{
 
@@ -82,7 +80,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
             return Result.ok(false);
         }
 
-        boolean flag = code.equals(c);
+        boolean flag = code.equalsIgnoreCase(c);
 
         return Result.ok(flag);
     }

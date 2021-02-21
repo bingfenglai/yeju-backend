@@ -26,6 +26,7 @@ import pers.lbf.yeju.service.interfaces.customer.pojo.SimpleCustomerInfoBean;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
 import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleEmployeeInfoBean;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -72,22 +73,66 @@ public class SessionServiceImpl implements ISessionService {
     @Override
     public PageResult<OnlineInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
         long start = 0;
-        long end;
-        if (currentPage > 1L){
-            start = currentPage * size + 1;
-        }
+        long end = 0;
+
+        int totalPage = 0;
+
 
         Set<String> keys = redisTemplate.keys(ONLINE_KEY_PREFIX + "*");
+
         List<OnlineInfoBean> results = new LinkedList<>();
-        for (String key : keys) {
-            Object o = redisTemplate.opsForValue().get(key);
-            results.add((OnlineInfoBean) o);
+
+        List<String> keyList;
+        if (keys != null && keys.size() > 0) {
+            keyList = new ArrayList<>(keys);
+        }else {
+            keyList = new ArrayList<>();
+        }
+
+       if (keyList.size()<size){
+           totalPage = 1;
+       }else {
+           totalPage = Math.toIntExact(keyList.size() / size);
+           totalPage = (int) Math.ceil(totalPage);
+       }
+
+        if (currentPage > 1L && currentPage<=totalPage){
+            start = currentPage * size;
+        }else {
+            start = (totalPage-1) * size;
+        }
+
+
+        if ((start+size)<keyList.size()){
+            end = start + size;
+        }else {
+            end = keyList.size() -start -1;
+        }
+
+        if (keyList.size()<end){
+            end = keyList.size();
         }
 
 
 
-        end = start + size;
-        Long total = (long) keys.size();
+        log.info("start {}",start);
+
+
+//        if (keyList.size()==end){
+//            end = keyList.size()-1;
+//        }
+
+
+        for (long i = start; i <= end;) {
+            String key = keyList.get(Math.toIntExact(i));
+            Object o = redisTemplate.opsForValue().get(key);
+            results.add((OnlineInfoBean) o);
+            i++;
+        }
+
+
+
+        Long total = (long) keyList.size();
 
 
         return PageResult.ok(total,currentPage,size,results);

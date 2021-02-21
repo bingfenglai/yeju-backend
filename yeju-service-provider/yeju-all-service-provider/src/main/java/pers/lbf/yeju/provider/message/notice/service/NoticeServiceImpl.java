@@ -35,6 +35,7 @@ import pers.lbf.yeju.service.interfaces.message.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -83,10 +84,14 @@ public class NoticeServiceImpl implements INoticeService {
         return PageResult.ok(noticePage.getTotal(),currentPage,size,result);
     }
 
+    @Cacheable(cacheNames = "noticeService:effectiveNoticeList",keyGenerator = "yejuKeyGenerator")
     @Override
     public Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList() throws ServiceException {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        Date date = new Date();
         queryWrapper.eq("status",1);
+        queryWrapper.le("start_time",date);
+        queryWrapper.gt("end_time",date);
         queryWrapper.select("title","content","notice_type");
         queryWrapper.orderByDesc("create_time");
         List<Notice> notices = noticeDao.selectList(queryWrapper);

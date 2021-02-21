@@ -42,7 +42,7 @@ import java.util.List;
  * @version 1.0
  * @date 2021/2/18 20:34
  */
-@DubboService(interfaceClass = IAuthzService.class)
+@DubboService(interfaceClass = IAuthzService.class,timeout = 3000)
 public class AuthzServiceImpl implements IAuthzService {
 
     @DubboReference
@@ -68,15 +68,15 @@ public class AuthzServiceImpl implements IAuthzService {
             return Result.ok(bean);
         }
 
-        String accouType = accountService.getAccountType(principal).getData();
+        String accountType = accountService.getAccountType(principal).getData();
         AccountDetailsInfoBean accountDetailsInfo = accountService.findAccountDetailsByPrincipal(principal).getData();
         // 内部账号
-        if (AccountOwnerTypeEnum.Internal_account.getValue().equals(accouType)) {
+        if (AccountOwnerTypeEnum.Internal_account.getValue().equals(accountType)) {
             SimpleEmployeeInfoBean employeeInfoBean = employeeService.findInfoByEmployeeId(accountDetailsInfo.getSubjectId()).getData();
             bean.setName(employeeInfoBean.getName());
             bean.setAvatar(employeeInfoBean.getAvatar());
 
-        }else if (AccountOwnerTypeEnum.Customer_account.getValue().equals(accouType)){
+        }else if (AccountOwnerTypeEnum.Customer_account.getValue().equals(accountType)){
             SimpleCustomerInfoBean customerInfoBean = customerValidService.findDetailsById(accountDetailsInfo.getSubjectId()).getData();
             bean.setName(customerInfoBean.getCustomerName());
             bean.setAvatar(customerInfoBean.getAvatar());

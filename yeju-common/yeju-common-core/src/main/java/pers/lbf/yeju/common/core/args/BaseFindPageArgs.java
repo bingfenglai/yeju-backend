@@ -47,7 +47,7 @@ public class BaseFindPageArgs implements IFindPageArgs, Serializable {
 
         long minSize = 1L;
         long maxSize = 50L;
-        if (minSize <=size&& maxSize <=size){
+        if (minSize <=size&& maxSize >=size){
             this.size = size;
         }
     }

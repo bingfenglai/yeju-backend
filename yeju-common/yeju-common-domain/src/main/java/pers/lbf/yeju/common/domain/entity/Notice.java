@@ -1,6 +1,9 @@
 package pers.lbf.yeju.common.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -17,6 +20,7 @@ public class Notice extends Model<Notice> {
     /**
      * 主键
      */
+    @TableId
     private Long noticeId;
     /**
      * 通知标题
@@ -65,10 +69,12 @@ public class Notice extends Model<Notice> {
     /**
      * 字段版本
      */
+    @Version
     private Integer versionNumber;
     /**
      * 删除标识
      */
+    @TableLogic
     private Integer isDelete;
     /**
      * 谁发

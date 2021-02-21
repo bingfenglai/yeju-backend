@@ -133,7 +133,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
 
-    /** 获取账号类型 此方法缓存序列化出错，不适合做序列化
+    /** 获取账号类型 
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/7 21:55

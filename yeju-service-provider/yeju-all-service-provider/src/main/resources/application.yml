@@ -1,3 +1,7 @@
 spring:
   application:
     name: yeju-service-provider
+
+dubbo:
+  registry:
+    file: ../cachefile/dubbo.cache

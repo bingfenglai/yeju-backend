@@ -52,7 +52,7 @@ public class AuthorizationController {
     @DubboReference
     private ISessionService sessionService;
 
-    @DubboReference
+    @DubboReference()
     private IAuthzService authzService;
 
     @Autowired

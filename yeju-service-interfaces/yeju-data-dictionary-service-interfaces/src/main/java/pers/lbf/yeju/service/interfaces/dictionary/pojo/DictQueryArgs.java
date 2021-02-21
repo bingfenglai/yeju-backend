@@ -14,41 +14,29 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.args;
+package pers.lbf.yeju.service.interfaces.dictionary.pojo;
+
+import io.swagger.annotations.ApiParam;
+import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 
 import java.io.Serializable;
 
-/**基础分页查询参数类
+/** 数据字典相关查询 参数封装类
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/13 14:40
+ * @date 2021/2/20 14:53
  */
-public class BaseFindPageArgs implements IFindPageArgs, Serializable {
-    protected Long currentPage = 1L;
-    protected Long size = 10L;
 
-    @Override
-    public Long getCurrentPage() {
-        return this.currentPage;
+public class DictQueryArgs extends BaseFindPageArgs implements Serializable {
+
+    @ApiParam("数据字典类型id")
+    private Long dataTypeId;
+
+    public Long getDataTypeId() {
+        return dataTypeId;
     }
 
-    @Override
-    public Long getSize() {
-        return this.size;
-    }
-
-    public void setCurrentPage(Long currentPage) {
-        if (currentPage>=this.currentPage){
-            this.currentPage = currentPage;
-        }
-    }
-
-    public void setSize(Long size) {
-
-        long minSize = 1L;
-        long maxSize = 50L;
-        if (minSize <=size&& maxSize <=size){
-            this.size = size;
-        }
+    public void setDataTypeId(Long dataTypeId) {
+        this.dataTypeId = dataTypeId;
     }
 }

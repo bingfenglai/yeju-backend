@@ -37,6 +37,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * TODO
@@ -54,6 +56,9 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
     @DubboReference
     private INoticeService noticeService;
+
+    private static Map<String,WebSocketSession> sessionMap = new ConcurrentHashMap<>();
+
 
 
     @Override
@@ -74,6 +79,10 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
                AuthorityInfo authorityInfo = null;
                try {
                    authorityInfo = tokenManager.getAuthorityInfo(token);
+                   log.info(authorityInfo.toString());
+
+                   sessionMap.put(authorityInfo.getPrincipal(),session);
+                   log.info("会话key {}",authorityInfo.getPrincipal());
                } catch (Exception e) {
                    log.error(String.valueOf(e));
                }
@@ -116,5 +125,22 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
         }
 
 
+    }
+
+    public void send(NoticeMessageVO message){
+        WebSocketSession session = sessionMap.get("969391");
+        send(session,message);
+    }
+
+    private void send(WebSocketSession session, NoticeMessageVO message) {
+
+        log.info(message.toString());
+        String s = JSONObject.toJSONString(message);
+        if (session==null){
+            log.info("session is null");
+        }
+        session.send(Flux.just(session.textMessage(s))).then().doOnError(throwable -> {
+            log.error("消息未发送");
+        }).toProcessor();
     }
 }

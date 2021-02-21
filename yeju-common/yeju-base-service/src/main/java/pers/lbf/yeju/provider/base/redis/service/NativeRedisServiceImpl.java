@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  * @Description TODO
  * @date 2020/12/28 22:32
  */
-@Service("nativeRedisService")
+@Service
 public class NativeRedisServiceImpl implements IRedisService {
     private final Logger log = LoggerFactory.getLogger(NativeRedisServiceImpl.class);
 

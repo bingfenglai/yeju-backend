@@ -17,6 +17,7 @@
 package pers.lbf.yeju.service.interfaces.dictionary.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * TODO
@@ -40,6 +41,38 @@ public class SimpleDataDictionaryInfoBean implements Serializable {
     private boolean defaultFlags;
     //状态0未启用1启用
     private Integer status;
+
+    //创建时间
+    private Date createTime;
+
+    //排序（优先级）
+    private Integer sort;
+    //备注
+    private String remark;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public Long getId() {
         return id;

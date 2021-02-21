@@ -31,6 +31,7 @@ import pers.lbf.yeju.common.core.status.enums.RequestStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.consumer.auth.config.VerificationCodeConfig;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRequestToken;
+import pers.lbf.yeju.consumer.auth.util.HttpUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.InetAddress;
@@ -60,7 +61,7 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
         InetSocketAddress address = request.getRemoteAddress();
         assert address != null;
         InetAddress address1 = address.getAddress();
-        String hostAddress = address1.getHostAddress();
+        String hostAddress = HttpUtils.getIpAddress(request);
         log.info("登录IP {}",hostAddress);
 
         HttpHeaders headers = exchange.getRequest().getHeaders();

@@ -20,7 +20,6 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
-import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
 
 /**账户服务接口类
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -56,5 +55,5 @@ public interface IAccountService {
      * @param principal 抽象账号
      * @return pers.lbf.yeju.common.core.result.IResult<pers.lbf.yeju.service.interfaces.auth.enums.AccountTypeEnum>
      */
-    IResult<AccountOwnerTypeEnum> getAccountType(String principal) throws ServiceException;
+    IResult<String> getAccountType(String principal) throws ServiceException;
 }

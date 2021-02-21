@@ -70,6 +70,17 @@ public class DataDictionaryTypeServiceImpl implements IDataDictionaryTypeService
         return PageResult.ok(dataDictionaryTypePage.getTotal(),currentPage,size,result);
     }
 
+    /**
+     * 查询所有可用字典类型的id name label
+     *
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<List<SimpleDataDictionaryTypeBean>> findAll() throws ServiceException {
+        return null;
+    }
+
     private SimpleDataDictionaryTypeBean typeToSimpleBean(DataDictionaryType type) {
         SimpleDataDictionaryTypeBean simpleDataDictionaryTypeBean = new SimpleDataDictionaryTypeBean();
         simpleDataDictionaryTypeBean.setId(type.getDataDictionaryTypeId());

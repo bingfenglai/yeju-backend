@@ -17,8 +17,11 @@
 package pers.lbf.yeju.service.interfaces.dictionary;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryTypeBean;
+
+import java.util.List;
 
 /** 数据字典类型
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -28,5 +31,12 @@ import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryType
 public interface IDataDictionaryTypeService {
 
     PageResult<SimpleDataDictionaryTypeBean> findPage(Long currentPage, Long size) throws ServiceException;
+
+    /** TODO
+     * 查询所有可用字典类型的id name label
+     * @return
+     * @throws ServiceException
+     */
+    IResult<List<SimpleDataDictionaryTypeBean>> findAll() throws ServiceException;
 
 }

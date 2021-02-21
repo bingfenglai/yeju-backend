@@ -2,6 +2,8 @@ package pers.lbf.yeju.service.interfaces.auth.interfaces;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.auth.dto.OnlineInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SessionDetails;
 
 /**
@@ -13,12 +15,27 @@ import pers.lbf.yeju.service.interfaces.auth.dto.SessionDetails;
 public interface ISessionService {
 
 
+    void addOnline(OnlineInfoBean onlineInfoBean) throws ServiceException;
+
+    PageResult<OnlineInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
+
+
+
     /**
      * 登出方法，销毁会话信息
      * @param principal 账号
      * @return r
      */
+
     void destroySession(String principal);
+
+    /** 登出方法，销毁会话信息
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/20 22:19
+     * @param onlineInfoBean online info
+     */
+    void destroySession(OnlineInfoBean onlineInfoBean) throws ServiceException;
 
 
     /**
@@ -29,7 +46,7 @@ public interface ISessionService {
      */
     IResult<SessionDetails> initSession(String principal) throws ServiceException;
 
-
+    IResult<Boolean> isExpired(String principal) throws ServiceException;
 
 
 }

@@ -19,6 +19,7 @@ package pers.lbf.yeju.service.interfaces.dictionary;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.DictQueryArgs;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 
@@ -50,4 +51,6 @@ public interface IDataDictionaryInfoService {
     IResult<List<SimpleDataDictionaryInfoBean>> findSimpleDataDictionaryByDictType(String type) throws ServiceException;
 
     PageResult<SimpleDataDictionaryInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
+
+    PageResult<SimpleDataDictionaryInfoBean> findPage(DictQueryArgs args);
 }

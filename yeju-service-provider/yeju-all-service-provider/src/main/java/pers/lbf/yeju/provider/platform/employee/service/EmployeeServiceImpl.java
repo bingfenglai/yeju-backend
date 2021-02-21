@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -66,7 +67,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @DubboReference(check = false,interfaceClass = IDepartmentService.class)
     private IDepartmentService departmentService;
 
-    @Cacheable(cacheNames = "EmployeeService::findInfoByAccount",key = "#account")
+    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<SimpleEmployeeInfoBean> findInfoByAccount(String account) throws ServiceException {
 
@@ -108,6 +109,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
     }
 
+    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<String> findNameByAccount(String account) throws ServiceException {
         String name = "";
@@ -139,6 +141,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:34
      */
     @Override
+    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
     public IResult<SimpleEmployeeInfoBean> findInfoByEmployeeId(Long employeeId) throws ServiceException {
 
 
@@ -186,6 +189,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:36
      */
     @Override
+    @CachePut(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
     public void removeEmployeeByAccount(String account) throws ServiceException {
 
     }
@@ -201,6 +205,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:37
      */
     @Override
+    @CachePut(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
     public void addOne(SimpleEmployeeInfoBean employeeInfo) throws ServiceException {
 
     }
@@ -216,6 +221,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:39
      */
     @Override
+    @CachePut(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
     public void addList(List<SimpleEmployeeInfoBean> employeeInfos) throws ServiceException {
 
     }
@@ -230,7 +236,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @param size
      */
 
-    @Cacheable(cacheNames = "EmployeeService::findPage",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleEmployeeInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
 

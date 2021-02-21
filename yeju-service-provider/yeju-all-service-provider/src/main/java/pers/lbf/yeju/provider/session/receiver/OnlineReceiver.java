@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.service.interfaces.auth.dto.OnlineInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 
 import java.util.Map;
@@ -36,7 +37,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class InitSessionReceiver {
+public class OnlineReceiver {
 
     @Autowired
     @Qualifier(value = "sessionService")
@@ -44,26 +45,26 @@ public class InitSessionReceiver {
 
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "${spring.rabbitmq.listener.session.init.queue.name}",
-                    durable="${spring.rabbitmq.listener.session.init.queue.durable}"),
-            exchange = @Exchange(value = "${spring.rabbitmq.listener.session.init.exchange.name}",
-                    durable="${spring.rabbitmq.listener.session.init.exchange.durable}",
-                    type= "${spring.rabbitmq.listener.session.init.exchange.type}",
-                    ignoreDeclarationExceptions = "${spring.rabbitmq.listener.session.init.exchange.ignoreDeclarationExceptions}"),
-            key = "${spring.rabbitmq.listener.session.init.exchange.key}"
+            value = @Queue(value = "${spring.rabbitmq.listener.online.queue.name}",
+                    durable="${spring.rabbitmq.listener.online.queue.durable}"),
+            exchange = @Exchange(value = "${spring.rabbitmq.listener.online.exchange.name}",
+                    durable="${spring.rabbitmq.listener.online.exchange.durable}",
+                    type= "${spring.rabbitmq.listener.online.exchange.type}",
+                    ignoreDeclarationExceptions = "${spring.rabbitmq.listener.online.exchange.ignoreDeclarationExceptions}"),
+            key = "${spring.rabbitmq.listener.online.exchange.key}"
     )
     )
     @RabbitHandler
-    public void messageHandler(@Payload String principal,
+    public void messageHandler(@Payload OnlineInfoBean onlineInfoBean,
                                Channel channel,
                                @Headers Map<String, Object> headers) throws Exception {
 
-        log.info("登录session服务 消费端 收到 会话 消息: {}",principal);
-        log.info("准备 初始化session {}",principal);
-        sessionService.initSession(principal);
+        log.info("登录online服务 消费端 收到 会话 消息: {}",onlineInfoBean.getSessionId());
+        log.info("准备 online {}",onlineInfoBean.getSessionId());
+        sessionService.addOnline(onlineInfoBean);
         Long deliveryTag = (Long)headers.get(AmqpHeaders.DELIVERY_TAG);
         //手工ACK
-        log.info("初始化 session {} 成功",principal);
+        log.info(" 添加 online {} 成功",onlineInfoBean.getSessionId());
         channel.basicAck(deliveryTag, false);
     }
 

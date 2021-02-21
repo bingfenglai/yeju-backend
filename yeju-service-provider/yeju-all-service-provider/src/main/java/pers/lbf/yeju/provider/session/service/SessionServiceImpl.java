@@ -3,14 +3,18 @@ package pers.lbf.yeju.provider.session.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
+import pers.lbf.yeju.service.interfaces.auth.dto.OnlineInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SessionDetails;
 import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
@@ -22,7 +26,9 @@ import pers.lbf.yeju.service.interfaces.customer.pojo.SimpleCustomerInfoBean;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
 import pers.lbf.yeju.service.interfaces.platfrom.pojo.SimpleEmployeeInfoBean;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -50,6 +56,43 @@ public class SessionServiceImpl implements ISessionService {
     @DubboReference
     private ICustomerValidService customerValidService;
 
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
+
+    private static final String ONLINE_KEY_PREFIX = "yeju:online";
+
+    private static final String SESSION_KEY_PREFIX = "yeju:session::";
+
+    @Override
+    public void addOnline(OnlineInfoBean onlineInfoBean) throws ServiceException {
+
+        redisTemplate.opsForValue().set(ONLINE_KEY_PREFIX+onlineInfoBean.getPrincipal(),onlineInfoBean);
+    }
+
+    @Override
+    public PageResult<OnlineInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
+        long start = 0;
+        long end;
+        if (currentPage > 1L){
+            start = currentPage * size + 1;
+        }
+
+        Set<String> keys = redisTemplate.keys(ONLINE_KEY_PREFIX + "*");
+        List<OnlineInfoBean> results = new LinkedList<>();
+        for (String key : keys) {
+            Object o = redisTemplate.opsForValue().get(key);
+            results.add((OnlineInfoBean) o);
+        }
+
+
+
+        end = start + size;
+        Long total = (long) keys.size();
+
+
+        return PageResult.ok(total,currentPage,size,results);
+    }
+
     /**
      * 登出方法，销毁会话信息
      *
@@ -59,6 +102,22 @@ public class SessionServiceImpl implements ISessionService {
     @CacheEvict(cacheNames = "yeju:session",key = "#principal")
     @Override
     public void destroySession(String principal) {
+        redisTemplate.delete(ONLINE_KEY_PREFIX+principal);
+    }
+
+    /**
+     * 登出方法，销毁会话信息
+     *
+     * @param onlineInfoBean online info
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/20 22:19
+     */
+    @CacheEvict(cacheNames = "yeju:session",key = "#onlineInfoBean.principal")
+    @Override
+    public void destroySession(OnlineInfoBean onlineInfoBean) throws ServiceException {
+
+       redisTemplate.delete(ONLINE_KEY_PREFIX+onlineInfoBean.getPrincipal());
 
     }
 
@@ -78,12 +137,11 @@ public class SessionServiceImpl implements ISessionService {
         IResult<AccountDetailsInfoBean> accountResult =
                 accountService.findAccountDetailsByPrincipal(principal);
         log.info("获取account: {}",accountResult.getData());
-        IResult<AccountOwnerTypeEnum> accountTypeResult = accountService.getAccountType(principal);
+        String accountType = accountService.getAccountType(principal).getData();
 
-        AccountOwnerTypeEnum accountType = accountTypeResult.getData();
 
         //查询账户所属用户信息
-        if (accountType.equals(AccountOwnerTypeEnum.Internal_account)){
+        if (accountType.equals(AccountOwnerTypeEnum.Internal_account.getValue())){
             log.info("账号为: 内部账号");
             IResult<SimpleEmployeeInfoBean> employeeInfoResult =
                     employeeService.findInfoByEmployeeId(
@@ -119,6 +177,13 @@ public class SessionServiceImpl implements ISessionService {
 
         return Result.ok(sessionDetails);
 
+    }
+
+    @Override
+    public IResult<Boolean> isExpired(String principal) throws ServiceException {
+        Boolean flag = redisTemplate.hasKey(SESSION_KEY_PREFIX+principal);
+
+        return Result.ok(flag);
     }
 
 

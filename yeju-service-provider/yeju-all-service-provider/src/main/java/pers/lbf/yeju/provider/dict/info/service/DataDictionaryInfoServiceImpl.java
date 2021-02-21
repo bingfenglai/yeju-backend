@@ -33,6 +33,7 @@ import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.dict.info.dao.IDataDictionaryInfoDao;
 import pers.lbf.yeju.provider.dict.type.dao.IDataDictionaryTypeDao;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
+import pers.lbf.yeju.service.interfaces.dictionary.pojo.DictQueryArgs;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleDataDictionaryInfoBean;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 
@@ -169,6 +170,26 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
         return PageResult.ok(dataDictionaryInfoPage.getTotal(),currentPage,size,result);
     }
 
+    @Override
+    public PageResult<SimpleDataDictionaryInfoBean> findPage(DictQueryArgs args) {
+        Page<DataDictionaryInfo> page = PageUtil.
+                getPage(DataDictionaryInfo.class, args.getCurrentPage(), args.getSize());
+
+        QueryWrapper<DataDictionaryInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("type_id",args.getDataTypeId());
+
+        List<SimpleDataDictionaryInfoBean> result = new LinkedList<>();
+
+        Page<DataDictionaryInfo> dataDictionaryInfoPage = dataDictionaryInfoDao.selectPage(page, queryWrapper);
+        for (DataDictionaryInfo info : dataDictionaryInfoPage.getRecords()) {
+            SimpleDataDictionaryInfoBean bean = this.infoToSimpleBean(info);
+            result.add(bean);
+        }
+        return PageResult.ok(dataDictionaryInfoPage.getTotal(),
+                dataDictionaryInfoPage.getCurrent(), dataDictionaryInfoPage.getSize(), result);
+    }
+
+
     private SimpleDataDictionaryInfoBean infoToSimpleBean(DataDictionaryInfo info){
         SimpleDataDictionaryInfoBean bean = new SimpleDataDictionaryInfoBean();
         bean.setId(info.getDataDictionaryInfoId());
@@ -178,6 +199,9 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
         bean.setListClass(info.getListClass());
         bean.setDefaultFlags(info.getIsDefault()==1);
         bean.setStatus(info.getStatus());
+        bean.setCreateTime(info.getCreateTime());
+        bean.setRemark(info.getRemark());
+        bean.setSort(info.getSort());
 
         return bean;
     }

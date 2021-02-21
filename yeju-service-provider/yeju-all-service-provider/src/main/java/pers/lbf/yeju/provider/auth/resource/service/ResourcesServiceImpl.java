@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.AntPathMatcher;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -52,7 +53,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @param
      * @return pers.lbf.yeju.common.core.result.IResult<java.util.List<pers.lbf.yeju.service.interfaces.auth.dto.MenuInfoBean>>
      */
-    @Cacheable(cacheNames = "menu",key = "'all'")
+    @Cacheable(cacheNames = "resourcesService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<List<MenuInfoBean>> findAllMenu() throws ServiceException {
 
@@ -76,13 +77,14 @@ public class ResourcesServiceImpl implements IResourcesService {
         return Result.ok(result);
     }
 
+
     /**
      * 查询所有授权的路由
      * @param authorities
      * @return
      * @throws ServiceException
      */
-    @Cacheable(cacheNames = "AuthorizedMenuInfo",key = "#authorities.toArray()")
+    @Cacheable(cacheNames = "resourcesService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<List<MenuInfoBean>> findAllAuthorizedMenuInfo(List<String> authorities) throws ServiceException {
 
@@ -131,6 +133,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @version 1.0
      * @date 2021/2/12 1:36
      */
+    @CachePut(cacheNames = "resourcesService",keyGenerator = "yejuKeyGenerator")
     @Override
     public void createAuthority(CreateAuthorityArgs args) throws ServiceException {
 
@@ -145,6 +148,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @version 1.0
      * @date 2021/2/12 1:37
      */
+    @Cacheable(cacheNames = "resourcesService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<AuthorityInfoBean> findAuthorityPage(FindPageArgs args) throws ServiceException {
         return null;
@@ -160,6 +164,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @date 2021/2/12 1:37
      */
     @Override
+    @CachePut(cacheNames = "resourcesService",keyGenerator = "yejuKeyGenerator")
     public void deleteResource(Long... id) throws ServiceException {
 
     }
@@ -173,6 +178,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @date 2021/2/12 1:37
      */
     @Override
+    @Cacheable(cacheNames = "resourcesService:menu",keyGenerator = "yejuKeyGenerator")
     public PageResult<MenuInfoBean> findMenuPage(Long currentPage, Long size) throws ServiceException {
 
         Page<Resource> page = PageUtil.getPage(Resource.class, currentPage, size);
@@ -208,6 +214,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @date 2021/2/12 1:37
      */
     @Override
+    @Cacheable(cacheNames = "resourcesService:menu",keyGenerator = "yejuKeyGenerator")
     public void createMenu(CreateMenuArgs args) throws ServiceException {
 
     }
@@ -219,7 +226,7 @@ public class ResourcesServiceImpl implements IResourcesService {
      * @param principal
      * @return pers.lbf.yeju.common.core.result.IResult<java.util.List<java.lang.String>>
      */
-    @Cacheable(cacheNames = "Authority:list",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "resourcesService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<List<String>> findAuthorityListByPrincipal(String principal) throws ServiceException{
 

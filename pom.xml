@@ -442,6 +442,13 @@
                 <version>${minio.version}</version>
             </dependency>
 
+<!--            user-agent解析工具类-->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>1.21</version>
+            </dependency>
+
 
 <!--            平台相关依赖仲裁-->
             <dependency>

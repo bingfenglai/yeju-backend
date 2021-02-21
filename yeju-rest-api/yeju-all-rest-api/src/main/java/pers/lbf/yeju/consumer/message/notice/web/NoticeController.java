@@ -19,6 +19,7 @@ package pers.lbf.yeju.consumer.message.notice.web;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
@@ -26,6 +27,7 @@ import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.consumer.message.notice.pojo.NoticeMessageVO;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
@@ -47,6 +49,9 @@ import java.util.List;
 public class NoticeController {
     @DubboReference
     private INoticeService noticeService;
+
+    @Autowired
+    private SystemNoticeWebsocketHandler handler;
 
     @DubboReference
     private IDataDictionaryInfoService dictionaryInfoService;
@@ -70,6 +75,17 @@ public class NoticeController {
     public Mono<IResult<List<SimpleLabelAndValueBean>>> getNoticeTypeInfo()throws ServiceException {
         IResult<List<SimpleLabelAndValueBean>> result = dictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.NOTICE_TYPE);
         return Mono.just(result);
+    }
+
+
+    @PostMapping("/push")
+    public Mono<Void> push(String message) throws ServiceException {
+        NoticeMessageVO messageVO = new NoticeMessageVO();
+        messageVO.setMessage(message);
+        messageVO.setTitle("系统通知");
+        handler.send(messageVO);
+
+        return Mono.empty();
     }
 
     

@@ -121,6 +121,12 @@
             <version>${spring.boot.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-auth-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
     </dependencies>
 
 

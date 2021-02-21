@@ -15,28 +15,35 @@
  *
  */
 package pers.lbf.yeju.consumer.auth.handler;
-
 import com.alibaba.nacos.common.utils.JacksonUtils;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.WebFilterChainServerAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
+import pers.lbf.yeju.consumer.auth.manager.OnlineManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
+import pers.lbf.yeju.consumer.auth.sender.OnlineSender;
 import pers.lbf.yeju.consumer.auth.sender.SessionInitSender;
+import pers.lbf.yeju.service.interfaces.auth.dto.OnlineInfoBean;
+import pers.lbf.yeju.service.interfaces.auth.enums.SessionStatus;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import reactor.core.publisher.Mono;
 
 /**认证通过处理器
@@ -51,8 +58,14 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
     @Autowired
     private AuthorizationTokenManager authorityManager;
 
+    @DubboReference
+    private ISessionService sessionService;
+
     @Autowired
     private SessionInitSender sessionInitSender;
+
+    @Autowired
+    private OnlineSender onlineSender;
 
     private final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
 
@@ -66,6 +79,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication){
 
         ServerWebExchange exchange = webFilterExchange.getExchange();
+        ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(HttpStatus.OK);
         //设置headers
@@ -73,6 +87,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
         httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
         //设置body
+
 
         byte[] dataBytes={};
         //令牌
@@ -86,12 +101,14 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
 
         AuthorityInfoBean authorityInfoBean = (AuthorityInfoBean) authentication.getPrincipal();
+        Boolean success = sessionService.initSession(authorityInfoBean.getPrincipal()).isSuccess();
 
+        if (!success){
+            throw ServiceException.getInstance(SessionStatus.InitFailed);
+        }
 
         try {
-//            1 = authorityManager.getAuthorityInfoToken(authorityInfo);
-//            httpHeaders.add("Authorization",tokenPrefix+1);
-//            result = SimpleResult.ok("登录成功");
+
             token = authorityManager.getBuilder(authorityInfoBean, expires).build();
             LoginRepoBean loginRepoBean = new LoginRepoBean();
             loginRepoBean.setAccessToken(token);
@@ -107,9 +124,37 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         dataBytes = JacksonUtils.toJsonBytes(result);
 
         DataBuffer bodyDataBuffer = response.bufferFactory().wrap(dataBytes);
-        sessionInitSender.send(authorityInfoBean.getPrincipal(),null);
-        return response.writeWith(Mono.just(bodyDataBuffer));
+        return response.writeWith(
+                Mono.just(bodyDataBuffer)
+                        .doFinally(signalType -> {
+                            //sessionInitSender.send(authorityInfoBean.getPrincipal(),null);
+                            addOnline(request,authorityInfoBean);
+                        })
 
+        );
+
+
+    }
+
+
+    private void addOnline(ServerHttpRequest request,AuthorityInfoBean authorityInfoBean){
+
+//        String userAgentStr = Objects.requireNonNull(request.getHeaders().get("User-Agent")).get(0);
+//        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
+//
+//
+//        OnlineInfoBean onlineInfoBean = new OnlineInfoBean();
+//        onlineInfoBean.setPrincipal(authorityInfoBean.getPrincipal());
+//        onlineInfoBean.setSessionId("yeju:session::"+authorityInfoBean.getPrincipal());
+//        onlineInfoBean.setIp(HttpUtils.getIpAddress(request));
+//        onlineInfoBean.setAddress("未知");
+//        onlineInfoBean.setDate(new Date());
+//        onlineInfoBean.setClient(userAgent.getBrowser().getName());
+//        onlineInfoBean.setOs(userAgent.getOperatingSystem().getName());
+        OnlineInfoBean onlineInfoBean = OnlineManager.getOnlineInfoBeanBuilder(authorityInfoBean.getPrincipal(), request)
+                .build();
+
+        onlineSender.send(onlineInfoBean,null);
 
     }
 

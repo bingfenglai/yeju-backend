@@ -20,8 +20,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -35,10 +35,7 @@ import pers.lbf.yeju.provider.auth.account.strategy.IFindSimpleAccountByPrincipa
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
-import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
-
-import java.util.Objects;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -58,7 +55,7 @@ public class AccountServiceImpl implements IAccountService {
      * @param principal 抽象账户
      * @return account
      */
-    @Cacheable(cacheNames = "SimpleAccountDTO",key = "#principal")
+    @Cacheable(cacheNames = "accountService:simpleAccount",key = "#principal")
     @Override
     public IResult<SimpleAccountDTO> findSimpleAccountByPrincipal(String principal) throws ServiceException {
         //1。判断账户类型
@@ -82,20 +79,11 @@ public class AccountServiceImpl implements IAccountService {
      * @throws RuntimeException e
      */
 
+    @CachePut(cacheNames = "accountService",key = "#principal")
     @Override
     public IResult<Boolean> updatePassword(String principal, String newPassword) throws ServiceException {
 
-        SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);
-
-        QueryWrapper<Account> accountQueryWrapper  = new QueryWrapper<>();
-
-        if (accountType.equals(SubjectTypeEnum.is_mobile)){
-            accountQueryWrapper.eq(true,"phone_number",principal);
-
-        }else {
-            accountQueryWrapper.eq(true,"account_number",principal);
-
-        }
+        QueryWrapper<Account> accountQueryWrapper = getAccountQueryWrapperByPrincipal(principal);
         Account account = accountDao.selectOne(accountQueryWrapper);
 
         assert account != null:
@@ -111,6 +99,7 @@ public class AccountServiceImpl implements IAccountService {
         return Result.ok(true);
     }
 
+
     /** 查询账户详情
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
@@ -119,22 +108,10 @@ public class AccountServiceImpl implements IAccountService {
      * @return AccountDetailsInfoBean
      */
     @Override
+    @Cacheable(cacheNames = "accountService:details",key = "#principal")
     public IResult<AccountDetailsInfoBean> findAccountDetailsByPrincipal(String principal) throws ServiceException {
 
-        SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);
-        QueryWrapper<Account> wrapper = new QueryWrapper<>();
-        if (accountType.equals(SubjectTypeEnum.is_system_account)){
-            wrapper.eq("account_number",principal);
-
-        }
-
-        if (accountType.equals(SubjectTypeEnum.is_mobile)){
-            wrapper.eq("phone_number",principal);
-        }
-
-        if (accountType.equals(SubjectTypeEnum.is_unknown)){
-            throw ServiceException.getInstance(AccountStatusEnum.accountDoesNotExist);
-        }
+        QueryWrapper<Account> wrapper = getAccountQueryWrapperByPrincipal(principal);
 
         Account account = accountDao.selectOne(wrapper);
         if (account == null) {
@@ -155,23 +132,44 @@ public class AccountServiceImpl implements IAccountService {
         return Result.ok(accountDetails);
     }
 
-    /**
+
+    /** 获取账号类型 此方法缓存序列化出错，不适合做序列化
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/7 21:55
      * @param principal 抽象账号
      * @return pers.lbf.yeju.common.core.result.IResult<pers.lbf.yeju.service.interfaces.auth.enums.AccountTypeEnum>
      */
+    @Cacheable(cacheNames = "accountService:accountType",keyGenerator = "yejuKeyGenerator")
     @Override
-    public IResult<AccountOwnerTypeEnum> getAccountType(String principal) throws ServiceException {
+    public IResult<String> getAccountType(String principal) throws ServiceException {
 
-        IResult<AccountDetailsInfoBean> infoBeanResult = findAccountDetailsByPrincipal(principal);
-        if (Objects.equals(infoBeanResult.getCode(), ServiceStatusConstant.SUCCESSFUL_OPERATION_CODE)){
-            AccountDetailsInfoBean infoBean = infoBeanResult.getData();
-            if (infoBean.getAccountType()!=null&&infoBean.getAccountType().equalsIgnoreCase(AccountOwnerTypeEnum.Internal_account.getValue())){
-                return Result.ok(AccountOwnerTypeEnum.Internal_account);
-            }
+        QueryWrapper<Account> wrapper = getAccountQueryWrapperByPrincipal(principal);
+        wrapper.select("account_type");
+        Account account = accountDao.selectOne(wrapper);
+        if (account != null && account.getAccountType()!=null) {
+            return Result.ok(account.getAccountType());
         }
         throw  ServiceException.getInstance(AccountStatusEnum.AccountOwnerTypeNotExist);
+    }
+
+
+    private QueryWrapper<Account> getAccountQueryWrapperByPrincipal(String principal){
+        SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);
+        QueryWrapper<Account> wrapper = new QueryWrapper<>();
+        if (accountType.equals(SubjectTypeEnum.is_system_account)){
+            wrapper.eq("account_number",principal);
+
+        }
+
+        if (accountType.equals(SubjectTypeEnum.is_mobile)){
+            wrapper.eq("phone_number",principal);
+        }
+
+        if (accountType.equals(SubjectTypeEnum.is_unknown)){
+            throw ServiceException.getInstance(AccountStatusEnum.accountDoesNotExist);
+        }
+
+        return wrapper;
     }
 }

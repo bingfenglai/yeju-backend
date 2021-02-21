@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -55,7 +56,7 @@ public class RoleServiceImpl implements IRoleService {
     @DubboReference
     private IDataDictionaryInfoService dataDictionaryService;
 
-    @Cacheable(cacheNames = "roleService::findPage",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleRole> findPage(Long currentPage, Long size) throws ServiceException {
         Page<Role> page = new Page<>();
@@ -84,21 +85,25 @@ public class RoleServiceImpl implements IRoleService {
         return PageResult.ok(page.getTotal(),currentPage,size,result);
     }
 
+    @CachePut(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
     @Override
     public void deleteById(Long id) throws ServiceException {
         roleDao.deleteById(id);
     }
 
+    @CachePut(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
     @Override
     public void updateById(SimpleRole role) throws ServiceException {
 
     }
 
+    @CachePut(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
     @Override
     public void create(SimpleRole role) throws ServiceException {
 
     }
 
+    @Cacheable(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<SimpleRole> findById(Long id) throws ServiceException {
         return null;
@@ -106,7 +111,7 @@ public class RoleServiceImpl implements IRoleService {
 
 
 
-    @Cacheable(cacheNames = "roleService::getRoleListByPrincipal",key = "#principal")
+    @Cacheable(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<List<String>> getRoleListByPrincipal(String principal) throws ServiceException {
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);

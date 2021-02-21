@@ -18,6 +18,7 @@ package pers.lbf.yeju.consumer.auth.manager;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -34,6 +35,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -51,6 +53,9 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
+
+    @DubboReference
+    private ISessionService sessionService;
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
@@ -73,6 +78,12 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         }
 
         if (authorityInfoBean == null){
+            throw new ServiceException(AuthStatusEnum.NO_TOKEN);
+        }
+
+        // 判断账户有没有被强制过期
+        Boolean flag = sessionService.isExpired(authorityInfoBean.getPrincipal()).getData();
+        if (!flag){
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 

@@ -18,7 +18,6 @@ package pers.lbf.yeju.provider.auth.authz.service;
 
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
@@ -61,7 +60,7 @@ public class AuthzServiceImpl implements IAuthzService {
     @DubboReference
     private ICustomerValidService customerValidService;
 
-    @Cacheable(cacheNames = "authzService",key = "#principal")
+
     @Override
     public IResult<AuthzSimpleInfoBean> findAuthzInfoByPrincipal(String principal) throws ServiceException {
         AuthzSimpleInfoBean bean = new AuthzSimpleInfoBean();
@@ -69,15 +68,15 @@ public class AuthzServiceImpl implements IAuthzService {
             return Result.ok(bean);
         }
 
-        AccountOwnerTypeEnum ownerTypeEnum = accountService.getAccountType(principal).getData();
+        String accouType = accountService.getAccountType(principal).getData();
         AccountDetailsInfoBean accountDetailsInfo = accountService.findAccountDetailsByPrincipal(principal).getData();
         // 内部账号
-        if (AccountOwnerTypeEnum.Internal_account.equals(ownerTypeEnum)) {
+        if (AccountOwnerTypeEnum.Internal_account.getValue().equals(accouType)) {
             SimpleEmployeeInfoBean employeeInfoBean = employeeService.findInfoByEmployeeId(accountDetailsInfo.getSubjectId()).getData();
             bean.setName(employeeInfoBean.getName());
             bean.setAvatar(employeeInfoBean.getAvatar());
 
-        }else if (AccountOwnerTypeEnum.Customer_account.equals(ownerTypeEnum)){
+        }else if (AccountOwnerTypeEnum.Customer_account.getValue().equals(accouType)){
             SimpleCustomerInfoBean customerInfoBean = customerValidService.findDetailsById(accountDetailsInfo.getSubjectId()).getData();
             bean.setName(customerInfoBean.getCustomerName());
             bean.setAvatar(customerInfoBean.getAvatar());

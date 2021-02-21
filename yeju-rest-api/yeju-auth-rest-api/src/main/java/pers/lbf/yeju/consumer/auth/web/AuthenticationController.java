@@ -80,7 +80,7 @@ public class AuthenticationController {
         String principal = authorityInfo.getPrincipal();
 
         return Mono.empty().doFinally(signalType -> {
-            // 销毁会话信息
+
             sessionService.destroySession(principal);
         });
     }

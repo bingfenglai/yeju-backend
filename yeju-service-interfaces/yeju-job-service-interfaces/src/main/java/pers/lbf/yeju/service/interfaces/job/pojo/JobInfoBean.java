@@ -18,6 +18,7 @@ package pers.lbf.yeju.service.interfaces.job.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * 任务信息类
@@ -46,36 +47,34 @@ public class JobInfoBean implements Serializable {
 
     private String jobStatus;
 
+    /**
+     * 任务的创建时间
+     */
     private Date createdDate;
+
+    /**
+     * 创建任务时是否立即执行
+     */
+    private boolean execute;
 
     /**
      * 是否支持并发
      */
     private String concurrent;
 
-    @Override
-    public String toString() {
-        return "JobInfoBean{" +
-                "misfirePolicy='" + misfirePolicy + '\'' +
-                ", jobId=" + jobId +
-                ", invokeTarget=" + invokeTarget +
-                ", jobName='" + jobName + '\'' +
-                ", jobGroup='" + jobGroup + '\'' +
-                ", cronExpression='" + cronExpression + '\'' +
-                ", jobStatus='" + jobStatus + '\'' +
-                ", createdDate=" + createdDate +
-                ", concurrent='" + concurrent + '\'' +
-                '}';
+    /**
+     * 任务运行时所需数据的容器
+     */
+    private Properties jobProperties;
+
+
+    public String getMisfirePolicy() {
+        return misfirePolicy;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public void setMisfirePolicy(String misfirePolicy) {
+        this.misfirePolicy = misfirePolicy;
     }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
 
     public Long getJobId() {
         return jobId;
@@ -94,7 +93,6 @@ public class JobInfoBean implements Serializable {
     }
 
     public String getJobName() {
-
         return jobName;
     }
 
@@ -108,14 +106,6 @@ public class JobInfoBean implements Serializable {
 
     public void setJobGroup(String jobGroup) {
         this.jobGroup = jobGroup;
-    }
-
-    public String getConcurrent() {
-        return concurrent;
-    }
-
-    public void setConcurrent(String concurrent) {
-        this.concurrent = concurrent;
     }
 
     public String getCronExpression() {
@@ -134,13 +124,52 @@ public class JobInfoBean implements Serializable {
         this.jobStatus = jobStatus;
     }
 
-    public String getMisfirePolicy() {
-        return misfirePolicy;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setMisfirePolicy(String misfirePolicy) {
-        this.misfirePolicy = misfirePolicy;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public boolean isExecute() {
+        return execute;
+    }
+
+    public void setExecute(boolean execute) {
+        this.execute = execute;
+    }
+
+    public String getConcurrent() {
+        return concurrent;
+    }
+
+    public void setConcurrent(String concurrent) {
+        this.concurrent = concurrent;
+    }
+
+    public Properties getJobProperties() {
+        return jobProperties;
+    }
+
+    public void setJobProperties(Properties jobProperties) {
+        this.jobProperties = jobProperties;
     }
 
 
+    @Override
+    public String toString() {
+        return "JobInfoBean{" +
+                "misfirePolicy='" + misfirePolicy + '\'' +
+                ", jobId=" + jobId +
+                ", invokeTarget=" + invokeTarget +
+                ", jobName='" + jobName + '\'' +
+                ", jobGroup='" + jobGroup + '\'' +
+                ", cronExpression='" + cronExpression + '\'' +
+                ", jobStatus='" + jobStatus + '\'' +
+                ", createdDate=" + createdDate +
+                ", execute=" + execute +
+                ", concurrent='" + concurrent + '\'' +
+                '}';
+    }
 }

@@ -62,7 +62,7 @@ public abstract class BaseJob implements Job {
             log.error(String.valueOf(e));
             args.setTaskLog(e.getMessage());
             args.setTaskStatus(TaskExecutionConstants.FAILED);
-            throw TaskException.getInstance(e.getMessage(), TaskExecutionStatus.UNKNOW.getCode());
+            throw TaskException.getInstance(e.getMessage(), TaskExecutionStatus.UNKNOWN.getCode());
         } finally {
             afterExecute(args);
         }

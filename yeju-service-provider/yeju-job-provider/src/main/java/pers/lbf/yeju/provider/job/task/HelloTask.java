@@ -17,17 +17,20 @@
 package pers.lbf.yeju.provider.job.task;
 
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import pers.lbf.yeju.provider.job.BaseJob;
 
 /**
- * TODO
+ * 测试任务类
+ * DisallowConcurrentExecution 该注解作用禁止相同的任务并发
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/22 21:10
  */
 @Slf4j
+@DisallowConcurrentExecution
 public class HelloTask extends BaseJob {
     @Override
     protected void doExecute(JobExecutionContext context) throws Exception {

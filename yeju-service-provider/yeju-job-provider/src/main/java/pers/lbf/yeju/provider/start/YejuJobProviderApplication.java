@@ -36,7 +36,7 @@ import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
  */
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.provider")
 @EnableDiscoveryClient
-@EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.**.service")
+@EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.job.service")
 @MapperScan(basePackages = {"pers.lbf.yeju.provider.**.dao"})
 @Slf4j
 public class YejuJobProviderApplication {
@@ -58,6 +58,7 @@ public class YejuJobProviderApplication {
         infoBean.setJobGroup("yeju_job_default_group");
         infoBean.setCronExpression("0/3 * * * * ?");
         infoBean.setInvokeTarget(HelloTask.class);
+        infoBean.setExecute(true);
         try {
             YejuJobScheduler.createOneJob(infoBean);
         } catch (SchedulerException e) {

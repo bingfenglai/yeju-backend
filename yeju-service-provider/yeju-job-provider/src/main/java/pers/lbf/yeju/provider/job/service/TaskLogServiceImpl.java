@@ -33,7 +33,7 @@ import pers.lbf.yeju.service.interfaces.job.pojo.TaskLogCreateArgs;
  * @date 2021/2/22 23:44
  */
 @DubboService(interfaceClass = ITaskLogService.class)
-@Service("taskLogService")
+@Service
 public class TaskLogServiceImpl implements ITaskLogService {
 
     @Autowired

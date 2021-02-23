@@ -29,7 +29,39 @@ public enum TaskExecutionStatus implements IStatus {
     /**
      * 定时任务执行失败
      */
-    UNKNOW("定时任务执行失败", "TES01");
+    UNKNOWN("定时任务执行失败", "TES01"),
+
+    /**
+     * 获取调度程序失败
+     */
+    FailedToGetScheduler("获取调度程序失败", "TES02"),
+
+    /**
+     * 创建定时任务失败
+     */
+    FailedToCreateAScheduledTask("创建定时任务失败", "TES03"),
+
+    /**
+     * 启动定时任务失败
+     */
+    FailedToStartTheScheduledTask("启动定时任务失败", "TES04"),
+
+    /**
+     * 获取触发器失败
+     */
+    FailedToGetTrigger("获取触发器失败", "TES05"),
+
+    FailedToGetJobDetail("获取任务实例失败", "TES06"),
+
+    FailedToDeleteJob("删除定时任务失败", "TES07"),
+
+    FailedToPauseJob("停止任务失败", "TES08"),
+
+    FailedUnschedulerJob("停止调度任务失败", "TES09"),
+
+    FailedToShutdownTheScheduledTask("停止所有任务失败", "TES10"),
+
+    FailedToRestoreJob("恢复任务失败", "TES11");
 
     private String message;
     private String code;

@@ -121,7 +121,7 @@ public class SpringSecurityConfig {
         SecurityWebFilterChain chain = http
                 .authorizeExchange()
                 //无需进行权限过滤的请求路径
-                .pathMatchers(whites).permitAll()
+                .pathMatchers(ignoreWhiteProperties.getWhites().toArray(new String[0])).permitAll()
                 //option 请求默认放行
                 .pathMatchers(String.valueOf(HttpMethod.OPTIONS)).permitAll()
                 //访问鉴权

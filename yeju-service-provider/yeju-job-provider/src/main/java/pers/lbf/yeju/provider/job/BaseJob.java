@@ -76,25 +76,23 @@ public abstract class BaseJob implements Job {
                 e.printStackTrace();
             }
         }
-        Date date = new Date();
-        threadLocal.set(date);
-        log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        log.info("任务开始执行时间：{}", date);
+        Date startTime = new Date();
+        threadLocal.set(startTime);
+        log.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        log.debug("任务开始执行时间：{}", startTime);
     }
 
     public void afterExecute(TaskLogCreateArgs args) throws ServiceException {
-        Date date = new Date();
+        Date stopTime = new Date();
         Date startTime = threadLocal.get();
-        log.info("任务执行结束时间：{}", date);
+        log.debug("任务执行结束时间：{}", stopTime);
         long time = startTime.getTime();
-        long time1 = date.getTime();
+        long time1 = stopTime.getTime();
         long t = time1 - time;
-        log.info("任务耗时：{}", t);
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-
+        log.debug("任务耗时：{}", t);
+        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         args.setStartTime(startTime);
-        args.setStopTime(date);
+        args.setStopTime(stopTime);
 
         taskLogService.addOne(args);
 

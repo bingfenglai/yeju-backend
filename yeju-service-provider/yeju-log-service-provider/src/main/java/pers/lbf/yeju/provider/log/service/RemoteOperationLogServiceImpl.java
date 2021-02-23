@@ -70,7 +70,7 @@ public class RemoteOperationLogServiceImpl implements IOperationLogService {
         operationLog.setOperationTime(operationLogDTO.getOperationTime());
         operationLog.setLastIpNumber(operationLogDTO.getLastIpNumber());
         operationLog.setExecuteTime(operationLogDTO.getExecuteTime());
-        operationLog.setOperatorAccount();
+        operationLog.setOperatorAccount(operationLogDTO.getOperatorAccount());
         operationLogDao.insert(operationLog);
 
     }

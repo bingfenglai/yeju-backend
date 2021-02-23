@@ -14,24 +14,36 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.job.task;
+package pers.lbf.yeju.provider.job.bean;
 
-import lombok.extern.slf4j.Slf4j;
-import org.quartz.JobExecutionContext;
-import pers.lbf.yeju.provider.job.BaseJob;
+import java.io.Serializable;
 
 /**
- * TODO
+ * 作业组信息封装类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/22 21:10
+ * @date 2021/2/23 16:59
  */
-@Slf4j
-public class HelloTask extends BaseJob {
-    @Override
-    protected void doExecute(JobExecutionContext context) throws Exception {
+public class JobTriggerInfoBean implements Serializable {
 
-        log.debug("hello world!");
+    private String name;
+    private String group;
+
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

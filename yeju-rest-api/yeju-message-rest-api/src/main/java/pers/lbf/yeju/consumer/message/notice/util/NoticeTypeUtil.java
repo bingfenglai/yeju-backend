@@ -19,7 +19,9 @@ package pers.lbf.yeju.consumer.message.notice.util;
 import java.util.HashMap;
 import java.util.Map;
 
-/** 通知消息显示类型工具类
+/**
+ * 通知消息显示类型工具类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/18 11:02
@@ -30,15 +32,15 @@ public class NoticeTypeUtil {
 
     static {
         typeMap = new HashMap<>();
-        typeMap.put("1","warning");
-        typeMap.put("2","info");
+        typeMap.put("1", "warning");
+        typeMap.put("2", "info");
     }
 
     private NoticeTypeUtil() {
 
     }
 
-    public static String getNoticeType(String type){
+    public static String getNoticeType(String type) {
         return typeMap.get(type);
     }
 }

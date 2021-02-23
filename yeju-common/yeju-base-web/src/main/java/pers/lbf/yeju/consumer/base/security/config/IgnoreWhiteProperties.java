@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**白名单配置信息，目前nacos只支持@RefreshScope+ConfigurationProperties
+/**
+ * 白名单配置信息，目前nacos只支持@RefreshScope+ConfigurationProperties
  * 可以自动刷新，@Value注入时不能刷新
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0 @Description 鉴权白名单配置
  * @date 2020/11/26 11:50
@@ -19,7 +21,7 @@ import java.util.List;
 public class IgnoreWhiteProperties {
 
 
-    private  List<String> whites;
+    private List<String> whites;
 
 
     public List<String> getWhites() {
@@ -28,5 +30,11 @@ public class IgnoreWhiteProperties {
 
     public void setWhites(ArrayList<String> whites) {
         this.whites = whites;
+    }
+
+    public String[] getWhiteArrays() {
+        String[] strings = new String[10];
+        strings = getWhites().toArray(new String[whites.size()]);
+        return strings;
     }
 }

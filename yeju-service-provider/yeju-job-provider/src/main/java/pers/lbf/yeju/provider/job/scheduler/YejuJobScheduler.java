@@ -32,20 +32,24 @@ import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
 @Slf4j
 public class YejuJobScheduler {
 
-    public static final SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+    public static final SchedulerFactory SCHEDULER_FACTORY = new StdSchedulerFactory();
+
+    public static final String TRIGGER_DEFAULT_GROUP = "yeju_default_trigger_group";
+
+    public static final String TRIGGER_DEFAULT_NAME = "yeju_default_trigger";
 
     /**
-     * 根据job信息创建一个 作业
+     * 根据job信息创建一个 作业 并且立即执行
+     * 使用默认的触发器名和组
      *
      * @param jobInfoBean job info bean
-     * @return void
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/23 0:27
      */
     public static void createOneJob(JobInfoBean jobInfoBean) throws SchedulerException {
 
-        Scheduler scheduler = schedulerFactory.getScheduler();
+        Scheduler scheduler = SCHEDULER_FACTORY.getScheduler();
 
         //用于描叙Job实现类及其他的一些静态信息，构建一个作业实例
         JobDetail jobDetail = JobBuilder.newJob(jobInfoBean.getInvokeTarget())
@@ -56,19 +60,34 @@ public class YejuJobScheduler {
 
         // 构建一个触发器，规定触发的规则
         CronTrigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity(jobInfoBean.getJobName(),
-                        jobInfoBean.getJobGroup())
+                .withIdentity(TRIGGER_DEFAULT_NAME,
+                        TRIGGER_DEFAULT_GROUP)
                 .startNow() // 立即执行
                 // 时间表达式
                 .withSchedule(CronScheduleBuilder.cronSchedule(jobInfoBean.getCronExpression()))
                 .build();
 
         scheduler.scheduleJob(jobDetail, trigger);
+
         if (!scheduler.isStarted()) {
             scheduler.start();
         }
 
     }
-    
+
+    /**
+     * TODO
+     *
+     * @param jobInfoBean
+     * @param triggerNameGroup
+     * @return void
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/23 16:54
+     */
+    public static void createOneJob(JobInfoBean jobInfoBean, String triggerNameGroup) throws SchedulerException {
+
+    }
+
 
 }

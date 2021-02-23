@@ -34,13 +34,7 @@ import org.springframework.context.annotation.Primary;
 @Slf4j
 public class DatasourceConfig {
     private static final String DATASOURCE_NAME = "dbDataSource";
-    static final String SESSION_FACTORY = "dbSqlSessionFactory";
 
-
-//    @Value("${mybatis.queryLimit}")
-//    private String queryLimit;
-
-    static final String MAPPER_PACKAGE = "pers.lbf.yeju.provider.job.dao";
 
     @Primary
     @Bean(name = DATASOURCE_NAME)
@@ -48,37 +42,6 @@ public class DatasourceConfig {
     public DruidDataSource druidDataSource() {
         return new DruidDataSource();
     }
-
-//    @Autowired
-//    public void setDruidDataSource(SqlSessionFactoryB sqlSessionFactory){
-//        sqlSessionFactory.
-//    }
-
-//    @Primary
-//    @Bean(name = SESSION_FACTORY)
-//    public SqlSessionFactory sqlSessionFactory() {
-//        log.info("配置SqlSessionFactory开始");
-//        final SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
-//
-//        sessionFactoryBean.setDataSource(druidDataSource());
-//        try {
-//            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//            // 自定义mapper的xml文件地址，当通用mapper提供的默认功能无法满足我们的需求时，可以自己添加实现，与mybatis写mapper一样
-//            //sessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_XML_PATH));
-//            org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
-//            Properties properties = new Properties();
-//            //properties.put("queryLimit", queryLimit);
-//            configuration.setVariables(properties);
-//            configuration.setMapUnderscoreToCamelCase(true);
-//            configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
-//            sessionFactoryBean.setConfiguration(configuration);
-//            //sessionFactoryBean.setTypeAliasesPackage(MODEL_PACKAGE);
-//            return sessionFactoryBean.getObject();
-//        } catch (Exception e) {
-//            log.error("配置SqlSessionFactory失败，error:{}", e.getMessage());
-//            throw new RuntimeException(e.getMessage());
-//        }
-//    }
 
 
 }

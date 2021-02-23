@@ -60,13 +60,10 @@ public class SpringSecurityConfig {
 
         log.info("业务网关配置白名单：{}", ignoreWhiteProperties.getWhites().toString());
 
-
-        String[] whites = ignoreWhiteProperties.getWhites().toArray(new String[0]);
-
         SecurityWebFilterChain chain = http
                 .authorizeExchange()
                 //无需进行权限过滤的请求路径
-                .pathMatchers(whites).permitAll()
+                .pathMatchers(ignoreWhiteProperties.getWhiteArrays()).permitAll()
                 //option 请求默认放行
                 .pathMatchers(String.valueOf(HttpMethod.OPTIONS)).permitAll()
                 //访问鉴权

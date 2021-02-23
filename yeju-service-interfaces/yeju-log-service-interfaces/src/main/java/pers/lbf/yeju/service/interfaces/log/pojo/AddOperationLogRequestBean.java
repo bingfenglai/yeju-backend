@@ -95,7 +95,7 @@ public class AddOperationLogRequestBean implements Serializable {
     /**
      * 操作者Account
      */
-    private String operatorId;
+    private String operatorAccount;
 
     private Long executeTime;
 
@@ -125,17 +125,17 @@ public class AddOperationLogRequestBean implements Serializable {
                 ", operationStatus=" + operationStatus +
                 ", errorMessage='" + errorMessage + '\'' +
                 ", operationTime=" + operationTime +
-                ", operatorId='" + operatorId + '\'' +
+                ", operatorId='" + operatorAccount + '\'' +
                 ", executeTime=" + executeTime +
                 '}';
     }
 
-    public String getOperatorId() {
-        return operatorId;
+    public String getOperatorAccount() {
+        return operatorAccount;
     }
 
-    public void setOperatorId(String operatorId) {
-        this.operatorId = operatorId;
+    public void setOperatorAccount(String operatorAccount) {
+        this.operatorAccount = operatorAccount;
     }
 
     public String getTitle() {

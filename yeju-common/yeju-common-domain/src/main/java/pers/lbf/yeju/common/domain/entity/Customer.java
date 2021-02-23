@@ -16,6 +16,8 @@
  */
 package pers.lbf.yeju.common.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
@@ -94,15 +96,17 @@ public class Customer extends Model<Customer> implements Serializable {
     /**
      * 创建时间
      */
-    protected Date createTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
     /**
      * 创建者
      */
-    protected Long createBy;
+    private Long createBy;
     /**
      * 更新时间
      */
-    protected Date updateTime;
+    @TableField(fill = FieldFill.UPDATE)
+    private Date updateTime;
     /**
      * 更改者
      */

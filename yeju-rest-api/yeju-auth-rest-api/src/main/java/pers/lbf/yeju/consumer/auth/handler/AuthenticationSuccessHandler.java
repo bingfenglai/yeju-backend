@@ -15,6 +15,7 @@
  *
  */
 package pers.lbf.yeju.consumer.auth.handler;
+
 import com.alibaba.nacos.common.utils.JacksonUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
@@ -46,7 +47,9 @@ import pers.lbf.yeju.service.interfaces.auth.enums.SessionStatus;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import reactor.core.publisher.Mono;
 
-/**认证通过处理器
+/**
+ * 认证通过处理器
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -71,12 +74,13 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
     /**
      * 认证成功之后，返回授权token
+     *
      * @param webFilterExchange e
-     * @param authentication authc
+     * @param authentication    authc
      * @return 1
      */
     @Override
-    public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication){
+    public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
 
         ServerWebExchange exchange = webFilterExchange.getExchange();
         ServerHttpRequest request = exchange.getRequest();
@@ -89,7 +93,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         //设置body
 
 
-        byte[] dataBytes={};
+        byte[] dataBytes = {};
         //令牌
         String token = "";
 
@@ -103,7 +107,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         AuthorityInfoBean authorityInfoBean = (AuthorityInfoBean) authentication.getPrincipal();
         Boolean success = sessionService.initSession(authorityInfoBean.getPrincipal()).isSuccess();
 
-        if (!success){
+        if (!success) {
             throw ServiceException.getInstance(SessionStatus.InitFailed);
         }
 
@@ -128,7 +132,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
                 Mono.just(bodyDataBuffer)
                         .doFinally(signalType -> {
                             //sessionInitSender.send(authorityInfoBean.getPrincipal(),null);
-                            addOnline(request,authorityInfoBean);
+                            addOnline(request, authorityInfoBean);
                         })
 
         );
@@ -137,7 +141,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
     }
 
 
-    private void addOnline(ServerHttpRequest request,AuthorityInfoBean authorityInfoBean){
+    private void addOnline(ServerHttpRequest request, AuthorityInfoBean authorityInfoBean) {
 
 //        String userAgentStr = Objects.requireNonNull(request.getHeaders().get("User-Agent")).get(0);
 //        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
@@ -154,14 +158,9 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         OnlineInfoBean onlineInfoBean = OnlineManager.getOnlineInfoBeanBuilder(authorityInfoBean.getPrincipal(), request)
                 .build();
 
-        onlineSender.send(onlineInfoBean,null);
+        onlineSender.send(onlineInfoBean, null);
 
     }
-
-
-
-
-
 
 
 }

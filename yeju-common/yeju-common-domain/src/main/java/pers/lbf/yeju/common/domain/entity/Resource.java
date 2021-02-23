@@ -16,10 +16,7 @@
  */
 package pers.lbf.yeju.common.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -33,241 +30,249 @@ import java.util.Date;
  */
 @TableName("table_system_resources")
 public class Resource extends Model<Resource> {
-  // 主键
-  @TableId
-  private Long resourceId;
-  // 资源名
-  private String resourceName;
-  // 资源权限字符串
-  private String resourceCode;
-  // 资源类型值0菜单1接口2操作（按钮）
-  private String resourceType;
-  // 父菜单id,仅当资源类型为0时生效
-  private Long parentMenuId;
-  // 显示顺序，当多个子菜单对应一个父菜单时，需要给定显示顺序
-  private Integer orderNumber;
-  // 路由地址，当资源为菜单操作时需要记录路由地址
-  private String path;
-  // 当为组件时，需要给定组件路径
-  private String componetPath;
-  // 是否缓存0否1是
-  private Integer isCache;
-  // 资源状态0未启用1启用
-  private Integer resourceStatus;
-  // 菜单是否显示0不显示1显示
-  private Integer visible;
-  // 菜单图标地址，当资源类型为菜单时需要指定
-  private String icon;
-  // 创建时间
-  private Date createTime;
-  // 创建者
-  private Long createBy;
-  // 更新时间
-  private Date updateTime;
-  // 更改者
-  private Long changedBy;
-  // 备注
-  private String remark;
-  // 字段版本
-  @Version
-  private Integer versionNumber;
-  // 删除标识
-  @TableLogic
-  private Integer isDelete;
+    // 主键
+    @TableId
+    private Long resourceId;
+    // 资源名
+    private String resourceName;
+    // 资源权限字符串
+    private String resourceCode;
+    // 资源类型值0菜单1接口2操作（按钮）
+    private String resourceType;
+    // 父菜单id,仅当资源类型为0时生效
+    private Long parentMenuId;
+    // 显示顺序，当多个子菜单对应一个父菜单时，需要给定显示顺序
+    private Integer orderNumber;
+    // 路由地址，当资源为菜单操作时需要记录路由地址
+    private String path;
+    // 当为组件时，需要给定组件路径
+    private String componetPath;
+    // 是否缓存0否1是
+    private Integer isCache;
+    // 资源状态0未启用1启用
+    private Integer resourceStatus;
+    // 菜单是否显示0不显示1显示
+    private Integer visible;
+    // 菜单图标地址，当资源类型为菜单时需要指定
+    private String icon;
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+    /**
+     * 创建者
+     */
+    private Long createBy;
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.UPDATE)
+    private Date updateTime;
+    // 更改者
+    private Long changedBy;
+    // 备注
+    private String remark;
+    // 字段版本
+    @Version
+    private Integer versionNumber;
+    // 删除标识
+    @TableLogic
+    private Integer isDelete;
 
-  private Integer isFrame;
+    private Integer isFrame;
 
-  public Integer getIsFrame() {
-    return isFrame;
-  }
+    public Integer getIsFrame() {
+        return isFrame;
+    }
 
-  public void setIsFrame(Integer isFrame) {
-    this.isFrame = isFrame;
-  }
+    public void setIsFrame(Integer isFrame) {
+        this.isFrame = isFrame;
+    }
 
-  public Long getResourceId() {
-    return resourceId;
-  }
+    public Long getResourceId() {
+        return resourceId;
+    }
 
-  public void setResourceId(Long resourceId) {
-    this.resourceId = resourceId;
-  }
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
+    }
 
-  public String getResourceName() {
-    return resourceName;
-  }
+    public String getResourceName() {
+        return resourceName;
+    }
 
-  public void setResourceName(String resourceName) {
-    this.resourceName = resourceName;
-  }
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
 
-  public String getResourceCode() {
-    return resourceCode;
-  }
+    public String getResourceCode() {
+        return resourceCode;
+    }
 
-  public void setResourceCode(String resourceCode) {
-    this.resourceCode = resourceCode;
-  }
+    public void setResourceCode(String resourceCode) {
+        this.resourceCode = resourceCode;
+    }
 
-  public String getResourceType() {
-    return resourceType;
-  }
+    public String getResourceType() {
+        return resourceType;
+    }
 
-  public void setResourceType(String resourceType) {
-    this.resourceType = resourceType;
-  }
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
 
-  public Long getParentMenuId() {
-    return parentMenuId;
-  }
+    public Long getParentMenuId() {
+        return parentMenuId;
+    }
 
-  public void setParentMenuId(Long parentMenuId) {
-    this.parentMenuId = parentMenuId;
-  }
+    public void setParentMenuId(Long parentMenuId) {
+        this.parentMenuId = parentMenuId;
+    }
 
-  public Integer getOrderNumber() {
-    return orderNumber;
-  }
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
 
-  public void setOrderNumber(Integer orderNumber) {
-    this.orderNumber = orderNumber;
-  }
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 
-  public String getPath() {
-    return path;
-  }
+    public String getPath() {
+        return path;
+    }
 
-  public void setPath(String path) {
-    this.path = path;
-  }
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-  public String getComponetPath() {
-    return componetPath;
-  }
+    public String getComponetPath() {
+        return componetPath;
+    }
 
-  public void setComponetPath(String componetPath) {
-    this.componetPath = componetPath;
-  }
+    public void setComponetPath(String componetPath) {
+        this.componetPath = componetPath;
+    }
 
-  public Integer getIsCache() {
-    return isCache;
-  }
+    public Integer getIsCache() {
+        return isCache;
+    }
 
-  public void setIsCache(Integer isCache) {
-    this.isCache = isCache;
-  }
+    public void setIsCache(Integer isCache) {
+        this.isCache = isCache;
+    }
 
-  public Integer getResourceStatus() {
-    return resourceStatus;
-  }
+    public Integer getResourceStatus() {
+        return resourceStatus;
+    }
 
-  public void setResourceStatus(Integer resourceStatus) {
-    this.resourceStatus = resourceStatus;
-  }
+    public void setResourceStatus(Integer resourceStatus) {
+        this.resourceStatus = resourceStatus;
+    }
 
-  public Integer getVisible() {
-    return visible;
-  }
+    public Integer getVisible() {
+        return visible;
+    }
 
-  public void setVisible(Integer visible) {
-    this.visible = visible;
-  }
+    public void setVisible(Integer visible) {
+        this.visible = visible;
+    }
 
-  public String getIcon() {
-    return icon;
-  }
+    public String getIcon() {
+        return icon;
+    }
 
-  public void setIcon(String icon) {
-    this.icon = icon;
-  }
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
-  public Date getCreateTime() {
-    return createTime;
-  }
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-  public void setCreateTime(Date createTime) {
-    this.createTime = createTime;
-  }
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-  public Long getCreateBy() {
-    return createBy;
-  }
+    public Long getCreateBy() {
+        return createBy;
+    }
 
-  public void setCreateBy(Long createBy) {
-    this.createBy = createBy;
-  }
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
 
-  public Date getUpdateTime() {
-    return updateTime;
-  }
+    public Date getUpdateTime() {
+        return updateTime;
+    }
 
-  public void setUpdateTime(Date updateTime) {
-    this.updateTime = updateTime;
-  }
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
-  public Long getChangedBy() {
-    return changedBy;
-  }
+    public Long getChangedBy() {
+        return changedBy;
+    }
 
-  public void setChangedBy(Long changedBy) {
-    this.changedBy = changedBy;
-  }
+    public void setChangedBy(Long changedBy) {
+        this.changedBy = changedBy;
+    }
 
-  public String getRemark() {
-    return remark;
-  }
+    public String getRemark() {
+        return remark;
+    }
 
-  public void setRemark(String remark) {
-    this.remark = remark;
-  }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
-  public Integer getVersionNumber() {
-    return versionNumber;
-  }
+    public Integer getVersionNumber() {
+        return versionNumber;
+    }
 
-  public void setVersionNumber(Integer versionNumber) {
-    this.versionNumber = versionNumber;
-  }
+    public void setVersionNumber(Integer versionNumber) {
+        this.versionNumber = versionNumber;
+    }
 
-  public Integer getIsDelete() {
-    return isDelete;
-  }
+    public Integer getIsDelete() {
+        return isDelete;
+    }
 
-  public void setIsDelete(Integer isDelete) {
-    this.isDelete = isDelete;
-  }
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 
-  /**
-   * 获取主键值
-   *
-   * @return 主键值
-   */
-  @Override
-  protected Serializable pkVal() {
-    return this.resourceId;
-  }
+    /**
+     * 获取主键值
+     *
+     * @return 主键值
+     */
+    @Override
+    protected Serializable pkVal() {
+        return this.resourceId;
+    }
 
 
-  @Override
-  public String toString() {
-    return "Resources{" +
-            "resourceId=" + resourceId +
-            ", resourceName='" + resourceName + '\'' +
-            ", resourceCode='" + resourceCode + '\'' +
-            ", resourceType='" + resourceType + '\'' +
-            ", parentMenuId=" + parentMenuId +
-            ", orderNumber=" + orderNumber +
-            ", path='" + path + '\'' +
-            ", componetPath='" + componetPath + '\'' +
-            ", isCache=" + isCache +
-            ", resourceStatus=" + resourceStatus +
-            ", visible=" + visible +
-            ", icon='" + icon + '\'' +
-            ", createTime=" + createTime +
-            ", createBy=" + createBy +
-            ", updateTime=" + updateTime +
-            ", changedBy=" + changedBy +
-            ", remark='" + remark + '\'' +
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "Resources{" +
+                "resourceId=" + resourceId +
+                ", resourceName='" + resourceName + '\'' +
+                ", resourceCode='" + resourceCode + '\'' +
+                ", resourceType='" + resourceType + '\'' +
+                ", parentMenuId=" + parentMenuId +
+                ", orderNumber=" + orderNumber +
+                ", path='" + path + '\'' +
+                ", componetPath='" + componetPath + '\'' +
+                ", isCache=" + isCache +
+                ", resourceStatus=" + resourceStatus +
+                ", visible=" + visible +
+                ", icon='" + icon + '\'' +
+                ", createTime=" + createTime +
+                ", createBy=" + createBy +
+                ", updateTime=" + updateTime +
+                ", changedBy=" + changedBy +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

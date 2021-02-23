@@ -28,43 +28,72 @@ import java.util.Date;
  */
 public class AddOperationLogRequestBean implements Serializable {
 
-    /** 模块标题 */
+    /**
+     * 模块标题
+     */
     private String title;
 
-    /** 业务类型0其他1新增2修改3删除 */
+    /**
+     * 业务类型0其他1新增2修改3删除
+     */
     private Integer businessType;
 
-    /** 方法名称 */
+    /**
+     * 方法名称
+     */
     private String method;
-    /** 请求方式 */
+    /**
+     * 请求方式
+     */
     private String requestMethod;
-    /** 操作类型0其他1平台业务员2客户3移动端客户 */
+    /**
+     * 操作类型0其他1平台业务员2客户3移动端客户
+     */
     private String operatorType;
-    /** 操作者名字 */
+    /**
+     * 操作者名字
+     */
     private String operatorName;
-    /** 部门名称 */
-    private String departmentName;
-    /** 请求路径 */
+
+    /**
+     * 请求路径
+     */
     private String url;
-    /** 请求ip */
+    /**
+     * 请求ip
+     */
     private String ip;
-    /** 地点 */
+    /**
+     * 地点
+     */
     private String location;
-    /** 请求参数 */
+    /**
+     * 请求参数
+     */
     private String param;
-    /** 返回的结果 */
+    /**
+     * 返回的结果
+     */
     private String result;
-    /** 操作状态0正常1异常 */
+    /**
+     * 操作状态0正常1异常
+     */
     private Integer operationStatus;
-    /** 错误消息 */
+    /**
+     * 错误消息
+     */
     private String errorMessage;
-    /** 操作时间 */
+    /**
+     * 操作时间
+     */
     private Date operationTime;
-    /** 访问ip最后一位数字，用作分区标识 */
+    /**
+     * 访问ip最后一位数字，用作分区标识
+     */
     private Integer lastIpNumber;
 
     /**
-     * 操作者id
+     * 操作者Account
      */
     private String operatorId;
 
@@ -73,7 +102,6 @@ public class AddOperationLogRequestBean implements Serializable {
     public Long getExecuteTime() {
         return executeTime;
     }
-
 
 
     public void setExecuteTime(Long executeTime) {
@@ -89,7 +117,6 @@ public class AddOperationLogRequestBean implements Serializable {
                 ", requestMethod='" + requestMethod + '\'' +
                 ", operatorType='" + operatorType + '\'' +
                 ", operatorName='" + operatorName + '\'' +
-                ", departmentName='" + departmentName + '\'' +
                 ", url='" + url + '\'' +
                 ", ip='" + ip + '\'' +
                 ", location='" + location + '\'' +
@@ -157,14 +184,6 @@ public class AddOperationLogRequestBean implements Serializable {
 
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
     }
 
     public String getUrl() {

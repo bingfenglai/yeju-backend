@@ -116,10 +116,13 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!--        请求头解析工具类-->
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
         </dependency>
+
+        <!--        平台相关-->
 
         <dependency>
             <groupId>pers.lbf</groupId>
@@ -290,6 +293,8 @@
                         <includes>
                             <include>config/logback.xml</include>
                             <include>banner.txt</include>
+                            <include>privateKey.txt</include>
+                            <include>publicKey.txt</include>
                         </includes>
                         <excludes>
                             <exclude>**/*.properties</exclude>

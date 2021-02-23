@@ -16,16 +16,14 @@
  */
 package pers.lbf.yeju.common.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 资源md5表，用于快传(TableSystemResourceMd5)实体类
+ *
  * @author laibf
  * @since 2021-02-01 16:26:16
  */
@@ -50,6 +48,7 @@ public class ResourceMd5 implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     /**
      * 创建者
@@ -58,6 +57,7 @@ public class ResourceMd5 implements Serializable {
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
     /**
      * 更改者

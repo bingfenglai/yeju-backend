@@ -14,18 +14,18 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.base.security.manger;
+package pers.lbf.yeju.consumer.base.security.manager;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.pojo.Payload;
 import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
 import pers.lbf.yeju.consumer.base.security.config.RsaPublicKeyConfig;
-import pers.lbf.yeju.consumer.base.security.constant.TokenConstant;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 
 
@@ -51,12 +51,13 @@ public class AuthorizationTokenManager {
         if (!flag) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
-        log.info("公钥路径： {}",rsaPublicKeyConfig.getPath());
+        log.info("公钥路径： {}", rsaPublicKeyConfig.getPath());
         //获取真正的token
         String token = authenticationToken.substring(TokenConstant.getPrefixToken().length());
 
         Payload<AuthorityInfo> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey(rsaPublicKeyConfig.getPath()), AuthorityInfo.class);
         return payload.getUserInfo();
     }
+
 
 }

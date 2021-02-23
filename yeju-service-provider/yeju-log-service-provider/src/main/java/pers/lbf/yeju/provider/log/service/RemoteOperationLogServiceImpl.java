@@ -21,13 +21,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.domain.entity.OperationLog;
 import pers.lbf.yeju.provider.log.dao.OperationLogDao;
 import pers.lbf.yeju.service.interfaces.log.IOperationLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
+import pers.lbf.yeju.service.interfaces.log.pojo.OperationLogInfoBean;
 
-/**操作日志服务
+/**
+ * 操作日志服务
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -36,26 +40,26 @@ import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
 @Service(value = "operationLogService")
 @DubboService(interfaceClass = IOperationLogService.class)
 public class RemoteOperationLogServiceImpl implements IOperationLogService {
-    
+
     @Autowired
     private OperationLogDao operationLogDao;
-    
+
     @Override
-    public void addOperationLog( @Validated AddOperationLogRequestBean operationLogDTO) throws ServiceException {
-        
-        if (operationLogDTO==null){
-            throw new ServiceException(ParameStatusEnum.Parameter_cannot_be_empty);
+    public void addOperationLog(@Validated AddOperationLogRequestBean operationLogDTO) throws ServiceException {
+
+        if (operationLogDTO == null) {
+            throw ServiceException.getInstance("操作日志录入参数不能为空", ParameStatusEnum.Parameter_cannot_be_empty.getCode());
         }
 
         OperationLog operationLog = new OperationLog();
-        
+
         operationLog.setTitle(operationLogDTO.getTitle());
         operationLog.setBusinessType(operationLogDTO.getBusinessType());
         operationLog.setMethod(operationLogDTO.getMethod());
         operationLog.setRequestMethod(operationLogDTO.getRequestMethod());
         operationLog.setOperatorType(operationLogDTO.getOperatorType());
         operationLog.setOperatorName(operationLogDTO.getOperatorName());
-        operationLog.setDepartmentName(operationLogDTO.getDepartmentName());
+
         operationLog.setUrl(operationLogDTO.getUrl());
         operationLog.setIp(operationLogDTO.getIp());
         operationLog.setLocation(operationLogDTO.getLocation());
@@ -66,8 +70,13 @@ public class RemoteOperationLogServiceImpl implements IOperationLogService {
         operationLog.setOperationTime(operationLogDTO.getOperationTime());
         operationLog.setLastIpNumber(operationLogDTO.getLastIpNumber());
         operationLog.setExecuteTime(operationLogDTO.getExecuteTime());
-        
+        operationLog.setOperatorAccount();
         operationLogDao.insert(operationLog);
-        
+
+    }
+
+    @Override
+    public PageResult<OperationLogInfoBean> findList(Long currentPage, Long size) throws ServiceException {
+        return null;
     }
 }

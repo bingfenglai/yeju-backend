@@ -17,9 +17,13 @@
 package pers.lbf.yeju.service.interfaces.log;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.log.pojo.AddOperationLogRequestBean;
+import pers.lbf.yeju.service.interfaces.log.pojo.OperationLogInfoBean;
 
-/**异步操作日志服务接口类
+/**
+ * 异步操作日志服务接口类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -29,5 +33,7 @@ public interface IOperationLogService {
 
 
     void addOperationLog(AddOperationLogRequestBean operationLogDTO) throws ServiceException;
+
+    PageResult<OperationLogInfoBean> findList(Long currentPage, Long size) throws ServiceException;
 
 }

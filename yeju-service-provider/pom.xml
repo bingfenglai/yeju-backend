@@ -18,6 +18,7 @@
         <module>yeju-platform-service-provider</module>
         <module>yeju-session-service-provider</module>
         <module>yeju-message-service-provider</module>
+        <module>yeju-job-provider</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

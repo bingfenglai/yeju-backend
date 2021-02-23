@@ -25,9 +25,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import pers.lbf.yeju.consumer.base.security.manger.CustomAuthorizationManager;
+import pers.lbf.yeju.consumer.base.security.manager.CustomAuthorizationManager;
 
-/**资源服务器安全配置
+/**
+ * 资源服务器安全配置
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -35,9 +37,9 @@ import pers.lbf.yeju.consumer.base.security.manger.CustomAuthorizationManager;
  */
 @EnableWebFluxSecurity
 @Configuration
-public class SecurityConfig {
+public class SpringSecurityConfig {
 
-    private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+    private final Logger log = LoggerFactory.getLogger(SpringSecurityConfig.class);
 
     @Autowired
     private IgnoreWhiteProperties ignoreWhiteProperties;
@@ -48,6 +50,7 @@ public class SecurityConfig {
 
     /**
      * 构建过滤器链
+     *
      * @param http
      * @return
      * @throws Exception
@@ -55,10 +58,10 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
 
-        log.info("业务网关配置白名单：{}",ignoreWhiteProperties.getWhites().toString());
+        log.info("业务网关配置白名单：{}", ignoreWhiteProperties.getWhites().toString());
 
 
-        String[] whites =ignoreWhiteProperties.getWhites().toArray(new String[0]);
+        String[] whites = ignoreWhiteProperties.getWhites().toArray(new String[0]);
 
         SecurityWebFilterChain chain = http
                 .authorizeExchange()

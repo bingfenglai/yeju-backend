@@ -17,11 +17,14 @@
 package pers.lbf.yeju.provider.base.util;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-/** spring 上下文工具类
+/**
+ * spring 上下文工具类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -33,16 +36,18 @@ public class SpringContextUtils implements ApplicationContextAware {
     private static ApplicationContext context;
 
     /**
-     *Spring在bean初始化后会判断是不是ApplicationContextAware的子类
-     *如果该类是,setApplicationContext()方法,会将容器中ApplicationContext作为参数传入进去
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2020/12/23 12:14
+     * Spring在bean初始化后会判断是不是ApplicationContextAware的子类
+     * 如果该类是,setApplicationContext()方法,会将容器中ApplicationContext作为参数传入进去
+     *
      * @param applicationContext spring上下文
      * @return void
      * @throws BeansException e
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2020/12/23 12:14
      */
     @Override
+    @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         context = applicationContext;
 
@@ -50,6 +55,7 @@ public class SpringContextUtils implements ApplicationContextAware {
 
     /**
      * 通过Name返回指定的Bean
+     *
      * @param beanClass
      * @param <T>
      * @return bean
@@ -57,6 +63,11 @@ public class SpringContextUtils implements ApplicationContextAware {
     public static <T> T getBean(Class<T> beanClass) {
 
         return context.getBean(beanClass);
+    }
+
+    public static Object getBean(String beanName) {
+
+        return context.getBean(beanName);
     }
 
 }

@@ -32,7 +32,9 @@ import pers.lbf.yeju.consumer.auth.config.RsaPublicKeyConfig;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 
 
-/** 认证令牌管理器
+/**
+ * 认证令牌管理器
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -49,7 +51,7 @@ public class AuthorizationTokenManager {
     private AuthorityInfoTokenBuilder builder;
 
     @Deprecated
-    public String getAuthorityInfoToken(AuthorityInfoBean authorityInfoBean) throws Exception{
+    public String getAuthorityInfoToken(AuthorityInfoBean authorityInfoBean) throws Exception {
         return builder.build(authorityInfoBean);
     }
 
@@ -61,7 +63,7 @@ public class AuthorizationTokenManager {
         if (!flag) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
-        log.info("公钥路径： {}",rsaPublicKeyConfig.getPath());
+        log.info("公钥路径： {}", rsaPublicKeyConfig.getPath());
         //获取真正的token
         String token = authenticationToken.substring(TokenConstant.getPrefixToken().length());
 
@@ -75,21 +77,21 @@ public class AuthorizationTokenManager {
         return builder;
     }
 
-    public AuthorityInfoTokenBuilder getBuilder(AuthorityInfoBean authorityInfoBean,ServerWebExchange exchange) {
+    public AuthorityInfoTokenBuilder getBuilder(AuthorityInfoBean authorityInfoBean, ServerWebExchange exchange) {
         Long expireAt = this.getTokenExpiresTime(exchange);
         builder.setAuthorityInfo(authorityInfoBean);
         builder.setExpireAt(expireAt);
         return builder;
     }
 
-    public Long getTokenExpiresTime(ServerWebExchange exchange){
+    public Long getTokenExpiresTime(ServerWebExchange exchange) {
 
 
         HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
         String userAgent = requestHeaders.getFirst("User-Agent");
         if ("client".equalsIgnoreCase(userAgent)) {
             return TokenConstant.AppTokenExpiresAt;
-        }else {
+        } else {
             return TokenConstant.PcTokenExpiresAt;
         }
 

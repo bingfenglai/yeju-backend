@@ -22,7 +22,9 @@ import reactor.core.publisher.Mono;
 import java.util.Date;
 import java.util.Objects;
 
-/**鉴权过滤器
+/**
+ * 鉴权过滤器
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description 鉴权拦截
@@ -50,7 +52,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
         String methodName = Objects.requireNonNull(exchange.getRequest().getMethod()).name();
 
 
-
         String info = String.format("Method:{%s} Host:{%s} Path:{%s} Query:{%s}",
                 methodName,
                 ip,
@@ -60,9 +61,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
         log.info(info);
 
         //1.跳过白名单
-        if (!YejuStringUtils.matches(path,properties.getWhites())&&request.getHeaders().get(TokenConstant.TOKEN_KEY)==null){
+        if (!YejuStringUtils.matches(path, properties.getWhites()) && request.getHeaders().get(TokenConstant.TOKEN_KEY) == null) {
             //2.1 token不存在直接抛出异常，走全局异常处理
-            log.info("{},请求路径{}，鉴权不通过", HttpUtils.getIpAddress(request),path);
+            log.info("{},请求路径{}，鉴权不通过", HttpUtils.getIpAddress(request), path);
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
@@ -70,7 +71,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
         //记录开始时间戳
         exchange.getAttributes().put(START_TIME, System.currentTimeMillis());
-        return chain.filter(exchange).then( Mono.fromRunnable(() -> {
+        return chain.filter(exchange).then(Mono.fromRunnable(() -> {
             Long startTime = exchange.getAttribute(START_TIME);
             if (startTime != null) {
                 //计算 执行时间
@@ -85,34 +86,33 @@ public class AuthFilter implements GlobalFilter, Ordered {
                 operationLogRequestBean.setMethod(path);
                 operationLogRequestBean.setRequestMethod(methodName);
                 operationLogRequestBean.setExecuteTime(executeTime);
-                sender.send(operationLogRequestBean,null);
+                sender.send(operationLogRequestBean, null);
             }
         }));
     }
 
 
-    public Integer getBusinessType(String requestMethodName){
-        if ("GET".equalsIgnoreCase(requestMethodName)){
+    public Integer getBusinessType(String requestMethodName) {
+        if ("GET".equalsIgnoreCase(requestMethodName)) {
             return OperationType.SELECT.getValue();
         }
 
-        if ("DELETE".equalsIgnoreCase(requestMethodName)){
+        if ("DELETE".equalsIgnoreCase(requestMethodName)) {
             return OperationType.DELETE.getValue();
         }
 
-        if ("POST".equalsIgnoreCase(requestMethodName)){
+        if ("POST".equalsIgnoreCase(requestMethodName)) {
             return OperationType.INSTER.getValue();
         }
 
-        if ("PUT".equalsIgnoreCase(requestMethodName)){
+        if ("PUT".equalsIgnoreCase(requestMethodName)) {
             return OperationType.UPDATE.getValue();
         }
 
         return OperationType.OTHER.getValue();
 
     }
-
-
+    
 
     @Override
     public int getOrder() {

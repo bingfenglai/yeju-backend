@@ -14,12 +14,13 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.base.security.manger;
+package pers.lbf.yeju.consumer.base.security.manager;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,7 +41,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-/**鉴权管理器
+/**
+ * 鉴权管理器
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -48,6 +51,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
+@Primary
 public class CustomAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -66,38 +70,38 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         HttpHeaders headers = request.getHeaders();
         String token = headers.getFirst(TokenConstant.TOKEN_KEY);
 
-        if (token==null){
+        if (token == null) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         AuthorityInfo authorityInfo = null;
         try {
-             authorityInfo = tokenManager.getAuthorityInfo(token);
+            authorityInfo = tokenManager.getAuthorityInfo(token);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (authorityInfo == null){
+        if (authorityInfo == null) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         // 判断账户有没有被强制过期
         Boolean flag = sessionService.isExpired(authorityInfo.getPrincipal()).getData();
-        if (!flag){
+        if (!flag) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         List<String> authorityList = authorityInfo.getAuthorityList();
 //        authorityList = new ArrayList<>();
 //        authorityList.add("*:**");
-        log.info("开始对用户 {} 鉴权",authorityInfo.getPrincipal());
+        log.info("开始对用户 {} 鉴权", authorityInfo.getPrincipal());
         if (authorityList == null || authorityList.size() == 0) {
-            log.info("用户 {} 请求API校验 未通过",authorityInfo.getPrincipal());
+            log.info("用户 {} 请求API校验 未通过", authorityInfo.getPrincipal());
             throw new ServiceException(AuthStatusEnum.unauthorized);
         }
 
         String path1 = request.getURI().getPath();
-        log.info("用户请求路径：{}",path1);
+        log.info("用户请求路径：{}", path1);
         for (String s : authorityList) {
             if (antPathMatcher.match(s, path1)) {
                 log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", s, path1));
@@ -105,7 +109,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
             }
 
         }
-        log.info("用户 {} 请求API校验通过",authorityInfo.getPrincipal());
+        log.info("用户 {} 请求API校验通过", authorityInfo.getPrincipal());
         return Mono.just(new AuthorizationDecision(true));
 
 
@@ -128,7 +132,6 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
 //        }).defaultIfEmpty(new AuthorizationDecision(false));
 
     }
-
 
 
     @Override

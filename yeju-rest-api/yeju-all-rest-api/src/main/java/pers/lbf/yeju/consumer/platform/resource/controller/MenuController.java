@@ -32,7 +32,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
-import pers.lbf.yeju.consumer.base.security.manger.AuthorizationTokenManager;
+import pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 import pers.lbf.yeju.consumer.platform.resource.pojo.vo.MetaVO;
 import pers.lbf.yeju.consumer.platform.resource.pojo.vo.RouterVO;
@@ -70,51 +70,49 @@ public class MenuController {
     @Autowired
     private AuthorizationTokenManager tokenManager;
 
-    @ApiOperation(value = "获取所有菜单",notes = "获取所有菜单说明",httpMethod = "GET")
+    @ApiOperation(value = "获取所有菜单", notes = "获取所有菜单说明", httpMethod = "GET")
     @GetMapping("/findAll")
-    public Mono<IResult<List<MenuInfoBean>>> findAll()throws ServiceException {
+    public Mono<IResult<List<MenuInfoBean>>> findAll() throws ServiceException {
 
         return Mono.just(resourcesService.findAllMenu());
     }
 
 
-    @ApiOperation(value = "获取Menu列表 分页",notes = "Menu列表说明",httpMethod = "GET")
+    @ApiOperation(value = "获取Menu列表 分页", notes = "Menu列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<MenuInfoBean>> findPage(
-            @Validated @NotNull(message = "每页显示条数")  @ApiParam("当前页") @PathVariable Long currentPage,
+            @Validated @NotNull(message = "每页显示条数") @ApiParam("当前页") @PathVariable Long currentPage,
             @Validated @NotNull(message = "每页显示大小不能为空") @ApiParam("每页显示条数") @RequestParam Long size
-        )throws ServiceException {
+    ) throws ServiceException {
         BaseFindPageArgs args = new BaseFindPageArgs();
         args.setCurrentPage(currentPage);
         args.setSize(size);
 
-        return Mono.just(resourcesService.findMenuPage(args.getCurrentPage(),args.getSize()));
+        return Mono.just(resourcesService.findMenuPage(args.getCurrentPage(), args.getSize()));
     }
 
 
-
-
     @Deprecated
-    @ApiOperation(value = "获取菜单信息",notes = "菜单信息说明",httpMethod = "GET")
+    @ApiOperation(value = "获取菜单信息", notes = "菜单信息说明", httpMethod = "GET")
     @GetMapping("/getRouters")
-    public Mono<IResult<List<RouterInfoBean>>> getRouters(ServerWebExchange webExchange)throws ServiceException {
+    public Mono<IResult<List<RouterInfoBean>>> getRouters(ServerWebExchange webExchange) throws ServiceException {
 
         List<String> authorityList = getAuthorityList(webExchange);
         IResult<List<RouterInfoBean>> routers = resourcesService.getRouters(authorityList);
         return Mono.just(routers);
     }
 
-    @ApiOperation(value = "获取授权的菜单信息",notes = "菜单信息说明",httpMethod = "GET")
+    @ApiOperation(value = "获取授权的菜单信息", notes = "菜单信息说明", httpMethod = "GET")
     @GetMapping("/v2/getRouters")
-    public Mono<IResult<List<RouterVO>>> getRoutersV2(ServerWebExchange webExchange)throws ServiceException {
+    public Mono<IResult<List<RouterVO>>> getRoutersV2(ServerWebExchange webExchange) throws ServiceException {
 
         List<String> authorityList = getAuthorityList(webExchange);
         IResult<List<MenuInfoBean>> menuInfoBeanListResult = resourcesService.findAllAuthorizedMenuInfo(authorityList);
 
         List<MenuInfoBean> menuInfoBeanList;
-        if (menuInfoBeanListResult.isSuccess()){
+        if (menuInfoBeanListResult.isSuccess()) {
             menuInfoBeanList = menuInfoBeanListResult.getData();
-        }else {
+        } else {
             throw new ServiceException();
         }
 
@@ -122,9 +120,9 @@ public class MenuController {
         List<MenuInfoBean> orMenuListList = new LinkedList<>();
         // 获取顶级路由
         for (MenuInfoBean menuInfoBean : menuInfoBeanList) {
-            if (menuInfoBean.getParentId()==0L){
+            if (menuInfoBean.getParentId() == 0L) {
                 RouterVO routerVO = new RouterVO();
-                if (menuInfoBean.getIsFrame()==0){
+                if (menuInfoBean.getIsFrame() == 0) {
 
                     routerVO.setRedirect("noRedirect");
                     routerVO.setAlwaysShow(true);
@@ -143,7 +141,7 @@ public class MenuController {
 
                 result.add(routerVO);
 
-            }else {
+            } else {
                 orMenuListList.add(menuInfoBean);
             }
         }
@@ -151,7 +149,7 @@ public class MenuController {
         List<RouterVO> allRouter = new LinkedList<>();
         for (MenuInfoBean menuInfoBean : orMenuListList) {
             RouterVO routerVO = new RouterVO();
-            if (Objects.equals(menuInfoBean.getMenuType(), ResourceType.is_menu_dir.getValue())){
+            if (Objects.equals(menuInfoBean.getMenuType(), ResourceType.is_menu_dir.getValue())) {
 
                 routerVO.setRedirect("noRedirect");
                 routerVO.setAlwaysShow(true);
@@ -172,31 +170,29 @@ public class MenuController {
 
             allRouter.add(routerVO);
         }
-        log.info("子菜单总数{}",orMenuListList.size());
+        log.info("子菜单总数{}", orMenuListList.size());
         log.info("子节点总数{}", allRouter.size());
 
         //递归获取子节点
         for (RouterVO parent : result) {
-           parent = recursiveTree(parent, allRouter);
+            parent = recursiveTree(parent, allRouter);
         }
-
-
 
 
         return Mono.just(Result.ok(result));
     }
 
-    @ApiOperation(value = "获取菜单状态列表",notes = "获取菜单状态列表",httpMethod = "GET")
+    @ApiOperation(value = "获取菜单状态列表", notes = "获取菜单状态列表", httpMethod = "GET")
     @GetMapping("/status/list")
-    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList()throws ServiceException {
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList() throws ServiceException {
         IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.RESOURCE_STATUS);
         return Mono.just(result);
     }
 
-    private RouterVO recursiveTree(RouterVO parent,List<RouterVO> routerList){
+    private RouterVO recursiveTree(RouterVO parent, List<RouterVO> routerList) {
         for (RouterVO router : routerList) {
-            log.debug("父id{} 子的父id{}",parent.getId(),router.getParentId());
-            if (parent.getId().equals(router.getParentId())){
+            log.debug("父id{} 子的父id{}", parent.getId(), router.getParentId());
+            if (parent.getId().equals(router.getParentId())) {
                 recursiveTree(router, routerList);
                 parent.addChildren(router);
             }
@@ -206,13 +202,12 @@ public class MenuController {
     }
 
 
-
-    private List<String> getAuthorityList(ServerWebExchange webExchange) throws ServiceException{
+    private List<String> getAuthorityList(ServerWebExchange webExchange) throws ServiceException {
         //获取token
         String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
         AuthorityInfo authorityInfo = null;
         try {
-            authorityInfo  = tokenManager.getAuthorityInfo(authorization);
+            authorityInfo = tokenManager.getAuthorityInfo(authorization);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,13 +216,11 @@ public class MenuController {
         List<String> authorityList = authorityInfo.getAuthorityList();
 
         if (authorityList == null || authorityList.size() == 0) {
-            throw  ServiceException.getInstance(AuthStatusEnum.unauthorized);
+            throw ServiceException.getInstance(AuthStatusEnum.unauthorized);
         }
 
         return authorityList;
     }
-
-
 
 
 }

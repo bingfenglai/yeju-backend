@@ -80,9 +80,9 @@ public class SwaggerConfiguration extends Swagger2WebFluxConfiguration {
                         .securityReferences(
                                 Collections.singletonList(
                                         new SecurityReference(TokenConstant.TOKEN_KEY,
-                                        new AuthorizationScope[]{
-                                                new AuthorizationScope("global",
-                                                        "")})))
+                                                new AuthorizationScope[]{
+                                                        new AuthorizationScope("global",
+                                                                "")})))
                         .build()
         );
 
@@ -101,7 +101,7 @@ public class SwaggerConfiguration extends Swagger2WebFluxConfiguration {
         return null;
     }
 
-    public ApiInfo createApiInfo(){
+    public ApiInfo createApiInfo() {
         return new ApiInfoBuilder().title(config.getApplicationName() + " Api Doc")
                 .description(config.getApplicationDescription())
                 .contact(new Contact("赖 柄沣", null, "bingfengdev@aliyun.com"))

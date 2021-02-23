@@ -16,10 +16,7 @@
  */
 package pers.lbf.yeju.common.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,134 +29,158 @@ import java.util.Date;
  */
 @TableName("table_system_role")
 public class Role implements Serializable {
-  private static final long serialVersionUID = -24978373309220169L;
-  /** 主键 */
-  @TableId
-  private Long roleId;
-  /** 角色名称 */
-  private String roleName;
-  /** 角色字符串 */
-  private String roleCode;
-  /** 角色状态 0未启用 1启用 */
-  private Long roleStatus;
+    private static final long serialVersionUID = -24978373309220169L;
+    /**
+     * 主键
+     */
+    @TableId
+    private Long roleId;
+    /**
+     * 角色名称
+     */
+    private String roleName;
+    /**
+     * 角色字符串
+     */
+    private String roleCode;
+    /**
+     * 角色状态 0未启用 1启用
+     */
+    private Long roleStatus;
 
-  /** 创建时间 */
-  private Date createTime;
-  /** 创建者 */
-  private Long createBy;
-  /** 更新时间 */
-  private Date updateTime;
-  /** 更改者 */
-  private Long changedBy;
-  /** 备注 */
-  private String remark;
-  /** 字段版本 */
-  @Version
-  private Integer versionNumber;
-  /** 删除标识 */
-  @TableLogic
-  private Integer isDelete;
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+    /**
+     * 创建者
+     */
+    private Long createBy;
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.UPDATE)
+    private Date updateTime;
+    /**
+     * 更改者
+     */
+    private Long changedBy;
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
+     * 字段版本
+     */
+    @Version
+    private Integer versionNumber;
+    /**
+     * 删除标识
+     */
+    @TableLogic
+    private Integer isDelete;
 
-  public Long getRoleId() {
-    return roleId;
-  }
+    public Long getRoleId() {
+        return roleId;
+    }
 
-  public void setRoleId(Long roleId) {
-    this.roleId = roleId;
-  }
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
 
-  public String getRoleName() {
-    return roleName;
-  }
+    public String getRoleName() {
+        return roleName;
+    }
 
-  public void setRoleName(String roleName) {
-    this.roleName = roleName;
-  }
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
-  public String getRoleCode() {
-    return roleCode;
-  }
+    public String getRoleCode() {
+        return roleCode;
+    }
 
-  public void setRoleCode(String roleCode) {
-    this.roleCode = roleCode;
-  }
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
 
-  public Long getRoleStatus() {
-    return roleStatus;
-  }
+    public Long getRoleStatus() {
+        return roleStatus;
+    }
 
-  public void setRoleStatus(Long roleStatus) {
-    this.roleStatus = roleStatus;
-  }
+    public void setRoleStatus(Long roleStatus) {
+        this.roleStatus = roleStatus;
+    }
 
-  public Date getCreateTime() {
-    return createTime;
-  }
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-  public void setCreateTime(Date createTime) {
-    this.createTime = createTime;
-  }
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-  public Long getCreateBy() {
-    return createBy;
-  }
+    public Long getCreateBy() {
+        return createBy;
+    }
 
-  public void setCreateBy(Long createBy) {
-    this.createBy = createBy;
-  }
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
 
-  public Date getUpdateTime() {
-    return updateTime;
-  }
+    public Date getUpdateTime() {
+        return updateTime;
+    }
 
-  public void setUpdateTime(Date updateTime) {
-    this.updateTime = updateTime;
-  }
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
-  public Long getChangedBy() {
-    return changedBy;
-  }
+    public Long getChangedBy() {
+        return changedBy;
+    }
 
-  public void setChangedBy(Long changedBy) {
-    this.changedBy = changedBy;
-  }
+    public void setChangedBy(Long changedBy) {
+        this.changedBy = changedBy;
+    }
 
-  public String getRemark() {
-    return remark;
-  }
+    public String getRemark() {
+        return remark;
+    }
 
-  public void setRemark(String remark) {
-    this.remark = remark;
-  }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
-  public Integer getVersionNumber() {
-    return versionNumber;
-  }
+    public Integer getVersionNumber() {
+        return versionNumber;
+    }
 
-  public void setVersionNumber(Integer versionNumber) {
-    this.versionNumber = versionNumber;
-  }
+    public void setVersionNumber(Integer versionNumber) {
+        this.versionNumber = versionNumber;
+    }
 
-  public Integer getIsDelete() {
-    return isDelete;
-  }
+    public Integer getIsDelete() {
+        return isDelete;
+    }
 
-  public void setIsDelete(Integer isDelete) {
-    this.isDelete = isDelete;
-  }
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 
-  @Override
-  public String toString() {
-    return "Role{" +
-            "roleId=" + roleId +
-            ", roleName='" + roleName + '\'' +
-            ", roleCode='" + roleCode + '\'' +
-            ", roleStatus=" + roleStatus +
-            ", createTime=" + createTime +
-            ", createBy=" + createBy +
-            ", updateTime=" + updateTime +
-            ", changedBy=" + changedBy +
-            ", remark='" + remark + '\'' +
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", roleCode='" + roleCode + '\'' +
+                ", roleStatus=" + roleStatus +
+                ", createTime=" + createTime +
+                ", createBy=" + createBy +
+                ", updateTime=" + updateTime +
+                ", changedBy=" + changedBy +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

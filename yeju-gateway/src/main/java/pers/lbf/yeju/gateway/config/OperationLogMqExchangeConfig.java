@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.message.operationlog;
+package pers.lbf.yeju.gateway.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

@@ -48,7 +48,6 @@ import java.util.LinkedList;
  */
 @EnableWebFluxSecurity
 @Configuration
-@Primary
 public class SpringSecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SpringSecurityConfig.class);
@@ -105,6 +104,7 @@ public class SpringSecurityConfig {
 
     /**
      * 构建过滤器链
+     *
      * @param http
      * @return
      * @throws Exception
@@ -113,10 +113,10 @@ public class SpringSecurityConfig {
     @Primary
     public SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
 
-        log.info("业务网关配置白名单：{}",ignoreWhiteProperties.getWhites().toString());
+        log.info("业务网关配置白名单：{}", ignoreWhiteProperties.getWhites().toString());
 
 
-        String[] whites =ignoreWhiteProperties.getWhites().toArray(new String[0]);
+        String[] whites = ignoreWhiteProperties.getWhites().toArray(new String[0]);
 
         SecurityWebFilterChain chain = http
                 .authorizeExchange()
@@ -146,7 +146,7 @@ public class SpringSecurityConfig {
                 .build();
 
 
-        http.addFilterAt(getAuthenticationWebFilter(),SecurityWebFiltersOrder.AUTHENTICATION);
+        http.addFilterAt(getAuthenticationWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION);
         // 设置自定义登录参数转换器
         chain.getWebFilters()
                 .filter(webFilter -> webFilter instanceof AuthenticationWebFilter)
@@ -160,6 +160,7 @@ public class SpringSecurityConfig {
 
     /**
      * 注册用户信息验证管理器，可按需求添加多个按顺序执行
+     *
      * @return ReactiveAuthenticationManager
      */
     //@Bean
@@ -171,7 +172,7 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public AuthenticationWebFilter getAuthenticationWebFilter(){
+    public AuthenticationWebFilter getAuthenticationWebFilter() {
         return new AuthenticationWebFilter(authenticationManager);
     }
-   }
+}

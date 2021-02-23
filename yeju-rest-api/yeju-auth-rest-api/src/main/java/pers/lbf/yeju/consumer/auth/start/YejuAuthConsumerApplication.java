@@ -22,13 +22,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 
-/** 认证服务消费者
+/**
+ * 认证服务消费者
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/4 17:02
  */
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer.auth")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer")
 @EnableWebFluxSecurity
 @Slf4j
 public class YejuAuthConsumerApplication {

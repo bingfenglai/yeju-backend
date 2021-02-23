@@ -27,7 +27,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @version 1.0
  * @date 2021/2/17 14:53
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer.notice")
+@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer")
 @EnableDiscoveryClient
 public class NoticeApp {
 

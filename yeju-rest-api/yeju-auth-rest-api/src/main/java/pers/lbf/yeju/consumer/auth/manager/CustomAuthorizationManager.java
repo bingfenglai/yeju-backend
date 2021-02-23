@@ -40,7 +40,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-/**鉴权管理器
+/**
+ * 鉴权管理器
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -66,24 +68,24 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         HttpHeaders headers = request.getHeaders();
         String token = headers.getFirst(TokenConstant.TOKEN_KEY);
 
-        if (token==null){
+        if (token == null) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         AuthorityInfoBean authorityInfoBean = null;
         try {
-             authorityInfoBean = tokenManager.getAuthorityInfo(token);
+            authorityInfoBean = tokenManager.getAuthorityInfo(token);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (authorityInfoBean == null){
+        if (authorityInfoBean == null) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         // 判断账户有没有被强制过期
         Boolean flag = sessionService.isExpired(authorityInfoBean.getPrincipal()).getData();
-        if (!flag){
+        if (!flag) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
@@ -96,7 +98,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         }
 
         String path1 = request.getURI().getPath();
-        log.info("用户请求路径：{}",path1);
+        log.info("用户请求路径：{}", path1);
         for (String s : authorityList) {
             if (antPathMatcher.match(s, path1)) {
                 log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", s, path1));
@@ -109,7 +111,6 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
 
 
     }
-
 
 
     @Override

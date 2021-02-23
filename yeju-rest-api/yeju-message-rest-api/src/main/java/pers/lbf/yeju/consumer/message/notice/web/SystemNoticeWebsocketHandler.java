@@ -26,7 +26,7 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
-import pers.lbf.yeju.consumer.base.security.manger.AuthorizationTokenManager;
+import pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 import pers.lbf.yeju.consumer.message.notice.pojo.NoticeMessageVO;
 import pers.lbf.yeju.consumer.message.notice.util.NoticeTypeUtil;
@@ -57,15 +57,14 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
     @DubboReference
     private INoticeService noticeService;
 
-    private static Map<String,WebSocketSession> sessionMap = new ConcurrentHashMap<>();
-
+    private static Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
 
 
     @Override
     public Mono<Void> handle(WebSocketSession session) {
 
         return session.receive().doOnSubscribe(subscription -> {
-            log.info("收到会话 {}",session.toString());
+            log.info("收到会话 {}", session.toString());
 
         }).doOnTerminate(() -> {
             log.info(" doOnTerminate");
@@ -74,26 +73,24 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
         }).doOnCancel(() -> {
             log.info("on cancel");
         }).doOnNext(webSocketMessage -> {
-           if (webSocketMessage.getType().equals(WebSocketMessage.Type.TEXT)){
-               String token = webSocketMessage.getPayloadAsText();
-               AuthorityInfo authorityInfo = null;
-               try {
-                   authorityInfo = tokenManager.getAuthorityInfo(token);
-                   log.info(authorityInfo.toString());
+            if (webSocketMessage.getType().equals(WebSocketMessage.Type.TEXT)) {
+                String token = webSocketMessage.getPayloadAsText();
+                AuthorityInfo authorityInfo = null;
+                try {
+                    authorityInfo = tokenManager.getAuthorityInfo(token);
+                    log.info(authorityInfo.toString());
 
-                   sessionMap.put(authorityInfo.getPrincipal(),session);
-                   log.info("会话key {}",authorityInfo.getPrincipal());
-               } catch (Exception e) {
-                   log.error(String.valueOf(e));
-               }
-               if (authorityInfo == null) {
-                   throw new ServiceException(AuthStatusEnum.NO_TOKEN);
-               }
+                    sessionMap.put(authorityInfo.getPrincipal(), session);
+                    log.info("会话key {}", authorityInfo.getPrincipal());
+                } catch (Exception e) {
+                    log.error(String.valueOf(e));
+                }
+                if (authorityInfo == null) {
+                    throw new ServiceException(AuthStatusEnum.NO_TOKEN);
+                }
 
-               this.send(session);
-           }
-
-
+                this.send(session);
+            }
 
 
         }).doOnError(throwable -> {
@@ -127,16 +124,16 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
     }
 
-    public void send(NoticeMessageVO message){
+    public void send(NoticeMessageVO message) {
         WebSocketSession session = sessionMap.get("969391");
-        send(session,message);
+        send(session, message);
     }
 
     private void send(WebSocketSession session, NoticeMessageVO message) {
 
         log.info(message.toString());
         String s = JSONObject.toJSONString(message);
-        if (session==null){
+        if (session == null) {
             log.info("session is null");
         }
         session.send(Flux.just(session.textMessage(s))).then().doOnError(throwable -> {

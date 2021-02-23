@@ -1,5 +1,7 @@
 package pers.lbf.yeju.common.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
@@ -26,11 +28,19 @@ public class Post extends Model<Post> {
     private String remark;
     //岗位状态0未启用1启用
     private String postStatus;
-    //创建时间
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-    //创建者
+    /**
+     * 创建者
+     */
     private Long createBy;
-    //更新时间
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
     //更改者
     private Long changedBy;

@@ -1,9 +1,6 @@
 package pers.lbf.yeju.common.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -49,6 +46,7 @@ public class Notice extends Model<Notice> {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     /**
      * 创建者
@@ -57,6 +55,7 @@ public class Notice extends Model<Notice> {
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
     /**
      * 更改者

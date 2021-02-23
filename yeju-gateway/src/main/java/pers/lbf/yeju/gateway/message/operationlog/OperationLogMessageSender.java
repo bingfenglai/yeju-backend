@@ -24,6 +24,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.gateway.config.OperationLogMqExchangeConfig;
 
 import java.util.Map;
 import java.util.UUID;
@@ -55,9 +56,9 @@ public class OperationLogMessageSender {
         @Override
         public void confirm(CorrelationData correlationData, boolean ack, String cause) {
 
-            log.info("correlationData: {}",correlationData);
-            log.info("isAck: {}",ack);
-            if(!ack){
+            log.info("correlationData: {}", correlationData);
+            log.info("isAck: {}", ack);
+            if (!ack) {
                 String id = correlationData.getId();
                 log.info("消息 {} 处理失败", id);
             }
@@ -67,19 +68,20 @@ public class OperationLogMessageSender {
     // 返回机制
     final RabbitTemplate.ReturnCallback returnCallback =
             (message, i, replyText, exchange, routingKey) -> {
-                log.info("message: {}",message.toString());
-                log.info("replyText: {}",replyText);
+                log.info("message: {}", message.toString());
+                log.info("replyText: {}", replyText);
             };
 
     /**
      * 消息发送方法
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2021/1/13 20:19
-     * @param message 消息对象
+     *
+     * @param message    消息对象
      * @param properties 消息信息存储结构
      * @return void
      * @throws RuntimeException e
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/1/13 20:19
      */
     public void send(Object message, Map<String, Object> properties) throws RuntimeException {
 
@@ -93,7 +95,7 @@ public class OperationLogMessageSender {
         String id = UUID.randomUUID().toString();
         CorrelationData correlationData = new CorrelationData(id);
         //exchange, routingKey, object, correlationData
-        assert mqConfig !=null;
+        assert mqConfig != null;
         System.out.println(mqConfig.toString());
         rabbitTemplate.convertAndSend(mqConfig.getName(), mqConfig.getKey(), msg, correlationData);
     }

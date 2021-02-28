@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.dto;
+package pers.lbf.yeju.service.interfaces.session.pojo;
 
 import java.io.Serializable;
 import java.util.Date;

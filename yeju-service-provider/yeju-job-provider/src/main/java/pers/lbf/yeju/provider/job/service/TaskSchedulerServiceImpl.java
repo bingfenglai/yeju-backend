@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.provider.job.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.domain.entity.TaskScheduler;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.job.dao.ITaskSchedulerDao;
@@ -31,7 +33,9 @@ import pers.lbf.yeju.service.interfaces.job.IJobGroupService;
 import pers.lbf.yeju.service.interfaces.job.IJobPropertiesService;
 import pers.lbf.yeju.service.interfaces.job.IJobTriggerService;
 import pers.lbf.yeju.service.interfaces.job.ITaskSchedulerService;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobDetailsBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +63,28 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
 
     @DubboReference
     private IJobPropertiesService jobPropertiesService;
+
+    /**
+     * 查找所有定时任务 初始化用
+     *
+     * @return all job list
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/28 14:50
+     */
+    @Override
+    public IResult<List<JobDetailsBean>> findAll() throws ServiceException {
+        QueryWrapper<TaskScheduler> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("status", 1);
+        List<TaskScheduler> taskSchedulers = taskSchedulerDao.selectList(queryWrapper);
+        List<JobDetailsBean> result = new LinkedList<>();
+        for (TaskScheduler taskScheduler : taskSchedulers) {
+            JobDetailsBean jobInfoBean = taskSchedulerToJobDetailsBean(taskScheduler);
+            result.add(jobInfoBean);
+        }
+
+        return Result.ok(result);
+    }
 
     /**
      * 获取quartz调度器的计划任务
@@ -223,4 +249,26 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
 
         return jobPropertiesService.findPropertiesByJobId(taskId).getData();
     }
+
+    private JobDetailsBean taskSchedulerToJobDetailsBean(TaskScheduler taskScheduler) {
+        JobDetailsBean jobDetailsBean = new JobDetailsBean();
+
+        jobDetailsBean.setMisfirePolicy(String.valueOf(taskScheduler.getMisfirePolicy()));
+        jobDetailsBean.setJobId(taskScheduler.getTaskId());
+        jobDetailsBean.setInvokeTargetStr(taskScheduler.getInvokeTarget());
+        jobDetailsBean.setJobName(taskScheduler.getTaskName());
+        jobDetailsBean.setJobGroup(this.getJobGroupName(taskScheduler.getTaskGroupId()));
+        jobDetailsBean.setCronExpression(taskScheduler.getCronExpression());
+        jobDetailsBean.setJobStatus(String.valueOf(taskScheduler.getStatus()));
+        jobDetailsBean.setCreatedDate(taskScheduler.getCreateTime());
+        jobDetailsBean.setConcurrent(String.valueOf(taskScheduler.getConcurrent()));
+        jobDetailsBean.setJobProperties(this.getJobGroupProperties(taskScheduler.getTaskId()));
+        jobDetailsBean.setTriggerInfoBeanList(this.getTriggerInfoBeanListByJobId(taskScheduler.getTaskId()));
+        return jobDetailsBean;
+    }
+
+    private List<JobTriggerInfoBean> getTriggerInfoBeanListByJobId(Long taskId) {
+        return triggerService.findTriggerInfoBeanListByJobId(taskId).getData();
+    }
+
 }

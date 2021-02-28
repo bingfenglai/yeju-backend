@@ -70,6 +70,12 @@ public class YejuJobScheduler extends YejuBaseScheduler {
      */
     public static void createOneJob(JobInfoBean jobInfoBean, JobTriggerInfoBean triggerInfoBean) throws ServiceException {
 
+        if (isExisted(jobInfoBean) || isExisted(triggerInfoBean)) {
+            log.warn("任务已存在");
+            removeJob(jobInfoBean.getJobName(), jobInfoBean.getJobGroup(),
+                    triggerInfoBean.getName(), triggerInfoBean.getGroup());
+        }
+
 
         //用于描叙Job实现类及其他的一些静态信息，构建一个作业实例
         JobDetail jobDetail = createJobDetail(jobInfoBean);
@@ -97,6 +103,27 @@ public class YejuJobScheduler extends YejuBaseScheduler {
             throw TaskException.getInstance(TaskExecutionStatus.FailedToStartTheScheduledTask);
         }
 
+    }
+
+    public static boolean isExisted(JobInfoBean jobInfoBean) throws ServiceException {
+        JobKey jobKey = new JobKey(jobInfoBean.getJobName(), jobInfoBean.getJobGroup());
+        try {
+            return scheduler.checkExists(jobKey);
+        } catch (SchedulerException e) {
+            log.error(String.valueOf(e));
+            throw ServiceException.getInstance(e.getMessage(), ServiceStatusEnum.UNKNOWN_ERROR.getCode());
+        }
+    }
+
+    public static boolean isExisted(JobTriggerInfoBean triggerInfoBean) throws ServiceException {
+
+        TriggerKey triggerKey = new TriggerKey(triggerInfoBean.getName(), triggerInfoBean.getGroup());
+        try {
+            return scheduler.checkExists(triggerKey);
+        } catch (SchedulerException e) {
+            log.error(String.valueOf(e));
+            throw ServiceException.getInstance(e.getMessage(), ServiceStatusEnum.UNKNOWN_ERROR.getCode());
+        }
     }
 
 

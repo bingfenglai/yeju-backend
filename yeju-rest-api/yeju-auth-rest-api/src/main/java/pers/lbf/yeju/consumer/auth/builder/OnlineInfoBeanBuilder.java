@@ -21,7 +21,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 import pers.lbf.yeju.consumer.auth.util.HttpUtils;
-import pers.lbf.yeju.service.interfaces.auth.dto.OnlineInfoBean;
+import pers.lbf.yeju.service.interfaces.session.pojo.OnlineInfoBean;
 
 import java.util.Date;
 import java.util.Objects;
@@ -39,14 +39,14 @@ public class OnlineInfoBeanBuilder {
 
     private ServerHttpRequest request;
 
-    public  OnlineInfoBean build(){
+    public OnlineInfoBean build() {
         if (request != null && principal != null && !"".equals(principal)) {
-            return this.build(principal,request);
+            return this.build(principal, request);
         }
-        throw  ServiceException.getInstance("subject is not be null",ServiceStatusEnum.UNKNOWN_ERROR.getCode());
+        throw ServiceException.getInstance("subject is not be null", ServiceStatusEnum.UNKNOWN_ERROR.getCode());
     }
 
-    private  OnlineInfoBean build(String principal,ServerHttpRequest request){
+    private OnlineInfoBean build(String principal, ServerHttpRequest request) {
 
         String userAgentStr = Objects.requireNonNull(request.getHeaders().get("User-Agent")).get(0);
         UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
@@ -54,7 +54,7 @@ public class OnlineInfoBeanBuilder {
 
         OnlineInfoBean onlineInfoBean = new OnlineInfoBean();
         onlineInfoBean.setPrincipal(principal);
-        onlineInfoBean.setSessionId("yeju:session::"+principal);
+        onlineInfoBean.setSessionId("yeju:session::" + principal);
         onlineInfoBean.setIp(HttpUtils.getIpAddress(request));
         onlineInfoBean.setAddress("未知");
         onlineInfoBean.setDate(new Date());

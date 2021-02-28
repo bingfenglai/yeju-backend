@@ -16,14 +16,12 @@
  */
 package pers.lbf.yeju.provider.job.manager;
 
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.provider.job.scheduler.YejuJobScheduler;
 import pers.lbf.yeju.provider.job.util.CronExpressionUtil;
-import pers.lbf.yeju.service.interfaces.job.ITaskSchedulerService;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
 
@@ -39,9 +37,6 @@ import javax.annotation.PostConstruct;
 @Component
 public class JobManager {
 
-    @DubboReference
-    private ITaskSchedulerService jobSchedulerService;
-
     /**
      * 此方法将于系统启动初始化时执行一次
      * 将业务数据库当中的定时任务加载到定时任务上下文，
@@ -53,7 +48,7 @@ public class JobManager {
      */
     @PostConstruct
     private void init() {
-       
+
     }
 
     public void createJob(JobInfoBean jobInfoBean, JobTriggerInfoBean triggerInfoBean) throws ServiceException {

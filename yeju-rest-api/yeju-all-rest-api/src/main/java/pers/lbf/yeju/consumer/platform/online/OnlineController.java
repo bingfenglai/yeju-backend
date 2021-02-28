@@ -26,14 +26,16 @@ import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.util.YejuInfoSecurityUtil;
-import pers.lbf.yeju.service.interfaces.auth.dto.OnlineInfoBean;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.pojo.OnlineInfoBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/** 在线用户
+/**
+ * 在线用户
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/20 20:49
@@ -47,12 +49,12 @@ public class OnlineController {
     private ISessionService sessionService;
 
 
-    @ApiOperation(value = "获取在线用户列表 分页",notes = "在线用户列表说明",httpMethod = "GET")
+    @ApiOperation(value = "获取在线用户列表 分页", notes = "在线用户列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<OnlineInfoBean>> findPage(
-            @Validated @NotNull(message = "每页显示条数")  @ApiParam("当前页") @PathVariable Long currentPage,
+            @Validated @NotNull(message = "每页显示条数") @ApiParam("当前页") @PathVariable Long currentPage,
             @Validated @NotNull(message = "每页显示大小不能为空") @ApiParam("每页显示条数") @RequestParam Long size
-        )throws ServiceException {
+    ) throws ServiceException {
         BaseFindPageArgs args = new BaseFindPageArgs();
         args.setCurrentPage(currentPage);
         args.setSize(size);
@@ -64,19 +66,19 @@ public class OnlineController {
 
     }
 
-    @ApiOperation(value = "踢人",notes = "OnlineController说明",httpMethod = "DELETE")
+    @ApiOperation(value = "踢人", notes = "OnlineController说明", httpMethod = "DELETE")
     @DeleteMapping("/{principal}")
-    public Mono<Void> deleteOnlineByPrincipal(@ApiParam( "抽象账户") @PathVariable("principal") String principal)throws ServiceException {
+    public Mono<Void> deleteOnlineByPrincipal(@ApiParam("抽象账户") @PathVariable("principal") String principal) throws ServiceException {
         sessionService.destroySession(principal);
         return Mono.empty();
     }
 
 
-    public void filterInfo(List<OnlineInfoBean> list){
+    public void filterInfo(List<OnlineInfoBean> list) {
 
         for (OnlineInfoBean onlineInfoBean : list) {
             String sessionId = onlineInfoBean.getSessionId();
-            String s = YejuInfoSecurityUtil.around(sessionId,1,1);
+            String s = YejuInfoSecurityUtil.around(sessionId, 1, 1);
             log.info(s);
             onlineInfoBean.setSessionId(s);
         }

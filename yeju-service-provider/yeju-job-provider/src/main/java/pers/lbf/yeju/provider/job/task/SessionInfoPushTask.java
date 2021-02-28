@@ -14,14 +14,24 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.dto;
+package pers.lbf.yeju.provider.job.task;
+
+import org.quartz.JobExecutionContext;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.provider.job.BaseJob;
 
 /**
- * TODO
+ * session列表定时推送至消息队列的任务，每30秒执行一次
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/7 21:16
+ * @date 2021/2/28 15:57
  */
-public class SubjectDetails extends SessionDetails{
+public class SessionInfoPushTask extends BaseJob {
+    
+
+    @Override
+    protected void doExecute(JobExecutionContext context) throws ServiceException {
+
+    }
 }

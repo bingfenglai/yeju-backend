@@ -42,9 +42,9 @@ import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
 import pers.lbf.yeju.consumer.auth.sender.OnlineSender;
 import pers.lbf.yeju.consumer.auth.sender.SessionInitSender;
-import pers.lbf.yeju.service.interfaces.auth.dto.OnlineInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.enums.SessionStatus;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.pojo.OnlineInfoBean;
 import reactor.core.publisher.Mono;
 
 /**

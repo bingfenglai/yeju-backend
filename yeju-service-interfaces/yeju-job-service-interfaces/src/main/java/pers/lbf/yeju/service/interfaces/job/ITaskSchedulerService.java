@@ -19,7 +19,10 @@ package pers.lbf.yeju.service.interfaces.job;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobDetailsBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
+
+import java.util.List;
 
 /**
  * TODO
@@ -29,6 +32,16 @@ import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
  * @date 2021/2/22 15:58
  */
 public interface ITaskSchedulerService {
+
+    /**
+     * 查找所有定时任务 初始化用
+     *
+     * @return all job list
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/28 14:50
+     */
+    IResult<List<JobDetailsBean>> findAll() throws ServiceException;
 
     /**
      * 获取quartz调度器的计划任务

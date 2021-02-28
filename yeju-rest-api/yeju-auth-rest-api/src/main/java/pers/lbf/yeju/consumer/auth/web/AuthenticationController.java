@@ -31,15 +31,17 @@ import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
 import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
+import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-/**认证控制器
+/**
+ * 认证控制器
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -61,13 +63,13 @@ public class AuthenticationController {
 
 
     @GetMapping("/login")
-    public Mono<IResult<Object>> login() throws Exception{
+    public Mono<IResult<Object>> login() throws Exception {
         return Mono.just(SimpleResult.failed(AuthStatusEnum.NO_TOKEN));
     }
 
-    @ApiOperation(value = "登出方法",notes = "登出方法说明",httpMethod = "DELETE")
+    @ApiOperation(value = "登出方法", notes = "登出方法说明", httpMethod = "DELETE")
     @DeleteMapping("/logout")
-    public Mono<Object> logout(ServerWebExchange webExchange)throws ServiceException {
+    public Mono<Object> logout(ServerWebExchange webExchange) throws ServiceException {
         //获取token
         String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
         AuthorityInfoBean authorityInfo = null;
@@ -86,30 +88,31 @@ public class AuthenticationController {
     }
 
 
-
     /**
+     * @return pers.lbf.yeju.common.core.result.IResult
      * @Description 未登录调用
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2020/12/12 17:58
-     * @return pers.lbf.yeju.common.core.result.IResult
      */
     @GetMapping("/unauthc")
-    public Mono<IResult<Object>> unauthc() throws Exception{
+    public Mono<IResult<Object>> unauthc() throws Exception {
 
-        return  Mono.just(SimpleResult.failed(AuthStatusEnum.NO_TOKEN));
+        return Mono.just(SimpleResult.failed(AuthStatusEnum.NO_TOKEN));
     }
 
-    /**获取图片验证码接口
+    /**
+     * 获取图片验证码接口
+     *
+     * @return reactor.core.publisher.Mono<pers.lbf.yeju.common.core.result.IResult < pers.lbf.yeju.authserver.interfaces.dto.VerityDTO < java.lang.Object>>>
+     * @throws Exception e
      * @Description //TODO
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2020/12/28 15:25
-     * @return reactor.core.publisher.Mono<pers.lbf.yeju.common.core.result.IResult<pers.lbf.yeju.authserver.interfaces.dto.VerityDTO<java.lang.Object>>>
-     * @throws Exception e
      */
     @GetMapping("/code/image")
-    public Mono<IResult<VerityDTO<String>>> getImageCode() throws Exception{
+    public Mono<IResult<VerityDTO<String>>> getImageCode() throws Exception {
 
         IResult<VerityDTO<String>> result = codeService.getVerificationCode(VerificationCodeTypeEnum.PICTURE_VERIFICATION_CODE);
 
@@ -119,22 +122,22 @@ public class AuthenticationController {
 
     /**
      * 获取手机验证码
+     *
+     * @param phoneNumber 手机号
+     * @return reactor.core.publisher.Mono<pers.lbf.yeju.common.core.result.IResult < pers.lbf.yeju.authserver.interfaces.dto.VerityDTO < java.lang.String>>>
+     * @throws Exception e
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2020/12/28 16:48
-     * @param phoneNumber 手机号
-     * @return reactor.core.publisher.Mono<pers.lbf.yeju.common.core.result.IResult<pers.lbf.yeju.authserver.interfaces.dto.VerityDTO<java.lang.String>>>
-     * @throws Exception e
      */
     @GetMapping("/code/phone/{phoneNumber}")
-    public Mono<IResult<VerityDTO<String>>> getPhoneCode( @PathVariable
-                                                              @Valid @NotNull(message = "手机号不能为空")
-                                                                      String phoneNumber)
-            throws Exception{
+    public Mono<IResult<VerityDTO<String>>> getPhoneCode(@PathVariable
+                                                         @Valid @NotNull(message = "手机号不能为空")
+                                                                 String phoneNumber)
+            throws Exception {
         IResult<VerityDTO<String>> result = codeService.getVerificationCode(VerificationCodeTypeEnum.MOBILE_VERIFICATION_CODE);
         return Mono.just(result);
     }
-
 
 
 }

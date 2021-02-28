@@ -36,7 +36,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

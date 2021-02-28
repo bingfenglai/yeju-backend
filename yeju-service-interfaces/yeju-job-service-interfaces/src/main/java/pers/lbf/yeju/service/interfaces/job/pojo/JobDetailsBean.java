@@ -14,32 +14,32 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.job.task;
+package pers.lbf.yeju.service.interfaces.job.pojo;
 
-import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.JobExecutionContext;
-import pers.lbf.yeju.provider.job.BaseJob;
-
-import java.util.Date;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * 测试任务类
- * DisallowConcurrentExecution 该注解作用禁止同一个任务实例并发执行
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/22 21:10
+ * @date 2021/2/28 14:57
  */
-@Slf4j
-@DisallowConcurrentExecution
-public class HelloTask extends BaseJob {
+public class JobDetailsBean extends JobInfoBean implements Serializable {
 
-    private int count = 0;
+    private List<JobTriggerInfoBean> triggerInfoBeanList = new LinkedList<>();
 
-    @Override
-    protected void doExecute(JobExecutionContext context) {
-        count++;
-        log.info("当前时间 {} hello world! {}", new Date(), count);
+    public void addTrigger(JobTriggerInfoBean trigger) {
+        this.triggerInfoBeanList.add(trigger);
+    }
+
+    public List<JobTriggerInfoBean> getTriggerInfoBeanList() {
+        return triggerInfoBeanList;
+    }
+
+    public void setTriggerInfoBeanList(List<JobTriggerInfoBean> triggerInfoBeanList) {
+        this.triggerInfoBeanList = triggerInfoBeanList;
     }
 }

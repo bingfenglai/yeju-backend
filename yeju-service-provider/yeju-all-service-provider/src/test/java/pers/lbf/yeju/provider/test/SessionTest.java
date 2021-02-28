@@ -22,7 +22,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pers.lbf.yeju.provider.start.YejuProviderApplication;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.ISessionService;
+
 
 /**
  * TODO
@@ -41,7 +42,7 @@ public class SessionTest {
     private String accout = "969391";
 
     @Test
-    public void test1(){
+    public void test1() {
         sessionService.destroySession(accout);
     }
 

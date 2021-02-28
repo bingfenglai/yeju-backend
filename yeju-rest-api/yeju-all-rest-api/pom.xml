@@ -58,6 +58,12 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
+            <artifactId>yeju-session-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
             <artifactId>yeju-platform-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>

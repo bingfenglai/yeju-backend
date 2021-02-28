@@ -13,8 +13,6 @@
     <artifactId>yeju-base-web</artifactId>
 
 
-
-
     <dependencies>
 
         <dependency>
@@ -58,7 +56,7 @@
             <version>${spring-cloud-alibaba.version}</version>
         </dependency>
 
-<!--        NIO-->
+        <!--        NIO-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
@@ -129,16 +127,17 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
+            <artifactId>yeju-session-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
             <artifactId>yeju-data-dictionary-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 
     </dependencies>
-
-
-
-
-
 
 
 </project>

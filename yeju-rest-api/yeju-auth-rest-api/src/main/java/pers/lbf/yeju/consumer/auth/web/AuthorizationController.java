@@ -31,14 +31,16 @@ import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.AuthzSimpleInfoBean;
-import pers.lbf.yeju.service.interfaces.auth.dto.SessionDetails;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAuthzService;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.ISessionService;
+import pers.lbf.yeju.service.interfaces.session.pojo.SessionDetails;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-/** 权限信息接口
+/**
+ * 权限信息接口
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/7 21:10
@@ -59,7 +61,7 @@ public class AuthorizationController {
     private AuthorizationTokenManager tokenManager;
 
 
-    @ApiOperation(value = "获取简单授权信息",notes = "AuthorizationController说明",httpMethod = "GET")
+    @ApiOperation(value = "获取简单授权信息", notes = "AuthorizationController说明", httpMethod = "GET")
     @GetMapping("/simple/info")
     public Mono<IResult<AuthzSimpleInfoBean>> getAuthzSimpleInfo(ServerWebExchange webExchange) throws Exception {
         //获取token
@@ -70,7 +72,7 @@ public class AuthorizationController {
     }
 
 
-    @ApiOperation(value = "获取账号主体信息",notes = "账号主题信息说明",httpMethod = "GET")
+    @ApiOperation(value = "获取账号主体信息", notes = "账号主题信息说明", httpMethod = "GET")
     @GetMapping("/getAuthzDetailInfo")
     public Mono<IResult<SessionDetails>> getAuthzDetailInfo(ServerWebExchange webExchange) throws Exception {
         //获取token
@@ -81,7 +83,7 @@ public class AuthorizationController {
         return Mono.just(sessionService.initSession(principal));
     }
 
-    @ApiOperation(value = "刷新令牌",notes = "说明",httpMethod = "GET")
+    @ApiOperation(value = "刷新令牌", notes = "说明", httpMethod = "GET")
     @GetMapping("/refreshToken")
     public Mono<IResult<LoginRepoBean>> refreshToken(ServerWebExchange webExchange) throws Exception {
         // 获取令牌中的信息

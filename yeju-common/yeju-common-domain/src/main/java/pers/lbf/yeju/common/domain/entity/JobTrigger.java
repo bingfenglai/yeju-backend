@@ -38,10 +38,14 @@ public class JobTrigger extends Model<JobTrigger> {
      */
     @TableId
     private Long triggerId;
+
+    private Long taskId;
     /**
      * 名字
      */
     private String triggerName;
+
+    private String triggerGroupName;
     /**
      * cron表达式
      */
@@ -97,6 +101,13 @@ public class JobTrigger extends Model<JobTrigger> {
      */
     private String description;
 
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
 
     public Long getTriggerId() {
         return triggerId;
@@ -112,6 +123,14 @@ public class JobTrigger extends Model<JobTrigger> {
 
     public void setTriggerName(String triggerName) {
         this.triggerName = triggerName;
+    }
+
+    public String getTriggerGroupName() {
+        return triggerGroupName;
+    }
+
+    public void setTriggerGroupName(String triggerGroupName) {
+        this.triggerGroupName = triggerGroupName;
     }
 
     public String getCron() {

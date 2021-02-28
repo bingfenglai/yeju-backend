@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.dto;
+package pers.lbf.yeju.service.interfaces.session.pojo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class SessionDetails<T> implements Serializable {
 
-    private AccountDetailsInfoBean accountDetailsInfo;
+    private SessionAccount accountDetailsInfo;
 
     private List<String> roles;
 
@@ -55,11 +55,11 @@ public class SessionDetails<T> implements Serializable {
         this.subjectDetails = subjectDetails;
     }
 
-    public AccountDetailsInfoBean getAccountDetailsInfo() {
+    public SessionAccount getAccountDetailsInfo() {
         return accountDetailsInfo;
     }
 
-    public void setAccountDetailsInfo(AccountDetailsInfoBean accountDetailsInfo) {
+    public void setAccountDetailsInfo(SessionAccount accountDetailsInfo) {
         this.accountDetailsInfo = accountDetailsInfo;
     }
 

@@ -16,10 +16,10 @@
         <profile.id.prod>prod</profile.id.prod>
     </properties>
 
-<!--    服务网关-->
+    <!--    服务网关-->
     <dependencies>
 
-<!--        api文档依赖-->
+        <!--        api文档依赖-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
@@ -42,7 +42,6 @@
             <artifactId>yeju-common-util</artifactId>
             <version>1.0.0</version>
         </dependency>
-
 
 
         <!--            服务配置中心-->
@@ -76,25 +75,23 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-            <version>${spring.boot.version}</version>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju--base-mq-provider</artifactId>
+            <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-log-service-interfaces</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
-
-
 
 
     </dependencies>
 
 
     <profiles>
-<!--        开发测试环境打包-->
+        <!--        开发测试环境打包-->
         <profile>
             <id>dev</id>
             <activation>
@@ -121,7 +118,7 @@
         </profile>
 
 
-<!--        软件包（无需maven依赖打包）-->
+        <!--        软件包（无需maven依赖打包）-->
         <profile>
             <id>prod</id>
             <properties>
@@ -261,7 +258,6 @@
         </profile>
 
     </profiles>
-
 
 
 </project>

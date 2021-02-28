@@ -29,54 +29,5 @@ import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
 @ConfigurationProperties(prefix = "spring.rabbitmq.listener.online.exchange")
 public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
 
-    @Override
-    public Boolean getDurable() {
 
-        return this.durable;
-    }
-
-    @Override
-    public void setDurable(Boolean durable) {
-        this.durable = durable;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
-    @Override
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Override
-    public Boolean getIgnoreDeclarationExceptions() {
-        return this.ignoreDeclarationExceptions;
-    }
-
-    @Override
-    public void setIgnoreDeclarationExceptions(Boolean ignoreDeclarationExceptions) {
-        this.ignoreDeclarationExceptions = ignoreDeclarationExceptions;
-    }
-
-    @Override
-    public String getKey() {
-        return this.key;
-    }
-
-    @Override
-    public void setKey(String key) {
-        this.key = key;
-    }
 }

@@ -17,17 +17,13 @@
 package pers.lbf.yeju.gateway.message.operationlog;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.mq.sender.BaseRabbitMQSender;
 import pers.lbf.yeju.gateway.config.OperationLogMqExchangeConfig;
 
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -37,40 +33,13 @@ import java.util.UUID;
  */
 @Component
 @Slf4j
-public class OperationLogMessageSender {
+public class OperationLogMessageSender extends BaseRabbitMQSender {
 
     @Autowired
     private OperationLogMqExchangeConfig mqConfig;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-
-
-    //确认机制
-    final RabbitTemplate.ConfirmCallback confirmCallback = new RabbitTemplate.ConfirmCallback() {
-        /**
-         * correlationData: 回调的相关数据，包含了消息ID
-         * ack: ack结果，true代表ack，false代表nack
-         * cause: 如果为nack，返回原因，否则为null
-         */
-        @Override
-        public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-
-            log.info("correlationData: {}", correlationData);
-            log.info("isAck: {}", ack);
-            if (!ack) {
-                String id = correlationData.getId();
-                log.info("消息 {} 处理失败", id);
-            }
-        }
-    };
-
-    // 返回机制
-    final RabbitTemplate.ReturnCallback returnCallback =
-            (message, i, replyText, exchange, routingKey) -> {
-                log.info("message: {}", message.toString());
-                log.info("replyText: {}", replyText);
-            };
 
     /**
      * 消息发送方法
@@ -84,20 +53,8 @@ public class OperationLogMessageSender {
      * @date 2021/1/13 20:19
      */
     public void send(Object message, Map<String, Object> properties) throws RuntimeException {
-
-        MessageHeaders messageHeaders = new MessageHeaders(properties);
-        //注意导包
-        Message<Object> msg = MessageBuilder.createMessage(message, messageHeaders);
-        rabbitTemplate.setConfirmCallback(confirmCallback);
-        rabbitTemplate.setReturnCallback(returnCallback);
-        //id + 时间戳 ，保证全局唯一 ，这个是实际消息的ID
-        //在做补偿性机制的时候通过ID来获取到这条消息进行重发
-        String id = UUID.randomUUID().toString();
-        CorrelationData correlationData = new CorrelationData(id);
-        //exchange, routingKey, object, correlationData
-        assert mqConfig != null;
-        System.out.println(mqConfig.toString());
-        rabbitTemplate.convertAndSend(mqConfig.getName(), mqConfig.getKey(), msg, correlationData);
+        super.rabbitTemplate = rabbitTemplate;
+        super.send(message, properties, mqConfig);
     }
 
 }

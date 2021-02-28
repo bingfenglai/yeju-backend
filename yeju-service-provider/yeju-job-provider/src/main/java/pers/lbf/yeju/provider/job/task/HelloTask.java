@@ -23,7 +23,7 @@ import pers.lbf.yeju.provider.job.BaseJob;
 
 /**
  * 测试任务类
- * DisallowConcurrentExecution 该注解作用禁止相同的任务并发
+ * DisallowConcurrentExecution 该注解作用禁止同一个任务实例并发执行
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -32,9 +32,12 @@ import pers.lbf.yeju.provider.job.BaseJob;
 @Slf4j
 @DisallowConcurrentExecution
 public class HelloTask extends BaseJob {
-    @Override
-    protected void doExecute(JobExecutionContext context) throws Exception {
 
-        log.debug("hello world!");
+    private int count = 0;
+
+    @Override
+    protected void doExecute(JobExecutionContext context) {
+        count++;
+        log.info("?????????????????????????????????hello world! {}", count);
     }
 }

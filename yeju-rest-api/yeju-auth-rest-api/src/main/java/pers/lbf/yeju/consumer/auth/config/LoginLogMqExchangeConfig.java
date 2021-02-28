@@ -19,7 +19,7 @@ package pers.lbf.yeju.consumer.auth.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.consumer.auth.sender.BaseRabbitMqExchangeConfig;
+import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
 
 import java.io.Serializable;
 

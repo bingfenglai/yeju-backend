@@ -19,6 +19,7 @@ package pers.lbf.yeju.consumer.auth.sender;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.mq.sender.BaseRabbitMQSender;
 import pers.lbf.yeju.consumer.auth.config.OnlineMqExchangeConfig;
 
 import java.util.Map;
@@ -31,7 +32,7 @@ import java.util.Map;
  * @date 2021/2/20 20:26
  */
 @Component
-public class OnlineSender extends BaseRabbitMQSender{
+public class OnlineSender extends BaseRabbitMQSender {
 
 
     @Autowired

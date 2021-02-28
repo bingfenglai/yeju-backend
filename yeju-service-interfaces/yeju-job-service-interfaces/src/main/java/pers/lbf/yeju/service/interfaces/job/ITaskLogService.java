@@ -17,6 +17,8 @@
 package pers.lbf.yeju.service.interfaces.job;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobLogInfoBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.TaskLogCreateArgs;
 
 /**
@@ -37,4 +39,6 @@ public interface ITaskLogService {
      * @date 2021/2/22 13:57
      */
     void addOne(TaskLogCreateArgs args) throws ServiceException;
+
+    PageResult<JobLogInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 }

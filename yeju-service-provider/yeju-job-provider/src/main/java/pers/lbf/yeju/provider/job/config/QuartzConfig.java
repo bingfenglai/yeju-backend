@@ -16,7 +16,7 @@
  */
 package pers.lbf.yeju.provider.job.config;
 
-import com.alibaba.druid.pool.DruidDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.quartz.QuartzDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -37,16 +37,20 @@ import javax.sql.DataSource;
 public class QuartzConfig {
 
 
-    @Bean
+    @Bean(name = "qzDatasource")
     @QuartzDataSource
     @ConfigurationProperties(prefix = "spring.datasource.job")
     public DataSource quartzDataSource() {
-        return new DruidDataSource();
+        return new HikariDataSource();
     }
+
 
     @Autowired
     public void initDateSource(SchedulerFactoryBean factory) {
+
         factory.setDataSource(quartzDataSource());
+        factory.setOverwriteExistingJobs(true);
+        
     }
 
 

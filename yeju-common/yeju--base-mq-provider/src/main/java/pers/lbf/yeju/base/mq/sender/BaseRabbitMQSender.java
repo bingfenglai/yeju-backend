@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.sender;
+package pers.lbf.yeju.base.mq.sender;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +23,14 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
+import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
 
 import java.util.Map;
 import java.util.UUID;
 
-/**消息发送者抽象类
+/**
+ * 消息发送者抽象类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/6 17:49
@@ -35,7 +38,6 @@ import java.util.UUID;
 public abstract class BaseRabbitMQSender {
 
     private final Logger log = LoggerFactory.getLogger(BaseRabbitMQSender.class);
-
 
     protected RabbitTemplate rabbitTemplate;
 
@@ -50,9 +52,9 @@ public abstract class BaseRabbitMQSender {
         @Override
         public void confirm(CorrelationData correlationData, boolean ack, String cause) {
 
-            log.info("correlationData: {}",correlationData);
-            log.info("isAck: {}",ack);
-            if(!ack){
+            log.info("correlationData: {}", correlationData);
+            log.info("isAck: {}", ack);
+            if (!ack) {
                 String id = correlationData.getId();
                 log.info("消息 {} 处理失败", id);
             }
@@ -63,12 +65,12 @@ public abstract class BaseRabbitMQSender {
     // 消息返回机制
     RabbitTemplate.ReturnCallback returnCallback =
             (message, i, replyText, exchange, routingKey) -> {
-                log.info("message: {}",message.toString());
-                log.info("replyText: {}",replyText);
+                log.info("message: {}", message.toString());
+                log.info("replyText: {}", replyText);
             };
 
-    protected void send(Object message, Map<String, Object> properties,BaseRabbitMqExchangeConfig mqExchangeConfig) throws RuntimeException {
-        if (mqExchangeConfig == null){
+    protected void send(Object message, Map<String, Object> properties, BaseRabbitMqExchangeConfig mqExchangeConfig) throws RuntimeException {
+        if (mqExchangeConfig == null) {
             throw new RuntimeException("消息交换机配置不能为空");
         }
 
@@ -85,8 +87,6 @@ public abstract class BaseRabbitMQSender {
 
         rabbitTemplate.convertAndSend(mqExchangeConfig.getName(), mqExchangeConfig.getKey(), msg, correlationData);
     }
-
-
 
 
 }

@@ -20,11 +20,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pers.lbf.yeju.provider.job.bean.JobTriggerInfoBean;
 import pers.lbf.yeju.provider.job.scheduler.YejuJobScheduler;
 import pers.lbf.yeju.provider.job.task.HelloTask;
 import pers.lbf.yeju.provider.start.YejuJobProviderApplication;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
 
 /**
  * TODO
@@ -46,7 +46,7 @@ public class TaskTest {
         jobInfoBean.setJobName("yeju_task");
         jobInfoBean.setJobGroup("yeju_job_default_group");
         jobInfoBean.setCronExpression("0/3 * * * * ?");
-        jobInfoBean.setInvokeTarget(HelloTask.class);
+        jobInfoBean.setInvokeTargetStr(HelloTask.class.getName());
         jobInfoBean.setExecute(false);
 
         triggerInfoBean = new JobTriggerInfoBean();
@@ -77,5 +77,10 @@ public class TaskTest {
     @Test
     public void test2() {
         //YejuJobScheduler.runAJob(jobInfoBean.getJobName());
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(HelloTask.class.getName());
     }
 }

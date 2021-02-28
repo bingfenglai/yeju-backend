@@ -18,9 +18,8 @@ package pers.lbf.yeju.service.interfaces.job;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
-
-import java.util.List;
 
 /**
  * TODO
@@ -34,10 +33,11 @@ public interface ITaskSchedulerService {
     /**
      * 获取quartz调度器的计划任务
      *
-     * @param job 调度信息
+     * @param currentPage 当前页
+     * @param size        每页显示条数
      * @return 调度任务集合
      */
-    IResult<List<JobInfoBean>> selectJobList(JobInfoBean job);
+    PageResult<JobInfoBean> findPage(Long currentPage, Long size);
 
     /**
      * 通过调度任务ID查询调度信息

@@ -14,11 +14,13 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.sender;
+package pers.lbf.yeju.base.mq.config;
 
 import java.io.Serializable;
 
-/** 消息交换机配置类
+/**
+ * 消息交换机配置类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/6 17:50

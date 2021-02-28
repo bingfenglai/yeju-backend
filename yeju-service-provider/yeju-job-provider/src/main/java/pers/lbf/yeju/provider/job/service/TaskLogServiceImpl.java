@@ -16,14 +16,21 @@
  */
 package pers.lbf.yeju.provider.job.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.domain.entity.TaskLog;
+import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.job.dao.ITaskLogDao;
 import pers.lbf.yeju.service.interfaces.job.ITaskLogService;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobLogInfoBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.TaskLogCreateArgs;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * TODO
@@ -52,6 +59,20 @@ public class TaskLogServiceImpl implements ITaskLogService {
         TaskLogDao.insert(argsToTaskLog(args));
     }
 
+    @Override
+    public PageResult<JobLogInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
+
+        Page<TaskLog> page = PageUtil.getPage(TaskLog.class, currentPage, size);
+        Page<TaskLog> taskLogPage = TaskLogDao.selectPage(page, null);
+        List<TaskLog> taskLogList = taskLogPage.getRecords();
+        List<JobLogInfoBean> result = new LinkedList<>();
+        for (TaskLog taskLog : taskLogList) {
+            JobLogInfoBean jobLogInfoBean = this.taskLogToInfoBean(taskLog);
+            result.add(jobLogInfoBean);
+        }
+        return PageResult.ok(taskLogPage.getTotal(), currentPage, size, result);
+    }
+
 
     private TaskLog argsToTaskLog(TaskLogCreateArgs args) {
         TaskLog taskLog = new TaskLog();
@@ -65,5 +86,21 @@ public class TaskLogServiceImpl implements ITaskLogService {
         taskLog.setStartTime(args.getStartTime());
         taskLog.setStopTime(args.getStopTime());
         return taskLog;
+    }
+
+    private JobLogInfoBean taskLogToInfoBean(TaskLog taskLog) {
+        JobLogInfoBean jobLogInfoBean = new JobLogInfoBean();
+        jobLogInfoBean.setId(taskLog.getId());
+        jobLogInfoBean.setTaskName(taskLog.getTaskName());
+        jobLogInfoBean.setTaskGroup(taskLog.getTaskGroup());
+        jobLogInfoBean.setInvokeTarget(taskLog.getInvokeTarget());
+        jobLogInfoBean.setTaskLog(taskLog.getTaskLog());
+        jobLogInfoBean.setTaskStatus(taskLog.getTaskStatus());
+        jobLogInfoBean.setExceptionInfo(taskLog.getExceptionInfo());
+        jobLogInfoBean.setCreateTime(taskLog.getCreateTime());
+        jobLogInfoBean.setStartTime(taskLog.getStartTime());
+        jobLogInfoBean.setStopTime(taskLog.getStopTime());
+        jobLogInfoBean.setRemark(taskLog.getRemark());
+        return jobLogInfoBean;
     }
 }

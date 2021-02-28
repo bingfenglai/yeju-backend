@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.mq.sender.BaseRabbitMQSender;
 import pers.lbf.yeju.consumer.auth.config.LoginLogMqExchangeConfig;
 
 import java.util.Map;
@@ -32,7 +33,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class LoginLogSender extends BaseRabbitMQSender{
+public class LoginLogSender extends BaseRabbitMQSender {
 
     @Autowired
     private LoginLogMqExchangeConfig mqConfig;
@@ -43,17 +44,18 @@ public class LoginLogSender extends BaseRabbitMQSender{
 
     /**
      * 消息发送方法
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2021/1/13 20:19
-     * @param message 消息对象
+     *
+     * @param message    消息对象
      * @param properties 消息信息存储结构
      * @return void
      * @throws RuntimeException e
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/1/13 20:19
      */
     public void send(Object message, Map<String, Object> properties) throws RuntimeException {
         super.rabbitTemplate = rabbitTemplate;
-        super.send(message, properties,mqConfig);
+        super.send(message, properties, mqConfig);
     }
 
 }

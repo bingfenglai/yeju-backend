@@ -82,7 +82,7 @@
         </profile>
 
 
-        <!--        镜像（无需maven依赖打包）-->
+        <!--        生产打包-->
         <profile>
             <id>prod</id>
             <properties>
@@ -190,6 +190,9 @@
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
                                               file="src/main/resources/bootstrap-prod.properties"/>
 
+                                        <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
+                                              file="src/main/resources/quartz.properties"/>
+
 
                                     </target>
                                 </configuration>
@@ -208,6 +211,7 @@
                         <directory>src/main/resources</directory>
                         <includes>
                             <include>config/logback.xml</include>
+                            <include>banner.txt</include>
                         </includes>
                         <excludes>
                             <exclude>**/*.properties</exclude>

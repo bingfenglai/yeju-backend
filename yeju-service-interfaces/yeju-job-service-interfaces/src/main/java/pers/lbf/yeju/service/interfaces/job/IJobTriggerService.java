@@ -14,35 +14,31 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.job.bean;
+package pers.lbf.yeju.service.interfaces.job;
 
-import java.io.Serializable;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
+
+import java.util.List;
 
 /**
- * 作业组信息封装类
+ * 任务触发器接口类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/23 16:59
+ * @date 2021/2/27 16:20
  */
-public class JobTriggerInfoBean implements Serializable {
+public interface IJobTriggerService {
 
-    private String name;
-    private String group;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
+    /**
+     * 查询任务触发器
+     *
+     * @param jobId 任务id
+     * @return list triggerInfoBeanList
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/27 16:43
+     */
+    IResult<List<JobTriggerInfoBean>> findTriggerInfoBeanListByJobId(Long jobId) throws ServiceException;
 }

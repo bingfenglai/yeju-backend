@@ -96,12 +96,6 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
@@ -127,6 +121,12 @@
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-platform-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju--base-mq-provider</artifactId>
             <version>${yeju.version}</version>
         </dependency>
     </dependencies>

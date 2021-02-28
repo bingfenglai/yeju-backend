@@ -75,7 +75,7 @@ yeju-auth-api ----> 9002
 
 #### all-api
 
-yeju-all-rest-api ----> 9001
+yeju-all-rest-api ----> 9010
 
 #### 消息通知微服务
 

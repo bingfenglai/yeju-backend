@@ -27,7 +27,6 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -69,8 +68,16 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <!--        定时任务微服务接口-->
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-job-service-interfaces</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
 
+        <!-- 对象存储依赖-->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>

@@ -61,7 +61,13 @@ public enum TaskExecutionStatus implements IStatus {
 
     FailedToShutdownTheScheduledTask("停止所有任务失败", "TES10"),
 
-    FailedToRestoreJob("恢复任务失败", "TES11");
+    FailedToRestoreJob("恢复任务失败", "TES11"),
+
+    FailedToPauseAllJob("暂停所有任务出错", "TES12"),
+
+    FailedToRestoreAllJob("恢复所有任务出错", "TES13"),
+
+    jobInstanceDoesNotExist("定时任务不存在", "TES14");
 
     private String message;
     private String code;
@@ -78,7 +84,7 @@ public enum TaskExecutionStatus implements IStatus {
      */
     @Override
     public String getMessage() {
-        return null;
+        return this.message;
     }
 
     /**
@@ -88,6 +94,6 @@ public enum TaskExecutionStatus implements IStatus {
      */
     @Override
     public String getCode() {
-        return null;
+        return this.code;
     }
 }

@@ -17,7 +17,7 @@
 package pers.lbf.yeju.consumer.auth.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import pers.lbf.yeju.consumer.auth.sender.BaseRabbitMqExchangeConfig;
+import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
 
 /**
  * TODO
@@ -37,7 +37,7 @@ public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
 
     @Override
     public void setDurable(Boolean durable) {
-       this.durable = durable;
+        this.durable = durable;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
 
     @Override
     public Boolean getIgnoreDeclarationExceptions() {
-       return this.ignoreDeclarationExceptions;
+        return this.ignoreDeclarationExceptions;
     }
 
     @Override

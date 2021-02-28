@@ -63,6 +63,7 @@ CREATE TABLE `r_t_account_role` (
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `account_number` varchar(16) NOT NULL COMMENT '系统账户',
   `phone_number` char(11) NOT NULL COMMENT '手机号',
+  `role_code` varchar(32) DEFAULT NULL COMMENT '角色标识符，冗余字段',
   PRIMARY KEY (`account_id`,`role_id`),
   UNIQUE KEY `account_id_2` (`account_id`,`role_id`),
   UNIQUE KEY `account_number` (`account_number`),
@@ -72,6 +73,8 @@ CREATE TABLE `r_t_account_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='账户-角色关系表 N-1';
 
 /*Data for the table `r_t_account_role` */
+
+insert  into `r_t_account_role`(`account_id`,`role_id`,`status`,`create_time`,`create_by`,`update_time`,`changed_by`,`versions`,`is_delete`,`remark`,`account_number`,`phone_number`,`role_code`) values (1,1,'1',NULL,NULL,NULL,NULL,NULL,0,NULL,'969391','17330937086','admin');
 
 /*Table structure for table `r_t_department_role` */
 
@@ -278,7 +281,7 @@ CREATE TABLE `table_business_customer` (
   `customer_id` bigint NOT NULL COMMENT '主键',
   `account_id` bigint DEFAULT NULL COMMENT '账户id',
   `customer_name` varchar(32) DEFAULT NULL COMMENT '客户姓名',
-  `gender` varchar(4) DEFAULT NULL COMMENT '性别0男1女，详见属性表',
+  `gender` bigint DEFAULT NULL COMMENT '性别0男1女，详见属性表',
   `gender_value` varchar(4) DEFAULT NULL COMMENT '性别值',
   `phone_number` varchar(11) DEFAULT NULL COMMENT '手机号',
   `phone_number_prefix` bigint DEFAULT NULL COMMENT '手机区号，比如中国是+86，详见属性表\n            ',
@@ -778,26 +781,26 @@ CREATE TABLE `table_data_browsing_history` (
 DROP TABLE IF EXISTS `table_platform_department`;
 
 CREATE TABLE `table_platform_department` (
-  `department_id` bigint NOT NULL COMMENT '主键',
+  `department_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `parent_department_id` bigint DEFAULT NULL COMMENT '父部门主键',
   `name` varchar(32) DEFAULT NULL COMMENT '部门名称',
   `leader_id` bigint DEFAULT NULL COMMENT '负责人id',
   `phone_number` varchar(11) DEFAULT NULL COMMENT '手机号',
   `phone_number_prefix` bigint DEFAULT NULL COMMENT '手机区号，比如中国是+86，详见属性表\n            ',
-  `phone_number_prefix_value` varchar(4) DEFAULT NULL COMMENT '手机区号值',
   `email` varchar(32) DEFAULT NULL COMMENT '部门（团队）邮箱',
   `yeju_department_status` bigint DEFAULT NULL COMMENT '部门状态0未启用1启用',
-  `yeju_department_status_value` varchar(4) DEFAULT NULL COMMENT '部门状态值，详见属性表',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` bigint DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `changed_by` bigint DEFAULT NULL COMMENT '更改者',
-  `version_number` int DEFAULT NULL COMMENT '字段版本',
-  `is_delete` int DEFAULT NULL COMMENT '删除标识',
+  `version_number` int DEFAULT '1' COMMENT '字段版本',
+  `is_delete` int DEFAULT '0' COMMENT '删除标识',
   PRIMARY KEY (`department_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='椰居平台部门表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='椰居平台部门表';
 
 /*Data for the table `table_platform_department` */
+
+insert  into `table_platform_department`(`department_id`,`parent_department_id`,`name`,`leader_id`,`phone_number`,`phone_number_prefix`,`email`,`yeju_department_status`,`create_time`,`create_by`,`update_time`,`changed_by`,`version_number`,`is_delete`) values (1,0,'椰居科技有限公司',1,'17330937086',86,'bingfengdev@aliyun.com',1,'2021-02-14 15:58:32',1,NULL,NULL,1,0),(2,1,'产品部',NULL,NULL,NULL,'product@yeju.com',1,'2021-02-16 08:52:19',NULL,NULL,NULL,1,0),(3,1,'研发部',NULL,NULL,NULL,'development@yeju.com',1,'2021-02-16 08:53:26',NULL,NULL,NULL,1,0),(4,1,'运营部',NULL,NULL,NULL,'operation@yeju.com',1,'2021-02-16 08:54:57',NULL,NULL,NULL,1,0),(5,1,'综合管理部',NULL,NULL,NULL,'gm@yeju.com',1,'2021-02-16 08:56:16',NULL,NULL,NULL,1,0);
 
 /*Table structure for table `table_platform_employees` */
 
@@ -806,31 +809,31 @@ DROP TABLE IF EXISTS `table_platform_employees`;
 CREATE TABLE `table_platform_employees` (
   `employees_id` bigint NOT NULL COMMENT '主键',
   `name` varchar(32) DEFAULT NULL COMMENT '员工姓名',
-  `gender` bigint DEFAULT NULL COMMENT '性别0男1女，详见属性表',
-  `gender_value` varchar(4) DEFAULT NULL COMMENT '性别值',
+  `gender` bigint DEFAULT NULL COMMENT '性别0男1女2未知，详见属性表',
   `phone_number` varchar(11) DEFAULT NULL COMMENT '手机号',
-  `phone_number_prefix` bigint DEFAULT NULL COMMENT '手机区号，比如中国是+86，详见属性表\n            ',
-  `phone_number_prefix_value` varchar(4) DEFAULT NULL COMMENT '手机区号值',
+  `employees_number` bigint DEFAULT NULL COMMENT '工号',
+  `phone_number_prefix` varchar(8) DEFAULT NULL COMMENT '手机区号值',
   `leader_id` bigint DEFAULT NULL COMMENT '所属领导',
   `avatar` varchar(500) DEFAULT NULL COMMENT '头像地址',
   `email` varchar(32) DEFAULT NULL COMMENT '公司邮箱',
-  `employees_status` bigint DEFAULT NULL COMMENT '员工状态0在职1离职',
-  `employees_status_value` varchar(4) DEFAULT NULL COMMENT '员工状态值,见属性表',
+  `employee_status` bigint DEFAULT '0' COMMENT '员工状态0在职1离职',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` bigint DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `changed_by` bigint DEFAULT NULL COMMENT '更改者',
-  `version_number` int DEFAULT NULL COMMENT '字段版本',
-  `is_delete` int DEFAULT NULL COMMENT '删除标识',
+  `version_number` int DEFAULT '0' COMMENT '字段版本',
+  `is_delete` int DEFAULT '0' COMMENT '删除标识',
   `month_added` int DEFAULT NULL COMMENT '员工信息添加时的月份，分区标识',
   `month_outmoded` int DEFAULT NULL COMMENT '员工离职时的月份。历史表的分区依据',
-  `employees_number` bigint DEFAULT NULL COMMENT '工号',
-  PRIMARY KEY (`employees_id`)
+  `department_id` bigint DEFAULT NULL COMMENT '所属部门id',
+  PRIMARY KEY (`employees_id`),
+  UNIQUE KEY `table_platform_employees_employees_number_uindex` (`employees_number`),
+  UNIQUE KEY `table_platform_employees_phone_number_uindex` (`phone_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='椰居平台员工表';
 
 /*Data for the table `table_platform_employees` */
 
-insert  into `table_platform_employees`(`employees_id`,`name`,`gender`,`gender_value`,`phone_number`,`phone_number_prefix`,`phone_number_prefix_value`,`leader_id`,`avatar`,`email`,`employees_status`,`employees_status_value`,`create_time`,`create_by`,`update_time`,`changed_by`,`version_number`,`is_delete`,`month_added`,`month_outmoded`,`employees_number`) values (1,'超级员工',1,'男','17330937086',86,'中国',1,NULL,'bingfengdev@aliyun.com',1,'在职',NULL,NULL,NULL,NULL,NULL,0,12,NULL,969391);
+insert  into `table_platform_employees`(`employees_id`,`name`,`gender`,`phone_number`,`employees_number`,`phone_number_prefix`,`leader_id`,`avatar`,`email`,`employee_status`,`create_time`,`create_by`,`update_time`,`changed_by`,`version_number`,`is_delete`,`month_added`,`month_outmoded`,`department_id`) values (1,'超级员工',1,'17330937086',969391,'86',1,'http://8.129.77.225:9000/yeju/8469f77f-b29d-43cb-b90c-b5acab2a4bba56eb70e8c716a.jpg','bingfengdev@aliyun.com',1,'2021-02-14 15:29:25',NULL,NULL,NULL,NULL,0,12,NULL,1);
 
 /*Table structure for table `table_platform_post` */
 
@@ -908,14 +911,14 @@ CREATE TABLE `table_system_account` (
 
 /*Data for the table `table_system_account` */
 
-insert  into `table_system_account`(`account_id`,`account_number`,`subject_id`,`account_password`,`last_login_address`,`last_login_date`,`account_status`,`account_level`,`account_type`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`,`phone_number`) values (1,'969391',1,'$2a$10$TyTu1cSR5Q4Z.a/fDDdj1OPYlHcWxsM8EIm2vz90XidLAALWLHuTC',NULL,NULL,'1','1','2',NULL,1,NULL,NULL,'超级工号',1,0,'17330937086');
+insert  into `table_system_account`(`account_id`,`account_number`,`subject_id`,`account_password`,`last_login_address`,`last_login_date`,`account_status`,`account_level`,`account_type`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`,`phone_number`) values (1,'969391',1,'$2a$10$TyTu1cSR5Q4Z.a/fDDdj1OPYlHcWxsM8EIm2vz90XidLAALWLHuTC',NULL,NULL,'1','1','0',NULL,1,NULL,NULL,'超级工号',1,0,'17330937086');
 
 /*Table structure for table `table_system_data_dictionary_info` */
 
 DROP TABLE IF EXISTS `table_system_data_dictionary_info`;
 
 CREATE TABLE `table_system_data_dictionary_info` (
-  `data_dictionary_info_id` bigint NOT NULL COMMENT '主键',
+  `data_dictionary_info_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type_id` bigint DEFAULT NULL COMMENT '数据字典类型标识',
   `sort` int DEFAULT NULL COMMENT '排序（优先级）',
   `dictionary_label` varchar(128) DEFAULT NULL COMMENT '字典标签，实际显示出来的值',
@@ -923,28 +926,54 @@ CREATE TABLE `table_system_data_dictionary_info` (
   `css_class` varchar(256) DEFAULT NULL COMMENT '样式属性',
   `list_class` varchar(256) DEFAULT NULL COMMENT '表格回显样式',
   `is_default` int DEFAULT NULL COMMENT '是否为默认属性0否1是',
-  `status` int DEFAULT NULL COMMENT '状态0未启用1启用',
+  `status` int DEFAULT '1' COMMENT '状态0未启用1启用',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` bigint DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `changed_by` bigint DEFAULT NULL COMMENT '更改者',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `version_number` int DEFAULT NULL COMMENT '字段版本',
-  `is_delete` int DEFAULT NULL COMMENT '删除标识',
+  `version_number` int DEFAULT '0' COMMENT '字段版本',
+  `is_delete` int DEFAULT '0' COMMENT '删除标识',
   PRIMARY KEY (`data_dictionary_info_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='数据字典信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='数据字典信息表';
 
 /*Data for the table `table_system_data_dictionary_info` */
+
+insert  into `table_system_data_dictionary_info`(`data_dictionary_info_id`,`type_id`,`sort`,`dictionary_label`,`dictionary_value`,`css_class`,`list_class`,`is_default`,`status`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`) values (1,1,1,'男','1',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,NULL,0),(2,1,2,'女','2',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,NULL,0),(3,2,1,'启用','1',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,0),(4,2,2,'未启用','0',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,NULL,0),(5,3,1,'在职','1',NULL,NULL,1,1,'2021-02-20 15:46:09',NULL,NULL,NULL,'员工在职状态',0,0),(6,3,2,'离职','0',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,0,0),(7,4,1,'启用','1',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,0,0),(8,4,2,'未启用','0',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,0,0),(9,5,1,'启用','1',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,0,0),(10,5,0,'未启用','0',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,0,0),(11,6,1,'系统维护类通知','1',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,0,0),(12,7,1,'启用','1',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,0,0),(13,7,0,'未启用','0',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,0,0),(14,6,2,'系统一般性通知','2',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,0,0),(15,8,1,'启用','1',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,0,0),(16,8,2,'未启用','0',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,0,0),(17,9,1,'发布中','1',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,0,0),(18,9,2,'已失效','0',NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,0,0);
 
 /*Table structure for table `table_system_data_dictionary_type` */
 
 DROP TABLE IF EXISTS `table_system_data_dictionary_type`;
 
 CREATE TABLE `table_system_data_dictionary_type` (
-  `data_dictionary_type_id` bigint NOT NULL COMMENT '主键',
+  `data_dictionary_type_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(128) DEFAULT NULL COMMENT '数据字典名称',
   `type` varchar(128) DEFAULT NULL COMMENT '数据字典类型，与名称对应，与表中字段名一致',
-  `status` int DEFAULT NULL COMMENT '状态0未启用1启用',
+  `status` int DEFAULT '1' COMMENT '状态0未启用1启用',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint DEFAULT NULL COMMENT '创建者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `changed_by` bigint DEFAULT NULL COMMENT '更改者',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `version_number` int DEFAULT '0' COMMENT '字段版本',
+  `is_delete` int DEFAULT '0' COMMENT '删除标识',
+  PRIMARY KEY (`data_dictionary_type_id`),
+  KEY `type__index` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='数据字典类型表,用于简单的动态配置';
+
+/*Data for the table `table_system_data_dictionary_type` */
+
+insert  into `table_system_data_dictionary_type`(`data_dictionary_type_id`,`name`,`type`,`status`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`) values (1,'性别','gender',1,NULL,NULL,NULL,NULL,NULL,NULL,0),(2,'角色状态','role_status',1,NULL,NULL,NULL,NULL,NULL,NULL,0),(3,'员工状态','employee_status',1,NULL,NULL,NULL,NULL,NULL,NULL,0),(4,'部门状态','department_status',1,NULL,NULL,NULL,NULL,NULL,0,0),(5,'数据字典类型状态','dict_status',1,NULL,NULL,NULL,NULL,NULL,0,0),(6,'系统通知类型','notice_type',1,NULL,NULL,NULL,NULL,NULL,0,0),(7,'通用状态','status',1,NULL,NULL,NULL,NULL,NULL,0,0),(8,'资源状态','resource_status',1,NULL,NULL,NULL,NULL,NULL,0,0),(9,'通知状态','notice_status',1,NULL,NULL,NULL,NULL,NULL,0,0);
+
+/*Table structure for table `table_system_job_trigger` */
+
+DROP TABLE IF EXISTS `table_system_job_trigger`;
+
+CREATE TABLE `table_system_job_trigger` (
+  `trigger_id` bigint NOT NULL COMMENT 'id',
+  `trigger_name` varchar(32) DEFAULT NULL COMMENT '名字',
+  `cron` varchar(32) DEFAULT NULL COMMENT 'cron表达式',
+  `trigger_type` varchar(16) DEFAULT NULL COMMENT '触发器类型',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` bigint DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -952,10 +981,14 @@ CREATE TABLE `table_system_data_dictionary_type` (
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `version_number` int DEFAULT NULL COMMENT '字段版本',
   `is_delete` int DEFAULT NULL COMMENT '删除标识',
-  PRIMARY KEY (`data_dictionary_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='数据字典类型表,用于简单的动态配置';
+  `start_time` datetime DEFAULT NULL COMMENT '启动时间',
+  `end_time` datetime DEFAULT NULL COMMENT '结束时间',
+  `timezone` varchar(32) DEFAULT NULL COMMENT '时区',
+  `description` varchar(512) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`trigger_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-/*Data for the table `table_system_data_dictionary_type` */
+/*Data for the table `table_system_job_trigger` */
 
 /*Table structure for table `table_system_login_log` */
 
@@ -975,31 +1008,33 @@ CREATE TABLE `table_system_login_log` (
 
 /*Data for the table `table_system_login_log` */
 
-insert  into `table_system_login_log`(`login_log_id`,`account`,`subject_name`,`ip`,`login_status`,`message`,`accent_time`,`last_ip_number`) values (1345201981133139970,'969391','','0:0:0:0:0:0:0:1',1,'登录成功','2021-01-02 10:55:19',NULL),(1345202180438077442,'969391','','0:0:0:0:0:0:0:1',0,'账号或密码错误','2021-01-02 10:56:07',NULL),(1345202856639516673,'969391','','0:0:0:0:0:0:0:1',0,'账号或密码错误','2021-01-02 10:58:48',NULL);
-
 /*Table structure for table `table_system_notice` */
 
 DROP TABLE IF EXISTS `table_system_notice`;
 
 CREATE TABLE `table_system_notice` (
-  `notice_id` bigint NOT NULL COMMENT '主键',
+  `notice_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(128) DEFAULT NULL COMMENT '通知标题',
   `content` varchar(512) DEFAULT NULL COMMENT '通知正文',
-  `notice_type` varchar(4) DEFAULT NULL COMMENT '通知类型0其他1通知2公告',
-  `status` int DEFAULT NULL COMMENT '通知状态0关闭1正常',
+  `notice_type` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '2' COMMENT '通知类型1维护类通知2一般性通知',
+  `status` int(1) unsigned zerofill DEFAULT '1' COMMENT '通知状态0关闭1正常',
   `start_time` datetime DEFAULT NULL COMMENT '公告开始时间',
   `end_time` datetime DEFAULT NULL COMMENT '公告结束时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `create_by` bigint DEFAULT NULL COMMENT '创建者',
+  `create_by` varchar(16) DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `changed_by` bigint DEFAULT NULL COMMENT '更改者',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `version_number` int DEFAULT NULL COMMENT '字段版本',
-  `is_delete` int DEFAULT NULL COMMENT '删除标识',
+  `version_number` int DEFAULT '0' COMMENT '字段版本',
+  `is_delete` int DEFAULT '0' COMMENT '删除标识',
+  `be_from` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '谁发',
+  `send_to` varchar(16) DEFAULT NULL COMMENT '发给谁',
   PRIMARY KEY (`notice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统通知（推送）公告表,记录系统的公告信息。仅保留公告有效期内的公告，超过有效期的公告搬历史表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统通知（推送）公告表,记录系统的公告信息。仅保留公告有效期内的公告，超过有效期的公告搬历史表';
 
 /*Data for the table `table_system_notice` */
+
+insert  into `table_system_notice`(`notice_id`,`title`,`content`,`notice_type`,`status`,`start_time`,`end_time`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`,`be_from`,`send_to`) values (1,'系统停服维护通知','椰居平台将于2021年2月28日0时开始停服维护，对此给您带来的不便深表歉意','1',1,'2021-02-17 23:46:18','2021-02-28 23:46:22','2021-02-17 23:46:29','969391',NULL,NULL,'无',0,0,NULL,NULL),(2,'系统更新通知','椰居平台更新啦','2',1,'2021-02-18 00:32:05','2021-02-21 00:32:08','2021-02-18 00:32:12','969391',NULL,NULL,NULL,0,0,NULL,NULL);
 
 /*Table structure for table `table_system_operation_log` */
 
@@ -1009,7 +1044,7 @@ CREATE TABLE `table_system_operation_log` (
   `operation_log_id` bigint NOT NULL COMMENT '主键',
   `title` varchar(64) DEFAULT NULL COMMENT '模块标题',
   `business_type` int DEFAULT NULL COMMENT '业务类型0其他1新增2修改3删除',
-  `method` varchar(64) DEFAULT NULL COMMENT '方法名称',
+  `method` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '方法名称',
   `request_method` varchar(12) DEFAULT NULL COMMENT '请求方式',
   `operator_type` varchar(4) DEFAULT NULL COMMENT '操作类型0其他1平台业务员2客户3移动端客户',
   `operator_name` varchar(32) DEFAULT NULL COMMENT '操作者名字',
@@ -1020,16 +1055,39 @@ CREATE TABLE `table_system_operation_log` (
   `param` varchar(256) DEFAULT NULL COMMENT '请求参数',
   `result` varchar(512) DEFAULT NULL COMMENT '返回的结果',
   `operation_status` int DEFAULT NULL COMMENT '操作状态0正常1异常',
-  `error_message` varchar(512) DEFAULT NULL COMMENT '错误消息',
+  `error_message` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '错误消息',
   `operation_time` datetime DEFAULT NULL COMMENT '操作时间',
   `last_ip_number` int DEFAULT NULL COMMENT '访问ip最后一位数字，用作分区标识',
-  `operator_id` bigint DEFAULT NULL COMMENT '操作者id',
+  `operator_account` varchar(32) DEFAULT NULL COMMENT '操作者账户',
+  `execute_time` bigint DEFAULT NULL COMMENT '操作耗时 单位 ms',
   PRIMARY KEY (`operation_log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统操作日志表，主要用户记录系统后台敏感操作信息，以ip最后一位数字分区。保存最新一个月，过时信息搬历史表保存半年';
 
 /*Data for the table `table_system_operation_log` */
 
-insert  into `table_system_operation_log`(`operation_log_id`,`title`,`business_type`,`method`,`request_method`,`operator_type`,`operator_name`,`department_name`,`url`,`ip`,`location`,`param`,`result`,`operation_status`,`error_message`,`operation_time`,`last_ip_number`,`operator_id`) values (1344975185150140417,NULL,NULL,NULL,NULL,NULL,NULL,'椰居质量控制部',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1344975828711534593,NULL,NULL,NULL,NULL,NULL,NULL,'椰居质量控制部',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1345036572983488514,NULL,NULL,NULL,NULL,NULL,NULL,'椰居质量控制部',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1345192303690981378,NULL,NULL,NULL,NULL,NULL,NULL,'椰居质量控制部',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1345201132512149506,NULL,NULL,NULL,NULL,NULL,NULL,'椰居质量控制部',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1345205872604098562,NULL,NULL,NULL,NULL,NULL,NULL,'椰居质量控制部',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1345260663380291586,NULL,NULL,NULL,NULL,NULL,NULL,'椰居质量控制部',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*Table structure for table `table_system_resource_md5` */
+
+DROP TABLE IF EXISTS `table_system_resource_md5`;
+
+CREATE TABLE `table_system_resource_md5` (
+  `id` bigint NOT NULL,
+  `resource` varchar(500) DEFAULT NULL COMMENT '当资源为一个文件时，此时这里记录的是文件的全路径',
+  `resource_type` bigint DEFAULT NULL COMMENT '资源类型，详见数字字典\r\n            主要有：1.文件 2.string',
+  `md5` varchar(32) DEFAULT NULL COMMENT '资源md5值',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint DEFAULT NULL COMMENT '创建者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `changed_by` bigint DEFAULT NULL COMMENT '更改者',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `version_number` int DEFAULT NULL COMMENT '字段版本',
+  `is_delete` int DEFAULT NULL COMMENT '删除标识',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `md5__index` (`md5`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='资源md5表，用于快传';
+
+/*Data for the table `table_system_resource_md5` */
+
+insert  into `table_system_resource_md5`(`id`,`resource`,`resource_type`,`md5`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`) values (1,'http://8.129.77.225:9000/yeju/img/3.jpg',1,'101',NULL,NULL,NULL,NULL,NULL,1,0),(1357213972349526018,'http://8.129.77.225:9000/yeju/f8163e33-a662-4ddc-a8ec-74c0d64507551.png',1,'39e8edf4eba284afe1cb47add95e8543',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1357218276724670466,'http://8.129.77.225:9000/yeju/c2798f51-a07c-4efd-a504-4c8e4a4751f456eb70edc6dd1.jpg',1,'af724a3109d1fda82e001159fff39b04',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1357218950820593665,'http://8.129.77.225:9000/yeju/1fb049af-16ae-437b-8b3c-fd6682c9fe24致一.jpg',1,'5afefce8c948de630e939be476fb5333',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1357222697806311426,'http://8.129.77.225:9000/yeju/8469f77f-b29d-43cb-b90c-b5acab2a4bba56eb70e8c716a.jpg',1,'15e03fee9d1935f31e7953f0b2121f9f',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `table_system_resources` */
 
@@ -1039,7 +1097,7 @@ CREATE TABLE `table_system_resources` (
   `resource_id` bigint NOT NULL COMMENT '主键',
   `resource_name` varchar(64) DEFAULT NULL COMMENT '资源名',
   `resource_code` varchar(128) DEFAULT NULL COMMENT '资源权限字符串',
-  `resource_type` varchar(4) DEFAULT NULL COMMENT '资源类型值0菜单1接口2操作（按钮）',
+  `resource_type` varchar(4) DEFAULT NULL COMMENT '资源类型值0菜单目录1接口2操作（按钮）3菜单项',
   `parent_menu_id` bigint DEFAULT NULL COMMENT '父菜单id,仅当资源类型为0时生效',
   `order_number` int DEFAULT NULL COMMENT '显示顺序，当多个子菜单对应一个父菜单时，需要给定显示顺序',
   `path` varchar(512) DEFAULT NULL COMMENT '路由地址，当资源为菜单操作时需要记录路由地址',
@@ -1054,24 +1112,70 @@ CREATE TABLE `table_system_resources` (
   `changed_by` bigint DEFAULT NULL COMMENT '更改者',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `version_number` int DEFAULT NULL COMMENT '字段版本',
-  `is_delete` int DEFAULT NULL COMMENT '删除标识',
+  `is_delete` int DEFAULT '0' COMMENT '删除标识',
+  `is_frame` int DEFAULT '0' COMMENT '是否为外部链接0否1是',
   PRIMARY KEY (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='(受保护的资源)权限表，包括菜单和API';
 
 /*Data for the table `table_system_resources` */
 
-insert  into `table_system_resources`(`resource_id`,`resource_name`,`resource_code`,`resource_type`,`parent_menu_id`,`order_number`,`path`,`componet_path`,`is_cache`,`resource_status`,`visible`,`icon`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`) values (1,'超级权限','*:**','1',1,1,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0);
+insert  into `table_system_resources`(`resource_id`,`resource_name`,`resource_code`,`resource_type`,`parent_menu_id`,`order_number`,`path`,`componet_path`,`is_cache`,`resource_status`,`visible`,`icon`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`,`is_frame`) values (1,'超级权限','*:**','1',NULL,NULL,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0),(2,'运营中心','system','0',0,1,'/system','Layout',1,1,1,'system',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(3,'监控中心','monitor','0',0,2,'/monitor','Layout',1,1,1,'monitor',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(4,'系统工具','tool','0',0,3,'/tool','Layout',1,1,1,'tool',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(5,'产商品中心','product','0',0,0,'/product','Layout',1,1,1,'product',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(201,'用户管理','system:user:list','3',2,1,'user','system/user/index',1,1,1,'user',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(202,'角色管理','system:role:list','3',2,2,'role','system/role/index',1,1,1,'peoples',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(203,'菜单管理','system:menu:list','3',2,3,'menu','system/menu/index',1,1,1,'tree-table',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(204,'部门管理','system:dept:list','3',2,4,'dept','system/dept/index',1,1,1,'tree',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(205,'数据字典','system:dict:list','3',2,5,'dict','system/dict/index',1,1,1,'dict',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(206,'通知公告','system:notice:list','3',2,6,'notice','system/notice/index',1,1,1,'message',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(301,'日志管理','log','0',3,1,'/monitor/log','monitor/log/index',1,1,1,'log',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(302,'登录日志','log:login:list','3',301,1,'logininfo','monitor/log/logininfo/index',1,1,1,'log',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(303,'操作日志','log:operation:list','3',301,2,'operlog','monitor/log/operlog/index',1,1,1,'log',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(304,'在线用户','monitor:online:list','3',3,2,'online','monitor/online/index',1,1,1,'monitor','2021-02-20 16:09:46',NULL,NULL,NULL,NULL,NULL,0,0),(305,'定时任务','monitor:job:list','3',3,3,'job','monitor/job/index',1,1,1,'job','2021-02-21 10:43:24',NULL,NULL,NULL,NULL,NULL,0,0),(401,'api文档','tool:api','3',4,1,'swagger','tool/swagger/index',1,1,1,'monitor',NULL,NULL,NULL,NULL,NULL,NULL,0,0),(402,'表单构建','tool:build','3',4,2,'build','tool/build/index',1,1,1,'tool',NULL,NULL,NULL,NULL,NULL,NULL,0,0);
 
 /*Table structure for table `table_system_role` */
 
 DROP TABLE IF EXISTS `table_system_role`;
 
 CREATE TABLE `table_system_role` (
-  `role_id` bigint NOT NULL COMMENT '主键',
+  `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `role_name` varchar(32) DEFAULT NULL COMMENT '角色名称',
   `role_code` varchar(32) DEFAULT NULL COMMENT '角色字符串',
-  `role_status` bigint DEFAULT NULL COMMENT '角色状态索引',
-  `role_status_value` varchar(4) DEFAULT NULL COMMENT '角色状态值0未启用1启用，详见属性表',
+  `role_status` bigint DEFAULT '1' COMMENT '角色状态 0未启用1启用',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint DEFAULT NULL COMMENT '创建者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `changed_by` bigint DEFAULT NULL COMMENT '更改者',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `version_number` int DEFAULT '0' COMMENT '字段版本',
+  `is_delete` int DEFAULT '0' COMMENT '删除标识',
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色信息表';
+
+/*Data for the table `table_system_role` */
+
+insert  into `table_system_role`(`role_id`,`role_name`,`role_code`,`role_status`,`create_time`,`create_by`,`update_time`,`changed_by`,`remark`,`version_number`,`is_delete`) values (1,'超级管理员','admin',1,'2021-02-18 21:47:28',NULL,NULL,NULL,NULL,1,0);
+
+/*Table structure for table `table_system_task_log` */
+
+DROP TABLE IF EXISTS `table_system_task_log`;
+
+CREATE TABLE `table_system_task_log` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `task_name` varchar(64) DEFAULT NULL COMMENT '任务名称',
+  `task_group` varchar(64) DEFAULT NULL COMMENT '任务组名称',
+  `invoke_target` varchar(64) DEFAULT NULL COMMENT '调用目标字符串',
+  `task_log` varchar(512) DEFAULT NULL COMMENT '任务日志',
+  `task_status` char(1) DEFAULT '1' COMMENT '任务执行状态1成功0失败',
+  `exception_info` varchar(1024) DEFAULT NULL COMMENT '异常信息',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `start_time` datetime DEFAULT NULL COMMENT '任务开始时间',
+  `stop_time` datetime DEFAULT NULL COMMENT '任务结束时间',
+  `remark` varchar(128) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1364532336067543043 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `table_system_task_log` */
+
+insert  into `table_system_task_log`(`id`,`task_name`,`task_group`,`invoke_target`,`task_log`,`task_status`,`exception_info`,`create_time`,`start_time`,`stop_time`,`remark`) values (1364511671243481089,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:08','2021-02-24 17:45:08',NULL),(1364511672774402049,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:09','2021-02-24 17:45:09',NULL),(1364511674347266049,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:09','2021-02-24 17:45:09',NULL),(1364511686472998914,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:12','2021-02-24 17:45:12',NULL),(1364511698787475457,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:15','2021-02-24 17:45:15',NULL),(1364511711949201409,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:18','2021-02-24 17:45:18',NULL),(1364511724423061505,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:21','2021-02-24 17:45:21',NULL),(1364511736607514626,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:45:24','2021-02-24 17:45:24',NULL),(1364512049313849346,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:46:39','2021-02-24 17:46:39',NULL),(1364512112421347329,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:46:54','2021-02-24 17:46:54',NULL),(1364512114401058818,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:46:54','2021-02-24 17:46:54',NULL),(1364512126656815105,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:46:57','2021-02-24 17:46:57',NULL),(1364512139143258114,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:00','2021-02-24 17:47:00',NULL),(1364512151751335937,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:03','2021-02-24 17:47:03',NULL),(1364512164397162498,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:06','2021-02-24 17:47:06',NULL),(1364512176971685890,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:09','2021-02-24 17:47:09',NULL),(1364512189583958018,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:12','2021-02-24 17:47:12',NULL),(1364512202145898497,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:15','2021-02-24 17:47:15',NULL),(1364512214699450369,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:18','2021-02-24 17:47:18',NULL),(1364512227278168066,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:21','2021-02-24 17:47:21',NULL),(1364512239848497154,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:24','2021-02-24 17:47:24',NULL),(1364512252410437634,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:27','2021-02-24 17:47:27',NULL),(1364512264980766721,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:30','2021-02-24 17:47:30',NULL),(1364512278201212929,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:33','2021-02-24 17:47:33',NULL),(1364512290159173633,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:36','2021-02-24 17:47:36',NULL),(1364512302981160961,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:39','2021-02-24 17:47:39',NULL),(1364512315643764738,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:42','2021-02-24 17:47:42',NULL),(1364512327962435586,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:45','2021-02-24 17:47:45',NULL),(1364512340520181761,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:48','2021-02-24 17:47:48',NULL),(1364512353140842498,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:51','2021-02-24 17:47:51',NULL),(1364512365660839938,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:54','2021-02-24 17:47:54',NULL),(1364512378340220929,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:47:57','2021-02-24 17:47:57',NULL),(1364512392680546306,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:48:00','2021-02-24 17:48:00',NULL),(1364512403413770242,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:48:03','2021-02-24 17:48:03',NULL),(1364512416042819586,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:48:06','2021-02-24 17:48:06',NULL),(1364512757572419585,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:49:27','2021-02-24 17:49:27',NULL),(1364512759141089281,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:49:28','2021-02-24 17:49:28',NULL),(1364512768335003650,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:49:30','2021-02-24 17:49:30',NULL),(1364512780976635905,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:49:33','2021-02-24 17:49:33',NULL),(1364512796168404993,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:49:37','2021-02-24 17:49:37',NULL),(1364512807472054274,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:49:39','2021-02-24 17:49:39',NULL),(1364512818750537730,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 17:49:42','2021-02-24 17:49:42',NULL),(1364525755317841921,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:41:06','2021-02-24 18:41:06',NULL),(1364525766596325378,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:41:09','2021-02-24 18:41:09',NULL),(1364525779028242433,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:41:12','2021-02-24 18:41:12',NULL),(1364525792080916481,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:41:15','2021-02-24 18:41:15',NULL),(1364525804294729730,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:41:18','2021-02-24 18:41:18',NULL),(1364525816839892993,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:41:21','2021-02-24 18:41:21',NULL),(1364527528250068994,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:09','2021-02-24 18:48:09',NULL),(1364527540786843650,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:12','2021-02-24 18:48:12',NULL),(1364527553323618306,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:15','2021-02-24 18:48:15',NULL),(1364527565826838530,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:18','2021-02-24 18:48:18',NULL),(1364527578606882817,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:21','2021-02-24 18:48:21',NULL),(1364527591391121410,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:24','2021-02-24 18:48:24',NULL),(1364527603571380225,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:27','2021-02-24 18:48:27',NULL),(1364527616120737793,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:30','2021-02-24 18:48:30',NULL),(1364527628900782082,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:33','2021-02-24 18:48:33',NULL),(1364527641320116225,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:36','2021-02-24 18:48:36',NULL),(1364527653949165569,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:39','2021-02-24 18:48:39',NULL),(1364527666506911745,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:42','2021-02-24 18:48:42',NULL),(1364527679089823746,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:45','2021-02-24 18:48:45',NULL),(1364527691806953473,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:48','2021-02-24 18:48:48',NULL),(1364527704318562306,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:51','2021-02-24 18:48:51',NULL),(1364527717148938241,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:54','2021-02-24 18:48:54',NULL),(1364527729534717953,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:48:57','2021-02-24 18:48:57',NULL),(1364527742012772353,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:49:00','2021-02-24 18:49:00',NULL),(1364527754557935618,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:49:03','2021-02-24 18:49:03',NULL),(1364527767216345089,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:49:06','2021-02-24 18:49:06',NULL),(1364527779761508353,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:49:09','2021-02-24 18:49:09',NULL),(1364527796035407874,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:49:13','2021-02-24 18:49:13',NULL),(1364529629680304129,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:56:30','2021-02-24 18:56:30',NULL),(1364529642036723714,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:56:33','2021-02-24 18:56:33',NULL),(1364529654565109762,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:56:36','2021-02-24 18:56:36',NULL),(1364529671627538433,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:56:40','2021-02-24 18:56:40',NULL),(1364529679739322370,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:56:42','2021-02-24 18:56:42',NULL),(1364529692339011585,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 18:56:45','2021-02-24 18:56:45',NULL),(1364531655357165569,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:33','2021-02-24 19:04:33',NULL),(1364531667927494658,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:36','2021-02-24 19:04:36',NULL),(1364531680481046529,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:39','2021-02-24 19:04:39',NULL),(1364531693038792706,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:42','2021-02-24 19:04:42',NULL),(1364531705755922434,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:45','2021-02-24 19:04:45',NULL),(1364531718233976834,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:48','2021-02-24 19:04:48',NULL),(1364531730833666050,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:51','2021-02-24 19:04:51',NULL),(1364531743705985026,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:54','2021-02-24 19:04:54',NULL),(1364531757299724289,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:04:57','2021-02-24 19:04:57',NULL),(1364531768532070401,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:00','2021-02-24 19:05:00',NULL),(1364531781161119745,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:03','2021-02-24 19:05:03',NULL),(1364531793760808961,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:06','2021-02-24 19:05:06',NULL),(1364531806326943746,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:09','2021-02-24 19:05:09',NULL),(1364531818834358273,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:12','2021-02-24 19:05:12',NULL),(1364531831434047489,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:15','2021-02-24 19:05:15',NULL),(1364531844042125313,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:18','2021-02-24 19:05:18',NULL),(1364531856604065793,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:21','2021-02-24 19:05:21',NULL),(1364531869631574017,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:24','2021-02-24 19:05:24',NULL),(1364531883133038594,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:27','2021-02-24 19:05:27',NULL),(1364531894453465089,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:30','2021-02-24 19:05:30',NULL),(1364531906931519489,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:33','2021-02-24 19:05:33',NULL),(1364531919988387842,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:36','2021-02-24 19:05:36',NULL),(1364531932118315009,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:39','2021-02-24 19:05:39',NULL),(1364531944705421313,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:42','2021-02-24 19:05:42',NULL),(1364531957414162434,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:45','2021-02-24 19:05:45',NULL),(1364531969950937090,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:48','2021-02-24 19:05:48',NULL),(1364531982491906050,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:05:51','2021-02-24 19:05:51',NULL),(1364532034534875138,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:03','2021-02-24 19:06:03',NULL),(1364532045356179457,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:06','2021-02-24 19:06:06',NULL),(1364532057905537026,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:09','2021-02-24 19:06:09',NULL),(1364532070593306626,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:12','2021-02-24 19:06:12',NULL),(1364532083176218626,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:15','2021-02-24 19:06:15',NULL),(1364532095784296449,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:18','2021-02-24 19:06:18',NULL),(1364532108300099585,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:21','2021-02-24 19:06:21',NULL),(1364532121092726786,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:24','2021-02-24 19:06:24',NULL),(1364532133512060930,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:27','2021-02-24 19:06:27',NULL),(1364532146099167234,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:30','2021-02-24 19:06:30',NULL),(1364532158967291906,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:33','2021-02-24 19:06:33',NULL),(1364532171189493761,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:36','2021-02-24 19:06:36',NULL),(1364532183818543106,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:39','2021-02-24 19:06:39',NULL),(1364532196787331073,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:42','2021-02-24 19:06:42',NULL),(1364532209055670274,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:45','2021-02-24 19:06:45',NULL),(1364532221605027842,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:06:48','2021-02-24 19:06:48',NULL),(1364532275120111618,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:07:01','2021-02-24 19:07:01',NULL),(1364532284452438017,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:07:03','2021-02-24 19:07:03',NULL),(1364532297056321538,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:07:06','2021-02-24 19:07:06',NULL),(1364532309702148097,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:07:09','2021-02-24 19:07:09',NULL),(1364532323283304449,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:07:12','2021-02-24 19:07:12',NULL),(1364532336067543042,'测试任务','yeju_job_default_group','class pers.lbf.yeju.provider.job.task.HelloTask',NULL,'1','0/3 * * * * ?',NULL,'2021-02-24 19:07:15','2021-02-24 19:07:15',NULL);
+
+/*Table structure for table `table_system_task_properties` */
+
+DROP TABLE IF EXISTS `table_system_task_properties`;
+
+CREATE TABLE `table_system_task_properties` (
+  `id` bigint NOT NULL COMMENT 'id',
+  `task_id` bigint DEFAULT NULL COMMENT '对应的任务id',
+  `properties_name` varchar(128) DEFAULT NULL COMMENT '属性名',
+  `properties_value` varchar(128) DEFAULT NULL COMMENT '属性值',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` bigint DEFAULT NULL COMMENT '创建者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -1079,10 +1183,10 @@ CREATE TABLE `table_system_role` (
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `version_number` int DEFAULT NULL COMMENT '字段版本',
   `is_delete` int DEFAULT NULL COMMENT '删除标识',
-  PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色信息表';
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='定时任务参数表';
 
-/*Data for the table `table_system_role` */
+/*Data for the table `table_system_task_properties` */
 
 /*Table structure for table `table_system_timing_task_scheduler` */
 

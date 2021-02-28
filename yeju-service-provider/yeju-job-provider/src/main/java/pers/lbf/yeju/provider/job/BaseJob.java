@@ -98,15 +98,16 @@ public abstract class BaseJob implements Job {
 
     }
 
-    protected abstract void doExecute(JobExecutionContext context) throws Exception;
+    protected abstract void doExecute(JobExecutionContext context) throws ServiceException;
 
     private TaskLogCreateArgs jobInfoToLogArgs(JobInfoBean bean) {
 
         TaskLogCreateArgs taskLogCreateArgs = new TaskLogCreateArgs();
         taskLogCreateArgs.setTaskName(bean.getJobName());
         taskLogCreateArgs.setTaskGroup(bean.getJobGroup());
-        taskLogCreateArgs.setInvokeTarget(String.valueOf(bean.getInvokeTarget()));
+        taskLogCreateArgs.setInvokeTarget(bean.getInvokeTargetStr());
         taskLogCreateArgs.setExceptionInfo(bean.getCronExpression());
+        taskLogCreateArgs.setCreateTime(bean.getCreatedDate());
         return taskLogCreateArgs;
 
     }

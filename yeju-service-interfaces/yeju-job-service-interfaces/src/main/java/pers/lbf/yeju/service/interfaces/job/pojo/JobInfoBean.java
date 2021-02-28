@@ -37,7 +37,7 @@ public class JobInfoBean implements Serializable {
 
     private Long jobId;
 
-    private Class invokeTarget;
+    private String invokeTargetStr;
 
     private String jobName;
 
@@ -84,12 +84,12 @@ public class JobInfoBean implements Serializable {
         this.jobId = jobId;
     }
 
-    public Class getInvokeTarget() {
-        return invokeTarget;
+    public String getInvokeTargetStr() {
+        return invokeTargetStr;
     }
 
-    public void setInvokeTarget(Class invokeTarget) {
-        this.invokeTarget = invokeTarget;
+    public void setInvokeTargetStr(String invokeTargetStr) {
+        this.invokeTargetStr = invokeTargetStr;
     }
 
     public String getJobName() {
@@ -162,7 +162,6 @@ public class JobInfoBean implements Serializable {
         return "JobInfoBean{" +
                 "misfirePolicy='" + misfirePolicy + '\'' +
                 ", jobId=" + jobId +
-                ", invokeTarget=" + invokeTarget +
                 ", jobName='" + jobName + '\'' +
                 ", jobGroup='" + jobGroup + '\'' +
                 ", cronExpression='" + cronExpression + '\'' +

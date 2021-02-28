@@ -18,7 +18,9 @@ package pers.lbf.yeju.common.core.status.enums;
 
 import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
-/**参数状态枚举
+/**
+ * 参数状态枚举
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -29,7 +31,9 @@ public enum ParameStatusEnum implements IStatus {
     /**
      * 参数不能为空
      */
-    Parameter_cannot_be_empty("参数不能为空","par01");
+    Parameter_cannot_be_empty("参数不能为空", "par01"),
+
+    invalidParameter("参数不合法", "par02");
 
     private String message;
     private String code;

@@ -24,10 +24,10 @@ import pers.lbf.yeju.provider.base.util.SpringContextUtils;
 import pers.lbf.yeju.provider.job.constant.ScheduleConstants;
 import pers.lbf.yeju.provider.job.constant.TaskExecutionConstants;
 import pers.lbf.yeju.provider.job.exception.TaskException;
+import pers.lbf.yeju.provider.job.sender.TaskLogSender;
 import pers.lbf.yeju.provider.job.status.TaskExecutionStatus;
-import pers.lbf.yeju.service.interfaces.job.ITaskLogService;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
-import pers.lbf.yeju.service.interfaces.job.pojo.TaskLogCreateArgs;
+import pers.lbf.yeju.service.interfaces.log.pojo.TaskLogCreateArgs;
 
 import java.util.Date;
 
@@ -46,7 +46,7 @@ public abstract class BaseJob implements Job {
     private static ThreadLocal<Date> threadLocal = new ThreadLocal<>();
 
 
-    private ITaskLogService taskLogService;
+    private TaskLogSender logSender;
 
     @Override
     public void execute(JobExecutionContext context) throws ServiceException {
@@ -69,9 +69,9 @@ public abstract class BaseJob implements Job {
     }
 
     public void beforeExecute() {
-        if (taskLogService == null) {
+        if (logSender == null) {
             try {
-                taskLogService = SpringContextUtils.getBean(ITaskLogService.class);
+                logSender = SpringContextUtils.getBean(TaskLogSender.class);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -94,8 +94,7 @@ public abstract class BaseJob implements Job {
         args.setStartTime(startTime);
         args.setStopTime(stopTime);
 
-        taskLogService.addOne(args);
-
+        logSender.send(args, null);
     }
 
     protected abstract void doExecute(JobExecutionContext context) throws ServiceException;

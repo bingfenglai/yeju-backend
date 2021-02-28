@@ -28,6 +28,7 @@ import pers.lbf.yeju.provider.job.task.HelloTask;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
 
+import javax.annotation.PostConstruct;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -55,7 +56,7 @@ public class YejuJobProviderApplication {
 
     }
 
-    //@PostConstruct
+    @PostConstruct
     private void task1() {
         JobInfoBean infoBean = new JobInfoBean();
         infoBean.setJobName("测试任务");

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.job.service;
+package pers.lbf.yeju.provider.log.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -24,16 +24,16 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.domain.entity.TaskLog;
 import pers.lbf.yeju.provider.base.util.PageUtil;
-import pers.lbf.yeju.provider.job.dao.ITaskLogDao;
-import pers.lbf.yeju.service.interfaces.job.ITaskLogService;
-import pers.lbf.yeju.service.interfaces.job.pojo.JobLogInfoBean;
-import pers.lbf.yeju.service.interfaces.job.pojo.TaskLogCreateArgs;
+import pers.lbf.yeju.provider.log.dao.ITaskLogDao;
+import pers.lbf.yeju.service.interfaces.log.ITaskLogService;
+import pers.lbf.yeju.service.interfaces.log.pojo.JobLogInfoBean;
+import pers.lbf.yeju.service.interfaces.log.pojo.TaskLogCreateArgs;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * TODO
+ * 定时任务服务
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0

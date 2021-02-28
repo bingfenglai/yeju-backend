@@ -16,7 +16,14 @@
  */
 package pers.lbf.yeju.provider.job.sender;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.mq.sender.BaseRabbitMQSender;
+import pers.lbf.yeju.provider.job.config.JobLogExchangeConfig;
+
+import java.util.Map;
 
 /**
  * TODO
@@ -26,6 +33,19 @@ import org.springframework.stereotype.Component;
  * @date 2021/2/28 9:13
  */
 @Component
-public class TaskLogSender {
+@Slf4j
+public class TaskLogSender extends BaseRabbitMQSender {
 
+    @Autowired
+    private JobLogExchangeConfig config;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+
+    public void send(Object message, Map<String, Object> properties) throws RuntimeException {
+        log.debug("发送任务调度日志");
+        super.rabbitTemplate = rabbitTemplate;
+        super.send(message, properties, config);
+    }
 }

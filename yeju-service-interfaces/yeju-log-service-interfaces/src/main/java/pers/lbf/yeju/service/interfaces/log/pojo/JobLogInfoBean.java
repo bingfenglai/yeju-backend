@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.job.pojo;
+package pers.lbf.yeju.service.interfaces.log.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -24,10 +24,11 @@ import java.util.Date;
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/22 13:58
+ * @date 2021/2/28 9:03
  */
-public class TaskLogCreateArgs implements Serializable {
+public class JobLogInfoBean implements Serializable {
 
+    private Long id;
     /**
      * 任务名称
      */
@@ -56,7 +57,6 @@ public class TaskLogCreateArgs implements Serializable {
      * 创建时间
      */
     private Date createTime;
-
     /**
      * 任务开始时间
      */
@@ -65,21 +65,17 @@ public class TaskLogCreateArgs implements Serializable {
      * 任务结束时间
      */
     private Date stopTime;
+    /**
+     * 备注
+     */
+    private String remark;
 
-    public Date getStartTime() {
-        return startTime;
+    public Long getId() {
+        return id;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getStopTime() {
-        return stopTime;
-    }
-
-    public void setStopTime(Date stopTime) {
-        this.stopTime = stopTime;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTaskName() {
@@ -136,5 +132,29 @@ public class TaskLogCreateArgs implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(Date stopTime) {
+        this.stopTime = stopTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

@@ -14,12 +14,13 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.job;
+package pers.lbf.yeju.service.interfaces.log;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.service.interfaces.job.pojo.JobLogInfoBean;
-import pers.lbf.yeju.service.interfaces.job.pojo.TaskLogCreateArgs;
+import pers.lbf.yeju.service.interfaces.log.pojo.JobLogInfoBean;
+import pers.lbf.yeju.service.interfaces.log.pojo.TaskLogCreateArgs;
+
 
 /**
  * 任务执行日志

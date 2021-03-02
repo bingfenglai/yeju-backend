@@ -41,7 +41,6 @@ import pers.lbf.yeju.consumer.auth.manager.OnlineManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
 import pers.lbf.yeju.consumer.auth.sender.OnlineSender;
-import pers.lbf.yeju.consumer.auth.sender.SessionInitSender;
 import pers.lbf.yeju.service.interfaces.auth.enums.SessionStatus;
 import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import pers.lbf.yeju.service.interfaces.session.pojo.OnlineInfoBean;
@@ -64,8 +63,6 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
     @DubboReference
     private ISessionService sessionService;
 
-    @Autowired
-    private SessionInitSender sessionInitSender;
 
     @Autowired
     private OnlineSender onlineSender;
@@ -97,7 +94,7 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         //令牌
         String token = "";
 
-        //过期时间，单位 分钟
+        //过期时间，单位 秒
         Long expires = authorityManager.getTokenExpiresTime(exchange);
         IResult<Object> result;
 
@@ -105,7 +102,14 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
 
         AuthorityInfoBean authorityInfoBean = (AuthorityInfoBean) authentication.getPrincipal();
-        Boolean success = sessionService.initSession(authorityInfoBean.getPrincipal()).isSuccess();
+
+        // 先销毁会话（防止多地登录）
+        sessionService.destroySession(authorityInfoBean.getPrincipal());
+
+        // 然后生成新的会话
+        String sessionId = authorityInfoBean.getPrincipal() + System.currentTimeMillis();
+        authorityInfoBean.setSessionId(sessionId);
+        Boolean success = sessionService.initSession(sessionId, authorityInfoBean.getPrincipal()).isSuccess();
 
         if (!success) {
             throw ServiceException.getInstance(SessionStatus.InitFailed);
@@ -131,7 +135,6 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         return response.writeWith(
                 Mono.just(bodyDataBuffer)
                         .doFinally(signalType -> {
-                            //sessionInitSender.send(authorityInfoBean.getPrincipal(),null);
                             addOnline(request, authorityInfoBean);
                         })
 
@@ -143,21 +146,10 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
     private void addOnline(ServerHttpRequest request, AuthorityInfoBean authorityInfoBean) {
 
-//        String userAgentStr = Objects.requireNonNull(request.getHeaders().get("User-Agent")).get(0);
-//        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
-//
-//
-//        OnlineInfoBean onlineInfoBean = new OnlineInfoBean();
-//        onlineInfoBean.setPrincipal(authorityInfoBean.getPrincipal());
-//        onlineInfoBean.setSessionId("yeju:session::"+authorityInfoBean.getPrincipal());
-//        onlineInfoBean.setIp(HttpUtils.getIpAddress(request));
-//        onlineInfoBean.setAddress("未知");
-//        onlineInfoBean.setDate(new Date());
-//        onlineInfoBean.setClient(userAgent.getBrowser().getName());
-//        onlineInfoBean.setOs(userAgent.getOperatingSystem().getName());
         OnlineInfoBean onlineInfoBean = OnlineManager.getOnlineInfoBeanBuilder(authorityInfoBean.getPrincipal(), request)
                 .build();
 
+        onlineInfoBean.setSessionId(authorityInfoBean.getSessionId());
         onlineSender.send(onlineInfoBean, null);
 
     }

@@ -78,9 +78,9 @@ public class AuthorizationController {
         //获取token
         AuthorityInfoBean authorityInfo = getAuthorityInfoBeanByToken(webExchange);
 
-        String principal = authorityInfo.getPrincipal();
+        String sessionId = authorityInfo.getSessionId();
 
-        return Mono.just(sessionService.initSession(principal));
+        return Mono.just(sessionService.getSessionDetails(sessionId));
     }
 
     @ApiOperation(value = "刷新令牌", notes = "说明", httpMethod = "GET")

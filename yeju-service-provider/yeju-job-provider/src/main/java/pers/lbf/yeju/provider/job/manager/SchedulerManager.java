@@ -58,7 +58,8 @@ public class SchedulerManager {
         List<JobDetailsBean> jobDetailsBeanList = jobSchedulerService.findAll().getData();
         for (JobDetailsBean jobDetailsBean : jobDetailsBeanList) {
             jobDetailsBean.setExecute(Objects.equals(jobDetailsBean.getJobStatus(), "1"));
-            jobManager.createJob(jobDetailsBean, jobDetailsBean.getTriggerInfoBeanList().get(0));
+            jobManager.createJob(jobDetailsBean,
+                    jobDetailsBean.getTriggerInfoBeanList().get(0), jobDetailsBean.getJobProperties());
         }
     }
 

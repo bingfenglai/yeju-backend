@@ -54,7 +54,6 @@ public class OnlineInfoBeanBuilder {
 
         OnlineInfoBean onlineInfoBean = new OnlineInfoBean();
         onlineInfoBean.setPrincipal(principal);
-        onlineInfoBean.setSessionId("yeju:session::" + principal);
         onlineInfoBean.setIp(HttpUtils.getIpAddress(request));
         onlineInfoBean.setAddress("未知");
         onlineInfoBean.setDate(new Date());

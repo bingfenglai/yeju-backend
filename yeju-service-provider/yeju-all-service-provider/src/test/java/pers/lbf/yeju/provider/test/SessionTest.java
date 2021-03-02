@@ -48,7 +48,7 @@ public class SessionTest {
 
     //@Test
     public void test2() {
-        sessionService.initSession(accout);
+        //sessionService.initSession(accout);
     }
 
 

@@ -16,13 +16,13 @@
  */
 package pers.lbf.yeju.consumer.auth.pojo;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/**token详情信息
+/**
+ * token详情信息
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -50,22 +50,8 @@ public class AuthorityInfoBean implements Serializable {
      */
     private List<String> authorityList;
 
-    private List<SimpleGrantedAuthority> simpleGrantedAuthorityList;
+    private String sessionId;
 
-
-    public List<SimpleGrantedAuthority> getSimpleGrantedAuthorityList() {
-        return simpleGrantedAuthorityList;
-    }
-
-    private void init(List<String> authorityList) {
-        for (String s : authorityList) {
-            simpleGrantedAuthorityList.add(new SimpleGrantedAuthority(s));
-        }
-    }
-
-    public void setSimpleGrantedAuthorityList(List<SimpleGrantedAuthority> simpleGrantedAuthorityList) {
-        this.simpleGrantedAuthorityList = simpleGrantedAuthorityList;
-    }
 
     @Override
     public String toString() {
@@ -73,6 +59,14 @@ public class AuthorityInfoBean implements Serializable {
                 "Principal='" + principal + '\'' +
                 ", authority=" + authorityList +
                 '}';
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public String getPrincipal() {

@@ -26,20 +26,22 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.common.core.result.SimpleResult;
+import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.domain.entity.TaskScheduler;
 import pers.lbf.yeju.provider.base.util.PageUtil;
+import pers.lbf.yeju.provider.job.constant.ScheduleConstants;
 import pers.lbf.yeju.provider.job.dao.ITaskSchedulerDao;
+import pers.lbf.yeju.provider.job.manager.JobManager;
+import pers.lbf.yeju.provider.job.status.CronExpressionStatus;
+import pers.lbf.yeju.provider.job.util.CronExpressionUtil;
 import pers.lbf.yeju.service.interfaces.job.IJobGroupService;
 import pers.lbf.yeju.service.interfaces.job.IJobPropertiesService;
 import pers.lbf.yeju.service.interfaces.job.IJobTriggerService;
 import pers.lbf.yeju.service.interfaces.job.ITaskSchedulerService;
-import pers.lbf.yeju.service.interfaces.job.pojo.JobDetailsBean;
-import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
-import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
+import pers.lbf.yeju.service.interfaces.job.pojo.*;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * TODO
@@ -54,6 +56,9 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
 
     @Autowired
     private ITaskSchedulerDao taskSchedulerDao;
+
+    @Autowired
+    private JobManager jobManager;
 
     @DubboReference
     private IJobGroupService jobGroupService;
@@ -75,11 +80,22 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
     @Override
     public IResult<List<JobDetailsBean>> findAll() throws ServiceException {
         QueryWrapper<TaskScheduler> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("status", 1);
+        queryWrapper.eq("status", Integer.valueOf(ScheduleConstants.Status.NORMAL.getValue()));
+
+        // 1.查询任务信息
         List<TaskScheduler> taskSchedulers = taskSchedulerDao.selectList(queryWrapper);
         List<JobDetailsBean> result = new LinkedList<>();
         for (TaskScheduler taskScheduler : taskSchedulers) {
             JobDetailsBean jobInfoBean = taskSchedulerToJobDetailsBean(taskScheduler);
+
+            // 2.查询任务对应的触发器          
+            List<JobTriggerInfoBean> triggerInfoBeanList = triggerService.findTriggerInfoBeanListByJobId(taskScheduler.getTaskId()).getData();
+            jobInfoBean.setTriggerInfoBeanList(triggerInfoBeanList);
+
+            // 3. 查询任务执行所需参数 初始化数据
+            Properties data = jobPropertiesService.findPropertiesByJobId(taskScheduler.getTaskId()).getData();
+            jobInfoBean.setJobProperties(data);
+
             result.add(jobInfoBean);
         }
 
@@ -95,8 +111,14 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      */
     @Override
     public PageResult<JobInfoBean> findPage(Long currentPage, Long size) {
+        QueryWrapper<TaskScheduler> queryWrapper = new QueryWrapper<>();
+
+        //queryWrapper.select("");
+
+
         Page<TaskScheduler> page = PageUtil.getPage(TaskScheduler.class, currentPage, size);
-        Page<TaskScheduler> taskSchedulerPage = taskSchedulerDao.selectPage(page, null);
+
+        Page<TaskScheduler> taskSchedulerPage = taskSchedulerDao.selectPage(page, queryWrapper);
 
         List<TaskScheduler> taskSchedulerList = taskSchedulerPage.getRecords();
         List<JobInfoBean> result = new LinkedList<>();
@@ -117,7 +139,10 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      */
     @Override
     public IResult<JobInfoBean> selectJobById(Long jobId) {
-        return null;
+        TaskScheduler taskScheduler = taskSchedulerDao.selectById(jobId);
+        JobInfoBean jobInfoBean = taskSchedulerToJobInfoBean(taskScheduler);
+        return Result.ok(jobInfoBean);
+
     }
 
     /**
@@ -127,8 +152,10 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      * @return 结果
      */
     @Override
-    public IResult<Boolean> pauseJob(JobInfoBean job) throws ServiceException {
-        return null;
+    public IResult<Object> pauseJob(JobDetailsBean job) throws ServiceException {
+        jobManager.pauseJob(job);
+        changeStatus(job.getJobId(), Integer.valueOf(ScheduleConstants.Status.PAUSE.getValue()));
+        return SimpleResult.ok();
     }
 
     /**
@@ -138,8 +165,10 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      * @return 结果
      */
     @Override
-    public IResult<Boolean> resumeJob(JobInfoBean job) throws ServiceException {
-        return null;
+    public IResult<Object> resumeJob(JobInfoBean job) throws ServiceException {
+        jobManager.resumeJob(job);
+        changeStatus(job.getJobId(), Integer.valueOf(ScheduleConstants.Status.NORMAL.getValue()));
+        return SimpleResult.ok();
     }
 
     /**
@@ -149,8 +178,13 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      * @return 结果
      */
     @Override
-    public IResult<Boolean> deleteJob(JobInfoBean job) throws ServiceException {
-        return null;
+    public IResult<Object> deleteJob(JobDetailsBean job) throws ServiceException {
+        jobManager.removeJob(job, job.getTriggerInfoBeanList().get(0));
+        if (job.getJobId() != null) {
+            taskSchedulerDao.deleteById(job.getJobId());
+        }
+        triggerService.deleteByJobId(job.getJobId());
+        return SimpleResult.ok();
     }
 
     /**
@@ -160,20 +194,35 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      * @return 结果
      */
     @Override
-    public IResult<Boolean> deleteJobByIds(Long[] jobIds) throws ServiceException {
-        return null;
+    public IResult<Object> deleteJobByIds(Long[] jobIds) throws ServiceException {
+        List<JobInfoBean> jobInfoBeans = taskSchedulerDao.findNameAndGroupNameByIds(jobIds);
+        for (JobInfoBean jobInfoBean : jobInfoBeans) {
+            List<JobTriggerInfoBean> triggerInfoBeanList = triggerService.findTriggerInfoBeanListByJobId(jobInfoBean.getJobId()).getData();
+            for (JobTriggerInfoBean triggerInfoBean : triggerInfoBeanList) {
+                jobManager.removeJob(jobInfoBean, triggerInfoBean);
+                taskSchedulerDao.deleteById(jobInfoBean.getJobId());
+            }
+
+        }
+        triggerService.deleteByJobIds(jobIds);
+
+        return SimpleResult.ok();
     }
 
     /**
      * 任务调度状态修改
      *
-     * @param job 调度信息
+     * @param jobId
+     * @param newStatus
      * @return 结果
      */
     @Override
-    public IResult<Boolean> changeStatus(JobInfoBean job) throws ServiceException {
-        return null;
+    public IResult<Object> changeStatus(Long jobId, Integer newStatus) throws ServiceException {
+
+        taskSchedulerDao.updateStatusById(jobId, newStatus);
+        return SimpleResult.ok();
     }
+
 
     /**
      * 立即运行任务
@@ -182,30 +231,124 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      * @return 结果
      */
     @Override
-    public IResult<Boolean> run(JobInfoBean job) throws ServiceException {
-        return null;
+    public IResult<Object> run(JobInfoBean job) throws ServiceException {
+        jobManager.runJob(job);
+        changeStatus(job.getJobId(), Integer.valueOf(ScheduleConstants.Status.NORMAL.getValue()));
+        return SimpleResult.ok();
     }
 
     /**
      * 新增任务
      *
-     * @param job 调度信息
+     * @param args 调度信息
      * @return 结果
      */
     @Override
-    public IResult<Boolean> insertJob(JobInfoBean job) throws ServiceException {
-        return null;
+    public IResult<Object> insertJob(JobCreateArgs args) throws ServiceException {
+        TaskScheduler taskScheduler = jobCreateArgsToTaskScheduler(args);
+        taskSchedulerDao.insert(taskScheduler);
+        if (args.getTriggerCreateArgs() != null) {
+            triggerService.create(args.getTriggerCreateArgs());
+            JobInfoBean jobInfoBean = jobCreateArgsToInfoBean(args);
+            JobTriggerInfoBean triggerInfoBean = triggerCreateArgsToJobTriggerInfoBean(args.getTriggerCreateArgs());
+            jobManager.createJob(jobInfoBean, triggerInfoBean);
+        } else {
+            throw ServiceException.getInstance("任务触发器信息不能为空",
+                    ParameStatusEnum.Parameter_cannot_be_empty.getCode());
+        }
+
+        if (args.getTaskPropertiesCreateArgs() != null) {
+            jobPropertiesService.create(args.getTaskPropertiesCreateArgs());
+        }
+
+
+        return SimpleResult.ok();
     }
+
 
     /**
      * 更新任务
      *
-     * @param job 调度信息
+     * @param args 调度信息
      * @return 结果
      */
+
     @Override
-    public IResult<Boolean> updateJob(JobInfoBean job) throws ServiceException {
-        return null;
+    public IResult<Object> updateJob(JobUpdateArgs args) throws ServiceException {
+        JobInfoBean jobInfoBean = jobCreateArgsToInfoBean(args);
+        TriggerCreateArgs triggerCreateArgs = args.getTriggerUpdateArgs();
+        JobTriggerInfoBean triggerInfoBean = triggerCreateArgsToJobTriggerInfoBean(triggerCreateArgs);
+
+        jobManager.removeJob(jobInfoBean, triggerInfoBean);
+        jobManager.createJob(jobInfoBean, triggerInfoBean);
+
+        TaskScheduler taskScheduler = jobUpdateArgsToTaskScheduler(args);
+        taskSchedulerDao.updateById(taskScheduler);
+        TriggerUpdateArgs triggerUpdateArgs = args.getTriggerUpdateArgs();
+        triggerService.update(triggerUpdateArgs);
+
+        return SimpleResult.ok();
+    }
+    
+
+    private JobTriggerInfoBean triggerCreateArgsToJobTriggerInfoBean(TriggerCreateArgs triggerCreateArgs) {
+        JobTriggerInfoBean jobTriggerInfoBean = new JobTriggerInfoBean();
+        jobTriggerInfoBean.setName(triggerCreateArgs.getTriggerName());
+        jobTriggerInfoBean.setGroup(triggerCreateArgs.getTriggerGroupName());
+        jobTriggerInfoBean.setStartTime(triggerCreateArgs.getStartTime());
+        jobTriggerInfoBean.setEndTime(triggerCreateArgs.getEndTime());
+        jobTriggerInfoBean.setTimeZone(TimeZone.getTimeZone(triggerCreateArgs.getTimezone()));
+        jobTriggerInfoBean.setDescription(triggerCreateArgs.getDescription());
+        return jobTriggerInfoBean;
+    }
+
+    private JobInfoBean jobCreateArgsToInfoBean(JobCreateArgs args) {
+        JobInfoBean jobInfoBean = new JobInfoBean();
+        jobInfoBean.setMisfirePolicy(String.valueOf(args.getMisfirePolicy()));
+
+        jobInfoBean.setInvokeTargetStr(args.getInvokeTarget());
+        jobInfoBean.setJobName(args.getTaskName());
+        jobInfoBean.setJobGroup(jobGroupService.findJobGroupNameByGroupId(args.getTaskGroupId()).getData());
+        jobInfoBean.setCronExpression(args.getCronExpression());
+        jobInfoBean.setJobStatus(String.valueOf(args.getStatus()));
+
+        jobInfoBean.setConcurrent(String.valueOf(args.getConcurrent()));
+        //jobInfoBean.setJobProperties();
+        return jobInfoBean;
+    }
+
+    private TaskScheduler jobCreateArgsToTaskScheduler(JobCreateArgs args) {
+        TaskScheduler taskScheduler = new TaskScheduler();
+        taskScheduler.setTaskName(args.getTaskName());
+        taskScheduler.setTaskGroupId(args.getTaskGroupId());
+        taskScheduler.setInvokeTarget(args.getInvokeTarget());
+        taskScheduler.setCronExpression(args.getCronExpression());
+        taskScheduler.setMisfirePolicy(args.getMisfirePolicy());
+        taskScheduler.setConcurrent(args.getConcurrent());
+        taskScheduler.setStatus(args.getStatus());
+        taskScheduler.setCreateTime(args.getCreateTime());
+        taskScheduler.setRemark(args.getRemark());
+        return taskScheduler;
+    }
+
+
+    private TaskScheduler jobUpdateArgsToTaskScheduler(JobUpdateArgs args) {
+        TaskScheduler taskScheduler = new TaskScheduler();
+        taskScheduler.setTaskId(args.getTaskId());
+        taskScheduler.setTaskName(args.getTaskName());
+        taskScheduler.setTaskGroupId(args.getTaskGroupId());
+        taskScheduler.setInvokeTarget(args.getInvokeTarget());
+        taskScheduler.setCronExpression(args.getCronExpression());
+        taskScheduler.setMisfirePolicy(args.getMisfirePolicy());
+        taskScheduler.setConcurrent(args.getConcurrent());
+        taskScheduler.setStatus(args.getStatus());
+        taskScheduler.setCreateTime(args.getCreateTime());
+
+        taskScheduler.setUpdateTime(args.getUpdateTime());
+        taskScheduler.setChangedBy(args.getChangedBy());
+        taskScheduler.setRemark(args.getRemark());
+
+        return taskScheduler;
     }
 
     /**
@@ -215,8 +358,26 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      * @return 结果
      */
     @Override
-    public IResult<Boolean> checkCronExpressionIsValid(String cronExpression) {
-        return null;
+    public IResult<Object> checkCronExpressionIsValid(String cronExpression) {
+        boolean flag = CronExpressionUtil.isVailable(cronExpression);
+        if (flag) {
+            return SimpleResult.ok();
+        } else {
+            throw ServiceException.getInstance(CronExpressionStatus.Invalid);
+        }
+    }
+
+    private TaskScheduler jobDetailsBeanToTaskScheduler(JobDetailsBean job) {
+        TaskScheduler taskScheduler = new TaskScheduler();
+        taskScheduler.setTaskName(job.getJobName());
+        taskScheduler.setTaskId(job.getJobId());
+        taskScheduler.setInvokeTarget(job.getInvokeTargetStr());
+        taskScheduler.setCronExpression(job.getCronExpression());
+        taskScheduler.setMisfirePolicy(Integer.valueOf(job.getMisfirePolicy()));
+        taskScheduler.setConcurrent(Integer.valueOf(job.getConcurrent()));
+        taskScheduler.setStatus(Integer.valueOf(job.getJobStatus()));
+        taskScheduler.setCreateTime(new Date());
+        return taskScheduler;
     }
 
 

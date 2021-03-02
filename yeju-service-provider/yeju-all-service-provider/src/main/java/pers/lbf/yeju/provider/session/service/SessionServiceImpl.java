@@ -61,9 +61,9 @@ public class SessionServiceImpl implements ISessionService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    private static final String ONLINE_KEY_PREFIX = "yeju:online";
+    public static final String ONLINE_KEY_PREFIX = "yeju:online";
 
-    private static final String SESSION_KEY_PREFIX = "yeju:session::";
+    public static final String SESSION_KEY_PREFIX = "yeju:session::";
 
     @Override
     public void addOnline(OnlineInfoBean onlineInfoBean) throws ServiceException {
@@ -143,10 +143,16 @@ public class SessionServiceImpl implements ISessionService {
      * @param principal 账号
      * @return r
      */
-    @CacheEvict(cacheNames = "yeju:session", key = "#principal")
     @Override
     public void destroySession(String principal) {
-        redisTemplate.delete(ONLINE_KEY_PREFIX + principal);
+        String onLineKey = ONLINE_KEY_PREFIX + principal;
+        OnlineInfoBean onlineInfo = (OnlineInfoBean) redisTemplate.opsForValue().get(onLineKey);
+        if (onlineInfo != null) {
+            String sessionKey = SESSION_KEY_PREFIX + onlineInfo.getSessionId();
+            redisTemplate.delete(sessionKey);
+            redisTemplate.delete(onLineKey);
+        }
+
     }
 
     /**
@@ -168,15 +174,17 @@ public class SessionServiceImpl implements ISessionService {
     /**
      * 初始化会话信息，认证成功后将会话信息存入redis
      *
-     * @param principal 员工账号、用户手机号
+     * @param sessionId 员工账号、用户手机号
+     * @param principal
      * @return void
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/5 14:20
      */
-    @Cacheable(cacheNames = "yeju:session", key = "#principal")
+    @Cacheable(cacheNames = "yeju:session", key = "#sessionId")
     @Override
-    public IResult<SessionDetails> initSession(String principal) throws ServiceException {
+    public IResult<SessionDetails> initSession(String sessionId, String principal) throws ServiceException {
+
         SessionDetails sessionDetails;
 
         // 1. 查询账户详情信息
@@ -221,6 +229,12 @@ public class SessionServiceImpl implements ISessionService {
 
         return Result.ok(sessionDetails);
 
+    }
+
+    @Override
+    public IResult<SessionDetails> getSessionDetails(String sessionId) throws ServiceException {
+        SessionDetails sessionDetails = (SessionDetails) redisTemplate.opsForValue().get(SESSION_KEY_PREFIX + sessionId);
+        return Result.ok(sessionDetails);
     }
 
     private SessionAccount accountDetailsToSessionAccount(AccountDetailsInfoBean data) {

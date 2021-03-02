@@ -18,7 +18,10 @@ package pers.lbf.yeju.service.interfaces.job;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.job.pojo.FindTriggerNameAndGroupByJobIdsResponse;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
+import pers.lbf.yeju.service.interfaces.job.pojo.TriggerCreateArgs;
+import pers.lbf.yeju.service.interfaces.job.pojo.TriggerUpdateArgs;
 
 import java.util.List;
 
@@ -41,4 +44,16 @@ public interface IJobTriggerService {
      * @date 2021/2/27 16:43
      */
     IResult<List<JobTriggerInfoBean>> findTriggerInfoBeanListByJobId(Long jobId) throws ServiceException;
+
+    IResult<Object> create(TriggerCreateArgs args) throws ServiceException;
+
+    IResult<Object> update(TriggerUpdateArgs args) throws ServiceException;
+
+    IResult<Object> deleteByJobId(Long jobId) throws ServiceException;
+
+    IResult<Object> deleteByJobIds(Long[] jobIds) throws ServiceException;
+
+    IResult<List<FindTriggerNameAndGroupByJobIdsResponse>> findTriggerNameAndGroupByJobIds(Long[] jobIds) throws ServiceException;
+
+
 }

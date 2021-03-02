@@ -36,6 +36,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -186,7 +187,6 @@
                                               file="script/dockerRun.sh"/>
 
 
-
                                     </target>
                                 </configuration>
                                 <goals>
@@ -216,7 +216,6 @@
         </profile>
 
     </profiles>
-
 
 
 </project>

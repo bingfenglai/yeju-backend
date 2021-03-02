@@ -84,7 +84,8 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         }
 
         // 判断账户有没有被强制过期
-        Boolean flag = sessionService.isExpired(authorityInfoBean.getPrincipal()).getData();
+        log.info(authorityInfoBean.getSessionId());
+        Boolean flag = sessionService.isExpired(authorityInfoBean.getSessionId()).getData();
         if (!flag) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }

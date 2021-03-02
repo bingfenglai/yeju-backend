@@ -62,7 +62,7 @@ public class InitSessionReceiver {
 
         log.info("登录session服务 消费端 收到 会话 消息: {}", principal);
         log.info("准备 初始化session {}", principal);
-        sessionService.initSession(principal);
+        //sessionService.initSession(principal);
         Long deliveryTag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
         //手工ACK
         log.info("初始化 session {} 成功", principal);

@@ -19,8 +19,10 @@ package pers.lbf.yeju.service.interfaces.job;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobCreateArgs;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobDetailsBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobUpdateArgs;
 
 import java.util.List;
 
@@ -66,7 +68,7 @@ public interface ITaskSchedulerService {
      * @param job 调度信息
      * @return 结果
      */
-    IResult<Boolean> pauseJob(JobInfoBean job) throws ServiceException;
+    IResult<Object> pauseJob(JobDetailsBean job) throws ServiceException;
 
     /**
      * 恢复任务
@@ -74,7 +76,7 @@ public interface ITaskSchedulerService {
      * @param job 调度信息
      * @return 结果
      */
-    IResult<Boolean> resumeJob(JobInfoBean job) throws ServiceException;
+    IResult<Object> resumeJob(JobInfoBean job) throws ServiceException;
 
     /**
      * 删除任务后，所对应的trigger也将被删除
@@ -82,7 +84,7 @@ public interface ITaskSchedulerService {
      * @param job 调度信息
      * @return 结果
      */
-    IResult<Boolean> deleteJob(JobInfoBean job) throws ServiceException;
+    IResult<Object> deleteJob(JobDetailsBean job) throws ServiceException;
 
     /**
      * 批量删除调度信息
@@ -90,15 +92,14 @@ public interface ITaskSchedulerService {
      * @param jobIds 需要删除的任务ID
      * @return 结果
      */
-    IResult<Boolean> deleteJobByIds(Long[] jobIds) throws ServiceException;
+    IResult<Object> deleteJobByIds(Long[] jobIds) throws ServiceException;
 
     /**
      * 任务调度状态修改
      *
-     * @param job 调度信息
      * @return 结果
      */
-    IResult<Boolean> changeStatus(JobInfoBean job) throws ServiceException;
+    IResult<Object> changeStatus(Long jobId, Integer newStatus) throws ServiceException;
 
     /**
      * 立即运行任务
@@ -106,23 +107,23 @@ public interface ITaskSchedulerService {
      * @param job 调度信息
      * @return 结果
      */
-    IResult<Boolean> run(JobInfoBean job) throws ServiceException;
+    IResult<Object> run(JobInfoBean job) throws ServiceException;
 
     /**
      * 新增任务
      *
-     * @param job 调度信息
+     * @param args 调度信息
      * @return 结果
      */
-    IResult<Boolean> insertJob(JobInfoBean job) throws ServiceException;
+    IResult<Object> insertJob(JobCreateArgs args) throws ServiceException;
 
     /**
      * 更新任务
      *
-     * @param job 调度信息
+     * @param args 调度信息
      * @return 结果
      */
-    IResult<Boolean> updateJob(JobInfoBean job) throws ServiceException;
+    IResult<Object> updateJob(JobUpdateArgs args) throws ServiceException;
 
     /**
      * 校验cron表达式是否有效
@@ -130,6 +131,6 @@ public interface ITaskSchedulerService {
      * @param cronExpression 表达式
      * @return 结果
      */
-    IResult<Boolean> checkCronExpressionIsValid(String cronExpression);
+    IResult<Object> checkCronExpressionIsValid(String cronExpression);
 
 }

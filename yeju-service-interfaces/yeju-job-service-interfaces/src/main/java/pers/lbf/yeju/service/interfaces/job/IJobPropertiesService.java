@@ -18,6 +18,7 @@ package pers.lbf.yeju.service.interfaces.job;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.job.pojo.TaskPropertiesCreateArgs;
 
 import java.util.Properties;
 
@@ -40,4 +41,6 @@ public interface IJobPropertiesService {
      * @date 2021/2/27 16:39
      */
     IResult<Properties> findPropertiesByJobId(Long jobId) throws ServiceException;
+
+    IResult<Object> create(TaskPropertiesCreateArgs args) throws ServiceException;
 }

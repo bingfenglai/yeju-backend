@@ -29,6 +29,7 @@ import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimeZone;
 
 /**
@@ -69,40 +70,7 @@ public class YejuJobScheduler extends YejuBaseScheduler {
      * @date 2021/2/23 16:54
      */
     public static void createOneJob(JobInfoBean jobInfoBean, JobTriggerInfoBean triggerInfoBean) throws ServiceException {
-
-        if (isExisted(jobInfoBean) || isExisted(triggerInfoBean)) {
-            log.warn("任务已存在");
-            removeJob(jobInfoBean.getJobName(), jobInfoBean.getJobGroup(),
-                    triggerInfoBean.getName(), triggerInfoBean.getGroup());
-        }
-
-
-        //用于描叙Job实现类及其他的一些静态信息，构建一个作业实例
-        JobDetail jobDetail = createJobDetail(jobInfoBean);
-
-        // 此方式也可以用来注入任务所需参数值
-        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, jobInfoBean);
-
-        // 构建一个触发器，规定触发的规则
-        CronTrigger trigger = createTrigger(jobInfoBean, triggerInfoBean, jobInfoBean.getCronExpression());
-
-
-        try {
-
-            scheduler.scheduleJob(jobDetail, trigger);
-
-            if (jobInfoBean.isExecute()) {
-                if (!scheduler.isStarted()) {
-                    scheduler.start();
-                }
-
-
-            }
-        } catch (SchedulerException e) {
-            log.error(String.valueOf(e));
-            throw TaskException.getInstance(TaskExecutionStatus.FailedToStartTheScheduledTask);
-        }
-
+        createOneJob(jobInfoBean, triggerInfoBean, null);
     }
 
     public static boolean isExisted(JobInfoBean jobInfoBean) throws ServiceException {
@@ -492,7 +460,13 @@ public class YejuJobScheduler extends YejuBaseScheduler {
      * @date 2021/2/23 21:37
      */
     private static JobDetail createJobDetail(JobInfoBean jobInfoBean) throws ServiceException {
+        return createJobDetail(jobInfoBean, null);
+    }
 
+    private static JobDetail createJobDetail(JobInfoBean jobInfoBean, JobDataMap jobDataMap) {
+        if (jobDataMap == null) {
+            jobDataMap = new JobDataMap();
+        }
         try {
             return JobBuilder.newJob((Class<? extends Job>) Class.forName(jobInfoBean.getInvokeTargetStr()))
                     // 任务执行完仍然保存
@@ -500,13 +474,13 @@ public class YejuJobScheduler extends YejuBaseScheduler {
                     .withIdentity(jobInfoBean.getJobName(),
                             jobInfoBean.getJobGroup())
 
+                    .setJobData(jobDataMap)
                     .build();
         } catch (ClassNotFoundException e) {
             log.error(String.valueOf(e));
             throw ServiceException.getInstance("任务类未找到", ServiceStatusEnum.UNKNOWN_ERROR.getCode());
 
         }
-
     }
 
     /**
@@ -606,4 +580,46 @@ public class YejuJobScheduler extends YejuBaseScheduler {
     }
 
 
+    public static void createOneJob(JobInfoBean jobInfoBean, JobTriggerInfoBean triggerInfoBean, Properties jobProperties) {
+        if (isExisted(jobInfoBean) || isExisted(triggerInfoBean)) {
+            log.warn("任务已存在");
+            removeJob(jobInfoBean.getJobName(), jobInfoBean.getJobGroup(),
+                    triggerInfoBean.getName(), triggerInfoBean.getGroup());
+        }
+        JobDetail jobDetail;
+        if (jobProperties != null) {
+            JobDataMap jobDataMap = new JobDataMap();
+            //用于描叙Job实现类及其他的一些静态信息，构建一个作业实例
+            for (Object o : jobProperties.keySet()) {
+                jobDataMap.put((String) o, jobProperties.get(o));
+            }
+            jobDetail = createJobDetail(jobInfoBean, jobDataMap);
+        } else {
+            jobDetail = createJobDetail(jobInfoBean);
+        }
+
+        // 此方式也可以用来注入任务所需参数值
+        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, jobInfoBean);
+
+        // 构建一个触发器，规定触发的规则
+        CronTrigger trigger = createTrigger(jobInfoBean, triggerInfoBean, jobInfoBean.getCronExpression());
+
+
+        try {
+
+            scheduler.scheduleJob(jobDetail, trigger);
+
+            if (jobInfoBean.isExecute()) {
+                if (!scheduler.isStarted()) {
+                    scheduler.start();
+                }
+
+
+            }
+        } catch (SchedulerException e) {
+            log.error(String.valueOf(e));
+            throw TaskException.getInstance(TaskExecutionStatus.FailedToStartTheScheduledTask);
+        }
+
+    }
 }

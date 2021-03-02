@@ -18,6 +18,7 @@ package pers.lbf.yeju.provider.job.task;
 
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import pers.lbf.yeju.provider.job.BaseJob;
 
@@ -35,11 +36,13 @@ import java.util.Date;
 @DisallowConcurrentExecution
 public class HelloTask extends BaseJob {
 
-    private int count = 0;
-
     @Override
     protected void doExecute(JobExecutionContext context) {
-        count++;
-        log.info("当前时间 {} hello world! {}", new Date(), count);
+        JobDataMap jobDataMap = context.getMergedJobDataMap();
+        String name = "";
+        if (jobDataMap != null) {
+            name = (String) jobDataMap.get("name");
+        }
+        log.info("当前时间 {} hello world! {}", new Date(), name);
     }
 }

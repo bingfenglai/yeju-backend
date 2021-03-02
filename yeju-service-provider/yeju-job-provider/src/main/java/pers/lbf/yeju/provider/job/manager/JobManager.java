@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.provider.job.manager;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -25,7 +26,7 @@ import pers.lbf.yeju.provider.job.util.CronExpressionUtil;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
 
-import javax.annotation.PostConstruct;
+import java.util.Properties;
 
 /**
  * TODO
@@ -35,36 +36,55 @@ import javax.annotation.PostConstruct;
  * @date 2021/2/24 18:06
  */
 @Component
+@Slf4j
 public class JobManager {
 
+
     /**
-     * 此方法将于系统启动初始化时执行一次
-     * 将业务数据库当中的定时任务加载到定时任务上下文，
-     * 并根据相应配置 创建启动定时任务
+     * 创建无参定时任务
      *
+     * @param jobInfoBean
+     * @param triggerInfoBean
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
-     * @date 2021/2/27 20:48
+     * @date 2021/3/2 17:40
      */
-    @PostConstruct
-    private void init() {
-
-    }
-
     public void createJob(JobInfoBean jobInfoBean, JobTriggerInfoBean triggerInfoBean) throws ServiceException {
 
         YejuJobScheduler.createOneJob(jobInfoBean, triggerInfoBean);
     }
 
+    /**
+     * 创建有参定时任务
+     *
+     * @param jobInfoBean
+     * @param triggerInfoBean
+     * @param jobProperties
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/2 17:41
+     */
+    public void createJob(JobInfoBean jobInfoBean, JobTriggerInfoBean triggerInfoBean, Properties jobProperties) throws ServiceException {
+        YejuJobScheduler.createOneJob(jobInfoBean, triggerInfoBean, jobProperties);
+    }
+
+
     public void runJob(JobInfoBean jobInfoBean) throws ServiceException {
         if (jobInfoBean.getJobName() != null && jobInfoBean.getJobGroup() != null) {
             YejuJobScheduler.runAJob(jobInfoBean.getJobName(), jobInfoBean.getJobGroup());
+        } else {
+            throw ServiceException.getInstance("任务名称和任务组名不能为空",
+                    ParameStatusEnum.Parameter_cannot_be_empty.getCode());
         }
 
     }
 
     public void pauseJob(JobInfoBean jobInfoBean) throws ServiceException {
         YejuJobScheduler.pauseJob(jobInfoBean.getJobName(), jobInfoBean.getJobGroup());
+    }
+
+    public void resumeJob(JobInfoBean jobInfoBean) throws ServiceException {
+        YejuJobScheduler.restoreJob(jobInfoBean.getJobName(), jobInfoBean.getJobGroup());
     }
 
     public void removeJob(JobInfoBean jobInfoBean, JobTriggerInfoBean triggerInfoBean) throws ServiceException {

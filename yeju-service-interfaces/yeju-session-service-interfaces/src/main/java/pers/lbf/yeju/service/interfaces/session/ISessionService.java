@@ -37,17 +37,21 @@ public interface ISessionService {
      * @version 1.0
      * @date 2021/2/20 22:19
      */
+    @Deprecated
     void destroySession(OnlineInfoBean onlineInfoBean) throws ServiceException;
 
 
     /**
      * 初始化会话信息，认证成功后将会话信息存入redis
      *
-     * @param principal 员工账号、用户手机号
+     * @param sessionId 员工账号、用户手机号
+     * @param principal
      * @return SessionDetails
      * @throws ServiceException e
      */
-    IResult<SessionDetails> initSession(String principal) throws ServiceException;
+    IResult<SessionDetails> initSession(String sessionId, String principal) throws ServiceException;
+
+    IResult<SessionDetails> getSessionDetails(String sessionId) throws ServiceException;
 
     IResult<Boolean> isExpired(String principal) throws ServiceException;
 

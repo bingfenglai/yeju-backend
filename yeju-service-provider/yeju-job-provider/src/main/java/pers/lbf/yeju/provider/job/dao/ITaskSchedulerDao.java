@@ -17,6 +17,9 @@
 package pers.lbf.yeju.provider.job.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import pers.lbf.yeju.common.domain.entity.TaskScheduler;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
 
@@ -31,4 +34,34 @@ import java.util.List;
 public interface ITaskSchedulerDao extends BaseMapper<TaskScheduler> {
 
     List<JobInfoBean> selectJobAll();
+
+    @Update("UPDATE table_system_timing_task_scheduler t\n " +
+            "SET t.`status` = #{newStatus} \n " +
+            "WHERE t.task_id = # {taskId}; ")
+    boolean updateStatusById(@Param("taskId") Long taskId, @Param("newStatus") Integer newStatus);
+
+    /**
+     * 根据jobId查询job名字和组名字
+     *
+     * @param jobIds ids
+     * @return
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/2 10:43
+     */
+    @Select("<script>" +
+            "SELECT \n" +
+            "  t1.task_id as job_id,\n" +
+            "  t1.`task_name` as job_name,\n" +
+            "  t2.`group_name` as job_group\n" +
+            " FROM\n " +
+            "  table_system_timing_task_scheduler t1 \n" +
+            "  LEFT JOIN table_system_timing_task_scheduler_group t2 \n" +
+            "    ON t1.`task_group_id` = t2.`task_group_id` \n" +
+            "    AND t1.`task_id` IN " +
+            " <foreach item='item' index='index' collection='jobIds' open='(' separator=',' close=')'> " +
+            " #{item}" +
+            " </foreach> " +
+            "</script>")
+    List<JobInfoBean> findNameAndGroupNameByIds(Long[] jobIds);
 }

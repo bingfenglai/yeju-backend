@@ -22,9 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.domain.entity.TaskProperties;
 import pers.lbf.yeju.provider.job.dao.ITaskPropertiesDao;
 import pers.lbf.yeju.service.interfaces.job.IJobPropertiesService;
+import pers.lbf.yeju.service.interfaces.job.pojo.TaskPropertiesCreateArgs;
 
 import java.util.List;
 import java.util.Properties;
@@ -63,5 +65,24 @@ public class JobPropertiesServiceImpl implements IJobPropertiesService {
             result.put(taskProperty.getPropertiesName(), taskProperty.getPropertiesValue());
         }
         return Result.ok(result);
+    }
+
+    @Override
+    public IResult<Object> create(TaskPropertiesCreateArgs args) throws ServiceException {
+        TaskProperties taskProperties = taskPropertiesCreateArgsToTaskProperties(args);
+        JobPropertiesDao.insert(taskProperties);
+        return SimpleResult.ok();
+    }
+
+
+    private TaskProperties taskPropertiesCreateArgsToTaskProperties(TaskPropertiesCreateArgs args) {
+        TaskProperties taskProperties = new TaskProperties();
+        taskProperties.setTaskId(args.getTaskId());
+        taskProperties.setPropertiesName(args.getPropertiesName());
+        taskProperties.setPropertiesValue(args.getPropertiesValue());
+        taskProperties.setCreateTime(args.getCreateTime());
+        taskProperties.setCreateBy(args.getCreateBy());
+        return taskProperties;
+
     }
 }

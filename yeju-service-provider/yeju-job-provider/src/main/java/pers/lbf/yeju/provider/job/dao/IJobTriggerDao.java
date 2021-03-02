@@ -17,7 +17,12 @@
 package pers.lbf.yeju.provider.job.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import pers.lbf.yeju.common.domain.entity.JobTrigger;
+import pers.lbf.yeju.service.interfaces.job.pojo.TriggerNameAndGroupInfoBean;
+
+import java.util.List;
 
 /**
  * (TableSystemJobTrigger)表数据库访问层
@@ -27,4 +32,25 @@ import pers.lbf.yeju.common.domain.entity.JobTrigger;
  */
 public interface IJobTriggerDao extends BaseMapper<JobTrigger> {
 
+    List<JobTrigger> findTriggerNameAndGroupByJobIds(Long[] jobIds);
+
+    @Select(" SELECT \n" +
+            "  t.`trigger_name` AS name,\n" +
+            "  t.`trigger_group_name` AS group_name \n" +
+            " FROM\n" +
+            "  table_system_job_trigger t \n" +
+            " WHERE t.`task_id` = #{jobId} ;\n ")
+    List<TriggerNameAndGroupInfoBean> findTriggerNameAndGroupByJobId(Long jobId);
+
+    @Update("<script>" +
+            " UPDATE \n" +
+            "  table_system_job_trigger t \n" +
+            " SET\n" +
+            "  t.`is_delete` = 1 \n" +
+            " WHERE t.`task_id` IN" +
+            " <foreach item='item' index='index' collection='jobIds' open='(' separator=',' close=')'> " +
+            " #{item}" +
+            " </foreach> " +
+            "</script>")
+    void deleteByJobIds(Long[] jobIds);
 }

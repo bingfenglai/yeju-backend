@@ -5,7 +5,9 @@ import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 import java.io.Serializable;
 
-/**操作响应消息封装类
+/**
+ * 操作响应消息封装类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -13,25 +15,25 @@ import java.io.Serializable;
  */
 public class SimpleResult extends BaseResult<Object> implements Serializable, IResult<Object> {
 
-    public static IResult<Object> ok(){
+    public static IResult<Object> ok() {
         return new SimpleResult(ServiceStatusEnum.OK);
     }
 
-    public static IResult<Object> ok(String message){
-        return new SimpleResult(message,ServiceStatusEnum.OK.getCode());
+    public static IResult<Object> ok(String message) {
+        return new SimpleResult(message, ServiceStatusEnum.OK.getCode());
     }
 
-    public static IResult<Object> error(){
+    public static IResult<Object> error() {
 
         return new SimpleResult(ServiceStatusEnum.UNKNOWN_ERROR);
     }
 
-    public static IResult<Object> failed(String code, String message){
+    public static IResult<Object> failed(String code, String message) {
         return new SimpleResult(message, code);
     }
 
 
-    public static IResult<Object> failed(IStatus status){
+    public static IResult<Object> failed(IStatus status) {
         return new SimpleResult(status.getMessage(), status.getCode());
     }
 
@@ -41,6 +43,9 @@ public class SimpleResult extends BaseResult<Object> implements Serializable, IR
     }
 
     private SimpleResult(IStatus status) {
+        if (status == null) {
+            System.err.println("出错了/////");
+        }
         this.message = status.getMessage();
         this.code = status.getCode();
     }

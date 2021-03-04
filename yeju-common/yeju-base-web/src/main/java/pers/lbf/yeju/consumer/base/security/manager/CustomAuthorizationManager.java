@@ -92,8 +92,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         }
 
         List<String> authorityList = authorityInfo.getAuthorityList();
-//        authorityList = new ArrayList<>();
-//        authorityList.add("*:**");
+
         log.info("开始对用户 {} 鉴权", authorityInfo.getPrincipal());
         if (authorityList == null || authorityList.size() == 0) {
             log.info("用户 {} 请求API校验 未通过", authorityInfo.getPrincipal());
@@ -112,24 +111,6 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         log.info("用户 {} 请求API校验通过", authorityInfo.getPrincipal());
         return Mono.just(new AuthorizationDecision(true));
 
-
-//        return mono.map(auth -> {
-//            ServerWebExchange exchange = authorizationContext.getExchange();
-//            ServerHttpRequest request = exchange.getRequest();
-//
-//            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-//            for (GrantedAuthority authority : authorities) {
-//                String authorityAuthority = authority.getAuthority();
-//                String path = request.getURI().getPath();
-//                if (antPathMatcher.match(authorityAuthority, path)) {
-//                    pers.lbf.yeju.common.log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
-//                    return new AuthorizationDecision(true);
-//                }else {
-//                    pers.lbf.yeju.common.log.info(String.format("用户请求API校验 未通过，GrantedAuthority:{%s}  Path:{%s} ", authorityAuthority, path));
-//                }
-//            }
-//            return new AuthorizationDecision(false);
-//        }).defaultIfEmpty(new AuthorizationDecision(false));
 
     }
 

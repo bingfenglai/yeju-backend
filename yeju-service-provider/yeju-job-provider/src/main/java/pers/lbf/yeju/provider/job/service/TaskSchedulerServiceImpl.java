@@ -244,7 +244,7 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      * @return 结果
      */
     @Override
-    public IResult<Object> insertJob(JobCreateArgs args) throws ServiceException {
+    public IResult<Object> create(JobCreateArgs args) throws ServiceException {
         TaskScheduler taskScheduler = jobCreateArgsToTaskScheduler(args);
         taskSchedulerDao.insert(taskScheduler);
         if (args.getTriggerCreateArgs() != null) {
@@ -274,7 +274,7 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
      */
 
     @Override
-    public IResult<Object> updateJob(JobUpdateArgs args) throws ServiceException {
+    public IResult<Object> update(JobUpdateArgs args) throws ServiceException {
         JobInfoBean jobInfoBean = jobCreateArgsToInfoBean(args);
         TriggerCreateArgs triggerCreateArgs = args.getTriggerUpdateArgs();
         JobTriggerInfoBean triggerInfoBean = triggerCreateArgsToJobTriggerInfoBean(triggerCreateArgs);
@@ -289,7 +289,7 @@ public class TaskSchedulerServiceImpl implements ITaskSchedulerService {
 
         return SimpleResult.ok();
     }
-    
+
 
     private JobTriggerInfoBean triggerCreateArgsToJobTriggerInfoBean(TriggerCreateArgs triggerCreateArgs) {
         JobTriggerInfoBean jobTriggerInfoBean = new JobTriggerInfoBean();

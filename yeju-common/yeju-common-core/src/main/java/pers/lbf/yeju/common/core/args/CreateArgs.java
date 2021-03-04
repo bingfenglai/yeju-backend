@@ -14,19 +14,21 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.notice;
+package pers.lbf.yeju.common.core.args;
 
-import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.consumer.start.YejuMessageConsumerApplication;
+import java.util.Date;
 
 /**
- * TODO
+ * 创建类参数接口
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 17:07
+ * @date 2021/3/4 10:03
  */
-@SpringBootTest(classes = YejuMessageConsumerApplication.class)
-public class NoticeTest {
 
+public interface CreateArgs {
+
+    void setCreateBy(String account);
+
+    void setCreateTime(Date date);
 }

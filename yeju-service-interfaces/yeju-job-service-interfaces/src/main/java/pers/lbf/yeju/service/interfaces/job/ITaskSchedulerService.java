@@ -115,7 +115,7 @@ public interface ITaskSchedulerService {
      * @param args 调度信息
      * @return 结果
      */
-    IResult<Object> insertJob(JobCreateArgs args) throws ServiceException;
+    IResult<Object> create(JobCreateArgs args) throws ServiceException;
 
     /**
      * 更新任务
@@ -123,7 +123,7 @@ public interface ITaskSchedulerService {
      * @param args 调度信息
      * @return 结果
      */
-    IResult<Object> updateJob(JobUpdateArgs args) throws ServiceException;
+    IResult<Object> update(JobUpdateArgs args) throws ServiceException;
 
     /**
      * 校验cron表达式是否有效

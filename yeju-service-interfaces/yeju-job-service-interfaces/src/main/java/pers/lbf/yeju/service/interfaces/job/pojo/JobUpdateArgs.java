@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.service.interfaces.job.pojo;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,6 +29,7 @@ import java.util.Date;
  */
 public class JobUpdateArgs extends JobCreateArgs implements Serializable {
 
+    @NotNull(message = "修改记录标识不能为空")
     private Long taskId;
 
     private Date updateTime;

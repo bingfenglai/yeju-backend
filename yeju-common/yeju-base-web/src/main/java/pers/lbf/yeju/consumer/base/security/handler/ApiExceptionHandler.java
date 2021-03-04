@@ -26,6 +26,8 @@ import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -34,6 +36,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -45,7 +48,7 @@ import java.util.Arrays;
 @Order(-2)
 public class ApiExceptionHandler implements ErrorWebExceptionHandler {
 
-    private static final Logger log =  LoggerFactory.getLogger(ApiExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
     /**
      * Handle the given exception. A completion signal through the return value
@@ -59,8 +62,7 @@ public class ApiExceptionHandler implements ErrorWebExceptionHandler {
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
         ServerHttpResponse response = exchange.getResponse();
-        if (exchange.getResponse().isCommitted())
-        {
+        if (exchange.getResponse().isCommitted()) {
             return Mono.error(ex);
         }
 
@@ -68,43 +70,51 @@ public class ApiExceptionHandler implements ErrorWebExceptionHandler {
         String code;
         IResult<Object> result;
         if (ex instanceof ResponseStatusException) {
-            if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())){
+            if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())) {
                 message = "服务不存在";
                 code = "404";
 
-            }else {
+            } else {
                 message = ex.getMessage();
                 code = String.valueOf(((ResponseStatusException) ex).getStatus());
             }
 
-        }
-        else if (ex instanceof ServiceException){
+        } else if (ex instanceof ServiceException) {
             message = ex.getMessage();
             code = ((ServiceException) ex).getExceptionCode();
 
-        }
-        else {
-            message = "内部服务错误，请联系客服"+ex.getMessage();
+        } else {
+            message = "内部服务错误，请联系客服" + ex.getMessage();
             code = "e9999";
         }
         String path = String.valueOf(exchange.getRequest().getPath());
 
-        if (ex instanceof ServiceException){
+        if (ex instanceof ServiceException) {
             log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
-        }else if (ex instanceof ResponseStatusException) {
+        } else if (ex instanceof WebExchangeBindException) {
+            WebExchangeBindException exception = (WebExchangeBindException) ex;
+            //List<FieldError> allErrors = exception.getBindingResult().getFieldErrors();
+            List<ObjectError> allErrors = exception.getBindingResult().getAllErrors();
+
+            StringBuffer errorMsg = new StringBuffer();
+            allErrors.forEach(x -> errorMsg.append(x.getDefaultMessage()).append(";"));
+
+
+            message = errorMsg.toString();
+            log.error("[服务异常处理]请求路径:{},异常信息:{}", path, message);
+        } else if (ex instanceof ResponseStatusException) {
             log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
         } else {
             log.error("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
-            log.error(Arrays.toString(ex.getStackTrace()));
+            log.error(String.valueOf(ex));
         }
-
 
 
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         response.setStatusCode(HttpStatus.OK);
-        result = ErrorAndExceptionResult.getInstance(code,message,path);
+        result = ErrorAndExceptionResult.getInstance(code, message, path);
         IResult<Object> finalResult = result;
 
         return response.writeWith(Mono.fromSupplier(() -> {

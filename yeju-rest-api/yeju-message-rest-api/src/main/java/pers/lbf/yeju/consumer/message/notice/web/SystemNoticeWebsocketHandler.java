@@ -124,8 +124,37 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
     }
 
+    /**
+     * 给所有在线用户发送推送
+     *
+     * @param message
+     * @return void
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/3 22:08
+     */
     public void send(NoticeMessageVO message) {
-        WebSocketSession session = sessionMap.get("969391");
+
+        for (String s : sessionMap.keySet()) {
+            WebSocketSession session = sessionMap.get(s);
+            send(session, message);
+        }
+
+    }
+
+    /**
+     * 给指定用户发送推送
+     *
+     * @param message
+     * @param sessionKey
+     * @return void
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/3 22:08
+     */
+    public void send(NoticeMessageVO message, String sessionKey) {
+
+        WebSocketSession session = sessionMap.get(sessionKey);
         send(session, message);
     }
 

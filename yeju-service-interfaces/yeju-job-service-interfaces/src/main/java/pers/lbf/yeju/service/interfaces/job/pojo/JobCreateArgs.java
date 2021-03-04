@@ -16,6 +16,9 @@
  */
 package pers.lbf.yeju.service.interfaces.job.pojo;
 
+import io.swagger.annotations.ApiModel;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,20 +29,25 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/3/2 9:02
  */
+@ApiModel("创建新任务请求参数")
 public class JobCreateArgs implements Serializable {
 
+    @NotNull(message = "任务名称不能为空")
     private String taskName;
     /**
      * 任务组id
      */
+    @NotNull(message = "任务组不能为空")
     private Long taskGroupId;
     /**
      * 调用目标字符串
      */
+    @NotNull(message = "调用目标不能为空")
     private String invokeTarget;
     /**
      * cron任务执行表达式
      */
+    @NotNull(message = "cron表达式不能为空")
     private String cronExpression;
     /**
      * 当任务出错时的执行策略1立即执行 2执行一次 3放弃执行
@@ -48,10 +56,12 @@ public class JobCreateArgs implements Serializable {
     /**
      * 是否并发执行0否1是
      */
+    @NotNull(message = "执行策略不能为空")
     private Integer concurrent;
     /**
      * 执行状态0暂停1正常
      */
+    @NotNull(message = "状态不能为空")
     private Integer status;
     /**
      * 创建时间
@@ -63,6 +73,7 @@ public class JobCreateArgs implements Serializable {
      */
     private String remark;
 
+    @NotNull(message = "任务触发器配置不能为空")
     private TriggerCreateArgs triggerCreateArgs;
 
     private TaskPropertiesCreateArgs taskPropertiesCreateArgs;

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.job.pojo;
+package pers.lbf.yeju.service.interfaces.message.pojo;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -25,27 +25,25 @@ import java.util.Date;
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/2 8:53
+ * @date 2021/3/3 22:52
  */
-public class TriggerUpdateArgs extends TriggerCreateArgs implements Serializable {
+public class NoticeUpdateArgs extends NoticeCreateArgs implements Serializable {
 
-    @NotNull(message = "触发器标识不能为空")
-    private Long triggerId;
-    /**
-     * 更新时间
-     */
+    @NotNull(message = "通知标识不能为空")
+    private Long noticeId;
+
     private Date updateTime;
     /**
      * 更改者
      */
     private Long changedBy;
 
-    public Long getTriggerId() {
-        return triggerId;
+    public Long getNoticeId() {
+        return noticeId;
     }
 
-    public void setTriggerId(Long triggerId) {
-        this.triggerId = triggerId;
+    public void setNoticeId(Long noticeId) {
+        this.noticeId = noticeId;
     }
 
     public Date getUpdateTime() {

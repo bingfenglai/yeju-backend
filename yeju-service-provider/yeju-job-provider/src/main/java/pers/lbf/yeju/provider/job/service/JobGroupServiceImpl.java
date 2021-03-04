@@ -27,6 +27,9 @@ import pers.lbf.yeju.provider.job.dao.ITaskSchedulerGroupDao;
 import pers.lbf.yeju.service.interfaces.job.IJobGroupService;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobGroupInfoBean;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * 定时任务组服务实现类
  *
@@ -73,6 +76,28 @@ public class JobGroupServiceImpl implements IJobGroupService {
         queryWrapper.select("group_name");
         TaskSchedulerGroup group = jobGroupDao.selectById(groupId);
         return Result.ok(group.getGroupName());
+    }
+
+    /**
+     * 获取任务组名和id 创建任务时需要调用
+     *
+     * @return pers.lbf.yeju.common.core.result.IResult<java.util.List < pers.lbf.yeju.service.interfaces.job.pojo.JobGroupInfoBean>>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/3 10:41
+     */
+    @Override
+    public IResult<List<JobGroupInfoBean>> getJobGroupNameAndId() throws ServiceException {
+
+        QueryWrapper<TaskSchedulerGroup> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("task_group_id", "group_name");
+        List<TaskSchedulerGroup> taskSchedulerGroupList = jobGroupDao.selectList(queryWrapper);
+        List<JobGroupInfoBean> result = new LinkedList<>();
+        for (TaskSchedulerGroup taskSchedulerGroup : taskSchedulerGroupList) {
+            JobGroupInfoBean jobGroupInfoBean = taskSchedulerGroupToGroupInfoBean(taskSchedulerGroup);
+            result.add(jobGroupInfoBean);
+        }
+        return Result.ok(result);
     }
 
 

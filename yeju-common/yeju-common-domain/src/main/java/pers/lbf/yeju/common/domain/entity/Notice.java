@@ -78,11 +78,11 @@ public class Notice extends Model<Notice> {
     /**
      * 谁发
      */
-    private String beFrom;
+    private Long beFrom;
     /**
      * 发给谁
      */
-    private String sendTo;
+    private Long sendTo;
 
 
     public Long getNoticeId() {
@@ -197,19 +197,19 @@ public class Notice extends Model<Notice> {
         this.isDelete = isDelete;
     }
 
-    public String getBeFrom() {
+    public Long getBeFrom() {
         return beFrom;
     }
 
-    public void setBeFrom(String beFrom) {
+    public void setBeFrom(Long beFrom) {
         this.beFrom = beFrom;
     }
 
-    public String getSendTo() {
+    public Long getSendTo() {
         return sendTo;
     }
 
-    public void setSendTo(String sendTo) {
+    public void setSendTo(Long sendTo) {
         this.sendTo = sendTo;
     }
 

@@ -7,7 +7,8 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager, \
   pers.lbf.yeju.consumer.base.security.manager.CustomAuthorizationManager,\
   pers.lbf.yeju.consumer.config.swagger.SwaggerConfiguration,\
-  pers.lbf.yeju.consumer.config.swagger.SwaggerPropertiesConfig
+  pers.lbf.yeju.consumer.config.swagger.SwaggerPropertiesConfig,\
+  pers.lbf.yeju.consumer.base.util.SpringContextUtils
 
 
 

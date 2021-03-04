@@ -83,5 +83,10 @@ yeju-notice -----------> 9003
 
 ## 其他注意事项
 
-部署时，即使是window系统，也需要关闭防火墙
+1.部署时，即使是window系统，也需要关闭防火墙
+
+2.关于请求参数与序列化
+
+rest-api使用的序列化工具是jackson,其会将后端的驼峰命名法转前端的下划线分割 前端下划线分割转驼峰命名法，因此请求参数特别需要注意 如 noticeTitle 请求参数为 notice_title
+前端接收到的noticeTitle为 notice_title
 

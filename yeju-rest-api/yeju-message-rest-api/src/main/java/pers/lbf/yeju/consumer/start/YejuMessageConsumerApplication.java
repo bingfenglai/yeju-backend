@@ -29,9 +29,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer")
 @EnableDiscoveryClient
-public class NoticeApp {
+public class YejuMessageConsumerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(NoticeApp.class, args);
+        SpringApplication.run(YejuMessageConsumerApplication.class, args);
     }
 }

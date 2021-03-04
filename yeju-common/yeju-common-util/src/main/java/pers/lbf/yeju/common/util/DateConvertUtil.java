@@ -14,19 +14,29 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.notice;
+package pers.lbf.yeju.common.util;
 
-import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.consumer.start.YejuMessageConsumerApplication;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * TODO
+ * 日期转字符串 字符串转日期 工具类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 17:07
+ * @date 2021/3/4 16:18
  */
-@SpringBootTest(classes = YejuMessageConsumerApplication.class)
-public class NoticeTest {
+public class DateConvertUtil {
 
+    private DateConvertUtil() {
+
+    }
+
+    public static Date stringToDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        return format.parse(date);
+
+    }
 }

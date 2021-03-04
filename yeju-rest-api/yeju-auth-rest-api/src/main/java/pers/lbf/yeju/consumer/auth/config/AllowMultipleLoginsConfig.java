@@ -14,19 +14,30 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.notice;
+package pers.lbf.yeju.consumer.auth.config;
 
-import org.springframework.boot.test.context.SpringBootTest;
-import pers.lbf.yeju.consumer.start.YejuMessageConsumerApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.stereotype.Component;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 17:07
+ * @date 2021/3/4 9:18
  */
-@SpringBootTest(classes = YejuMessageConsumerApplication.class)
-public class NoticeTest {
+@Component
+@ConfigurationProperties(prefix = "yeju.auth")
+@RefreshScope
+public class AllowMultipleLoginsConfig {
+    private boolean allowMultipleLogins = false;
 
+    public boolean isAllowMultipleLogins() {
+        return allowMultipleLogins;
+    }
+
+    public void setAllowMultipleLogins(boolean allowMultipleLogins) {
+        this.allowMultipleLogins = allowMultipleLogins;
+    }
 }

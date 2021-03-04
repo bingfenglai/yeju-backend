@@ -20,6 +20,8 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobGroupInfoBean;
 
+import java.util.List;
+
 /**
  * 任务组接口类
  *
@@ -50,4 +52,14 @@ public interface IJobGroupService {
      * @date 2021/2/27 16:56
      */
     IResult<String> findJobGroupNameByGroupId(Long groupId) throws ServiceException;
+
+    /**
+     * 获取任务组名和id 创建任务时需要调用
+     *
+     * @return pers.lbf.yeju.common.core.result.IResult<java.util.List < pers.lbf.yeju.service.interfaces.job.pojo.JobGroupInfoBean>>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/3 10:41
+     */
+    IResult<List<JobGroupInfoBean>> getJobGroupNameAndId() throws ServiceException;
 }

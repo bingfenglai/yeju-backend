@@ -63,13 +63,13 @@
         <spring.cloud.security.version>2.2.2.RELEASE</spring.cloud.security.version>
         <minio.version>8.0.0</minio.version>
         <yeju.version>1.0.0</yeju.version>
+        <swgger-annotations.version>1.5.20</swgger-annotations.version>
     </properties>
-
 
 
     <dependencyManagement>
         <dependencies>
-<!--            spring cloud gateway -->
+            <!--            spring cloud gateway -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -77,7 +77,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-<!--            nacos sentinel seata oos sms-->
+            <!--            nacos sentinel seata oos sms-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -86,7 +86,7 @@
                 <scope>import</scope>
             </dependency>
 
-<!--            dubbo 依赖 服务调用-->
+            <!--            dubbo 依赖 服务调用-->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-spring-boot-starter</artifactId>
@@ -94,14 +94,21 @@
                 <scope>compile</scope>
             </dependency>
 
-<!--            序列化-->
+            <!--            序列化-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
 
-<!--            springboot-->
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swgger-annotations.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!--            springboot-->
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -141,7 +148,7 @@
                 <version>${spring.boot.version}</version>
             </dependency>
 
-<!--        web层-->
+            <!--        web层-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-webflux</artifactId>
@@ -154,14 +161,14 @@
                 <version>${spring.boot.version}</version>
             </dependency>
 
-<!--            服务配置中心-->
+            <!--            服务配置中心-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
                 <version>${spring-cloud-alibaba.version}</version>
             </dependency>
 
-<!--            服务发现-->
+            <!--            服务发现-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
@@ -169,7 +176,7 @@
 
             </dependency>
 
-<!--            服务流控-->
+            <!--            服务流控-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
@@ -190,14 +197,14 @@
                 <version>${spring-cloud-alibaba.version}</version>
             </dependency>
 
-<!--            sentinel整合dubbo-->
+            <!--            sentinel整合dubbo-->
             <dependency>
                 <groupId>com.alibaba.csp</groupId>
                 <artifactId>sentinel-apache-dubbo-adapter</artifactId>
                 <version>${sentinel.csp.version}</version>
             </dependency>
 
-<!--            分布式事务-->
+            <!--            分布式事务-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
@@ -216,20 +223,20 @@
                 <version>${sentinel.csp.version}</version>
             </dependency>
 
-<!--        对象存储-->
+            <!--        对象存储-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>aliyun-oss-spring-boot-starter</artifactId>
             </dependency>
 
-<!--            阿里短信-->
+            <!--            阿里短信-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>aliyun-sms-spring-boot-starter</artifactId>
                 <version>${aliyun.sms.version}</version>
             </dependency>
 
-<!--            数据连接层 start-->
+            <!--            数据连接层 start-->
 
             <dependency>
                 <groupId>mysql</groupId>
@@ -252,7 +259,7 @@
                 <version>${mybatis.plus.version}</version>
             </dependency>
 
-<!--            NoSQL-->
+            <!--            NoSQL-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
@@ -263,11 +270,10 @@
                 <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
-<!--            数据连接层 end-->
+            <!--            数据连接层 end-->
 
 
-
-<!--            security start-->
+            <!--            security start-->
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -280,7 +286,7 @@
                 <version>${spring.cloud.security.version}</version>
             </dependency>
 
-<!--            参数校验框架-->
+            <!--            参数校验框架-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-validation</artifactId>
@@ -294,19 +300,19 @@
                 <version>${commons-text.version}</version>
             </dependency>
 
-<!--            security end-->
+            <!--            security end-->
 
-<!--            测试相关-->
+            <!--            测试相关-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <scope>test</scope>
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>org.junit.vintage</groupId>-->
-<!--                        <artifactId>junit-vintage-engine</artifactId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
+                <!--                <exclusions>-->
+                <!--                    <exclusion>-->
+                <!--                        <groupId>org.junit.vintage</groupId>-->
+                <!--                        <artifactId>junit-vintage-engine</artifactId>-->
+                <!--                    </exclusion>-->
+                <!--                </exclusions>-->
                 <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
@@ -320,7 +326,7 @@
                 <scope>test</scope>
             </dependency>
 
-<!--            其他-->
+            <!--            其他-->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -342,14 +348,14 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
-<!--            动态验证码-->
+            <!--            动态验证码-->
             <dependency>
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>easy-captcha</artifactId>
                 <version>${whvcse.version}</version>
             </dependency>
 
-<!--            表格-->
+            <!--            表格-->
 
             <dependency>
                 <groupId>net.sourceforge.jexcelapi</groupId>
@@ -412,7 +418,7 @@
                 <version>${joda.version}</version>
             </dependency>
 
-<!--        代码检查    -->
+            <!--        代码检查    -->
             <dependency>
                 <groupId>com.taobao.arthas</groupId>
                 <artifactId>arthas-spring-boot-starter</artifactId>
@@ -420,14 +426,14 @@
                 <scope>runtime</scope>
             </dependency>
 
-<!--            日志-->
+            <!--            日志-->
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-logging</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
-<!--            序列化-->
+            <!--            序列化-->
             <!--处理json工具包-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -435,14 +441,14 @@
                 <version>${jackson.version}</version>
             </dependency>
 
-<!--            minio 分布式存储依赖-->
+            <!--            minio 分布式存储依赖-->
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
 
-<!--            user-agent解析工具类-->
+            <!--            user-agent解析工具类-->
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
@@ -450,7 +456,7 @@
             </dependency>
 
 
-<!--            平台相关依赖仲裁-->
+            <!--            平台相关依赖仲裁-->
             <dependency>
                 <groupId>pers.lbf</groupId>
                 <artifactId>yeju-service-interfaces</artifactId>
@@ -458,10 +464,8 @@
             </dependency>
 
 
-
         </dependencies>
     </dependencyManagement>
-
 
 
     <!--
@@ -548,8 +552,6 @@
         </profile>
 
     </profiles>
-
-
 
 
 </project>

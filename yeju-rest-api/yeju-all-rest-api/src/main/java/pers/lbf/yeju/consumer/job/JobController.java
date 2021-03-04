@@ -18,17 +18,22 @@ package pers.lbf.yeju.consumer.job;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.job.ITaskSchedulerService;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobCreateArgs;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
+import pers.lbf.yeju.service.interfaces.job.pojo.JobUpdateArgs;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * TODO
@@ -55,6 +60,33 @@ public class JobController {
         args.setSize(size);
 
         return Mono.just(jobService.findPage(args.getCurrentPage(), args.getSize()));
+    }
+
+    @ApiOperation(value = "新增job", notes = "新增job说明", httpMethod = "POST")
+    @PostMapping("/create")
+    public Mono<IResult<Object>> create(JobCreateArgs args) throws ServiceException {
+        return Mono.just(jobService.create(args));
+    }
+
+    @ApiOperation(value = "修改Job", notes = "修改Job说明", httpMethod = "PUT")
+    @PutMapping("/update")
+    public Mono<IResult<Object>> update(JobUpdateArgs args) throws ServiceException {
+
+        return Mono.just(jobService.update(args));
+    }
+
+    @ApiOperation(value = "删除Job", notes = "删除Job说明", httpMethod = "DELETE")
+    @DeleteMapping("/delete/{id}")
+    public Mono<IResult<Object>> deleteJobById(@ApiParam(name = "id")
+                                               @Validated @NotNull
+                                               @PathVariable("id") Long id) throws ServiceException {
+        return Mono.just(jobService.deleteJobByIds(new Long[]{id}));
+    }
+
+    @ApiOperation(value = "批量删除Job", notes = "批量删除Job说明", httpMethod = "DELETE")
+    @DeleteMapping("/deleteBatch")
+    public Mono<IResult<Object>> deleteBatch(@ApiParam(name = "idList") @RequestBody List<Long> idList) throws ServiceException {
+        return Mono.just(jobService.deleteJobByIds(idList.toArray(new Long[0])));
     }
 
 

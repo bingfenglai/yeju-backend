@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.service.interfaces.job.pojo;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -32,8 +33,10 @@ public class TriggerCreateArgs implements Serializable {
     /**
      * 名字
      */
+    @NotNull(message = "触发器名称不能为空")
     private String triggerName;
 
+    @NotNull(message = "触发器组名不能为空")
     private String triggerGroupName;
     /**
      * cron表达式

@@ -1,6 +1,5 @@
 package pers.lbf.yeju.common.core.status.enums;
 
-import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
 import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 import java.io.Serializable;
@@ -15,18 +14,14 @@ public enum ServiceStatusEnum implements IStatus, Serializable {
     /**
      * 一切ok
      */
-    OK(ServiceStatusConstant.SUCCESSFUL_OPERATION,ServiceStatusConstant.SUCCESSFUL_OPERATION_CODE),
+    OK("操作成功", "00000"),
 
     /**
      * 未知异常
      */
-    UNKNOWN_ERROR("未知异常","e9999"),
+    UNKNOWN_ERROR("未知异常", "e9999"),
 
-    no_data_has_been_found("没有查询到相关数据","svc01");
-
-    ;
-
-
+    no_data_has_been_found("没有查询到相关数据", "svc01");;
 
 
     /**

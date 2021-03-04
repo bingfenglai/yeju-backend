@@ -36,6 +36,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.consumer.auth.config.AllowMultipleLoginsConfig;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.manager.OnlineManager;
 import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
@@ -63,9 +64,11 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
     @DubboReference
     private ISessionService sessionService;
 
-
     @Autowired
     private OnlineSender onlineSender;
+
+    @Autowired
+    private AllowMultipleLoginsConfig allowMultipleLoginsConfig;
 
     private final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
 
@@ -103,8 +106,12 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
         AuthorityInfoBean authorityInfoBean = (AuthorityInfoBean) authentication.getPrincipal();
 
-        // 先销毁会话（防止多地登录）
-        sessionService.destroySession(authorityInfoBean.getPrincipal());
+        //允许多地登录开关
+        if (!allowMultipleLoginsConfig.isAllowMultipleLogins()) {
+            // 先销毁会话（防止多地登录）
+            sessionService.destroySession(authorityInfoBean.getPrincipal());
+        }
+
 
         // 然后生成新的会话
         String sessionId = authorityInfoBean.getPrincipal() + System.currentTimeMillis();

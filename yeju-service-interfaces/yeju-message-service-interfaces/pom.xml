@@ -21,7 +21,7 @@
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-common-core</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.websocket</groupId>

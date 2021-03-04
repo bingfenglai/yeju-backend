@@ -19,4 +19,8 @@ public class ServiceStatusConstant implements Serializable {
      * 操作成功状态码值
      */
     public static final String SUCCESSFUL_OPERATION_CODE = "00000";
+
+    public static final String error_message = "内部服务错误，请联系客服";
+
+    public static final String error_code = "e9999";
 }

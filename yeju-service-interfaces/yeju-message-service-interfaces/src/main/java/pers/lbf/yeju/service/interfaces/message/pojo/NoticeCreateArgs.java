@@ -50,12 +50,11 @@ public class NoticeCreateArgs implements Serializable, CreateArgs {
     /**
      * 通知状态0关闭1正常
      */
-    @NotNull(message = "通知状态不能为空")
     private Integer status;
     /**
      * 公告开始时间
      */
-    
+
     private Date startTime;
     /**
      * 公告结束时间

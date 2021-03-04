@@ -22,9 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
+import pers.lbf.yeju.common.core.constant.StatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -76,7 +78,7 @@ public class NoticeServiceImpl implements INoticeService {
      * @version 1.0
      * @date 2021/3/3 22:43
      */
-    @Cacheable(cacheNames = "noticeService", keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "noticeService:findPage", keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleNoticeInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
 
@@ -134,9 +136,29 @@ public class NoticeServiceImpl implements INoticeService {
     }
 
 
+    /**
+     * 创建一个新的通知
+     * 创建后会清除该缓存的所有数据
+     *
+     * @param args 通知创建参数
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Object>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/4 23:35
+     */
+    @CacheEvict(cacheNames = {
+            "noticeService:effectiveNoticeList",
+            "noticeService:findPage"},
+            allEntries = true)
     @Override
     public IResult<Object> create(NoticeCreateArgs args) throws ServiceException {
+
         Notice notice = noticeCreateArgsToNotice(args);
+        if (new Date().before(notice.getEndTime())) {
+            notice.setStatus(StatusConstant.ABLE);
+        } else {
+            notice.setStatus(StatusConstant.DISABLE);
+        }
         noticeDao.insert(notice);
         return SimpleResult.ok();
     }
@@ -153,6 +175,7 @@ public class NoticeServiceImpl implements INoticeService {
         notice.setRemark(args.getRemark());
         notice.setBeFrom(args.getBeFrom());
         notice.setSendTo(args.getSendTo());
+        notice.setCreateBy(args.getCreateBy());
         return notice;
     }
 
@@ -162,6 +185,7 @@ public class NoticeServiceImpl implements INoticeService {
         noticeDao.updateById(notice);
         return SimpleResult.ok();
     }
+
 
     private Notice noticeUpdateArgsToNotice(NoticeUpdateArgs args) {
         Notice notice = new Notice();

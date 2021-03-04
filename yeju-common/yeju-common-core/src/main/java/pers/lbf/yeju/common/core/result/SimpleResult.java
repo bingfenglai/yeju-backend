@@ -1,5 +1,6 @@
 package pers.lbf.yeju.common.core.result;
 
+import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
@@ -16,7 +17,7 @@ import java.io.Serializable;
 public class SimpleResult extends BaseResult<Object> implements Serializable, IResult<Object> {
 
     public static IResult<Object> ok() {
-        return new SimpleResult(ServiceStatusEnum.OK);
+        return new SimpleResult(ServiceStatusConstant.SUCCESSFUL_OPERATION, ServiceStatusConstant.SUCCESSFUL_OPERATION_CODE);
     }
 
     public static IResult<Object> ok(String message) {
@@ -25,7 +26,7 @@ public class SimpleResult extends BaseResult<Object> implements Serializable, IR
 
     public static IResult<Object> error() {
 
-        return new SimpleResult(ServiceStatusEnum.UNKNOWN_ERROR);
+        return new SimpleResult("内部服务错误", "e9999");
     }
 
     public static IResult<Object> failed(String code, String message) {
@@ -40,14 +41,6 @@ public class SimpleResult extends BaseResult<Object> implements Serializable, IR
     public SimpleResult(String message, String code) {
         this.message = message;
         this.code = code;
-    }
-
-    private SimpleResult(IStatus status) {
-        if (status == null) {
-            System.err.println("出错了/////");
-        }
-        this.message = status.getMessage();
-        this.code = status.getCode();
     }
 
     @Override

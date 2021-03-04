@@ -22,12 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.util.DateConvertUtil;
+import pers.lbf.yeju.consumer.base.util.SubjectHelper;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
@@ -36,7 +38,6 @@ import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -82,7 +83,7 @@ public class NoticeController {
      * 因此前端参数 notice_title 转后端 noticeTitle
      * 注意前后端参数命名
      *
-     * @param argsMono
+     * @param args
      * @return reactor.core.publisher.Mono<pers.lbf.yeju.common.core.result.IResult < java.lang.Object>>
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
@@ -90,12 +91,14 @@ public class NoticeController {
      */
     @ApiOperation(value = "新增通知", notes = "新增通知说明", httpMethod = "POST")
     @PostMapping("/create")
-    public Mono<IResult<Object>> create(@RequestBody @Validated NoticeCreateArgs args) throws ServiceException, ParseException {
+    public Mono<IResult<Object>> create(@RequestBody @Validated NoticeCreateArgs args, ServerWebExchange webExchange) throws Exception {
         String[] dateRange = args.getDateRange();
         args.setStartTime(DateConvertUtil.stringToDate(dateRange[0]));
         args.setEndTime(DateConvertUtil.stringToDate(dateRange[1]));
+        String account = SubjectHelper.getSubjectAccount(webExchange);
+        args.setCreateBy(account);
         return Mono.just(noticeService.create(args));
     }
-
+    
 
 }

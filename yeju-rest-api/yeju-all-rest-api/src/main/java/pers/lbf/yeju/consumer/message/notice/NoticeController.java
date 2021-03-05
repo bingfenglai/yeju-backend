@@ -39,6 +39,7 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO
@@ -67,7 +68,23 @@ public class NoticeController {
         args.setCurrentPage(currentPage);
         args.setSize(size);
 
-        return Mono.just(noticeService.findPage(args.getCurrentPage(), args.getSize()));
+        PageResult<SimpleNoticeInfoBean> pageResult = noticeService.findPage(args.getCurrentPage(), args.getSize());
+        if (pageResult.getList().size() > 0) {
+            Map<String, String> noticeTypeMap = dictionaryInfoService.getDictMap("notice_type").getData();
+            Map<String, String> statusMap = dictionaryInfoService.getDictMap(DataDictionaryTypeConstant.NOTICE_STATUS).getData();
+            for (SimpleNoticeInfoBean bean : pageResult.getList()) {
+                if (bean.getStatus() != null) {
+                    bean.setStatusStr(statusMap.get(String.valueOf(bean.getStatus())));
+                }
+
+                if (bean.getNoticeType() != null) {
+                    bean.setNoticeTypeStr(noticeTypeMap.get(bean.getNoticeType()));
+                }
+            }
+        }
+
+
+        return Mono.just(pageResult);
     }
 
 
@@ -99,6 +116,6 @@ public class NoticeController {
         args.setCreateBy(account);
         return Mono.just(noticeService.create(args));
     }
-    
+
 
 }

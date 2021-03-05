@@ -42,7 +42,7 @@ import java.util.List;
  * @version 1.0
  * @date 2021/2/18 20:34
  */
-@DubboService(interfaceClass = IAuthzService.class,timeout = 3000)
+@DubboService(interfaceClass = IAuthzService.class, timeout = 3000)
 public class AuthzServiceImpl implements IAuthzService {
 
     @DubboReference
@@ -60,11 +60,11 @@ public class AuthzServiceImpl implements IAuthzService {
     @DubboReference
     private ICustomerValidService customerValidService;
 
-
+    
     @Override
     public IResult<AuthzSimpleInfoBean> findAuthzInfoByPrincipal(String principal) throws ServiceException {
         AuthzSimpleInfoBean bean = new AuthzSimpleInfoBean();
-        if (principal==null|| "".equals(principal)){
+        if (principal == null || "".equals(principal)) {
             return Result.ok(bean);
         }
 
@@ -76,7 +76,7 @@ public class AuthzServiceImpl implements IAuthzService {
             bean.setName(employeeInfoBean.getName());
             bean.setAvatar(employeeInfoBean.getAvatar());
 
-        }else if (AccountOwnerTypeEnum.Customer_account.getValue().equals(accountType)){
+        } else if (AccountOwnerTypeEnum.Customer_account.getValue().equals(accountType)) {
             SimpleCustomerInfoBean customerInfoBean = customerValidService.findDetailsById(accountDetailsInfo.getSubjectId()).getData();
             bean.setName(customerInfoBean.getCustomerName());
             bean.setAvatar(customerInfoBean.getAvatar());

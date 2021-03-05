@@ -69,9 +69,10 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
      * @date 2021/2/18 12:48
      */
     @Override
+    @Cacheable(cacheNames = "dataDictionaryInfoService:type:list", key = "#type")
     public IResult<List<SimpleLabelAndValueBean>> findLabelAndValueByType(String type) throws ServiceException {
         LinkedList<SimpleLabelAndValueBean> result = new LinkedList<>();
-        if (type==null|| "".equals(type)){
+        if (type == null || "".equals(type)) {
             return Result.ok(result);
         }
 
@@ -81,16 +82,17 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
     }
 
     @Override
+    @Cacheable(cacheNames = "dataDictionaryInfoService:type:map", key = "#type")
     public IResult<Map<String, String>> getDictMap(String type) throws ServiceException {
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(2);
         IResult<List<SimpleDataDictionaryInfoBean>> result =
-               this.findSimpleDataDictionaryByDictType(type);
+                this.findSimpleDataDictionaryByDictType(type);
 
         List<SimpleDataDictionaryInfoBean> data = result.getData();
 
-        if (data.size()>0){
+        if (data.size() > 0) {
             for (SimpleDataDictionaryInfoBean bean : data) {
-                map.put(bean.getDictionaryValue(),bean.getDictionaryLabel());
+                map.put(bean.getDictionaryValue(), bean.getDictionaryLabel());
             }
         }
 
@@ -98,22 +100,24 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
     }
 
     @Override
+    @Cacheable(cacheNames = "dataDictionaryInfoService:id:info", key = "#id")
     public IResult<String> findDataDictionaryLabelById(Long id) throws ServiceException {
         DataDictionaryInfo dataDictionaryInfo = dataDictionaryInfoDao.selectById(id);
         if (dataDictionaryInfo == null) {
-            throw  ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
+            throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
         }
         return Result.ok(dataDictionaryInfo.getDictionaryLabel());
     }
 
     @Override
+    @Cacheable(cacheNames = "dataDictionaryInfoService:id:type", key = "#id")
     public IResult<List<SimpleDataDictionaryInfoBean>> findSimpleDataDictionaryByDictTypeId(Long id) throws ServiceException {
         QueryWrapper<DataDictionaryInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("type_id",id);
+        queryWrapper.eq("type_id", id);
 
         List<DataDictionaryInfo> dataDictionaryInfoList = dataDictionaryInfoDao.selectList(queryWrapper);
 
-        if (dataDictionaryInfoList.size()>0){
+        if (dataDictionaryInfoList.size() > 0) {
             List<SimpleDataDictionaryInfoBean> result = new LinkedList<>();
             for (DataDictionaryInfo dataDictionaryInfo : dataDictionaryInfoList) {
                 SimpleDataDictionaryInfoBean bean = new SimpleDataDictionaryInfoBean();
@@ -121,37 +125,33 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
                 bean.setDictionaryValue(dataDictionaryInfo.getDictionaryValue());
                 bean.setCssClass(dataDictionaryInfo.getCssClass());
                 bean.setListClass(dataDictionaryInfo.getListClass());
-                bean.setDefaultFlags(dataDictionaryInfo.getIsDefault()==1);
+                bean.setDefaultFlags(dataDictionaryInfo.getIsDefault() == 1);
                 bean.setStatus(dataDictionaryInfo.getStatus());
                 result.add(bean);
             }
 
             return Result.ok(result);
         }
-        throw  ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
+        throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
 
     }
 
-    @Cacheable(cacheNames = "SimpleDataDictionaryInfoBean:list",key = "#type")
+    @Cacheable(cacheNames = "dataDictionaryInfoService:list:infoBean", key = "#type")
     @Override
     public IResult<List<SimpleDataDictionaryInfoBean>> findSimpleDataDictionaryByDictType(String type) throws ServiceException {
-        if (type != null){
-
-            if (dictionaryTypeDao==null){
-                throw new RuntimeException("dao is null");
-            }
+        if (type != null) {
 
             Long typeId = dictionaryTypeDao.selectOneByType(type);
-            log.debug("type_id {}",typeId);
+            log.debug("type_id {}", typeId);
 
             return this.findSimpleDataDictionaryByDictTypeId(typeId);
-        }else {
-            throw ServiceException.getInstance("type不能为空",ParameStatusEnum.Parameter_cannot_be_empty.getCode());
+        } else {
+            throw ServiceException.getInstance("type不能为空", ParameStatusEnum.Parameter_cannot_be_empty.getCode());
         }
 
     }
 
-    @Cacheable(cacheNames = "IDataDictionaryInfoService:findPage",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "dataDictionaryInfoService:list:infoBean", keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleDataDictionaryInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
         Page<DataDictionaryInfo> page = PageUtil.getPage(DataDictionaryInfo.class, currentPage, size);
@@ -167,16 +167,17 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
         }
 
 
-        return PageResult.ok(dataDictionaryInfoPage.getTotal(),currentPage,size,result);
+        return PageResult.ok(dataDictionaryInfoPage.getTotal(), currentPage, size, result);
     }
 
     @Override
+    @Cacheable(cacheNames = "dataDictionaryInfoService:list:infoBean", keyGenerator = "yejuKeyGenerator")
     public PageResult<SimpleDataDictionaryInfoBean> findPage(DictQueryArgs args) {
         Page<DataDictionaryInfo> page = PageUtil.
                 getPage(DataDictionaryInfo.class, args.getCurrentPage(), args.getSize());
 
         QueryWrapper<DataDictionaryInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("type_id",args.getDataTypeId());
+        queryWrapper.eq("type_id", args.getDataTypeId());
 
         List<SimpleDataDictionaryInfoBean> result = new LinkedList<>();
 
@@ -190,14 +191,14 @@ public class DataDictionaryInfoServiceImpl implements IDataDictionaryInfoService
     }
 
 
-    private SimpleDataDictionaryInfoBean infoToSimpleBean(DataDictionaryInfo info){
+    private SimpleDataDictionaryInfoBean infoToSimpleBean(DataDictionaryInfo info) {
         SimpleDataDictionaryInfoBean bean = new SimpleDataDictionaryInfoBean();
         bean.setId(info.getDataDictionaryInfoId());
         bean.setDictionaryLabel(info.getDictionaryLabel());
         bean.setDictionaryValue(info.getDictionaryValue());
         bean.setCssClass(info.getCssClass());
         bean.setListClass(info.getListClass());
-        bean.setDefaultFlags(info.getIsDefault()==1);
+        bean.setDefaultFlags(info.getIsDefault() == 1);
         bean.setStatus(info.getStatus());
         bean.setCreateTime(info.getCreateTime());
         bean.setRemark(info.getRemark());

@@ -84,6 +84,11 @@ public class Notice extends Model<Notice> {
      */
     private Long sendTo;
 
+    /**
+     * 接收者类型 1全部 2群组
+     */
+    private String receiverType;
+
 
     public Long getNoticeId() {
         return noticeId;
@@ -211,6 +216,14 @@ public class Notice extends Model<Notice> {
 
     public void setSendTo(Long sendTo) {
         this.sendTo = sendTo;
+    }
+
+    public String getReceiverType() {
+        return receiverType;
+    }
+
+    public void setReceiverType(String receiverType) {
+        this.receiverType = receiverType;
     }
 
     /**

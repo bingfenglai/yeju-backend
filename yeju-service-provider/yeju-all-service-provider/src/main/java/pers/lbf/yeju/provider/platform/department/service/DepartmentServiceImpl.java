@@ -15,12 +15,13 @@
  *
  */
 package pers.lbf.yeju.provider.platform.department.service;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -55,7 +56,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
     @DubboReference
     private IDataDictionaryInfoService dataDictionaryService;
 
-    @Cacheable(cacheNames = "DepartmentService::findDeptById",key = "#id")
+    @Cacheable(cacheNames = "departmentService:id", key = "#id")
     @Override
     public IResult<SimpleDepartmentInfoBean> findDeptById(Long id) throws ServiceException {
         Department department = departmentDao.selectById(id);
@@ -76,10 +77,10 @@ public class DepartmentServiceImpl implements IDepartmentService {
         }
 
 
-        throw  ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
+        throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
     }
 
-    @Cacheable(cacheNames = "DepartmentService::findPage",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "departmentService:list", keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleDepartmentInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
 
@@ -96,22 +97,23 @@ public class DepartmentServiceImpl implements IDepartmentService {
             bean.setDepartmentStatusStr(statusMap.get(bean.getDepartmentStatus()));
             result.add(bean);
         }
-        return PageResult.ok(departmentPage.getTotal(),currentPage,size,result);
+        return PageResult.ok(departmentPage.getTotal(), currentPage, size, result);
     }
 
     @Override
+    @CacheEvict(cacheNames = "departmentService:list", allEntries = true)
     public IResult<Object> addDepartment(SimpleDepartmentInfoBean bean) throws ServiceException {
         return null;
     }
 
-    @CachePut(cacheNames = "DepartmentService::findDeptById",key = "#bean.departmentId")
+    @CacheEvict(cacheNames = "departmentService", allEntries = true)
     @Override
     public IResult<Object> updateDepartment(SimpleDepartmentInfoBean bean) throws ServiceException {
 
         return null;
     }
 
-    @Cacheable(cacheNames = "DepartmentService::findAll",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "departmentService", keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<List<DepartmentIdAndName>> findAll() throws ServiceException {
 
@@ -133,10 +135,10 @@ public class DepartmentServiceImpl implements IDepartmentService {
         return Result.ok(result);
 
 
-
     }
 
-    private SimpleDepartmentInfoBean departmentToSimpleInfoBean(Department department){
+
+    private SimpleDepartmentInfoBean departmentToSimpleInfoBean(Department department) {
         SimpleDepartmentInfoBean bean = new SimpleDepartmentInfoBean();
         bean.setParentId(department.getParentDepartmentId());
         bean.setDepartmentId(department.getDepartmentId());
@@ -154,13 +156,12 @@ public class DepartmentServiceImpl implements IDepartmentService {
     }
 
 
-    private String getDeptStatus(Long deptStatus){
+    private String getDeptStatus(Long deptStatus) {
 
         IResult<Map<String, String>> result = dataDictionaryService.getDictMap(DataDictionaryTypeConstant.DEPARTMENT_STATUS);
         Map<String, String> map = result.getData();
         return map.get(deptStatus.toString());
     }
-
 
 
 }

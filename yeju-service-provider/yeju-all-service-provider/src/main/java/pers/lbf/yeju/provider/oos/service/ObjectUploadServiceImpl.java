@@ -34,7 +34,9 @@ import pers.lbf.yeju.service.interfaces.oos.pojo.SaveMd5Args;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-/** 对象传输服务
+/**
+ * 对象传输服务
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/1/30 0:04
@@ -48,8 +50,8 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
     /**
      * 上传文件
      *
-     * @param fileByte    MultipartFile to fileByte
-     * @param fileMd5 fileMd5
+     * @param fileByte MultipartFile to fileByte
+     * @param fileMd5  fileMd5
      * @return void
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
@@ -72,15 +74,15 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
      * @date 2021/1/29 16:31
      */
     @Override
-    @Cacheable(value = "oos:fileMd5",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(value = "objectUploadService:fileMd5", key = "#fileMd5")
     public IResult<Object> isExited(String fileMd5) throws ServiceException {
 
-        if (fileMd5 == null||fileMd5.length() == 0) {
-            throw ServiceException.getInstance("文件md5值不能为空！",ParameStatusEnum.Parameter_cannot_be_empty.getCode());
+        if (fileMd5 == null || fileMd5.length() == 0) {
+            throw ServiceException.getInstance("文件md5值不能为空！", ParameStatusEnum.Parameter_cannot_be_empty.getCode());
         }
 
         String url = resourceMd5Dao.selectResourceUrlByMd5(fileMd5);
-        if (url == null || url.length() == 0){
+        if (url == null || url.length() == 0) {
             return SimpleResult.failed(FileStatus.NOT_Found);
         }
         return Result.ok(url);

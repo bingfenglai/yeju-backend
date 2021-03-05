@@ -14,7 +14,10 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.message.notice.pojo;
+package pers.lbf.yeju.service.interfaces.message.pojo;
+
+import pers.lbf.yeju.common.core.message.BaseMessage;
+import pers.lbf.yeju.common.core.message.Message;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,18 +29,11 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/2/17 17:05
  */
-public class NoticeMessageVO implements Serializable {
+public class NoticeMessageVO extends BaseMessage<String> implements Serializable, Message<String> {
     private String title;
-    private String message;
 
     // 通知类型，'warning', 'info',
     private String type;
-
-    private Date date;
-    private String from;
-
-    private String sendTo;
-
 
     @Override
     public String toString() {
@@ -46,7 +42,6 @@ public class NoticeMessageVO implements Serializable {
                 ", message='" + message + '\'' +
                 ", type='" + type + '\'' +
                 ", date=" + date +
-                ", from='" + from + '\'' +
                 ", sendTo='" + sendTo + '\'' +
                 '}';
     }
@@ -59,16 +54,20 @@ public class NoticeMessageVO implements Serializable {
         this.date = date;
     }
 
-    public String getFrom() {
-        return from;
-    }
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
+    @Override
     public String getSendTo() {
         return sendTo;
+    }
+
+    @Override
+    public Date getSendDate() {
+        return this.date;
+    }
+
+    @Override
+    public String getReceiverType() {
+        return this.receiverType;
     }
 
     public void setSendTo(String sendTo) {
@@ -76,7 +75,7 @@ public class NoticeMessageVO implements Serializable {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
@@ -84,15 +83,21 @@ public class NoticeMessageVO implements Serializable {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public String getForm() {
+        return this.form;
     }
 
     public void setMessage(String message) {

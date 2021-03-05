@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
-import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.constant.StatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -35,17 +34,16 @@ import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.domain.entity.Notice;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.message.notice.dao.INoticeDao;
-import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
+import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO
@@ -63,10 +61,10 @@ public class NoticeServiceImpl implements INoticeService {
     private INoticeDao noticeDao;
 
     @DubboReference
-    private IDataDictionaryInfoService dictionaryInfoService;
-
-    @DubboReference
     private IEmployeeService employeeService;
+
+    @Autowired
+    private IRedisService redisService;
 
     /**
      * 通知 分页查询接口
@@ -86,18 +84,9 @@ public class NoticeServiceImpl implements INoticeService {
         Page<Notice> noticePage = noticeDao.selectPage(page, null);
         List<Notice> noticeList = noticePage.getRecords();
         List<SimpleNoticeInfoBean> result = new LinkedList<>();
-        Map<String, String> noticeTypeMap = dictionaryInfoService.getDictMap("notice_type").getData();
-        Map<String, String> statusMap = dictionaryInfoService.getDictMap(DataDictionaryTypeConstant.NOTICE_STATUS).getData();
 
         for (Notice notice : noticeList) {
             SimpleNoticeInfoBean bean = this.noticeToSimpleInfoBean(notice);
-            if (bean.getNoticeType() != null) {
-                bean.setNoticeTypeStr(noticeTypeMap.get(bean.getNoticeType()));
-
-            }
-            if (bean.getStatus() != null) {
-                bean.setStatusStr(statusMap.get(bean.getStatus().toString()));
-            }
             result.add(bean);
         }
         return PageResult.ok(noticePage.getTotal(), currentPage, size, result);
@@ -160,22 +149,27 @@ public class NoticeServiceImpl implements INoticeService {
             notice.setStatus(StatusConstant.DISABLE);
         }
         noticeDao.insert(notice);
+        
         return SimpleResult.ok();
     }
 
     private Notice noticeCreateArgsToNotice(NoticeCreateArgs args) {
         Notice notice = new Notice();
+
         notice.setTitle(args.getNoticeTitle());
         notice.setContent(args.getContent());
         notice.setNoticeType(args.getNoticeType());
         notice.setStatus(args.getStatus());
         notice.setStartTime(args.getStartTime());
         notice.setEndTime(args.getEndTime());
-        notice.setCreateTime(new Date());
+        notice.setCreateTime(args.getCreateTime());
+        notice.setCreateBy(args.getCreateBy());
+
         notice.setRemark(args.getRemark());
+
         notice.setBeFrom(args.getBeFrom());
         notice.setSendTo(args.getSendTo());
-        notice.setCreateBy(args.getCreateBy());
+        notice.setReceiverType(args.getReceiverType());
         return notice;
     }
 

@@ -62,5 +62,5 @@ public interface INoticeService {
 
     IResult<Object> update(NoticeUpdateArgs args) throws ServiceException;
 
-    
+
 }

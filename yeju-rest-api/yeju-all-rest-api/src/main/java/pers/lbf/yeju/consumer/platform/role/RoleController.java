@@ -34,6 +34,7 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO
@@ -52,22 +53,30 @@ public class RoleController {
     @DubboReference
     private IDataDictionaryInfoService dataDictionaryInfoService;
 
-    @ApiOperation(value = "获取Role列表 分页",notes = "Role列表说明",httpMethod = "GET")
+
+    @ApiOperation(value = "获取Role列表 分页", notes = "Role列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<SimpleRole>> findPage(
-            @Validated @NotNull(message = "每页显示条数")  @ApiParam("当前页") @PathVariable Long currentPage,
+            @Validated @NotNull(message = "每页显示条数") @ApiParam("当前页") @PathVariable Long currentPage,
             @Validated @NotNull(message = "每页显示大小不能为空") @ApiParam("每页显示条数") @RequestParam Long size
-        )throws ServiceException {
+    ) throws ServiceException {
         BaseFindPageArgs args = new BaseFindPageArgs();
         args.setCurrentPage(currentPage);
         args.setSize(size);
+        PageResult<SimpleRole> pageResult = roleService.findPage(args.getCurrentPage(), args.getSize());
 
-        return Mono.just(roleService.findPage(args.getCurrentPage(),args.getSize()));
+        Map<String, String> data = dataDictionaryInfoService.getDictMap(DataDictionaryTypeConstant.ROLE_STATUS).getData();
+        for (SimpleRole simpleRole : pageResult.getList()) {
+            simpleRole.setRoleStatusValueStr(data.get(String.valueOf(simpleRole.getRoleStatus())));
+        }
+
+
+        return Mono.just(pageResult);
     }
 
-    @ApiOperation(value = "获取角色状态列表",notes = "获取角色状态列表",httpMethod = "GET")
+    @ApiOperation(value = "获取角色状态列表", notes = "获取角色状态列表", httpMethod = "GET")
     @GetMapping("/status/list")
-    public Mono<IResult<List<SimpleLabelAndValueBean>>> getRoleStatusInfoList()throws ServiceException {
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getRoleStatusInfoList() throws ServiceException {
         IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.ROLE_STATUS);
         return Mono.just(result);
     }

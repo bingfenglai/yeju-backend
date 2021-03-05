@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -64,24 +64,24 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private IDataDictionaryInfoService dataDictionaryService;
 
     @Lazy
-    @DubboReference(check = false,interfaceClass = IDepartmentService.class)
+    @DubboReference(check = false, interfaceClass = IDepartmentService.class)
     private IDepartmentService departmentService;
 
-    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "employeeService:infoBean", key = "#account")
     @Override
     public IResult<SimpleEmployeeInfoBean> findInfoByAccount(String account) throws ServiceException {
 
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(account);
         QueryWrapper<Employee> queryWrapper = new QueryWrapper<>();
-        if (accountType.equals(SubjectTypeEnum.is_system_account)){
-            queryWrapper.eq("employees_number",account);
-        }else if (accountType.equals(SubjectTypeEnum.is_mobile)){
-            queryWrapper.eq("phone_number",account);
+        if (accountType.equals(SubjectTypeEnum.is_system_account)) {
+            queryWrapper.eq("employees_number", account);
+        } else if (accountType.equals(SubjectTypeEnum.is_mobile)) {
+            queryWrapper.eq("phone_number", account);
         }
 
         Employee employee = employeeDao.selectOne(queryWrapper);
         SimpleEmployeeInfoBean bean = new SimpleEmployeeInfoBean();
-        if (employee!=null){
+        if (employee != null) {
 
             bean.setName(employee.getName());
             bean.setGender(getGenderLabel(employee.getGender()));
@@ -96,7 +96,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
             bean.setUpdateTime(employee.getUpdateTime());
             bean.setEmployeesNumber(employee.getEmployeesNumber());
 
-            if (employee.getDepartmentId()!=null){
+            if (employee.getDepartmentId() != null) {
                 IResult<SimpleDepartmentInfoBean> deptResult = departmentService.findDeptById(employee.getDepartmentId());
                 SimpleDepartmentInfoBean simpleDepartmentInfoBean = deptResult.getData();
                 bean.setDepartment(simpleDepartmentInfoBean);
@@ -109,7 +109,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         throw ServiceException.getInstance(ServiceStatusEnum.no_data_has_been_found);
     }
 
-    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "employeeService:name", key = "#account")
     @Override
     public IResult<String> findNameByAccount(String account) throws ServiceException {
         String name = "";
@@ -120,9 +120,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(account);
         QueryWrapper<Employee> queryWrapper = new QueryWrapper<>();
 
-        if (accountType.equals(SubjectTypeEnum.is_system_account)){
+        if (accountType.equals(SubjectTypeEnum.is_system_account)) {
             name = employeeDao.selectEmployeeNameByEmployeeNumber(account);
-        }else if (accountType.equals(SubjectTypeEnum.is_mobile)){
+        } else if (accountType.equals(SubjectTypeEnum.is_mobile)) {
             name = employeeDao.selectEmployeeNameByPhoneNumber(account);
         }
 
@@ -141,17 +141,17 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:34
      */
     @Override
-    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "employeeService:infoBean", key = "#employeeId")
     public IResult<SimpleEmployeeInfoBean> findInfoByEmployeeId(Long employeeId) throws ServiceException {
 
 
-        if (employeeId==null){
-           throw ServiceException.getInstance("员工id不能为空", ParameStatusEnum.Parameter_cannot_be_empty.getCode());
+        if (employeeId == null) {
+            throw ServiceException.getInstance("员工id不能为空", ParameStatusEnum.Parameter_cannot_be_empty.getCode());
         }
 
         Employee employee = employeeDao.selectById(employeeId);
 
-        if (employee == null){
+        if (employee == null) {
             throw ServiceException.getInstance(EmployeesStatus.employeeDoesNotExist);
         }
 
@@ -189,7 +189,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:36
      */
     @Override
-    @CachePut(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
+    @CacheEvict(cacheNames = "employeeService", allEntries = true)
     public void removeEmployeeByAccount(String account) throws ServiceException {
 
     }
@@ -205,7 +205,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:37
      */
     @Override
-    @CachePut(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
+    @CacheEvict(cacheNames = "employeeService:list", allEntries = true)
     public void addOne(SimpleEmployeeInfoBean employeeInfo) throws ServiceException {
 
     }
@@ -221,22 +221,24 @@ public class EmployeeServiceImpl implements IEmployeeService {
      * @date 2021/1/18 20:39
      */
     @Override
-    @CachePut(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
+    @CacheEvict(cacheNames = "employeeService:list", allEntries = true)
     public void addList(List<SimpleEmployeeInfoBean> employeeInfos) throws ServiceException {
 
     }
 
-    /** 分页查询
+    /**
+     * 分页查询
+     *
+     * @param currentPage
+     * @param size
      * @return list
      * @throws ServiceException e
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/1/18 20:42
-     * @param currentPage
-     * @param size
      */
 
-    @Cacheable(cacheNames = "employeeService",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "employeeService:list", keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleEmployeeInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
 
@@ -246,7 +248,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         Page<Employee> employeesPage = employeeDao.selectPage(page, null);
         List<SimpleEmployeeInfoBean> result = new LinkedList<>();
 
-        if (employeesPage.getTotal()==0){
+        if (employeesPage.getTotal() == 0) {
             return PageResult.ok(employeesPage.getTotal(), employeesPage.getPages(), employeesPage.getSize(), result);
         }
         Map<String, String> genderMap = getDictMap("gender");
@@ -267,9 +269,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
             bean.setCreateTime(employee.getCreateTime());
             bean.setEmployeesNumber(employee.getEmployeesNumber());
 
-            if (employee.getDepartmentId()!=null){
+            if (employee.getDepartmentId() != null) {
                 IResult<SimpleDepartmentInfoBean> deptResult = departmentService.findDeptById(employee.getDepartmentId());
-                if (deptResult.getData()!=null){
+                if (deptResult.getData() != null) {
                     bean.setDepartment(deptResult.getData());
                 }
             }
@@ -277,33 +279,33 @@ public class EmployeeServiceImpl implements IEmployeeService {
             result.add(bean);
         }
 
-      return PageResult.ok(employeesPage.getTotal(), employeesPage.getPages(), employeesPage.getSize(), result);
+        return PageResult.ok(employeesPage.getTotal(), employeesPage.getPages(), employeesPage.getSize(), result);
 
 
     }
 
 
-    private String getGenderLabel(Long gender){
+    private String getGenderLabel(Long gender) {
         Map<String, String> map = getDictMap("gender");
         return map.get(gender.toString());
     }
 
-    private String getEmployeesStatus(Long employeeStatus){
+    private String getEmployeesStatus(Long employeeStatus) {
 
         Map<String, String> map = getDictMap("employee_status");
         return map.get(employeeStatus.toString());
     }
 
-    private Map<String,String> getDictMap(String type){
-        Map<String,String> map = new HashMap<>();
+    private Map<String, String> getDictMap(String type) {
+        Map<String, String> map = new HashMap<>();
         IResult<List<SimpleDataDictionaryInfoBean>> result =
                 dataDictionaryService.findSimpleDataDictionaryByDictType(type);
 
         List<SimpleDataDictionaryInfoBean> data = result.getData();
 
-        if (data.size()>0){
+        if (data.size() > 0) {
             for (SimpleDataDictionaryInfoBean bean : data) {
-                map.put(bean.getDictionaryValue(),bean.getDictionaryLabel());
+                map.put(bean.getDictionaryValue(), bean.getDictionaryLabel());
             }
         }
 

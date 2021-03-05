@@ -23,12 +23,12 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/2/17 21:15
  */
-public abstract class BaseMessage<T> implements Message<T>{
+public abstract class BaseMessage<T> implements Message<T> {
     protected T message;
     protected String form;
     protected String sendTo;
     protected Date date = new Date();
-
+    protected String receiverType;
 
 
 }

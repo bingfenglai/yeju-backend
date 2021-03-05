@@ -35,7 +35,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**数据字典类型服务类
+/**
+ * 数据字典类型服务类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/16 17:06
@@ -49,7 +51,7 @@ public class DataDictionaryTypeServiceImpl implements IDataDictionaryTypeService
     @Autowired
     private IDataDictionaryTypeDao dataDictionaryTypeDao;
 
-    @Cacheable(cacheNames = "IDataDictionaryTypeService:findPage",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "DataDictionaryTypeService:type:list", keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleDataDictionaryTypeBean> findPage(Long currentPage, Long size) throws ServiceException {
         Page<DataDictionaryType> page = PageUtil.getPage(DataDictionaryType.class, currentPage, size);
@@ -67,7 +69,7 @@ public class DataDictionaryTypeServiceImpl implements IDataDictionaryTypeService
         }
 
 
-        return PageResult.ok(dataDictionaryTypePage.getTotal(),currentPage,size,result);
+        return PageResult.ok(dataDictionaryTypePage.getTotal(), currentPage, size, result);
     }
 
     /**

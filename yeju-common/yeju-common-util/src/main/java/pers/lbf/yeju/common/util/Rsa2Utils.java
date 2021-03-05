@@ -28,7 +28,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-/** 业务使用 加密工具类
+/**
+ * 业务使用 加密工具类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -101,6 +103,7 @@ public final class Rsa2Utils {
             throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
         }
     }
+
     /**
      * RSA算法公钥解密数据
      *
@@ -121,6 +124,7 @@ public final class Rsa2Utils {
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
     }
+
     /**
      * RSA算法私钥加密数据
      *
@@ -141,8 +145,10 @@ public final class Rsa2Utils {
             throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
         }
     }
+
     /**
      * RSA算法私钥解密数据
+     *
      * @param data 待解密的经过Base64编码的密文字符串
      * @param key  RSA私钥字符串
      * @return RSA私钥解密后的明文字符串
@@ -160,6 +166,7 @@ public final class Rsa2Utils {
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
     }
+
     /**
      * RSA算法使用私钥对数据生成数字签名
      *
@@ -243,45 +250,17 @@ public final class Rsa2Utils {
     }
 
 
-
-    public static String getPublicKey(){
+    public static String getPublicKey() {
         byte[] bytes = FileUtils.readFile(publicKeyFilePath);
         assert bytes != null;
         return new String(bytes);
     }
 
-    public static String getPrivateKey(){
+    public static String getPrivateKey() {
         byte[] bytes = FileUtils.readFile(privateKeyFilePath);
         assert bytes != null;
         return new String(bytes);
     }
 
-
-
-
-
-    public static void main(String[] args) {
-        String privateKey="秘钥";
-        String publicKey="公钥";
-
-        Map<String, String> map = initRSAKey(2048);
-        String publicKey1 = map.get("publicKey").toString();
-        String privateKey1 = map.get("privateKey").toString();
-    //        System.out.println("签名:"+buildRSASignByPrivateKey("ABCabc123测试", privateKey1));
-    //
-    // System.out.println("校验:"+buildRSAverifyByPublicKey("ABCabc123测试",publicKey1,buildRSASignByPrivateKey("ABCabc123测试", privateKey1)));
-    //
-    //        String s = buildRSAEncryptByPublicKey("ABCabc123测试", publicKey1);
-
-    //
-    //
-    //
-
-        System.out.println(getPublicKey());
-
-        String s = buildRSAEncryptByPublicKey("hehe", getPublicKey());
-        String s1 = buildRSADecryptByPrivateKey(s, getPrivateKey());
-        System.out.println(s1);
-    }
 
 }

@@ -25,10 +25,12 @@ import java.security.PublicKey;
 import java.util.Base64;
 import java.util.UUID;
 
-/**Json web token 工具类
- * @Description TODO
+/**
+ * Json web token 工具类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
+ * @Description TODO
  * @date 2020/11/30 14:30
  */
 public class JwtUtils {
@@ -48,7 +50,7 @@ public class JwtUtils {
                 .claim(JWT_PAYLOAD_USER_KEY, JsonUtils.toString(userInfo))
                 .setId(createJTI())
                 .setExpiration(DateTime.now().plusMinutes(expire).toDate())
-                .signWith(privateKey, SignatureAlgorithm.RS256)
+                .signWith(privateKey, SignatureAlgorithm.RS512)
                 .compact();
     }
 
@@ -65,7 +67,7 @@ public class JwtUtils {
                 .claim(JWT_PAYLOAD_USER_KEY, JsonUtils.toString(userInfo))
                 .setId(createJTI())
                 .setExpiration(DateTime.now().plusSeconds(expire).toDate())
-                .signWith(privateKey, SignatureAlgorithm.RS256)
+                .signWith(privateKey, SignatureAlgorithm.RS512)
                 .compact();
     }
 
@@ -121,6 +123,7 @@ public class JwtUtils {
     /**
      * 私有构造器
      */
-    private JwtUtils() { }
+    private JwtUtils() {
+    }
 
 }

@@ -16,7 +16,9 @@
  */
 package pers.lbf.yeju.common.core.constant;
 
-/** 数据字典常量值
+/**
+ * 数据字典常量值
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/14 17:22
@@ -61,4 +63,6 @@ public class DataDictionaryTypeConstant {
      * 通用状态
      */
     public static final String STATUS = "status";
+
+    public static final String receiverType = "receiver_type";
 }

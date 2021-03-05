@@ -26,14 +26,21 @@ import java.util.Base64;
  */
 public class Base64Util {
 
-    public static byte[] decode(byte[] src){
-        return Base64.getDecoder().decode(src);
-    }
-    public static byte[] decode(String src){
+    public static byte[] decode(byte[] src) {
         return Base64.getDecoder().decode(src);
     }
 
+    public static byte[] decode(String src) {
+        return Base64.getDecoder().decode(src);
+    }
 
+    public static String encodeToString(byte[] src) {
+        return Base64.getEncoder().encodeToString(src);
+    }
+
+    public static byte[] encode(byte[] src) {
+        return Base64.getEncoder().encode(src);
+    }
 
 
     private Base64Util() {

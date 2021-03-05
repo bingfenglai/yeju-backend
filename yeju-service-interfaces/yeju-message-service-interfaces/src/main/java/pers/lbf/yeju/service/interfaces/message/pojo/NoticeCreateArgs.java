@@ -20,6 +20,7 @@ import pers.lbf.yeju.common.core.args.CreateArgs;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -81,16 +82,13 @@ public class NoticeCreateArgs implements Serializable, CreateArgs {
      */
     private String createBy;
 
+    /**
+     * 接收者类型 1全部 2群组
+     */
+    private String receiverType;
+
     @NotNull(message = "通知生效范围不能为空")
     private String[] dateRange;
-
-    public String[] getDateRange() {
-        return dateRange;
-    }
-
-    public void setDateRange(String[] dateRange) {
-        this.dateRange = dateRange;
-    }
 
     @Override
     public String toString() {
@@ -106,7 +104,25 @@ public class NoticeCreateArgs implements Serializable, CreateArgs {
                 ", sendTo=" + sendTo +
                 ", createTime=" + createTime +
                 ", createBy='" + createBy + '\'' +
+                ", receiverType='" + receiverType + '\'' +
+                ", dateRange=" + Arrays.toString(dateRange) +
                 '}';
+    }
+
+    public String getReceiverType() {
+        return receiverType;
+    }
+
+    public void setReceiverType(String receiverType) {
+        this.receiverType = receiverType;
+    }
+
+    public String[] getDateRange() {
+        return dateRange;
+    }
+
+    public void setDateRange(String[] dateRange) {
+        this.dateRange = dateRange;
     }
 
     public Date getCreateTime() {

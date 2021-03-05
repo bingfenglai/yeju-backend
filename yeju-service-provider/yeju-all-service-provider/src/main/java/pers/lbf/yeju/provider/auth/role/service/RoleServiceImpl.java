@@ -18,9 +18,9 @@ package pers.lbf.yeju.provider.auth.role.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -34,11 +34,9 @@ import pers.lbf.yeju.provider.auth.role.dao.IRoleDao;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleRole;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IRoleService;
-import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO
@@ -53,79 +51,69 @@ public class RoleServiceImpl implements IRoleService {
     @Autowired
     private IRoleDao roleDao;
 
-    @DubboReference
-    private IDataDictionaryInfoService dataDictionaryService;
 
-    @Cacheable(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "roleService:list", keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleRole> findPage(Long currentPage, Long size) throws ServiceException {
         Page<Role> page = new Page<>();
         page.setPages(currentPage);
         page.setSize(size);
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("role_status",1);
+        queryWrapper.eq("role_status", 1);
         Page<Role> rolePage = roleDao.selectPage(page, queryWrapper);
         List<Role> roleList = rolePage.getRecords();
         List<SimpleRole> result = new LinkedList<>();
-        if (roleList.size() > 0){
-            IResult<Map<String, String>> mapResult = dataDictionaryService.getDictMap("role_status");
-            Map<String, String> map = null;
-            if (mapResult.isSuccess()){
-                map = mapResult.getData();
-            }
+        if (roleList.size() > 0) {
 
             for (Role role : roleList) {
                 SimpleRole simpleRole = roleToSimpleInfoBean(role);
-                if(map!=null){
-                    simpleRole.setRoleStatusValueStr(map.get(role.getRoleStatus().toString()));
-                }
                 result.add(simpleRole);
             }
         }
-        return PageResult.ok(page.getTotal(),currentPage,size,result);
+        return PageResult.ok(page.getTotal(), currentPage, size, result);
     }
 
-    @CachePut(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
+    @CacheEvict(cacheNames = {"roleService"}, allEntries = true)
     @Override
     public void deleteById(Long id) throws ServiceException {
         roleDao.deleteById(id);
     }
 
-    @CachePut(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
+    @CachePut(cacheNames = "roleService:id", key = "#role.roleId")
+
     @Override
     public void updateById(SimpleRole role) throws ServiceException {
 
     }
 
-    @CachePut(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
+    @CacheEvict(cacheNames = "roleService:list", keyGenerator = "yejuKeyGenerator")
     @Override
     public void create(SimpleRole role) throws ServiceException {
 
     }
 
-    @Cacheable(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "roleService:id", key = "#id")
     @Override
     public IResult<SimpleRole> findById(Long id) throws ServiceException {
         return null;
     }
 
 
-
-    @Cacheable(cacheNames = "roleService",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(cacheNames = "roleService:list:principal", key = "#principal")
     @Override
     public IResult<List<String>> getRoleListByPrincipal(String principal) throws ServiceException {
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);
         List<String> roleNameList = null;
-        if (accountType.equals(SubjectTypeEnum.is_system_account)){
+        if (accountType.equals(SubjectTypeEnum.is_system_account)) {
             roleNameList = roleDao.selectRoleNamesBySystemAccount(principal);
 
         }
 
-        if (accountType.equals(SubjectTypeEnum.is_mobile)){
+        if (accountType.equals(SubjectTypeEnum.is_mobile)) {
             roleNameList = roleDao.selectRoleNamesByPhoneNumber(principal);
         }
 
-        if (accountType.equals(SubjectTypeEnum.is_unknown)){
+        if (accountType.equals(SubjectTypeEnum.is_unknown)) {
             throw ServiceException.getInstance(AccountStatusEnum.accountDoesNotExist);
         }
 
@@ -133,7 +121,7 @@ public class RoleServiceImpl implements IRoleService {
     }
 
 
-    private SimpleRole roleToSimpleInfoBean(Role role){
+    private SimpleRole roleToSimpleInfoBean(Role role) {
         SimpleRole bean = new SimpleRole();
         bean.setRoleId(role.getRoleId());
         bean.setRoleName(role.getRoleName());
@@ -144,13 +132,4 @@ public class RoleServiceImpl implements IRoleService {
         return bean;
     }
 
-    private String getRoleStatusLabel(Long roleStatus) {
-        IResult<Map<String, String>> mapResult = dataDictionaryService.getDictMap("role_status");
-
-        if (mapResult.isSuccess()){
-            Map<String, String> map = mapResult.getData();
-            return map.get(roleStatus.toString());
-        }
-        return null;
-    }
 }

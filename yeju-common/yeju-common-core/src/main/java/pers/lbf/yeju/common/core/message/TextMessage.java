@@ -25,7 +25,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/2/17 21:15
  */
-public class TextMessage extends BaseMessage<String> implements Message<String>{
+public class TextMessage extends BaseMessage<String> implements Message<String> {
     @Override
     public String getMessage() {
         return this.message;
@@ -44,5 +44,10 @@ public class TextMessage extends BaseMessage<String> implements Message<String>{
     @Override
     public Date getSendDate() {
         return this.date;
+    }
+
+    @Override
+    public String getReceiverType() {
+        return this.receiverType;
     }
 }

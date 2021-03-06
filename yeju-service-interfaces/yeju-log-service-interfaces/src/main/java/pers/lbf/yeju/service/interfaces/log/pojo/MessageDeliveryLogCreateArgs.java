@@ -14,22 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message;
+package pers.lbf.yeju.service.interfaces.log.pojo;
 
-import java.util.Date;
+import java.io.Serializable;
 
 /**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 21:15
+ * @date 2021/3/6 19:50
  */
-public abstract class BaseMessage<T> implements Message<T> {
-    protected T message;
-    protected String form;
-    protected Long sendTo;
-    protected Date date = new Date();
-    protected String receiverType;
-    protected Long messageId;
+public class MessageDeliveryLogCreateArgs implements Serializable {
     
-
 }

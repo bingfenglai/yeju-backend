@@ -21,7 +21,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
-import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessageVO;
+import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 
@@ -59,7 +59,7 @@ public interface INoticeService {
     @Deprecated
     Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList() throws ServiceException;
 
-    Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList(String principal) throws ServiceException;
+    Result<List<String>> findEffectiveNoticeList(String principal) throws ServiceException;
 
 
     IResult<Object> create(NoticeCreateArgs args) throws Exception;
@@ -69,13 +69,13 @@ public interface INoticeService {
     /**
      * 推送消息
      *
-     * @param noticeMessageVO
+     * @param noticeMessage
      * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Object>
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/3/6 0:53
      */
-    IResult<Object> send(NoticeMessageVO noticeMessageVO) throws ServiceException;
+    IResult<Object> send(NoticeMessage noticeMessage) throws ServiceException;
 
 
 }

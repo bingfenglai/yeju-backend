@@ -14,22 +14,16 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message;
-
-import java.util.Date;
+package pers.lbf.yeju.service.interfaces.message.constant;
 
 /**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 21:15
+ * @date 2021/3/6 0:49
  */
-public abstract class BaseMessage<T> implements Message<T> {
-    protected T message;
-    protected String form;
-    protected Long sendTo;
-    protected Date date = new Date();
-    protected String receiverType;
-    protected Long messageId;
-    
+public class NoticeConstant {
 
+    public static final String REDIS_KEY_PREFIX = "yeju:notice::";
 }

@@ -21,6 +21,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import pers.lbf.yeju.common.domain.entity.MessageGroup;
 
+import java.util.List;
+
 /**
  * 消息群组信息表(TableMessageGroup)表数据库访问层
  *
@@ -37,4 +39,13 @@ public interface IMessageGroupDao extends BaseMapper<MessageGroup> {
             "  AND t.`message_group_id` = #{groupId} \n" +
             " LIMIT 1 ")
     Integer receiverExistIn(@Param("groupId") Long groupId, @Param("accountId") Long accountId);
+
+    @Select("SELECT \n" +
+            "  t.`message_group_id` \n" +
+            "FROM\n" +
+            "  r_t_account_message_group t \n" +
+            "WHERE t.`account_id` = #{accountId} \n" +
+            "AND t.`group_type` = '1'\n" +
+            "  AND t.`is_delete` = '0' ")
+    List<Long> findSystemMessageGroupByPrincipal(Long accountId);
 }

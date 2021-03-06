@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.provider.message.notice.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -37,14 +38,18 @@ import pers.lbf.yeju.common.domain.entity.Notice;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.message.notice.dao.INoticeDao;
 import pers.lbf.yeju.provider.message.notice.sender.NoticeSender;
+import pers.lbf.yeju.service.interfaces.log.IMessageDeliveryLogService;
+import pers.lbf.yeju.service.interfaces.message.IMessageGroupService;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
-import pers.lbf.yeju.service.interfaces.message.pojo.*;
+import pers.lbf.yeju.service.interfaces.message.constant.NoticeConstant;
+import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
+import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
+import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
+import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * TODO
@@ -53,7 +58,7 @@ import java.util.List;
  * @version 1.0
  * @date 2021/2/17 20:15
  */
-@DubboService(interfaceClass = INoticeService.class)
+@DubboService(interfaceClass = INoticeService.class, timeout = 8000)
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 @EnableAsync
@@ -70,6 +75,12 @@ public class NoticeServiceImpl implements INoticeService {
 
     @Autowired
     private NoticeSender noticeSender;
+
+    @DubboReference
+    private IMessageGroupService messageGroupService;
+
+    @DubboReference
+    private IMessageDeliveryLogService messageDeliveryLogService;
 
     /**
      * 通知 分页查询接口
@@ -131,11 +142,34 @@ public class NoticeServiceImpl implements INoticeService {
         return Result.ok(result);
     }
 
-    @Cacheable(cacheNames = "noticeService:effectiveNoticeList", key = "#principal")
-    @Override
-    public Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList(String principal) throws ServiceException {
 
-        return null;
+    @Override
+    public Result<List<String>> findEffectiveNoticeList(String principal) throws ServiceException {
+        List<Long> groupIds = messageGroupService.findSystemMessageGroupByPrincipal(principal).getData();
+
+        List<String> result = new LinkedList<>();
+
+        for (Long groupId : groupIds) {
+
+            String pattern = NoticeConstant.REDIS_KEY_PREFIX + groupId + "**";
+            log.info("表达式： {}", pattern);
+            Collection<String> keys = redisService.keys(pattern);
+            log.info("消息键---> {} {}", keys.size(), Arrays.toString(keys.toArray()));
+
+            for (String key : keys) {
+                String msg = (String) redisService.getCacheObject(key);
+                JSONObject jsonObject = JSONObject.parseObject(msg);
+                Long messageId = (Long) jsonObject.get("messageId");
+                log.info("消息id {}", messageId);
+
+                Boolean flag = messageDeliveryLogService.isExistsAndDeliveredSuccessfully(principal, messageId).getData();
+                if (!flag) {
+                    result.add(msg);
+                }
+            }
+        }
+
+        return Result.ok(result);
     }
 
 
@@ -162,34 +196,46 @@ public class NoticeServiceImpl implements INoticeService {
         } else {
             notice.setStatus(StatusConstant.DISABLE);
         }
-        log.debug("开始将通知存入数据库");
-        noticeDao.insert(notice);
+
         log.debug("准备将消息发送至消息队列");
+        noticeDao.insert(notice);
         push(notice);
+
+        log.debug("开始将通知存入数据库");
+
         return SimpleResult.ok();
     }
 
     @Async
     void push(Notice notice) {
         Date now = new Date();
+        NoticeMessage message = noticeToMsgVO(notice);
+        log.info("准备将消息写入缓存 {}", message.toString());
+        String redisKey = NoticeConstant.REDIS_KEY_PREFIX + notice.getSendTo() + message.getMessageId();
+
+        String msgJson = JSONObject.toJSONString(message);
+        redisService.addCacheObject(redisKey, msgJson);
+
         if (notice.getStartTime().before(now) && notice.getEndTime().after(now)) {
-            NoticeMessageVO messageVO = noticeToMsgVO(notice);
-            redisService.addCacheObject(NoticeConstant.REDIS_KEY_PREFIX + messageVO.getSendTo(), messageVO);
-            noticeSender.send(messageVO, null);
+
+
+            noticeSender.send(message, null);
             log.debug("通知消息推送成功");
         } else {
             log.debug("通知开始时间是一个未来的时间，取消推送");
         }
+
     }
 
-    private NoticeMessageVO noticeToMsgVO(Notice notice) {
-        NoticeMessageVO noticeMessageVO = new NoticeMessageVO();
-        noticeMessageVO.setDate(notice.getStartTime());
-        noticeMessageVO.setSendTo(notice.getSendTo());
-        noticeMessageVO.setType(notice.getReceiverType());
-        noticeMessageVO.setTitle(notice.getTitle());
-        noticeMessageVO.setMessage(notice.getContent());
-        return noticeMessageVO;
+    private NoticeMessage noticeToMsgVO(Notice notice) {
+        NoticeMessage noticeMessage = new NoticeMessage();
+        noticeMessage.setDate(notice.getStartTime());
+        noticeMessage.setSendTo(notice.getSendTo());
+        noticeMessage.setType(notice.getNoticeType());
+        noticeMessage.setTitle(notice.getTitle());
+        noticeMessage.setMessage(notice.getContent());
+        noticeMessage.setMessageId(notice.getNoticeId());
+        return noticeMessage;
     }
 
 
@@ -224,14 +270,14 @@ public class NoticeServiceImpl implements INoticeService {
     /**
      * 推送消息
      *
-     * @param noticeMessageVO
+     * @param noticeMessage
      * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Object>
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/3/6 0:53
      */
     @Override
-    public IResult<Object> send(NoticeMessageVO noticeMessageVO) throws ServiceException {
+    public IResult<Object> send(NoticeMessage noticeMessage) throws ServiceException {
 
         return null;
     }

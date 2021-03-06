@@ -20,17 +20,17 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 import pers.lbf.yeju.consumer.message.notice.util.NoticeTypeUtil;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
-import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessageVO;
+import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,6 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @Slf4j
+@EnableAsync(proxyTargetClass = true)
 public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
     @Autowired
@@ -78,18 +79,16 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
                 AuthorityInfo authorityInfo = null;
                 try {
                     authorityInfo = tokenManager.getAuthorityInfo(token);
-                    log.info(authorityInfo.toString());
-
-                    sessionMap.put(authorityInfo.getPrincipal(), session);
-                    log.info("会话key {}", authorityInfo.getPrincipal());
+                    log.debug(authorityInfo.toString());
+                    String principal = authorityInfo.getPrincipal();
+                    sessionMap.put(principal, session);
+                    log.info("会话key {}", principal);
+                    this.send(session, principal);
                 } catch (Exception e) {
                     log.error(String.valueOf(e));
                 }
-                if (authorityInfo == null) {
-                    throw new ServiceException(AuthStatusEnum.NO_TOKEN);
-                }
 
-                this.send(session);
+
             }
 
 
@@ -102,11 +101,34 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
         }).then();
     }
 
+    @Async
+    void send(WebSocketSession session, String principal) {
+
+        List<String> messageList = noticeService.findEffectiveNoticeList(principal).getData();
+        log.info("消息列表 {}", messageList.toString());
+        for (String msgJson : messageList) {
+            JSONObject jsonObject = JSONObject.parseObject(msgJson);
+            jsonObject.put("type", NoticeTypeUtil.getNoticeType((String) jsonObject.get("type")));
+            String s = JSONObject.toJSONString(jsonObject);
+            session.send(Flux.just(session.textMessage(s))).then()
+                    // 投递成功发送成功日志
+                    .doOnSuccess(unused -> {
+
+                    })
+                    //投递失败发送失败日志
+                    .doOnError(throwable -> {
+
+                    }).toProcessor();
+        }
+
+    }
+
+    @Deprecated
     private void send(WebSocketSession session) {
         List<SimpleNoticeInfoBean> list = noticeService.findEffectiveNoticeList().getData();
-        List<NoticeMessageVO> msgList = new LinkedList<>();
+        List<NoticeMessage> msgList = new LinkedList<>();
         for (SimpleNoticeInfoBean bean : list) {
-            NoticeMessageVO message = new NoticeMessageVO();
+            NoticeMessage message = new NoticeMessage();
             message.setMessage(bean.getContent());
             message.setTitle(bean.getTitle());
             msgList.add(message);
@@ -115,7 +137,7 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
             log.info(bean.getNoticeType());
         }
 
-        for (NoticeMessageVO message : msgList) {
+        for (NoticeMessage message : msgList) {
             log.info(message.toString());
             String s = JSONObject.toJSONString(message);
             session.send(Flux.just(session.textMessage(s))).then().toProcessor();
@@ -133,7 +155,7 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
      * @version 1.0
      * @date 2021/3/3 22:08
      */
-    public void send(NoticeMessageVO message) {
+    public void send(NoticeMessage message) {
 
         for (String s : sessionMap.keySet()) {
             WebSocketSession session = sessionMap.get(s);
@@ -179,13 +201,13 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
      * @version 1.0
      * @date 2021/3/3 22:08
      */
-    public void send(NoticeMessageVO message, String sessionKey) {
+    public void send(NoticeMessage message, String sessionKey) {
 
         WebSocketSession session = sessionMap.get(sessionKey);
         send(session, message);
     }
 
-    private void send(WebSocketSession session, NoticeMessageVO message) {
+    private void send(WebSocketSession session, NoticeMessage message) {
 
         log.info(message.toString());
         String s = JSONObject.toJSONString(message);

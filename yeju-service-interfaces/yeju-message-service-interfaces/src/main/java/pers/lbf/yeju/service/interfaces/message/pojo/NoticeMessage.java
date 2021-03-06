@@ -29,20 +29,24 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/2/17 17:05
  */
-public class NoticeMessageVO extends BaseMessage<String> implements Serializable, Message<String> {
+public class NoticeMessage extends BaseMessage<String> implements Serializable, Message<String> {
     private String title;
 
     // 通知类型，'warning', 'info',
     private String type;
 
+
     @Override
     public String toString() {
         return "NoticeMessageVO{" +
-                "title='" + title + '\'' +
-                ", message='" + message + '\'' +
-                ", type='" + type + '\'' +
+                "message=" + message +
+                ", form='" + form + '\'' +
+                ", sendTo=" + sendTo +
                 ", date=" + date +
-                ", sendTo='" + sendTo + '\'' +
+                ", receiverType='" + receiverType + '\'' +
+                ", messageId=" + messageId +
+                ", title='" + title + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 
@@ -89,6 +93,16 @@ public class NoticeMessageVO extends BaseMessage<String> implements Serializable
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Override
+    public Long getMessageId() {
+        return this.messageId;
+    }
+
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
+    }
+
 
     @Override
     public String getMessage() {

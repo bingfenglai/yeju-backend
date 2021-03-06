@@ -27,6 +27,8 @@ import java.util.Date;
  */
 public interface Message<T> {
 
+    Long getMessageId();
+
     T getMessage();
 
     String getForm();

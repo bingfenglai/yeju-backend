@@ -36,5 +36,6 @@ public interface IMessageGroupService {
 
     IResult<Object> receiverExistIn(Long groupId, String receiver) throws ServiceException;
 
+    IResult<List<Long>> findSystemMessageGroupByPrincipal(String principal) throws ServiceException;
 
 }

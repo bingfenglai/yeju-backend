@@ -50,4 +50,9 @@ public class TextMessage extends BaseMessage<String> implements Message<String> 
     public String getReceiverType() {
         return this.receiverType;
     }
+
+    @Override
+    public Long getMessageId() {
+        return messageId;
+    }
 }

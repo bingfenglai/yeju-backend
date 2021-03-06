@@ -14,16 +14,22 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.pojo;
+package pers.lbf.yeju.service.interfaces.log;
+
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.log.pojo.MessageDeliveryLogCreateArgs;
 
 /**
- * TODO
+ * 消息投递日志服务
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 0:49
+ * @date 2021/3/6 19:48
  */
-public class NoticeConstant {
+public interface IMessageDeliveryLogService {
 
-    public static final String REDIS_KEY_PREFIX = "yeju:notice";
+    IResult<Object> addOneLog(MessageDeliveryLogCreateArgs args) throws ServiceException;
+
+    IResult<Boolean> isExistsAndDeliveredSuccessfully(String principal, Long messageId) throws ServiceException;
 }

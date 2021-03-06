@@ -147,6 +147,9 @@ public class SessionServiceImpl implements ISessionService {
 
         OnlineInfoBean onlineInfo = (OnlineInfoBean) redisTemplate.opsForValue().get(onLineKey);
 
+        if (onlineInfo == null) {
+            return;
+        }
 
         String currentSessionKey = SESSION_KEY_PREFIX + onlineInfo.getSessionId();
 

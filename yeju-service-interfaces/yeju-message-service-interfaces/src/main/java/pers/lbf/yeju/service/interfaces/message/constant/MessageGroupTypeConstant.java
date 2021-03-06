@@ -14,31 +14,16 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.pojo;
+package pers.lbf.yeju.service.interfaces.message.constant;
 
 /**
- * TODO
+ * 消息群组常量
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 16:18
+ * @date 2021/3/6 20:55
  */
-public enum ReceiverTypeEnum {
-
-    /**
-     * 接收者类型枚举
-     */
-    all("1"),
-    group("2"),
-    personal("3");
-
-    private String value;
-
-    ReceiverTypeEnum(String s) {
-        this.value = s;
-    }
-
-    public String getValue() {
-        return value;
-    }
+public class MessageGroupTypeConstant {
+    
+    public static final String systemGroup = "1";
 }

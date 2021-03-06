@@ -53,6 +53,7 @@ public class MessageGroupServiceImpl implements IMessageGroupService {
     private IAccountService accountService;
 
     @Override
+    @Cacheable(cacheNames = "messageGroup", keyGenerator = "yejuKeyGenerator")
     public IResult<List<SystemMessageGroupInfoBean>> findAllSystemMessageGroupAndId() throws ServiceException {
 
         QueryWrapper<MessageGroup> queryWrapper = new QueryWrapper<>();
@@ -92,6 +93,16 @@ public class MessageGroupServiceImpl implements IMessageGroupService {
         }
         return SimpleResult.ok();
 
+    }
+
+    @Cacheable(cacheNames = "messageGroup::list", key = "#principal")
+    @Override
+    public IResult<List<Long>> findSystemMessageGroupByPrincipal(String principal) throws ServiceException {
+        Long accountId = accountService.findAccountIdByPrincipal(principal).getData();
+
+        List<Long> groupIdList = messageGroupDao.findSystemMessageGroupByPrincipal(accountId);
+        log.info("群组 {}", groupIdList);
+        return Result.ok(groupIdList);
     }
 
 

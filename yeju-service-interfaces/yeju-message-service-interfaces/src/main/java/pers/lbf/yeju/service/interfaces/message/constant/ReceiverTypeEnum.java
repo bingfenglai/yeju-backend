@@ -14,22 +14,31 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message;
-
-import java.util.Date;
+package pers.lbf.yeju.service.interfaces.message.constant;
 
 /**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 21:15
+ * @date 2021/3/6 16:18
  */
-public abstract class BaseMessage<T> implements Message<T> {
-    protected T message;
-    protected String form;
-    protected Long sendTo;
-    protected Date date = new Date();
-    protected String receiverType;
-    protected Long messageId;
-    
+public enum ReceiverTypeEnum {
 
+    /**
+     * 接收者类型枚举
+     */
+    all("1"),
+    group("2"),
+    personal("3");
+
+    private String value;
+
+    ReceiverTypeEnum(String s) {
+        this.value = s;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

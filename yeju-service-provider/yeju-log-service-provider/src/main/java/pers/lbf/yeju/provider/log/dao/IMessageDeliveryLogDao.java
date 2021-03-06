@@ -14,9 +14,11 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.message.group.dao;
+package pers.lbf.yeju.provider.log.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import pers.lbf.yeju.common.domain.entity.MessageDeliveryLog;
 
 /**
@@ -27,4 +29,13 @@ import pers.lbf.yeju.common.domain.entity.MessageDeliveryLog;
  */
 public interface IMessageDeliveryLogDao extends BaseMapper<MessageDeliveryLog> {
 
+    @Select("SELECT \n" +
+            "  COUNT(*) \n" +
+            "FROM\n" +
+            "  table_message_delivery_log t \n" +
+            "WHERE t.`receiver_id` = #{accountId} \n" +
+            "  AND t.`message_id` = #{messageId} \n" +
+            "  AND t.`delivery_status` = 1 \n" +
+            "LIMIT 1 ")
+    Integer isExist(@Param("accountId") Long accountId, @Param("messageId") Long messageId);
 }

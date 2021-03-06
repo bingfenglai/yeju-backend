@@ -16,6 +16,9 @@
  */
 package pers.lbf.yeju.service.interfaces.message.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,6 +29,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/2/17 21:33
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SimpleNoticeInfoBean implements Serializable {
 
     /**
@@ -43,11 +47,13 @@ public class SimpleNoticeInfoBean implements Serializable {
     /**
      * 通知类型0其他1通知2公告
      */
+    @JsonIgnore
     private String noticeType;
     private String noticeTypeStr;
     /**
      * 通知状态0关闭1正常
      */
+    @JsonIgnore
     private Integer status;
     private String statusStr;
     /**
@@ -63,6 +69,7 @@ public class SimpleNoticeInfoBean implements Serializable {
      */
     private Date createTime;
 
+    @JsonIgnore
     private String createBy;
 
     private String createByStr;

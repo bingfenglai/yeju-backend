@@ -31,7 +31,7 @@ public interface Message<T> {
 
     String getForm();
 
-    String getSendTo();
+    Long getSendTo();
 
     Date getSendDate();
 

@@ -13,5 +13,13 @@
 
     <artifactId>yeju-redis-service-interfaces</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-common-core</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

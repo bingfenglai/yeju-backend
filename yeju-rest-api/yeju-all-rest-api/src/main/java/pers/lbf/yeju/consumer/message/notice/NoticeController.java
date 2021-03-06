@@ -38,6 +38,7 @@ import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ import java.util.Map;
  * @date 2021/2/17 21:30
  */
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/message/notice")
 @Slf4j
 public class NoticeController {
     @DubboReference
@@ -112,6 +113,7 @@ public class NoticeController {
         String[] dateRange = args.getDateRange();
         args.setStartTime(DateConvertUtil.stringToDate(dateRange[0]));
         args.setEndTime(DateConvertUtil.stringToDate(dateRange[1]));
+        args.setCreateTime(new Date());
         String account = SubjectHelper.getSubjectAccount(webExchange);
         args.setCreateBy(account);
         return Mono.just(noticeService.create(args));

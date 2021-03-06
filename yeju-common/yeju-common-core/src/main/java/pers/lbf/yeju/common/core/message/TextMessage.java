@@ -37,7 +37,7 @@ public class TextMessage extends BaseMessage<String> implements Message<String> 
     }
 
     @Override
-    public String getSendTo() {
+    public Long getSendTo() {
         return this.sendTo;
     }
 

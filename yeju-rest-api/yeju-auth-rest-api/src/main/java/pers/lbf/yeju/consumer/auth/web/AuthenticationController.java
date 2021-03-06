@@ -80,7 +80,7 @@ public class AuthenticationController {
         }
         assert authorityInfo != null;
         String principal = authorityInfo.getPrincipal();
-
+        String sessionId = authorityInfo.getSessionId();
         return Mono.empty().doFinally(signalType -> {
 
             sessionService.destroySession(principal);

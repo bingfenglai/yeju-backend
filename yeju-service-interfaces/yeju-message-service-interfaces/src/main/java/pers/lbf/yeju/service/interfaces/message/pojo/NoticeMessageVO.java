@@ -56,7 +56,7 @@ public class NoticeMessageVO extends BaseMessage<String> implements Serializable
 
 
     @Override
-    public String getSendTo() {
+    public Long getSendTo() {
         return sendTo;
     }
 
@@ -70,7 +70,7 @@ public class NoticeMessageVO extends BaseMessage<String> implements Serializable
         return this.receiverType;
     }
 
-    public void setSendTo(String sendTo) {
+    public void setSendTo(Long sendTo) {
         this.sendTo = sendTo;
     }
 

@@ -5,7 +5,6 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
@@ -61,13 +60,12 @@ public class SessionServiceImpl implements ISessionService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    public static final String ONLINE_KEY_PREFIX = "yeju:online";
+    public static final String ONLINE_KEY_PREFIX = "yeju:online::";
 
     public static final String SESSION_KEY_PREFIX = "yeju:session::";
 
     @Override
     public void addOnline(OnlineInfoBean onlineInfoBean) throws ServiceException {
-
         redisTemplate.opsForValue().set(ONLINE_KEY_PREFIX + onlineInfoBean.getPrincipal(), onlineInfoBean);
     }
 
@@ -144,14 +142,18 @@ public class SessionServiceImpl implements ISessionService {
      * @return r
      */
     @Override
-    public void destroySession(String principal) {
+    public void destroySession(String principal) throws ServiceException {
         String onLineKey = ONLINE_KEY_PREFIX + principal;
+
         OnlineInfoBean onlineInfo = (OnlineInfoBean) redisTemplate.opsForValue().get(onLineKey);
-        if (onlineInfo != null) {
-            String sessionKey = SESSION_KEY_PREFIX + onlineInfo.getSessionId();
-            redisTemplate.delete(sessionKey);
-            redisTemplate.delete(onLineKey);
-        }
+
+
+        String currentSessionKey = SESSION_KEY_PREFIX + onlineInfo.getSessionId();
+
+        redisTemplate.delete(currentSessionKey);
+
+        redisTemplate.delete(onLineKey);
+
 
     }
 
@@ -181,7 +183,7 @@ public class SessionServiceImpl implements ISessionService {
      * @version 1.0
      * @date 2021/2/5 14:20
      */
-    @Cacheable(cacheNames = "yeju:session", key = "#sessionId")
+    //@Cacheable(cacheNames = "yeju:session", key = "#sessionId")
     @Override
     public IResult<SessionDetails> initSession(String sessionId, String principal) throws ServiceException {
 
@@ -226,7 +228,7 @@ public class SessionServiceImpl implements ISessionService {
             sessionDetails.setResources(resourceListResult.getData());
         }
         log.info("会话初始化成功{}", principal);
-
+        redisTemplate.opsForValue().set(SESSION_KEY_PREFIX + sessionId, sessionDetails);
         return Result.ok(sessionDetails);
 
     }

@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,7 @@ public class RemoteLoginLogServiceImpl implements ILoginLogService {
 
     @Override
     @Async
+    @CacheEvict(cacheNames = "log:login", allEntries = true)
     public void addLog(AddLoginLogRequestBean loginLogDTO) throws ServiceException {
         LoginLog loginLog = new LoginLog();
 
@@ -66,19 +68,19 @@ public class RemoteLoginLogServiceImpl implements ILoginLogService {
 
     }
 
-    @Cacheable(value = "log:login",keyGenerator = "yejuKeyGenerator")
+    @Cacheable(value = "log:login", keyGenerator = "yejuKeyGenerator")
     @Override
-    public PageResult<LoginLogInfoBean> findList(Long currentPage,Long size) throws ServiceException {
+    public PageResult<LoginLogInfoBean> findList(Long currentPage, Long size) throws ServiceException {
         Page<LoginLog> page = new Page<>();
-        if (currentPage != null&&currentPage>1) {
+        if (currentPage != null && currentPage > 1) {
             page.setCurrent(currentPage);
         }
-        if (size != null && size > 0){
+        if (size != null && size > 0) {
             page.setSize(size);
         }
 
         QueryWrapper<LoginLog> wrapper = new QueryWrapper<>();
-        wrapper.select("login_log_id","account","subject_name","ip","login_status","message","accent_time");
+        wrapper.select("login_log_id", "account", "subject_name", "ip", "login_status", "message", "accent_time");
         Page<LoginLog> logPage = loginLogDao.selectPage(page, wrapper);
         List<LoginLogInfoBean> simpleLoginLogList = new LinkedList<>();
         for (LoginLog loginLog : logPage.getRecords()) {
@@ -91,10 +93,10 @@ public class RemoteLoginLogServiceImpl implements ILoginLogService {
             simpleLoginLog.setMessage(loginLog.getMessage());
             simpleLoginLog.setAccentTime(loginLog.getAccentTime());
             simpleLoginLogList.add(simpleLoginLog);
-            
+
         }
 
-        return PageResult.ok(logPage.getTotal(),logPage.getCurrent(),logPage.getSize(),simpleLoginLogList);
+        return PageResult.ok(logPage.getTotal(), logPage.getCurrent(), logPage.getSize(), simpleLoginLogList);
 
     }
 }

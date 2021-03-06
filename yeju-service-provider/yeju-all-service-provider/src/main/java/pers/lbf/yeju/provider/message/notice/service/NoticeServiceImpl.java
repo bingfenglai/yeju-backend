@@ -24,6 +24,8 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.Transactional;
 import pers.lbf.yeju.common.core.constant.StatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -34,10 +36,9 @@ import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.domain.entity.Notice;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.message.notice.dao.INoticeDao;
+import pers.lbf.yeju.provider.message.notice.sender.NoticeSender;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
-import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
-import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
-import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
+import pers.lbf.yeju.service.interfaces.message.pojo.*;
 import pers.lbf.yeju.service.interfaces.platfrom.employee.IEmployeeService;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
@@ -55,6 +56,7 @@ import java.util.List;
 @DubboService(interfaceClass = INoticeService.class)
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
+@EnableAsync
 public class NoticeServiceImpl implements INoticeService {
 
     @Autowired
@@ -65,6 +67,9 @@ public class NoticeServiceImpl implements INoticeService {
 
     @Autowired
     private IRedisService redisService;
+
+    @Autowired
+    private NoticeSender noticeSender;
 
     /**
      * 通知 分页查询接口
@@ -79,9 +84,11 @@ public class NoticeServiceImpl implements INoticeService {
     @Cacheable(cacheNames = "noticeService:findPage", keyGenerator = "yejuKeyGenerator")
     @Override
     public PageResult<SimpleNoticeInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
+        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("notice_id", "title", "notice_type", "status", "create_time", "create_by");
 
         Page<Notice> page = PageUtil.getPage(Notice.class, currentPage, size);
-        Page<Notice> noticePage = noticeDao.selectPage(page, null);
+        Page<Notice> noticePage = noticeDao.selectPage(page, queryWrapper);
         List<Notice> noticeList = noticePage.getRecords();
         List<SimpleNoticeInfoBean> result = new LinkedList<>();
 
@@ -124,6 +131,13 @@ public class NoticeServiceImpl implements INoticeService {
         return Result.ok(result);
     }
 
+    @Cacheable(cacheNames = "noticeService:effectiveNoticeList", key = "#principal")
+    @Override
+    public Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList(String principal) throws ServiceException {
+
+        return null;
+    }
+
 
     /**
      * 创建一个新的通知
@@ -140,7 +154,7 @@ public class NoticeServiceImpl implements INoticeService {
             "noticeService:findPage"},
             allEntries = true)
     @Override
-    public IResult<Object> create(NoticeCreateArgs args) throws ServiceException {
+    public IResult<Object> create(NoticeCreateArgs args) throws Exception {
 
         Notice notice = noticeCreateArgsToNotice(args);
         if (new Date().before(notice.getEndTime())) {
@@ -148,10 +162,36 @@ public class NoticeServiceImpl implements INoticeService {
         } else {
             notice.setStatus(StatusConstant.DISABLE);
         }
+        log.debug("开始将通知存入数据库");
         noticeDao.insert(notice);
-        
+        log.debug("准备将消息发送至消息队列");
+        push(notice);
         return SimpleResult.ok();
     }
+
+    @Async
+    void push(Notice notice) {
+        Date now = new Date();
+        if (notice.getStartTime().before(now) && notice.getEndTime().after(now)) {
+            NoticeMessageVO messageVO = noticeToMsgVO(notice);
+            redisService.addCacheObject(NoticeConstant.REDIS_KEY_PREFIX + messageVO.getSendTo(), messageVO);
+            noticeSender.send(messageVO, null);
+            log.debug("通知消息推送成功");
+        } else {
+            log.debug("通知开始时间是一个未来的时间，取消推送");
+        }
+    }
+
+    private NoticeMessageVO noticeToMsgVO(Notice notice) {
+        NoticeMessageVO noticeMessageVO = new NoticeMessageVO();
+        noticeMessageVO.setDate(notice.getStartTime());
+        noticeMessageVO.setSendTo(notice.getSendTo());
+        noticeMessageVO.setType(notice.getReceiverType());
+        noticeMessageVO.setTitle(notice.getTitle());
+        noticeMessageVO.setMessage(notice.getContent());
+        return noticeMessageVO;
+    }
+
 
     private Notice noticeCreateArgsToNotice(NoticeCreateArgs args) {
         Notice notice = new Notice();
@@ -178,6 +218,22 @@ public class NoticeServiceImpl implements INoticeService {
         Notice notice = noticeUpdateArgsToNotice(args);
         noticeDao.updateById(notice);
         return SimpleResult.ok();
+    }
+
+
+    /**
+     * 推送消息
+     *
+     * @param noticeMessageVO
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Object>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/6 0:53
+     */
+    @Override
+    public IResult<Object> send(NoticeMessageVO noticeMessageVO) throws ServiceException {
+
+        return null;
     }
 
 

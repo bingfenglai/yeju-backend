@@ -27,7 +27,8 @@ public interface ISessionService {
      * @return r
      */
 
-    void destroySession(String principal);
+    void destroySession(String principal) throws ServiceException;
+    
 
     /**
      * 登出方法，销毁会话信息

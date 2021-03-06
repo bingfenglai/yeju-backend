@@ -14,24 +14,16 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.config;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Component;
-import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
+package pers.lbf.yeju.service.interfaces.message.pojo;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/6 18:04
+ * @date 2021/3/6 0:49
  */
-@Component
-@RefreshScope
-@ConfigurationProperties(prefix = "spring.rabbitmq.listener.online.exchange")
-public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
+public class NoticeConstant {
 
-
+    public static final String REDIS_KEY_PREFIX = "yeju:notice";
 }

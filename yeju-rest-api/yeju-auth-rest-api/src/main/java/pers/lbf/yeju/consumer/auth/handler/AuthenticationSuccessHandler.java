@@ -106,8 +106,9 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
 
         AuthorityInfoBean authorityInfoBean = (AuthorityInfoBean) authentication.getPrincipal();
 
+        logger.debug("是否允许多地登录 {}", allowMultipleLoginsConfig.isAllow());
         //允许多地登录开关
-        if (!allowMultipleLoginsConfig.isAllowMultipleLogins()) {
+        if (!allowMultipleLoginsConfig.isAllow()) {
             // 先销毁会话（防止多地登录）
             sessionService.destroySession(authorityInfoBean.getPrincipal());
         }

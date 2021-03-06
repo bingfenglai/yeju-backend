@@ -30,9 +30,11 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import pers.lbf.yeju.provider.base.redis.serializer.MyRedisSerializer;
+import pers.lbf.yeju.provider.base.redis.serializer.CustomRedisSerializer;
 
-/**redisTemplate连接以及序列化配置
+/**
+ * redisTemplate连接以及序列化配置
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -48,12 +50,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
 
-        MyRedisSerializer<Object> redisSerializer = new MyRedisSerializer<>(Object.class);
+        CustomRedisSerializer<Object> redisSerializer = new CustomRedisSerializer<>(Object.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 
-        mapper.activateDefaultTyping( LaissezFaireSubTypeValidator.instance ,
+        mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.WRAPPER_ARRAY);
         redisSerializer.setObjectMapper(mapper);

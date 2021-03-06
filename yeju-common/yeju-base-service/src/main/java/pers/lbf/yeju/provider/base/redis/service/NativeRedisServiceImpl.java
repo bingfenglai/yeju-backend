@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 import java.util.Collection;
@@ -41,7 +42,7 @@ public class NativeRedisServiceImpl implements IRedisService {
     private final Logger log = LoggerFactory.getLogger(NativeRedisServiceImpl.class);
 
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 保存缓存对象
@@ -51,8 +52,8 @@ public class NativeRedisServiceImpl implements IRedisService {
      */
     @Override
     @Async
-    public <T> void addCacheObject(String key, T value) throws Exception {
-        log.info(String.format("开始存值 %s %s",key, value));
+    public <T> void addCacheObject(String key, T value) throws ServiceException {
+        log.info(String.format("开始存值 %s %s", key, value));
         redisTemplate.opsForValue().set(key, value);
         log.info("存值成功");
     }
@@ -67,8 +68,8 @@ public class NativeRedisServiceImpl implements IRedisService {
      */
     @Override
     @Async
-    public <T> void addCacheObject(String key, T value, Long timeout, TimeUnit timeUnit) throws Exception {
-        log.info(String.format("开始存值 %s %s %d ",key, value,timeout));
+    public <T> void addCacheObject(String key, T value, Long timeout, TimeUnit timeUnit) throws ServiceException {
+        log.info(String.format("开始存值 %s %s %d ", key, value, timeout));
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
         log.info("存值成功");
     }
@@ -81,13 +82,13 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return b 是否成功
      */
     @Override
-    public Boolean expire(String key, long timeout,TimeUnit timeUnit) throws Exception {
-        log.info(String.format("开始设置缓存时间 %s",key));
+    public Boolean expire(String key, long timeout, TimeUnit timeUnit) throws ServiceException {
+        log.info(String.format("开始设置缓存时间 %s", key));
         Boolean flag = redisTemplate.expire(key, timeout, timeUnit);
         assert flag != null;
         if (flag.equals(Boolean.TRUE)) {
             return true;
-        }else {
+        } else {
             log.warn("key don't not exist！");
             return false;
         }
@@ -100,7 +101,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return object
      */
     @Override
-    public Object getCacheObject(String key) throws Exception {
+    public Object getCacheObject(String key) throws ServiceException {
         return redisTemplate.opsForValue().get(key);
     }
 
@@ -111,7 +112,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return 是否删除成功
      */
     @Override
-    public Boolean deleteObject(String key) throws Exception {
+    public Boolean deleteObject(String key) throws ServiceException {
         return redisTemplate.delete(key);
     }
 
@@ -122,7 +123,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return long
      */
     @Override
-    public Long deleteObject(Collection<String> collection) throws Exception {
+    public Long deleteObject(Collection<String> collection) throws ServiceException {
         return redisTemplate.delete(collection);
 
     }
@@ -135,9 +136,9 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return long
      */
     @Override
-    public <T> Long addCacheList(String key, List<T> dataList) throws Exception {
+    public <T> Long addCacheList(String key, List<T> dataList) throws ServiceException {
         Long count = redisTemplate.opsForList().rightPush(key, dataList);
-        if (count==null){
+        if (count == null) {
             log.warn("redis 添加list 失败");
             return 0L;
         }
@@ -151,7 +152,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return list data
      */
     @Override
-    public List<Object> getCacheList(String key) throws Exception {
+    public List<Object> getCacheList(String key) throws ServiceException {
         return redisTemplate.opsForList().range(key, 0, -1);
 
     }
@@ -164,9 +165,9 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return l
      */
     @Override
-    public <T> long addCacheSet(String key, Set<T> dataSet) throws Exception {
+    public <T> long addCacheSet(String key, Set<T> dataSet) throws ServiceException {
         Long count = redisTemplate.opsForSet().add(key, dataSet);
-        if (count==null){
+        if (count == null) {
             log.warn("redis 添加list 失败");
             return 0L;
         }
@@ -180,7 +181,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return set data
      */
     @Override
-    public Set<Object> getCacheSet(String key) throws Exception {
+    public Set<Object> getCacheSet(String key) throws ServiceException {
         return redisTemplate.opsForSet().members(key);
     }
 
@@ -192,7 +193,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      */
     @Override
     @Async
-    public <T> void addCacheMap(String key, Map<String, T> dataMap) throws Exception {
+    public <T> void addCacheMap(String key, Map<String, T> dataMap) throws ServiceException {
         redisTemplate.opsForHash().putAll(key, dataMap);
     }
 
@@ -203,7 +204,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return map data
      */
     @Override
-    public Map<Object, Object> getCacheMap(String key) throws Exception {
+    public Map<Object, Object> getCacheMap(String key) throws ServiceException {
         return redisTemplate.opsForHash().entries(key);
     }
 
@@ -216,7 +217,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      */
     @Override
     @Async
-    public <T> void addCacheMapValue(String key, String hKey, T value) throws Exception {
+    public <T> void addCacheMapValue(String key, String hKey, T value) throws ServiceException {
         redisTemplate.opsForHash().put(key, hKey, value);
     }
 
@@ -228,7 +229,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return t
      */
     @Override
-    public Object getCacheMapValue(String key, String hKey) throws Exception {
+    public Object getCacheMapValue(String key, String hKey) throws ServiceException {
         return redisTemplate.opsForHash().get(key, hKey);
     }
 
@@ -240,8 +241,8 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return t
      */
     @Override
-    public List<Object> getMultiCacheMapValue(String key, Collection<Object> hKeys) throws Exception {
-        return redisTemplate.opsForHash().multiGet(key,hKeys);
+    public List<Object> getMultiCacheMapValue(String key, Collection<Object> hKeys) throws ServiceException {
+        return redisTemplate.opsForHash().multiGet(key, hKeys);
     }
 
     /**
@@ -251,7 +252,7 @@ public class NativeRedisServiceImpl implements IRedisService {
      * @return 对象列表
      */
     @Override
-    public Collection<String> keys( String pattern) throws Exception {
+    public Collection<String> keys(String pattern) throws ServiceException {
         return redisTemplate.keys(pattern);
     }
 }

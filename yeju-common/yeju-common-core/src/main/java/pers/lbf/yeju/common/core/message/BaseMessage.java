@@ -26,7 +26,7 @@ import java.util.Date;
 public abstract class BaseMessage<T> implements Message<T> {
     protected T message;
     protected String form;
-    protected String sendTo;
+    protected Long sendTo;
     protected Date date = new Date();
     protected String receiverType;
 

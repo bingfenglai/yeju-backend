@@ -14,30 +14,38 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.config;
+package pers.lbf.yeju.service.interfaces.message;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Component;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.message.Message;
 
 /**
- * TODO
+ * 通知投递管理器
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/4 9:18
+ * @date 2021/3/6 15:45
  */
-@Component
-@ConfigurationProperties(prefix = "yeju.auth.multiple.logins")
-@RefreshScope
-public class AllowMultipleLoginsConfig {
-    private boolean allow;
+public abstract class MessageDeliverManager implements MessageDeliver {
 
-    public boolean isAllow() {
-        return allow;
+
+    protected void doBeforeDelive(Message message) throws ServiceException {
+
     }
 
-    public void setAllow(boolean allow) {
-        this.allow = allow;
+
+    protected void doAfterDelive(Message message) throws ServiceException {
+
     }
+
+
+    /**
+     * 投递消息
+     *
+     * @param jsonMsgString 消息
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/6 16:30
+     */
+    public abstract void doDelive(String jsonMsgString) throws ServiceException;
 }

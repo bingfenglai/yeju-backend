@@ -3,4 +3,7 @@ spring:
     name: log-server
 logging:
   config: classpath:config/logback.xml
+dubbo:
+  provider:
+    port: 20883
 

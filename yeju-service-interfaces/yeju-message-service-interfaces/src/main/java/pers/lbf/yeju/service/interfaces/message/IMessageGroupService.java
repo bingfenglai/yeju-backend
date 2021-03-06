@@ -14,24 +14,27 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.config;
+package pers.lbf.yeju.service.interfaces.message;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Component;
-import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.message.pojo.SystemMessageGroupInfoBean;
+
+import java.util.List;
 
 /**
- * TODO
+ * 消息组服务接口类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/6 18:04
+ * @date 2021/3/6 13:44
  */
-@Component
-@RefreshScope
-@ConfigurationProperties(prefix = "spring.rabbitmq.listener.online.exchange")
-public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
+public interface IMessageGroupService {
+
+
+    IResult<List<SystemMessageGroupInfoBean>> findAllSystemMessageGroupAndId() throws ServiceException;
+
+    IResult<Object> receiverExistIn(Long groupId, String receiver) throws ServiceException;
 
 
 }

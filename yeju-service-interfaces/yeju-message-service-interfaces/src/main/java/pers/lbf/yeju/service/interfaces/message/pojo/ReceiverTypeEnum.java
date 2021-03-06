@@ -14,24 +14,31 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.config;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Component;
-import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
+package pers.lbf.yeju.service.interfaces.message.pojo;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/6 18:04
+ * @date 2021/3/6 16:18
  */
-@Component
-@RefreshScope
-@ConfigurationProperties(prefix = "spring.rabbitmq.listener.online.exchange")
-public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
+public enum ReceiverTypeEnum {
 
+    /**
+     * 接收者类型枚举
+     */
+    all("1"),
+    group("2"),
+    personal("3");
 
+    private String value;
+
+    ReceiverTypeEnum(String s) {
+        this.value = s;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

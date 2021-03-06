@@ -14,24 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.config;
+package pers.lbf.yeju.provider.message.group.dao;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Component;
-import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import pers.lbf.yeju.common.domain.entity.MessageDeliveryLog;
 
 /**
- * TODO
+ * 消息投递记录(TableMessageDeliveryLog)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @version 1.0
- * @date 2021/2/6 18:04
+ * @since 2021-03-06 13:39:58
  */
-@Component
-@RefreshScope
-@ConfigurationProperties(prefix = "spring.rabbitmq.listener.online.exchange")
-public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
-
+public interface IMessageDeliveryLogDao extends BaseMapper<MessageDeliveryLog> {
 
 }

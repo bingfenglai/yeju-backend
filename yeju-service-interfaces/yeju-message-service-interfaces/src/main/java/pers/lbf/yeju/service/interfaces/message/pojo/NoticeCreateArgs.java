@@ -74,6 +74,7 @@ public class NoticeCreateArgs implements Serializable, CreateArgs {
     /**
      * 发给谁
      */
+    @NotNull(message = "公告范围不能为空")
     private Long sendTo;
 
     private Date createTime;
@@ -87,7 +88,7 @@ public class NoticeCreateArgs implements Serializable, CreateArgs {
      */
     private String receiverType;
 
-    @NotNull(message = "通知生效范围不能为空")
+    @NotNull(message = "通知生效日期范围不能为空")
     private String[] dateRange;
 
     @Override

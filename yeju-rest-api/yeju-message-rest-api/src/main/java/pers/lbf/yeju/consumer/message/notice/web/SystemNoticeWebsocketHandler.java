@@ -142,6 +142,33 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
     }
 
+    public void send(String jsonString) {
+        for (String s : sessionMap.keySet()) {
+            WebSocketSession session = sessionMap.get(s);
+            send(jsonString, session, s);
+        }
+    }
+
+    private void send(String jsonMsg, WebSocketSession session) {
+        send(jsonMsg, session, null);
+    }
+
+    public void send(String jsonMsg, WebSocketSession session, String sessionKey) {
+        if (session == null) {
+            log.info("session is null");
+        } else {
+            session.send(Flux.just(session.textMessage(jsonMsg))).then().doOnError(throwable -> {
+                log.error("消息未发送");
+
+                // 会话出现异常时 移除会话信息
+                //  等其客户端重新建立会话
+                if (sessionKey != null) {
+                    sessionMap.remove(sessionKey);
+                }
+            }).toProcessor();
+        }
+    }
+
     /**
      * 给指定用户发送推送
      *
@@ -162,11 +189,11 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
         log.info(message.toString());
         String s = JSONObject.toJSONString(message);
-        if (session == null) {
-            log.info("session is null");
-        }
-        session.send(Flux.just(session.textMessage(s))).then().doOnError(throwable -> {
-            log.error("消息未发送");
-        }).toProcessor();
+        send(s, session);
+
+    }
+
+    public static Map<String, WebSocketSession> getSessionMap() {
+        return sessionMap;
     }
 }

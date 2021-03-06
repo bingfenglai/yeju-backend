@@ -28,7 +28,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
-import pers.lbf.yeju.provider.base.redis.serializer.MyRedisSerializer;
+import pers.lbf.yeju.provider.base.redis.serializer.CustomRedisSerializer;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -46,9 +46,9 @@ public class CacheConfig {
 
     @Bean
     @Primary // 当有多个缓存管理器, 表示该缓存器为默认
-    public CacheManager cacheManager (RedisConnectionFactory factory){
+    public CacheManager cacheManager(RedisConnectionFactory factory) {
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(factory);
-        MyRedisSerializer<Object> serializer = new MyRedisSerializer<>(Object.class);
+        CustomRedisSerializer<Object> serializer = new CustomRedisSerializer<>(Object.class);
 
         //使用自定义序列化器
         RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair.fromSerializer(serializer);
@@ -71,10 +71,11 @@ public class CacheConfig {
 
     /**
      * 自定义key生成器
+     *
      * @return key gen
      */
     @Bean("yejuKeyGenerator")
-    public KeyGenerator getKeyGenerator (){
+    public KeyGenerator getKeyGenerator() {
         return (target, method, params) -> {
             // 方法名 + 参数数组 getList[id], 已RedisController.getList(id),
             //最后redis 中 key: value::methodName[param] == list::getList[1]
@@ -82,9 +83,6 @@ public class CacheConfig {
             return method.getName() + Arrays.asList(params).toString();
         };
     }
-
-
-
 
 
 }

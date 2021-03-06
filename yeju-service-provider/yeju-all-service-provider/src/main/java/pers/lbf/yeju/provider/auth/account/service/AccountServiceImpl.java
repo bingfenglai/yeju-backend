@@ -22,6 +22,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import pers.lbf.yeju.common.core.constant.StatusConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -79,7 +80,7 @@ public class AccountServiceImpl implements IAccountService {
      * @throws RuntimeException e
      */
 
-    
+
     @CacheEvict(cacheNames = {
             "accountService:simpleAccount",
             "accountService:details"}, key = "#principal")
@@ -158,6 +159,25 @@ public class AccountServiceImpl implements IAccountService {
             return Result.ok(account.getAccountType());
         }
         throw ServiceException.getInstance(AccountStatusEnum.AccountOwnerTypeNotExist);
+    }
+
+    /**
+     * 根据抽象账户查找账户主键
+     *
+     * @param principal
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Long>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/6 17:20
+     */
+    @Override
+    @Cacheable(cacheNames = "accountService:accountId", key = "#principal")
+    public IResult<Long> findAccountIdByPrincipal(String principal) throws ServiceException {
+        QueryWrapper<Account> queryWrapper = getAccountQueryWrapperByPrincipal(principal);
+        queryWrapper.select("account_id");
+        queryWrapper.eq("account_status", StatusConstant.ABLE);
+        Account account = accountDao.selectOne(queryWrapper);
+        return Result.ok(account.getAccountId());
     }
 
 

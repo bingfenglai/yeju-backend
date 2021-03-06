@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.config;
+package pers.lbf.yeju.provider.message.notice.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -26,12 +26,12 @@ import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/6 18:04
+ * @date 2021/3/6 0:18
  */
 @Component
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.rabbitmq.listener.online.exchange")
-public class OnlineMqExchangeConfig extends BaseRabbitMqExchangeConfig {
-
+@ConfigurationProperties(prefix = "spring.rabbitmq.listener.notice.exchange")
+public class NoticeMqExchangeConfig extends BaseRabbitMqExchangeConfig {
+    
 
 }

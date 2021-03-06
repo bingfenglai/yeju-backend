@@ -21,7 +21,9 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
 
-/**账户服务接口类
+/**
+ * 账户服务接口类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description
@@ -31,6 +33,7 @@ public interface IAccountService {
 
     /**
      * 根据账户查找账户及权限信息
+     *
      * @param principal 抽象账户
      * @return account
      */
@@ -38,22 +41,25 @@ public interface IAccountService {
 
     /**
      * 更新密码
-     * @param principal 抽象账号
+     *
+     * @param principal   抽象账号
      * @param newPassword 新密码
      * @throws RuntimeException e
      */
-    IResult<Boolean> updatePassword(String principal,String newPassword) throws ServiceException;
+    IResult<Boolean> updatePassword(String principal, String newPassword) throws ServiceException;
 
 
     IResult<AccountDetailsInfoBean> findAccountDetailsByPrincipal(String principal) throws ServiceException;
 
 
     /**
+     * @param principal 抽象账号
+     * @return pers.lbf.yeju.common.core.result.IResult<pers.lbf.yeju.service.interfaces.auth.enums.AccountTypeEnum>
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/7 21:55
-     * @param principal 抽象账号
-     * @return pers.lbf.yeju.common.core.result.IResult<pers.lbf.yeju.service.interfaces.auth.enums.AccountTypeEnum>
      */
     IResult<String> getAccountType(String principal) throws ServiceException;
+
+    IResult<Long> findAccountIdByPrincipal(String principal) throws ServiceException;
 }

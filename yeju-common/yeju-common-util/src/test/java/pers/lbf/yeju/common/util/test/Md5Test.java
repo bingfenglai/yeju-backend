@@ -30,28 +30,28 @@ import pers.lbf.yeju.common.util.Md5Utils;
 public class Md5Test {
 
     @Test
-    public void testEncode(){
+    public void testEncode() {
         String s1 = Md5Utils.encode("haha");
 
         String s2 = Md5Utils.encode("haha");
 
-        Assert.assertEquals(s1,s2);
-
-    }
-
-   @Test
-    public void testEncode2(){
-        String filePath = "E:\\graduation project\\yeju_code\\yeju_dev\\yeju-common\\yeju-common-util\\rsa2PrivateKey.rsa";
-        String s1 = Md5Utils.getFileMD5ByFilename(filePath);
-
-        String s2 = Md5Utils.getFileMD5ByFilename("E:\\graduation project\\yeju_code\\yeju_dev\\yeju-common\\yeju-common-util\\rsa2PrivateKey.rsa");
-        Assert.assertEquals(s1,s2);
+        Assert.assertEquals(s1, s2);
 
     }
 
     @Test
-    public void testEncode3(){
-        String s = Md5Utils.getFileMD5ByFilename("E:\\Pictures\\liuyf\\1 - 副本.png");
-        Assert.assertEquals(s,"39e8edf4eba284afe1cb47add95e8543");
+    public void testEncode2() {
+        String filePath = "E:\\graduation project\\yeju_code\\yeju_dev\\yeju-common\\yeju-common-util\\rsa2PrivateKey.rsa";
+        String s1 = Md5Utils.getFileMD5ByFilename(filePath);
+
+        String s2 = Md5Utils.getFileMD5ByFilename("E:\\graduation project\\yeju_code\\yeju_dev\\yeju-common\\yeju-common-util\\rsa2PrivateKey.rsa");
+        Assert.assertEquals(s1, s2);
+
+    }
+
+    @Test
+    public void testEncode3() {
+        //String s = Md5Utils.getFileMD5ByFilename("E:\\Pictures\\liuyf\\1 - 副本.png");
+        //Assert.assertEquals(s,"39e8edf4eba284afe1cb47add95e8543");
     }
 }

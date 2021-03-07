@@ -16,8 +16,8 @@
  */
 package pers.lbf.yeju.service.interfaces.message.pojo;
 
-import pers.lbf.yeju.common.core.message.BaseMessage;
-import pers.lbf.yeju.common.core.message.Message;
+import pers.lbf.yeju.service.interfaces.message.BaseMessage;
+import pers.lbf.yeju.service.interfaces.message.Message;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -135,6 +135,6 @@ public class NoticeMessage extends BaseMessage<String> implements Serializable, 
     public void setMessage(String message) {
         this.message = message;
     }
-    
+
 
 }

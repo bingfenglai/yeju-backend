@@ -14,19 +14,28 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message.constant;
+package pers.lbf.yeju.service.interfaces.message;
+
+import java.util.Date;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 23:48
+ * @date 2021/2/17 21:12
  */
-public class MessageTypeConstant {
+public interface Message<T> {
 
-    public static final String SYSTEM_MESSAGE = "1";
+    Long getMessageId();
 
-    public static final String SUBJECT_MESSAGE = "2";
+    T getMessage();
 
+    String getForm();
+
+    Long getSendTo();
+
+    Date getSendDate();
+
+    String getMessageType();
 }

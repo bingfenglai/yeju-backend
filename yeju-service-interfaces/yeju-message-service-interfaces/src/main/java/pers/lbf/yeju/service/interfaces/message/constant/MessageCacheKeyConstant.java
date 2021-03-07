@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message.constant;
+package pers.lbf.yeju.service.interfaces.message.constant;
 
 /**
  * TODO
@@ -28,10 +28,10 @@ public class MessageCacheKeyConstant {
     /**
      * 消息缓存前缀
      */
-    public static final String PREFIX = "yeju::message::";
+    public static final String PREFIX = "yeju:message:";
 
     /**
      * 群消息已读缓存前缀
      */
-    public static final String READ_PREFIX = PREFIX + "read::";
+    public static final String READ_PREFIX = PREFIX + "read:";
 }

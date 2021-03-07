@@ -14,16 +14,19 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message.constant;
+package pers.lbf.yeju.service.interfaces.message;
+
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 
 /**
- * TODO
+ * 消息服务接口
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 0:49
+ * @date 2021/3/7 15:25
  */
-public class NoticeConstants {
+public interface IGroupMessageService {
 
-    public static final String REDIS_KEY_PREFIX = "yeju:notice::";
+    IResult<Boolean> isDeliveredSuccessfully(String principal, Long messageId) throws ServiceException;
 }

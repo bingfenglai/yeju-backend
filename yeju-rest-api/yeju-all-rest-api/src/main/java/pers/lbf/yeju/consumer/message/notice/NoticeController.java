@@ -32,7 +32,7 @@ import pers.lbf.yeju.common.util.DateConvertUtil;
 import pers.lbf.yeju.consumer.base.util.SubjectHelper;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
-import pers.lbf.yeju.service.interfaces.message.INoticeService;
+import pers.lbf.yeju.service.interfaces.message.notice.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Mono;

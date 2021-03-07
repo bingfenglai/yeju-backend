@@ -2,7 +2,7 @@ server:
   port: 9003
 spring:
   application:
-    name: yeju-notice
+    name: yeju-message
 
 logging:
   config: classpath:config/logback.xml

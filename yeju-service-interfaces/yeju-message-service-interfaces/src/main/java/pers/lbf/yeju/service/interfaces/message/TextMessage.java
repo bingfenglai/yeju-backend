@@ -14,73 +14,45 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message;
+package pers.lbf.yeju.service.interfaces.message;
 
 import java.util.Date;
 
 /**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/17 21:15
  */
-public abstract class BaseMessage<T> implements Message<T> {
-    protected T message;
-    protected String form;
-    protected Long sendTo;
-    protected Date date = new Date();
-    protected String messageType;
-    protected Long messageId;
-
+public class TextMessage extends BaseMessage<String> implements Message<String> {
     @Override
-    public T getMessage() {
-        return message;
-    }
-
-    public void setMessage(T message) {
-        this.message = message;
+    public String getMessage() {
+        return this.message;
     }
 
     @Override
     public String getForm() {
-        return form;
-    }
-
-    public void setForm(String form) {
-        this.form = form;
+        return this.form;
     }
 
     @Override
     public Long getSendTo() {
-        return sendTo;
+        return this.sendTo;
     }
 
-    public void setSendTo(Long sendTo) {
-        this.sendTo = sendTo;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    @Override
+    public Date getSendDate() {
+        return this.date;
     }
 
     @Override
     public String getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
+        return this.messageType;
     }
 
     @Override
     public Long getMessageId() {
         return messageId;
-    }
-
-    public void setMessageId(Long messageId) {
-        this.messageId = messageId;
     }
 }

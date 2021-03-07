@@ -18,6 +18,8 @@ package pers.lbf.yeju.service.interfaces.message.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class SimpleNoticeInfoBean implements Serializable {
     /**
      * 主键
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long noticeId;
     /**
      * 通知标题

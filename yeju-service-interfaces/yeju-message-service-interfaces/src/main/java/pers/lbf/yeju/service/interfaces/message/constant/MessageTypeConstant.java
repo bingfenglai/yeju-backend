@@ -14,22 +14,19 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message.constant;
+package pers.lbf.yeju.service.interfaces.message.constant;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 16:18
+ * @date 2021/3/6 23:48
  */
-public class ReceiverTypeConstant {
+public class MessageTypeConstant {
 
-    /**
-     * 消息接收者类型常量
-     */
-    public static final String GROUP = "1";
-    public static final String PERSONAL = "2";
+    public static final String SYSTEM_MESSAGE = "1";
 
-  
+    public static final String SUBJECT_MESSAGE = "2";
+
 }

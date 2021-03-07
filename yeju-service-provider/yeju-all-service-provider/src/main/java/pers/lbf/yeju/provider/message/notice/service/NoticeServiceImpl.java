@@ -30,7 +30,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.Transactional;
 import pers.lbf.yeju.common.core.constant.StatusConstants;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.message.constant.NoticeConstants;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
@@ -39,9 +38,10 @@ import pers.lbf.yeju.common.domain.entity.Notice;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.message.notice.dao.INoticeDao;
 import pers.lbf.yeju.provider.message.notice.sender.NoticeSender;
-import pers.lbf.yeju.service.interfaces.log.IMessageDeliveryLogService;
+import pers.lbf.yeju.service.interfaces.message.IGroupMessageService;
 import pers.lbf.yeju.service.interfaces.message.IMessageGroupService;
-import pers.lbf.yeju.service.interfaces.message.INoticeService;
+import pers.lbf.yeju.service.interfaces.message.constant.NoticeConstant;
+import pers.lbf.yeju.service.interfaces.message.notice.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
@@ -80,7 +80,7 @@ public class NoticeServiceImpl implements INoticeService {
     private IMessageGroupService messageGroupService;
 
     @DubboReference
-    private IMessageDeliveryLogService messageDeliveryLogService;
+    private IGroupMessageService groupMessageService;
 
     /**
      * 通知 分页查询接口
@@ -143,15 +143,25 @@ public class NoticeServiceImpl implements INoticeService {
     }
 
 
+    /**
+     * 用户上线读取系统通知方法
+     *
+     * @param principal
+     * @return pers.lbf.yeju.common.core.result.Result<java.util.List < java.lang.String>>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/7 15:22
+     */
     @Override
     public Result<List<String>> findEffectiveNoticeList(String principal) throws ServiceException {
+
         List<Long> groupIds = messageGroupService.findSystemMessageGroupByPrincipal(principal).getData();
 
         List<String> result = new LinkedList<>();
 
         for (Long groupId : groupIds) {
 
-            String pattern = NoticeConstants.REDIS_KEY_PREFIX + groupId + "**";
+            String pattern = NoticeConstant.REDIS_KEY_PREFIX + groupId + "**";
             log.info("表达式： {}", pattern);
             Collection<String> keys = redisService.keys(pattern);
             log.info("消息键---> {} {}", keys.size(), Arrays.toString(keys.toArray()));
@@ -166,14 +176,14 @@ public class NoticeServiceImpl implements INoticeService {
                 log.info("消息id {}", messageId);
                 if (endDate != null) {
                     if (sendDate <= now && now <= endDate) {
-                        Boolean flag = messageDeliveryLogService.isExistsAndDeliveredSuccessfully(principal, messageId).getData();
+                        Boolean flag = groupMessageService.isDeliveredSuccessfully(principal, messageId).getData();
                         if (!flag) {
                             result.add(msg);
                         }
                     }
                 } else {
                     if (sendDate <= now) {
-                        Boolean flag = messageDeliveryLogService.isExistsAndDeliveredSuccessfully(principal, messageId).getData();
+                        Boolean flag = groupMessageService.isDeliveredSuccessfully(principal, messageId).getData();
                         if (!flag) {
                             result.add(msg);
                         }
@@ -225,7 +235,7 @@ public class NoticeServiceImpl implements INoticeService {
         Date now = new Date();
         NoticeMessage message = noticeToMsgVO(notice);
         log.info("准备将消息写入缓存 {}", message.toString());
-        String redisKey = NoticeConstants.REDIS_KEY_PREFIX + notice.getSendTo() + message.getMessageId();
+        String redisKey = NoticeConstant.REDIS_KEY_PREFIX + notice.getSendTo() + message.getMessageId();
 
         String msgJson = JSONObject.toJSONString(message);
         redisService.addCacheObject(redisKey, msgJson);

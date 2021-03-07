@@ -14,10 +14,11 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message;
+package pers.lbf.yeju.service.interfaces.message.manager;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.message.Message;
+import pers.lbf.yeju.service.interfaces.message.Message;
+import pers.lbf.yeju.service.interfaces.message.MessageDeliver;
 
 /**
  * 通知投递管理器

@@ -24,8 +24,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.constant.StatusConstants;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.message.constant.MessageCacheKeyConstant;
-import pers.lbf.yeju.common.core.message.constant.ReceiverTypeConstant;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.domain.entity.MessageDeliveryLog;
@@ -33,6 +31,8 @@ import pers.lbf.yeju.provider.log.dao.IMessageDeliveryLogDao;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import pers.lbf.yeju.service.interfaces.log.IMessageDeliveryLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.MessageDeliveryLogCreateArgs;
+import pers.lbf.yeju.service.interfaces.message.constant.ReceiverTypeConstant;
+import pers.lbf.yeju.service.interfaces.message.manager.MessageCacheKeyManager;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 /**
@@ -59,22 +59,23 @@ public class MessageDeliveryLogServiceImpl implements IMessageDeliveryLogService
     @Override
     @Async
     public void addOneLog(MessageDeliveryLogCreateArgs args) throws ServiceException {
-        MessageDeliveryLog log = messageDeliveryLogCreateArgsToMessageDeliveryLog(args);
         Long receiverId = accountService.findAccountIdByPrincipal(args.getPrincipal()).getData();
-        args.setReceiverId(receiverId);
 
+        MessageDeliveryLog log = messageDeliveryLogCreateArgsToMessageDeliveryLog(args);
+        log.setReceiverId(receiverId);
 
         if (StatusConstants.ABLE.toString().equals(args.getDeliveryStatus())) {
 
             if (args.getReceiverType().equals(ReceiverTypeConstant.GROUP)) {
                 // 添加已读缓存
-                String readMgsKey = MessageCacheKeyConstant.READ_PREFIX + receiverId + args.getMessageId();
+                String readMgsKey = MessageCacheKeyManager.generateGroupMessageReadCacheKey(args.getMessageId(), receiverId);
+
                 redisService.addCacheObject(readMgsKey, "");
             }
 
             if (args.getReceiverType().equals(ReceiverTypeConstant.PERSONAL)) {
                 // 从缓存数据库中移除消息
-                String messageKey = MessageCacheKeyConstant.PREFIX + args.getMessageId();
+                String messageKey = MessageCacheKeyManager.generateMessageCacheKey(args.getMessageId());
                 redisService.deleteObject(messageKey);
             }
         }
@@ -84,7 +85,6 @@ public class MessageDeliveryLogServiceImpl implements IMessageDeliveryLogService
     }
 
     @Override
-    @Deprecated
     public IResult<Boolean> isExistsAndDeliveredSuccessfully(String principal, Long messageId) throws ServiceException {
         Long accountId = accountService.findAccountIdByPrincipal(principal).getData();
         Integer count = messageDeliveryLogDao.isExist(accountId, messageId);

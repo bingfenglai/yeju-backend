@@ -17,6 +17,8 @@
 package pers.lbf.yeju.provider.log.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import pers.lbf.yeju.service.interfaces.log.pojo.LoginLogInfoBean;
 
 import java.io.Serializable;
@@ -31,19 +33,34 @@ import java.util.Date;
  */
 public class SimpleLoginLogInfoBean implements LoginLogInfoBean, Serializable {
 
-    /** 主键 */
+    /**
+     * 主键
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long loginLogId;
-    /** 访问账户 */
+    /**
+     * 访问账户
+     */
     private String account;
-    /** 访问者姓名 */
+    /**
+     * 访问者姓名
+     */
     private String subjectName;
-    /** 访问ip地址 */
+    /**
+     * 访问ip地址
+     */
     private String ip;
-    /** 访问状态0失败1成功 */
+    /**
+     * 访问状态0失败1成功
+     */
     private Integer loginStatus;
-    /** 访问失败时记录原因 */
+    /**
+     * 访问失败时记录原因
+     */
     private String message;
-    /** 访问时间 */
+    /**
+     * 访问时间
+     */
     private Date accentTime;
 
     @Override

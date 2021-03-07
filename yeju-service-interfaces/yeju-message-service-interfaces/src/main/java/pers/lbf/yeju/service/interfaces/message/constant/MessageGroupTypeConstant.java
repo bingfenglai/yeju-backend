@@ -14,45 +14,18 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message;
-
-import java.util.Date;
+package pers.lbf.yeju.service.interfaces.message.constant;
 
 /**
- * TODO
+ * 消息群组常量
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 21:15
+ * @date 2021/3/6 20:55
  */
-public class TextMessage extends BaseMessage<String> implements Message<String> {
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
+public class MessageGroupTypeConstant {
 
-    @Override
-    public String getForm() {
-        return this.form;
-    }
+    public static final String SYSTEM_GROUP = "1";
 
-    @Override
-    public Long getSendTo() {
-        return this.sendTo;
-    }
-
-    @Override
-    public Date getSendDate() {
-        return this.date;
-    }
-
-    @Override
-    public String getMessageType() {
-        return this.messageType;
-    }
-
-    @Override
-    public Long getMessageId() {
-        return messageId;
-    }
+    public static final String SUBJECT_GROUP = "2";
 }

@@ -14,28 +14,22 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.core.message;
+package pers.lbf.yeju.service.interfaces.message;
 
-import java.util.Date;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 
 /**
- * TODO
+ * 消息服务接口类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/17 21:12
+ * @date 2021/3/7 18:18
  */
-public interface Message<T> {
+public interface IMessageService {
 
-    Long getMessageId();
+    void confirmRead(Long messageId, Long receiverId, String receiverType) throws ServiceException;
 
-    T getMessage();
+    void confirmRead(Long messageId, String principal, String receiverType) throws ServiceException;
 
-    String getForm();
 
-    Long getSendTo();
-
-    Date getSendDate();
-
-    String getMessageType();
 }

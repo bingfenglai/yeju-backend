@@ -26,7 +26,7 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.consumer.message.notice.util.NoticeTypeUtil;
 import pers.lbf.yeju.consumer.message.notice.web.SystemNoticeWebsocketHandler;
 import pers.lbf.yeju.service.interfaces.message.IMessageGroupService;
-import pers.lbf.yeju.service.interfaces.message.MessageDeliverManager;
+import pers.lbf.yeju.service.interfaces.message.manager.MessageDeliverManager;
 
 import java.util.Map;
 
@@ -52,13 +52,12 @@ public class NoticeMessageDeliverManager extends MessageDeliverManager {
         Integer sendTo = (Integer) jsonObject.get("sendTo");
         Map<String, WebSocketSession> sessionMap = SystemNoticeWebsocketHandler.getSessionMap();
 
-        for (String s : sessionMap.keySet()) {
-            if (messageGroupService.receiverExistIn(Long.valueOf(sendTo), s).isSuccess()) {
+        for (String principal : sessionMap.keySet()) {
+            if (messageGroupService.receiverExistIn(Long.valueOf(sendTo), principal).isSuccess()) {
 
                 jsonObject.put("type", NoticeTypeUtil.getNoticeType((String) jsonObject.get("type")));
-                jsonMsgString = JSONObject.toJSONString(jsonObject);
 
-                noticeWebsocketHandler.send(jsonMsgString, sessionMap.get(s), s);
+                noticeWebsocketHandler.pushInstantNotice(jsonObject, principal);
             }
         }
     }

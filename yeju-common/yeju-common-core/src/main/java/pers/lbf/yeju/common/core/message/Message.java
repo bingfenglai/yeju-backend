@@ -37,5 +37,5 @@ public interface Message<T> {
 
     Date getSendDate();
 
-    String getReceiverType();
+    String getMessageType();
 }

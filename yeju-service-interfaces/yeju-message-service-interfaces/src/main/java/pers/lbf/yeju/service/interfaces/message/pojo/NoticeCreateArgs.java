@@ -84,7 +84,7 @@ public class NoticeCreateArgs implements Serializable, CreateArgs {
     private String createBy;
 
     /**
-     * 接收者类型 1全部 2群组
+     * 接收者类型 1全部 2群组 3 个人
      */
     private String receiverType;
 

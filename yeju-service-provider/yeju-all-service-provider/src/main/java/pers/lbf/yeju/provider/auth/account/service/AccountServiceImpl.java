@@ -22,7 +22,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import pers.lbf.yeju.common.core.constant.StatusConstant;
+import pers.lbf.yeju.common.core.constant.StatusConstants;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -175,7 +175,7 @@ public class AccountServiceImpl implements IAccountService {
     public IResult<Long> findAccountIdByPrincipal(String principal) throws ServiceException {
         QueryWrapper<Account> queryWrapper = getAccountQueryWrapperByPrincipal(principal);
         queryWrapper.select("account_id");
-        queryWrapper.eq("account_status", StatusConstant.ABLE);
+        queryWrapper.eq("account_status", StatusConstants.ABLE);
         Account account = accountDao.selectOne(queryWrapper);
         return Result.ok(account.getAccountId());
     }

@@ -26,15 +26,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
+import pers.lbf.yeju.common.core.constant.StatusConstants;
+import pers.lbf.yeju.common.core.message.constant.MessageTypeConstant;
+import pers.lbf.yeju.common.core.message.constant.ReceiverTypeConstant;
 import pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
+import pers.lbf.yeju.consumer.message.notice.sender.NoticeDeliverLogSender;
 import pers.lbf.yeju.consumer.message.notice.util.NoticeTypeUtil;
+import pers.lbf.yeju.service.interfaces.log.pojo.MessageDeliveryLogCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +60,9 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
+
+    @Autowired
+    private NoticeDeliverLogSender logSender;
 
     @DubboReference
     private INoticeService noticeService;
@@ -113,13 +122,30 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
             session.send(Flux.just(session.textMessage(s))).then()
                     // 投递成功发送成功日志
                     .doOnSuccess(unused -> {
-
+                        sendLog(jsonObject, principal, true);
                     })
                     //投递失败发送失败日志
                     .doOnError(throwable -> {
-
+                        sendLog(jsonObject, principal, false);
                     }).toProcessor();
         }
+
+    }
+
+    private void sendLog(JSONObject jsonObject, String principal, boolean flag) {
+        Long messageId = (Long) jsonObject.get("messageId");
+        MessageDeliveryLogCreateArgs args = new MessageDeliveryLogCreateArgs();
+        args.setMessageId(messageId);
+        args.setMessageType(MessageTypeConstant.SYSTEM_MESSAGE);
+        args.setReceiverType(ReceiverTypeConstant.GROUP);
+        if (flag) {
+            args.setDeliveryStatus(StatusConstants.ABLE.toString());
+        } else {
+            args.setDeliveryStatus(StatusConstants.DISABLE.toString());
+        }
+        args.setDeliveryTime(new Date());
+        args.setPrincipal(principal);
+        logSender.send(args);
 
     }
 

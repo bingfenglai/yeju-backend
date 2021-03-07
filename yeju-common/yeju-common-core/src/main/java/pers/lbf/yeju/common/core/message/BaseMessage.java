@@ -28,8 +28,59 @@ public abstract class BaseMessage<T> implements Message<T> {
     protected String form;
     protected Long sendTo;
     protected Date date = new Date();
-    protected String receiverType;
+    protected String messageType;
     protected Long messageId;
-    
 
+    @Override
+    public T getMessage() {
+        return message;
+    }
+
+    public void setMessage(T message) {
+        this.message = message;
+    }
+
+    @Override
+    public String getForm() {
+        return form;
+    }
+
+    public void setForm(String form) {
+        this.form = form;
+    }
+
+    @Override
+    public Long getSendTo() {
+        return sendTo;
+    }
+
+    public void setSendTo(Long sendTo) {
+        this.sendTo = sendTo;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    @Override
+    public Long getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
+    }
 }

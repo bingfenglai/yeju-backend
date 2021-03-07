@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.constant;
+package pers.lbf.yeju.common.core.message.constant;
 
 /**
  * 消息群组常量
@@ -24,6 +24,8 @@ package pers.lbf.yeju.service.interfaces.message.constant;
  * @date 2021/3/6 20:55
  */
 public class MessageGroupTypeConstant {
-    
-    public static final String systemGroup = "1";
+
+    public static final String SYSTEM_GROUP = "1";
+
+    public static final String SUBJECT_GROUP = "2";
 }

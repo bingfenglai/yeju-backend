@@ -14,31 +14,23 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.constant;
+package pers.lbf.yeju.consumer.message.notice.config;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 16:18
+ * @date 2021/3/7 12:34
  */
-public enum ReceiverTypeEnum {
+@Component
+@RefreshScope
+@ConfigurationProperties(prefix = "spring.rabbitmq.listener.notice.log.exchange")
+public class NoticeLogExchangeConfig extends BaseRabbitMqExchangeConfig {
 
-    /**
-     * 接收者类型枚举
-     */
-    all("1"),
-    group("2"),
-    personal("3");
-
-    private String value;
-
-    ReceiverTypeEnum(String s) {
-        this.value = s;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }

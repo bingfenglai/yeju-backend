@@ -14,16 +14,22 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.constant;
+package pers.lbf.yeju.common.core.message.constant;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 0:49
+ * @date 2021/3/6 16:18
  */
-public class NoticeConstant {
+public class ReceiverTypeConstant {
 
-    public static final String REDIS_KEY_PREFIX = "yeju:notice::";
+    /**
+     * 消息接收者类型常量
+     */
+    public static final String GROUP = "1";
+    public static final String PERSONAL = "2";
+
+  
 }

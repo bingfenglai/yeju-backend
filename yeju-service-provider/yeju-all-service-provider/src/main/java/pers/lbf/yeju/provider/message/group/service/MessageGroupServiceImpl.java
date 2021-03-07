@@ -22,7 +22,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import pers.lbf.yeju.common.core.constant.StatusConstant;
+import pers.lbf.yeju.common.core.constant.StatusConstants;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
@@ -58,7 +58,7 @@ public class MessageGroupServiceImpl implements IMessageGroupService {
 
         QueryWrapper<MessageGroup> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("group_id", "group_name");
-        queryWrapper.eq("group_status", StatusConstant.ABLE);
+        queryWrapper.eq("group_status", StatusConstants.ABLE);
         queryWrapper.eq("group_type", "1");
 
         List<MessageGroup> messageGroups = messageGroupDao.selectList(queryWrapper);

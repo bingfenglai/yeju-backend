@@ -44,6 +44,12 @@ public class MessageDeliveryLog extends Model<MessageDeliveryLog> {
      * 消息接收者主键
      */
     private Long receiverId;
+
+    /**
+     * 接收者账号
+     */
+    private String principal;
+
     /**
      * 投递状态
      */
@@ -53,6 +59,32 @@ public class MessageDeliveryLog extends Model<MessageDeliveryLog> {
      */
     private Date deliveryTime;
 
+    /**
+     * 消息类型 1系统消息 2客户消息
+     */
+    private String messageType;
+
+    /**
+     * 消息接收者类型 1群组 2 个人
+     */
+    private String receiverType;
+
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getReceiverType() {
+        return receiverType;
+    }
+
+    public void setReceiverType(String receiverType) {
+        this.receiverType = receiverType;
+    }
 
     public Long getLogId() {
         return logId;
@@ -68,6 +100,14 @@ public class MessageDeliveryLog extends Model<MessageDeliveryLog> {
 
     public void setMessageId(Long messageId) {
         this.messageId = messageId;
+    }
+
+    public String getPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(String principal) {
+        this.principal = principal;
     }
 
     public Long getReceiverId() {

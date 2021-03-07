@@ -29,7 +29,7 @@ import pers.lbf.yeju.service.interfaces.log.pojo.MessageDeliveryLogCreateArgs;
  */
 public interface IMessageDeliveryLogService {
 
-    IResult<Object> addOneLog(MessageDeliveryLogCreateArgs args) throws ServiceException;
+    void addOneLog(MessageDeliveryLogCreateArgs args) throws ServiceException;
 
     IResult<Boolean> isExistsAndDeliveredSuccessfully(String principal, Long messageId) throws ServiceException;
 }

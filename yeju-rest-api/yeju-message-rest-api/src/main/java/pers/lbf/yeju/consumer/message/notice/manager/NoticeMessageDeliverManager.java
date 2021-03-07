@@ -23,6 +23,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.consumer.message.notice.util.NoticeTypeUtil;
 import pers.lbf.yeju.consumer.message.notice.web.SystemNoticeWebsocketHandler;
 import pers.lbf.yeju.service.interfaces.message.IMessageGroupService;
 import pers.lbf.yeju.service.interfaces.message.MessageDeliverManager;
@@ -44,7 +45,7 @@ public class NoticeMessageDeliverManager extends MessageDeliverManager {
 
     @DubboReference
     private IMessageGroupService messageGroupService;
-    
+
     @Override
     public void doDelive(String jsonMsgString) throws ServiceException {
         JSONObject jsonObject = JSONObject.parseObject(jsonMsgString);
@@ -53,6 +54,10 @@ public class NoticeMessageDeliverManager extends MessageDeliverManager {
 
         for (String s : sessionMap.keySet()) {
             if (messageGroupService.receiverExistIn(Long.valueOf(sendTo), s).isSuccess()) {
+
+                jsonObject.put("type", NoticeTypeUtil.getNoticeType((String) jsonObject.get("type")));
+                jsonMsgString = JSONObject.toJSONString(jsonObject);
+
                 noticeWebsocketHandler.send(jsonMsgString, sessionMap.get(s), s);
             }
         }

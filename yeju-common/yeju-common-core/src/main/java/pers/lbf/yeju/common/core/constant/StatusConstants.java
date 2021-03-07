@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2021/3/4 23:53
  */
-public class StatusConstant implements Serializable {
+public class StatusConstants implements Serializable {
 
     public static final Integer ABLE = 1;
 

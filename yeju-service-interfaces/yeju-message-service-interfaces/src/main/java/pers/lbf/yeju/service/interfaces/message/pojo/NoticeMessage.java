@@ -35,25 +35,40 @@ public class NoticeMessage extends BaseMessage<String> implements Serializable, 
     // 通知类型，'warning', 'info',
     private String type;
 
+    private Date endDate;
+
 
     @Override
     public String toString() {
-        return "NoticeMessageVO{" +
+        return "NoticeMessage{" +
                 "message=" + message +
                 ", form='" + form + '\'' +
                 ", sendTo=" + sendTo +
                 ", date=" + date +
-                ", receiverType='" + receiverType + '\'' +
+                ", receiverType='" + messageType + '\'' +
                 ", messageId=" + messageId +
                 ", title='" + title + '\'' +
                 ", type='" + type + '\'' +
+                ", endDate=" + endDate +
                 '}';
     }
 
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+
+    @Override
     public Date getDate() {
         return date;
     }
 
+    @Override
     public void setDate(Date date) {
         this.date = date;
     }
@@ -70,10 +85,11 @@ public class NoticeMessage extends BaseMessage<String> implements Serializable, 
     }
 
     @Override
-    public String getReceiverType() {
-        return this.receiverType;
+    public String getMessageType() {
+        return this.messageType;
     }
 
+    @Override
     public void setSendTo(Long sendTo) {
         this.sendTo = sendTo;
     }
@@ -99,6 +115,7 @@ public class NoticeMessage extends BaseMessage<String> implements Serializable, 
         return this.messageId;
     }
 
+    @Override
     public void setMessageId(Long messageId) {
         this.messageId = messageId;
     }
@@ -114,7 +131,10 @@ public class NoticeMessage extends BaseMessage<String> implements Serializable, 
         return this.form;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }
+    
+
 }

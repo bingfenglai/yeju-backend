@@ -31,6 +31,18 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
+        <!--        服务监控-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Micrometer Prometheus registry  -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-common-core</artifactId>

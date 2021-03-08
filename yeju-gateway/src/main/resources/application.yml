@@ -5,3 +5,11 @@ spring:
     name: gateway-service
   main:
     allow-bean-definition-overriding: true
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus

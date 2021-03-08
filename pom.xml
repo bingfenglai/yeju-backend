@@ -64,6 +64,7 @@
         <minio.version>8.0.0</minio.version>
         <yeju.version>1.0.0</yeju.version>
         <swgger-annotations.version>1.5.20</swgger-annotations.version>
+        <micrometer.prometheus.version>1.1.4</micrometer.prometheus.version>
     </properties>
 
 
@@ -124,6 +125,19 @@
 
 
             <!--  SpringBoot 监控客户端 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <!-- Micrometer Prometheus registry  -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.prometheus.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-starter-client</artifactId>

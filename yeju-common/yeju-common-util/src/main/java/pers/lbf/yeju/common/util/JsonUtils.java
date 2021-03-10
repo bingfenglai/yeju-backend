@@ -41,7 +41,7 @@ public class JsonUtils {
             return (String) obj;
         }
 
-            return MAPPER.writeValueAsString(obj);
+        return MAPPER.writeValueAsString(obj);
 
     }
 
@@ -69,8 +69,12 @@ public class JsonUtils {
 
     }
 
-    private JsonUtils(){ }
+    public static <T> String toJson(T t) throws JsonProcessingException {
+        return MAPPER.writeValueAsString(t);
+    }
 
+    private JsonUtils() {
+    }
 
 
 }

@@ -8,3 +8,6 @@ dubbo:
   registry:
     file: ../cachefile/dubbo.cache
 
+logging:
+  level:
+    pers.lbf.yeju.provider.message.notice.dao: debug

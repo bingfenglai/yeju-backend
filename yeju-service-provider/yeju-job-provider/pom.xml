@@ -32,7 +32,7 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju--base-mq-provider</artifactId>
+            <artifactId>yeju-base-mq-provider</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 

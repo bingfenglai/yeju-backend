@@ -24,7 +24,6 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
         </dependency>
 
         <dependency>
@@ -43,19 +42,6 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-common-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-common-util</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
 
         <!--            服务配置中心-->
         <dependency>
@@ -101,13 +87,25 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju--base-mq-provider</artifactId>
+            <artifactId>yeju-base-mq-provider</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-log-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-base-web-exception</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-common-util</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 

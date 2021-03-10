@@ -9,7 +9,7 @@
 
 
     <!-- 最好使用绝对路径 -->
-    <property name="LOG_HOME" value="${log.path}"/>
+    <property name="LOG_HOME" value="../logs"/>
     <property name="baseFileName" value="${spring.application.name}"/>
     <property name="ServiceName" value="${spring.application.name}"/>
     <property name="service-port" value="${server.port}"/>

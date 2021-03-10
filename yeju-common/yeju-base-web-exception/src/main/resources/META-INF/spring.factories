@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  pers.lbf.yeju.common.exception.handler.GrableExceptionHandler

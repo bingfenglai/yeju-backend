@@ -3,7 +3,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   pers.lbf.yeju.consumer.config.PropertiesConfig,\
   pers.lbf.yeju.consumer.base.security.config.RsaPublicKeyConfig,\
   pers.lbf.yeju.consumer.base.security.config.SpringSecurityConfig, \
-  pers.lbf.yeju.consumer.base.security.handler.ApiExceptionHandler, \
   pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager, \
   pers.lbf.yeju.consumer.base.security.manager.CustomAuthorizationManager,\
   pers.lbf.yeju.consumer.config.swagger.SwaggerConfiguration,\

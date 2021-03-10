@@ -14,9 +14,10 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.web.handler;
+package pers.lbf.yeju.common.exception.handler;
 
-import com.alibaba.nacos.common.utils.JacksonUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -26,15 +27,17 @@ import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
 import pers.lbf.yeju.common.core.result.ErrorAndExceptionResult;
 import pers.lbf.yeju.common.core.result.IResult;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -46,7 +49,8 @@ import java.util.Arrays;
 @Order(-2)
 public class GrableExceptionHandler implements ErrorWebExceptionHandler {
 
-    private static final Logger log =  LoggerFactory.getLogger(GrableExceptionHandler.class);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final Logger log = LoggerFactory.getLogger(GrableExceptionHandler.class);
 
     /**
      * Handle the given exception. A completion signal through the return value
@@ -60,70 +64,69 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
         ServerHttpResponse response = exchange.getResponse();
-        if (exchange.getResponse().isCommitted())
-        {
+        if (exchange.getResponse().isCommitted()) {
             return Mono.error(ex);
         }
 
         String message;
         String code;
-        IResult<Object> result = null;
+        IResult<Object> result;
+        if (ex instanceof ResponseStatusException) {
+            if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())) {
+                message = "服务不存在";
+                code = "404";
 
-         if (ex instanceof ResponseStatusException) {
-             if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())){
-                 message = "服务不存在";
-                 code = "404";
+            } else {
+                message = ex.getMessage();
+                code = String.valueOf(((ResponseStatusException) ex).getStatus());
+            }
 
-             }else {
-                 message = ex.getMessage();
-                 code = String.valueOf(((ResponseStatusException) ex).getStatus());
-             }
-
-        }
-         else if (ex instanceof RpcServiceException){
-             message = ex.getMessage();
-             code = ((RpcServiceException) ex).getExceptionCode();
-         }
-
-        else if (ex instanceof ServiceException){
+        } else if (ex instanceof ServiceException) {
             message = ex.getMessage();
             code = ((ServiceException) ex).getExceptionCode();
 
-        }
-
-        else if (ex instanceof RuntimeException){
-            log.info(ex.getClass().getName());
-            message = ex.getLocalizedMessage();
-            code = "e9998";
-         }
-
-        else {
-            message = "内部服务错误，请联系客服"+ex.getMessage();
+        } else {
+            message = "内部服务错误，请联系客服" + ex.getMessage();
             code = "e9999";
         }
         String path = String.valueOf(exchange.getRequest().getPath());
 
-        if (ex instanceof ServiceException){
-            log.info("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+        if (ex instanceof ServiceException) {
+            log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
-        }else if (ex instanceof ResponseStatusException) {
-            log.info("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+        } else if (ex instanceof WebExchangeBindException) {
+            WebExchangeBindException exception = (WebExchangeBindException) ex;
+            //List<FieldError> allErrors = exception.getBindingResult().getFieldErrors();
+            List<ObjectError> allErrors = exception.getBindingResult().getAllErrors();
+
+            StringBuffer errorMsg = new StringBuffer();
+            allErrors.forEach(x -> errorMsg.append(x.getDefaultMessage()).append(";"));
+
+
+            message = errorMsg.toString();
+            log.error("[服务异常处理]请求路径:{},异常信息:{}", path, message);
+        } else if (ex instanceof ResponseStatusException) {
+            log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
         } else {
-            log.error("[网关异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
-            log.error(Arrays.toString(ex.getStackTrace()));
+            log.error("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+            log.error(String.valueOf(ex));
         }
-
 
 
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         response.setStatusCode(HttpStatus.OK);
-        result = ErrorAndExceptionResult.getInstance(code,message,path);
+        result = ErrorAndExceptionResult.getInstance(code, message, path);
         IResult<Object> finalResult = result;
 
         return response.writeWith(Mono.fromSupplier(() -> {
             DataBufferFactory bufferFactory = response.bufferFactory();
-            return bufferFactory.wrap(JacksonUtils.toJsonBytes(finalResult));
+            try {
+                return bufferFactory.wrap(MAPPER.writeValueAsBytes(finalResult));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            return null;
         }));
 
     }

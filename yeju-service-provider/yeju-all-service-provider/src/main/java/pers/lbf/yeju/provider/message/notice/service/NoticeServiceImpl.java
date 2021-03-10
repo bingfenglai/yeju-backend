@@ -36,11 +36,11 @@ import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.domain.entity.Notice;
 import pers.lbf.yeju.provider.base.util.PageUtil;
+import pers.lbf.yeju.provider.message.notice.NoticeCacheKeyManager;
 import pers.lbf.yeju.provider.message.notice.dao.INoticeDao;
 import pers.lbf.yeju.provider.message.notice.sender.NoticeSender;
 import pers.lbf.yeju.service.interfaces.message.IGroupMessageService;
 import pers.lbf.yeju.service.interfaces.message.IMessageGroupService;
-import pers.lbf.yeju.service.interfaces.message.constant.NoticeConstant;
 import pers.lbf.yeju.service.interfaces.message.notice.INoticeService;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
@@ -161,7 +161,7 @@ public class NoticeServiceImpl implements INoticeService {
 
         for (Long groupId : groupIds) {
 
-            String pattern = NoticeConstant.REDIS_KEY_PREFIX + groupId + "**";
+            String pattern = NoticeCacheKeyManager.generateNoticeKeyAllMessageParrent(groupId);
             log.info("表达式： {}", pattern);
             Collection<String> keys = redisService.keys(pattern);
             log.info("消息键---> {} {}", keys.size(), Arrays.toString(keys.toArray()));
@@ -207,10 +207,7 @@ public class NoticeServiceImpl implements INoticeService {
      * @version 1.0
      * @date 2021/3/4 23:35
      */
-    @CacheEvict(cacheNames = {
-            "noticeService:effectiveNoticeList",
-            "noticeService:findPage"},
-            allEntries = true)
+    @CacheEvict(cacheNames = "noticeService", allEntries = true)
     @Override
     public IResult<Object> create(NoticeCreateArgs args) throws Exception {
 
@@ -230,12 +227,76 @@ public class NoticeServiceImpl implements INoticeService {
         return SimpleResult.ok();
     }
 
+    @Override
+    public IResult<Object> update(NoticeUpdateArgs args) throws ServiceException {
+        Notice notice = noticeUpdateArgsToNotice(args);
+        noticeDao.updateById(notice);
+        return SimpleResult.ok();
+    }
+
+
+    /**
+     * 推送消息
+     *
+     * @param noticeMessage
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Object>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/6 0:53
+     */
+    @Override
+    public IResult<Object> send(NoticeMessage noticeMessage) throws ServiceException {
+
+        return null;
+    }
+
+    /**
+     * 批量删除通知
+     *
+     * @param idList ids
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/10 11:23
+     */
+    @CacheEvict(cacheNames = "noticeService", allEntries = true)
+    @Override
+    public IResult<Boolean> deleteBatch(String[] idList) throws ServiceException {
+        List<Long> ids = new LinkedList<>();
+        for (String s : idList) {
+            String redisKey = NoticeCacheKeyManager.generateAllNoticeKeyParrent(s);
+            redisService.deleteObject(redisKey);
+            ids.add(Long.valueOf(s));
+        }
+        // 清理数据库
+        noticeDao.deleteBatchIds(ids);
+        return Result.ok(true);
+    }
+
+    /**
+     * TODO
+     *
+     * @param id
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/10 14:59
+     */
+    @CacheEvict(cacheNames = "noticeService:findPage", allEntries = true)
+    @Override
+    public IResult<Boolean> deleteById(String id) throws ServiceException {
+
+        int i = noticeDao.deleteById(Long.valueOf(id));
+        log.info("删除行数 {}", i);
+        return Result.ok(true);
+    }
+
     @Async
     void push(Notice notice) {
         Date now = new Date();
         NoticeMessage message = noticeToMsgVO(notice);
         log.info("准备将消息写入缓存 {}", message.toString());
-        String redisKey = NoticeConstant.REDIS_KEY_PREFIX + notice.getSendTo() + message.getMessageId();
+        String redisKey = NoticeCacheKeyManager.generateNoticeKey(message.getMessageId(), message.getSendTo());
 
         String msgJson = JSONObject.toJSONString(message);
         redisService.addCacheObject(redisKey, msgJson);
@@ -281,29 +342,6 @@ public class NoticeServiceImpl implements INoticeService {
         notice.setSendTo(args.getSendTo());
         notice.setReceiverType(args.getReceiverType());
         return notice;
-    }
-
-    @Override
-    public IResult<Object> update(NoticeUpdateArgs args) throws ServiceException {
-        Notice notice = noticeUpdateArgsToNotice(args);
-        noticeDao.updateById(notice);
-        return SimpleResult.ok();
-    }
-
-
-    /**
-     * 推送消息
-     *
-     * @param noticeMessage
-     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Object>
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2021/3/6 0:53
-     */
-    @Override
-    public IResult<Object> send(NoticeMessage noticeMessage) throws ServiceException {
-
-        return null;
     }
 
 

@@ -120,4 +120,19 @@ public class NoticeController {
     }
 
 
+    @ApiOperation(value = "批量删除通知", notes = "删除通知说明", httpMethod = "DELETE")
+    @DeleteMapping("/deleteBatch")
+    public Mono<IResult<Boolean>> deleteBatch(@ApiParam(name = "id") @RequestBody String[] idList) throws ServiceException {
+
+        return Mono.just(noticeService.deleteBatch(idList));
+    }
+
+    @ApiOperation(value = "删除通知", notes = "删除通知说明", httpMethod = "DELETE")
+    @DeleteMapping("/{id}")
+    public Mono<IResult<Boolean>> delete(@ApiParam(name = "id") @PathVariable String id) throws ServiceException {
+
+        return Mono.just(noticeService.deleteById(id));
+    }
+
+
 }

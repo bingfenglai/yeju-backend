@@ -69,7 +69,7 @@ public interface INoticeService {
     /**
      * 推送消息
      *
-     * @param noticeMessage
+     * @param noticeMessage 通知消息参数
      * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Object>
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
@@ -78,4 +78,27 @@ public interface INoticeService {
     IResult<Object> send(NoticeMessage noticeMessage) throws ServiceException;
 
 
+    /**
+     * 批量删除通知
+     *
+     * @param idList ids
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @throws ServiceException e
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/10 11:23
+     */
+    IResult<Boolean> deleteBatch(String[] idList) throws ServiceException;
+
+    /**
+     * TODO
+     *
+     * @param id
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @throws ServiceException e
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/10 14:59
+     */
+    IResult<Boolean> deleteById(String id) throws ServiceException;
 }

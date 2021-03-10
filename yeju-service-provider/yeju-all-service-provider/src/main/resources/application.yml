@@ -3,5 +3,8 @@ spring:
     name: yeju-service-provider
 
 dubbo:
+  provider:
+    port: 20882
   registry:
     file: ../cachefile/dubbo.cache
+

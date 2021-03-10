@@ -1,7 +1,14 @@
-logging:
-  config: classpath:config/logback.xml
 spring:
   application:
     name: auth-consumer
 server:
   port: 9002
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus

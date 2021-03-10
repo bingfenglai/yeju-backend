@@ -4,5 +4,12 @@ spring:
   application:
     name: yeju-all-rest-api
 
-logging:
-  config: classpath:config/logback.xml
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health, info, prometheus
+

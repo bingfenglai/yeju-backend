@@ -321,12 +321,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <scope>test</scope>
-                <!--                <exclusions>-->
-                <!--                    <exclusion>-->
-                <!--                        <groupId>org.junit.vintage</groupId>-->
-                <!--                        <artifactId>junit-vintage-engine</artifactId>-->
-                <!--                    </exclusion>-->
-                <!--                </exclusions>-->
                 <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
@@ -339,6 +333,21 @@
                 <artifactId>spring-rabbit-test</artifactId>
                 <scope>test</scope>
             </dependency>
+
+            <!--            日志相关-->
+            <!-- logback -->
+            <!--            <dependency>-->
+            <!--                <groupId>ch.qos.logback</groupId>-->
+            <!--                <artifactId>logback-classic</artifactId>-->
+            <!--                <version>1.2.3</version>-->
+            <!--            </dependency>-->
+
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>4.10</version>
+            </dependency>
+
 
             <!--            其他-->
             <dependency>

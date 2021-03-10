@@ -4,5 +4,11 @@ spring:
   application:
     name: yeju-message
 
-logging:
-  config: classpath:config/logback.xml
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health, info, prometheus

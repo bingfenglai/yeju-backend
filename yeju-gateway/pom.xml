@@ -12,6 +12,7 @@
     <artifactId>yeju-gateway</artifactId>
 
     <properties>
+
         <mainClassName>pers.lbf.yeju.gateway.start.YejuGatewayApp</mainClassName>
         <profile.id.prod>prod</profile.id.prod>
     </properties>
@@ -85,6 +86,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
+
+        <!-- logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>pers.lbf</groupId>
@@ -238,7 +251,6 @@
                                               file="src/main/resources/bootstrap.properties"/>
                                         <copy todir="../${dist.rootPath}/${project.build.finalName}/bin/config"
                                               file="src/main/resources/bootstrap-${profile.id.prod}.properties"/>
-
 
                                     </target>
                                 </configuration>

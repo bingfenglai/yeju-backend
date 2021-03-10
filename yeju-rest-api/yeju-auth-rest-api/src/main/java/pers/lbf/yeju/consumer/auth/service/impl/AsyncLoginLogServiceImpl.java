@@ -14,42 +14,46 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.service;
+package pers.lbf.yeju.consumer.auth.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.consumer.auth.sender.LoginLogSender;
+import pers.lbf.yeju.consumer.auth.service.AsyncLoginLogService;
 import pers.lbf.yeju.service.interfaces.log.pojo.AddLoginLogRequestBean;
 
-/**异步登录日志服务
+/**
+ * 异步登录日志服务
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
  * @date 2021/1/1 22:49
  */
 @Service
-@Slf4j
 public class AsyncLoginLogServiceImpl implements AsyncLoginLogService {
 
+    private static final Logger log = LoggerFactory.getLogger(AsyncLoginLogServiceImpl.class);
     @Autowired
     private LoginLogSender loginSender;
 
     @Override
     @Async
     public void addLog(AddLoginLogRequestBean loginLogDTO) throws ServiceException {
-        if (loginLogDTO==null){
+        if (loginLogDTO == null) {
             throw new ServiceException(ParameStatusEnum.Parameter_cannot_be_empty);
         }
 
         try {
             log.info("发送登录日志");
-            loginSender.send(loginLogDTO,null);
+            loginSender.send(loginLogDTO, null);
         } catch (Exception e) {
-            log.info("发送登录日志异常，{}",e.getMessage());
+            log.info("发送登录日志异常，{}", e.getMessage());
         }
     }
 }

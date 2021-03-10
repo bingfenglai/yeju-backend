@@ -1,4 +1,4 @@
-package pers.lbf.yeju.consumer.auth.config;
+package pers.lbf.yeju.base.security.authorization.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -20,10 +20,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "ignore")
 public class IgnoreWhiteProperties {
 
-    /**
-     * 放行白名单，从配置中心加载
-     */
-    //@Value("${ignore.whites}")
+
     private List<String> whites;
 
 
@@ -33,5 +30,11 @@ public class IgnoreWhiteProperties {
 
     public void setWhites(ArrayList<String> whites) {
         this.whites = whites;
+    }
+
+    public String[] getWhiteArrays() {
+        String[] strings = new String[10];
+        strings = getWhites().toArray(new String[whites.size()]);
+        return strings;
     }
 }

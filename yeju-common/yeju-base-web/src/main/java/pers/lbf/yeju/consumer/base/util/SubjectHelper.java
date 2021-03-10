@@ -18,9 +18,9 @@ package pers.lbf.yeju.consumer.base.util;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
-import pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager;
-import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 
 import java.util.Objects;
 
@@ -55,7 +55,7 @@ public class SubjectHelper {
     public static String getSubjectAccount(ServerHttpRequest request) throws Exception {
         String token = Objects.requireNonNull(request.getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
         AuthorizationTokenManager tokenManager = SpringContextUtils.getBean(AuthorizationTokenManager.class);
-        AuthorityInfo authorityInfo = tokenManager.getAuthorityInfo(token);
-        return authorityInfo.getPrincipal();
+        AuthorityInfoBean authorityInfoBean = tokenManager.getAuthorityInfo(token);
+        return authorityInfoBean.getPrincipal();
     }
 }

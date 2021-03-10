@@ -30,13 +30,14 @@ import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
+import pers.lbf.yeju.base.security.authorization.config.IgnoreWhiteProperties;
+import pers.lbf.yeju.base.security.authorization.manager.CustomAuthorizationManager;
 import pers.lbf.yeju.consumer.auth.converter.CustomServerFormLoginAuthenticationConverter;
 import pers.lbf.yeju.consumer.auth.handler.AuthenticationFailHandler;
 import pers.lbf.yeju.consumer.auth.handler.AuthenticationSuccessHandler;
 import pers.lbf.yeju.consumer.auth.handler.CustomServerLogoutHandler;
 import pers.lbf.yeju.consumer.auth.handler.CustomServerLogoutSuccessHandler;
 import pers.lbf.yeju.consumer.auth.manager.CustomAuthenticationManager;
-import pers.lbf.yeju.consumer.auth.manager.CustomAuthorizationManager;
 
 import java.util.LinkedList;
 

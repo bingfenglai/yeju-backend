@@ -25,7 +25,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import pers.lbf.yeju.consumer.base.security.manager.CustomAuthorizationManager;
+import pers.lbf.yeju.base.security.authorization.config.IgnoreWhiteProperties;
+import pers.lbf.yeju.base.security.authorization.manager.CustomAuthorizationManager;
 
 /**
  * 资源服务器安全配置

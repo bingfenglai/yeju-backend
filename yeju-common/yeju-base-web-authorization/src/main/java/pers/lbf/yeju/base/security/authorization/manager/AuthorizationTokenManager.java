@@ -14,19 +14,21 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.base.security.manager;
+package pers.lbf.yeju.base.security.authorization.manager;
 
-import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.security.authorization.config.RsaPublicKeyConfig;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.pojo.Payload;
 import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
-import pers.lbf.yeju.consumer.base.security.config.RsaPublicKeyConfig;
-import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 
 
 /**
@@ -36,14 +38,15 @@ import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
  * @date 2020/12/12 23:45
  */
 @Component
-@Slf4j
 public class AuthorizationTokenManager {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthorizationTokenManager.class);
 
     @Autowired
     private RsaPublicKeyConfig rsaPublicKeyConfig;
 
 
-    public AuthorityInfo getAuthorityInfo(String authenticationToken) throws Exception {
+    public AuthorityInfoBean getAuthorityInfo(String authenticationToken) throws Exception {
 
         //判断token是否合法
         boolean flag = authenticationToken.startsWith(TokenConstant.getPrefixToken());
@@ -55,7 +58,7 @@ public class AuthorizationTokenManager {
         //获取真正的token
         String token = authenticationToken.substring(TokenConstant.getPrefixToken().length());
 
-        Payload<AuthorityInfo> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey(rsaPublicKeyConfig.getPath()), AuthorityInfo.class);
+        Payload<AuthorityInfoBean> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey(rsaPublicKeyConfig.getPath()), AuthorityInfoBean.class);
         return payload.getUserInfo();
     }
 

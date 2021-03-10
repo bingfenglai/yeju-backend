@@ -21,17 +21,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
 import pers.lbf.yeju.consumer.auth.config.RsaPrivateKeyConfig;
-import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.concurrent.TimeUnit;
 
-/**token建造者
+/**
+ * token建造者
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -47,7 +49,7 @@ public class AuthorityInfoTokenBuilder {
     private final Logger logger = LoggerFactory.getLogger(AuthorityInfoTokenBuilder.class);
 
 
-    private Long defaultExpiresAt  = 60L;
+    private Long defaultExpiresAt = 60L;
 
     private Long expireAt;
 
@@ -55,46 +57,45 @@ public class AuthorityInfoTokenBuilder {
     private AuthorityInfoBean authorityInfoBean;
 
 
-
     /**
+     * @param authorityInfoBean 权限信息载体
+     * @return pers.lbf.yeju.gateway.security.pojo.AuthorityInfoToken
+     * @throws Exception e
      * @Description //TODO
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2020/12/12 23:42
-     * @param authorityInfoBean 权限信息载体
-     * @return pers.lbf.yeju.gateway.security.pojo.AuthorityInfoToken
-     * @throws Exception e
      */
-    public  String build( @Valid @NotNull(message = "权限主体不能为null")
-                                  AuthorityInfoBean authorityInfoBean) throws Exception{
+    public String build(@Valid @NotNull(message = "权限主体不能为null")
+                                AuthorityInfoBean authorityInfoBean) throws Exception {
         logger.info("私钥路径 {}", rsaPrivateKeyConfig.getPath());
 
         String token;
-        if (this.expireAt==null){
+        if (this.expireAt == null) {
             this.expireAt = this.defaultExpiresAt;
         }
-        if (authorityInfoBean.getTimeUnit()==null|| authorityInfoBean.getExpiration()==null){
+        if (authorityInfoBean.getTimeUnit() == null || authorityInfoBean.getExpiration() == null) {
             token = JwtUtils.generateTokenExpireInSeconds(
                     authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                     Math.toIntExact(this.expireAt));
-            logger.info("账户 {} 生成token {}", authorityInfoBean.getPrincipal(),token!=null? "成功":"失败");
-            return TokenConstant.getPrefixToken()+token;
+            logger.info("账户 {} 生成token {}", authorityInfoBean.getPrincipal(), token != null ? "成功" : "失败");
+            return TokenConstant.getPrefixToken() + token;
         }
 
-        if (TimeUnit.SECONDS.equals(authorityInfoBean.getTimeUnit())){
+        if (TimeUnit.SECONDS.equals(authorityInfoBean.getTimeUnit())) {
             token = JwtUtils.generateTokenExpireInSeconds(
-                    authorityInfoBean,RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
+                    authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                     authorityInfoBean.getExpiration());
-            logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(),token);
-            return TokenConstant.getPrefixToken()+token;
+            logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(), token);
+            return TokenConstant.getPrefixToken() + token;
         }
 
-        token =  JwtUtils.generateTokenExpireInMinutes(
+        token = JwtUtils.generateTokenExpireInMinutes(
                 authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),
                 authorityInfoBean.getExpiration());
-        logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(),token);
+        logger.info("账户{}生成token成功：{}", authorityInfoBean.getPrincipal(), token);
 
-        return TokenConstant.getPrefixToken()+token;
+        return TokenConstant.getPrefixToken() + token;
     }
 
     public String build() throws Exception {

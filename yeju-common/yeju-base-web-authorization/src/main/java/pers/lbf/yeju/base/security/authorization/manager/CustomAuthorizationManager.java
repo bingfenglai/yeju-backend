@@ -14,12 +14,14 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.manager;
+package pers.lbf.yeju.base.security.authorization.manager;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.access.AccessDeniedException;
@@ -29,12 +31,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
-import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import reactor.core.publisher.Mono;
 
@@ -49,9 +51,11 @@ import java.util.List;
  * @date 2020/12/14 15:32
  */
 @Component
-@Slf4j
+@Primary
 public class CustomAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+    private static final Logger log = LoggerFactory.getLogger(CustomAuthorizationManager.class);
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
@@ -84,7 +88,6 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         }
 
         // 判断账户有没有被强制过期
-        log.info(authorityInfoBean.getSessionId());
         Boolean flag = sessionService.isExpired(authorityInfoBean.getSessionId()).getData();
         if (!flag) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);

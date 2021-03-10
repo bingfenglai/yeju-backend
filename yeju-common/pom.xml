@@ -15,12 +15,14 @@
 
     <modules>
         <module>yeju-common-core</module>
+        <module>yeju-base-mq-provider</module>
+        <module>yeju-base-web-authorization</module>
         <module>yeju-base-service</module>
         <module>yeju-base-web-exception</module>
         <module>yeju-base-web</module>
         <module>yeju-common-domain</module>
         <module>yeju-common-util</module>
-        <module>yeju-base-mq-provider</module>
+
 
     </modules>
 

@@ -26,9 +26,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
+import pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.StatusConstants;
-import pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager;
-import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 import pers.lbf.yeju.consumer.message.notice.sender.NoticeDeliverLogSender;
 import pers.lbf.yeju.consumer.message.notice.util.NoticeTypeUtil;
 import pers.lbf.yeju.service.interfaces.log.pojo.MessageDeliveryLogCreateArgs;
@@ -82,11 +82,11 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
         }).doOnNext(webSocketMessage -> {
             if (webSocketMessage.getType().equals(WebSocketMessage.Type.TEXT)) {
                 String token = webSocketMessage.getPayloadAsText();
-                AuthorityInfo authorityInfo = null;
+                AuthorityInfoBean authorityInfoBean = null;
                 try {
-                    authorityInfo = tokenManager.getAuthorityInfo(token);
-                    log.debug(authorityInfo.toString());
-                    String principal = authorityInfo.getPrincipal();
+                    authorityInfoBean = tokenManager.getAuthorityInfo(token);
+                    log.debug(authorityInfoBean.toString());
+                    String principal = authorityInfoBean.getPrincipal();
                     sessionMap.put(principal, session);
                     log.info("会话key {}", principal);
                     this.pullUnReadNotice(principal);

@@ -16,8 +16,10 @@
  */
 package pers.lbf.yeju.consumer.auth.manager;
 
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
@@ -27,13 +29,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.consumer.auth.config.VerificationCodeConfig;
 import pers.lbf.yeju.consumer.auth.enums.LoginWay;
 import pers.lbf.yeju.consumer.auth.pojo.AuthenticationToken;
-import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRequestToken;
 import pers.lbf.yeju.consumer.auth.service.AsyncLoginLogService;
 import pers.lbf.yeju.consumer.auth.service.CustomUserDetailsServiceImpl;
@@ -48,17 +50,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-/**登录对象身份验证管理器
+/**
+ * 登录对象身份验证管理器
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
  * @date 2020/12/14 15:27
  */
 @Component
-@Slf4j
 @EnableAsync
 public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuthenticationManager {
-
+    private static final Logger log = LoggerFactory.getLogger(CustomAuthenticationManager.class);
     private final Scheduler scheduler = Schedulers.boundedElastic();
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -81,16 +84,18 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 
     }
 
-    /**自定义认证方法 认证逻辑
+    /**
+     * 自定义认证方法 认证逻辑
+     *
+     * @param authentication 1
+     * @return reactor.core.publisher.Mono<org.springframework.security.core.Authentication>
      * @Description //TODO
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2020/12/19 14:42
-     * @param authentication 1
-     * @return reactor.core.publisher.Mono<org.springframework.security.core.Authentication>
      */
     @Override
-    public Mono<Authentication> authenticate(Authentication authentication){
+    public Mono<Authentication> authenticate(Authentication authentication) {
 
 
         LoginRequestToken loginToken = (LoginRequestToken) authentication;
@@ -105,7 +110,6 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
         addLoginLogRequestBean.setSubjectName("");
         addLoginLogRequestBean.setIp(host);
         addLoginLogRequestBean.setAccentTime(new Date());
-
 
 
         if (loginToken.getLoginWay().equals(LoginWay.usernameAndPassword)) {
@@ -129,7 +133,7 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
             UserDetails userDetails = userDetailsMono.block(Duration.ofSeconds(3));
 
 
-            assert userDetails != null: new ServiceException(AuthStatusEnum.NO_ACCOUNT);
+            assert userDetails != null : new ServiceException(AuthStatusEnum.NO_ACCOUNT);
 
 
             boolean flag = passwordEncoder.matches(credentials, userDetails.getPassword());
@@ -143,19 +147,19 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
             }
 
             //验证账户是否可用
-            if (!userDetails.isEnabled()){
+            if (!userDetails.isEnabled()) {
                 addLoginLogRequestBean.setLoginStatus(0);
                 addLoginLogRequestBean.setMessage(AuthStatusEnum.accountIsNotActivated.getMessage());
                 loginLogService.addLog(addLoginLogRequestBean);
                 throw new ServiceException(AuthStatusEnum.accountIsNotActivated);
             }
-            if (!userDetails.isAccountNonExpired()){
+            if (!userDetails.isAccountNonExpired()) {
                 addLoginLogRequestBean.setLoginStatus(0);
                 addLoginLogRequestBean.setMessage(AuthStatusEnum.accountHasExpired.getMessage());
                 loginLogService.addLog(addLoginLogRequestBean);
                 throw new ServiceException(AuthStatusEnum.accountHasExpired);
             }
-            if (!userDetails.isAccountNonLocked()){
+            if (!userDetails.isAccountNonLocked()) {
                 addLoginLogRequestBean.setLoginStatus(0);
                 addLoginLogRequestBean.setMessage(AuthStatusEnum.accountIsFrozen.getMessage());
                 loginLogService.addLog(addLoginLogRequestBean);
@@ -166,7 +170,6 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
             Mono<AuthorityInfoBean> authorityInfoMono = getAuthorityInfo(account);
 
 
-
             AuthorityInfoBean info = authorityInfoMono.block(Duration.ofSeconds(3));
             AuthenticationToken authenticationToken = new AuthenticationToken(info, credentials);
             authenticationToken.setDetails(info);
@@ -174,14 +177,16 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
             addLoginLogRequestBean.setLoginStatus(1);
             addLoginLogRequestBean.setMessage("登录成功");
             loginLogService.addLog(addLoginLogRequestBean);
-          return Mono.just(authenticationToken);
+            return Mono.just(authenticationToken);
+            
+
         }
 
-        if (loginToken.getLoginWay().equals(LoginWay.phoneNumberAndVerificationCode)){
+        if (loginToken.getLoginWay().equals(LoginWay.phoneNumberAndVerificationCode)) {
             log.debug("手机号验证码登录");
             IResult<Boolean> result = verificationCodeService.verify(key, credentials);
 
-            if (!result.getData()){
+            if (!result.getData()) {
                 throw new ServiceException(AuthStatusEnum.verificationCodeError);
             }
 
@@ -200,9 +205,9 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
     }
 
 
-
     /**
      * 获取用户信息
+     *
      * @param username u
      * @return userDetails
      */
@@ -214,10 +219,11 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
 
     /**
      * 获取授权信息体
+     *
      * @param username
      * @return
      */
-    private Mono<AuthorityInfoBean> getAuthorityInfo(String username){
+    private Mono<AuthorityInfoBean> getAuthorityInfo(String username) {
         Mono<UserDetails> userDetailsMono = userDetailsService.findByUsername(username);
 
         UserDetails userDetails = userDetailsMono.block(Duration.ofSeconds(3));
@@ -228,16 +234,15 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
         return Mono.just(info);
 
 
-
     }
 
-    private AuthorityInfoBean getAuthorityInfoByUserDetails(UserDetails userDetails){
+    private AuthorityInfoBean getAuthorityInfoByUserDetails(UserDetails userDetails) {
         AuthorityInfoBean info = new AuthorityInfoBean();
 
         info.setPrincipal(userDetails.getUsername());
 
         Collection<? extends GrantedAuthority> grantedAuthorities = userDetails.getAuthorities();
-        if (grantedAuthorities != null&& grantedAuthorities.size() > 0) {
+        if (grantedAuthorities != null && grantedAuthorities.size() > 0) {
             ArrayList<String> authorities = new ArrayList<>(grantedAuthorities.size());
             for (GrantedAuthority grantedAuthority : grantedAuthorities) {
                 String authority = grantedAuthority.getAuthority();

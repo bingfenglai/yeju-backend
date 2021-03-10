@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  pers.lbf.yeju.base.security.authorization.config.IgnoreWhiteProperties, \
+  pers.lbf.yeju.base.security.authorization.config.RsaPublicKeyConfig,\
+  pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager,\
+  pers.lbf.yeju.base.security.authorization.manager.CustomAuthorizationManager

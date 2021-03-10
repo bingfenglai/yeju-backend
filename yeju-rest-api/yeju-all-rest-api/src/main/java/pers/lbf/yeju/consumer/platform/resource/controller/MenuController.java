@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.constant.DataDictionaryTypeConstant;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
@@ -32,8 +34,6 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
-import pers.lbf.yeju.consumer.base.security.manager.AuthorizationTokenManager;
-import pers.lbf.yeju.consumer.base.security.pojo.AuthorityInfo;
 import pers.lbf.yeju.consumer.platform.resource.pojo.vo.MetaVO;
 import pers.lbf.yeju.consumer.platform.resource.pojo.vo.RouterVO;
 import pers.lbf.yeju.service.interfaces.auth.dto.MenuInfoBean;
@@ -205,15 +205,15 @@ public class MenuController {
     private List<String> getAuthorityList(ServerWebExchange webExchange) throws ServiceException {
         //获取token
         String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
-        AuthorityInfo authorityInfo = null;
+        AuthorityInfoBean authorityInfoBean = null;
         try {
-            authorityInfo = tokenManager.getAuthorityInfo(authorization);
+            authorityInfoBean = tokenManager.getAuthorityInfo(authorization);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assert authorityInfo != null;
-        List<String> authorityList = authorityInfo.getAuthorityList();
+        assert authorityInfoBean != null;
+        List<String> authorityList = authorityInfoBean.getAuthorityList();
 
         if (authorityList == null || authorityList.size() == 0) {
             throw ServiceException.getInstance(AuthStatusEnum.unauthorized);

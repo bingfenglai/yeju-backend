@@ -22,9 +22,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.util.FileUtils;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
-import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.consumer.auth.start.YejuAuthConsumerApplication;
 
 import java.util.concurrent.TimeUnit;

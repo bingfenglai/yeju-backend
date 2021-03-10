@@ -22,7 +22,9 @@ import pers.lbf.yeju.common.core.status.enums.SubjectTypeEnum;
 import java.io.Serializable;
 import java.util.List;
 
-/**简单账户对象
+/**
+ * 简单账户对象
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO

@@ -18,18 +18,13 @@ package pers.lbf.yeju.consumer.auth.manager;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
-import pers.lbf.yeju.common.pojo.Payload;
-import pers.lbf.yeju.common.util.JwtUtils;
-import pers.lbf.yeju.common.util.RsaUtils;
 import pers.lbf.yeju.consumer.auth.builder.AuthorityInfoTokenBuilder;
-import pers.lbf.yeju.consumer.auth.config.RsaPublicKeyConfig;
-import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
 
 
 /**
@@ -42,34 +37,11 @@ import pers.lbf.yeju.consumer.auth.pojo.AuthorityInfoBean;
  */
 @Component
 @Slf4j
-public class AuthorizationTokenManager {
-
-    @Autowired
-    private RsaPublicKeyConfig rsaPublicKeyConfig;
-
+@Primary
+public class AuthorizationTokenManager extends pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager {
+    
     @Autowired
     private AuthorityInfoTokenBuilder builder;
-
-    @Deprecated
-    public String getAuthorityInfoToken(AuthorityInfoBean authorityInfoBean) throws Exception {
-        return builder.build(authorityInfoBean);
-    }
-
-    public AuthorityInfoBean getAuthorityInfo(String authenticationToken) throws Exception {
-
-        //判断token是否合法
-        boolean flag = authenticationToken.startsWith(TokenConstant.getPrefixToken());
-
-        if (!flag) {
-            throw new ServiceException(AuthStatusEnum.NO_TOKEN);
-        }
-        log.info("公钥路径： {}", rsaPublicKeyConfig.getPath());
-        //获取真正的token
-        String token = authenticationToken.substring(TokenConstant.getPrefixToken().length());
-
-        Payload<AuthorityInfoBean> payload = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey(rsaPublicKeyConfig.getPath()), AuthorityInfoBean.class);
-        return payload.getUserInfo();
-    }
 
     public AuthorityInfoTokenBuilder getBuilder(AuthorityInfoBean authorityInfoBean, Long expireAt) {
         builder.setAuthorityInfo(authorityInfoBean);

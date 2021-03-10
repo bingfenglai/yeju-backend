@@ -22,7 +22,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-/**rsa 私钥
+/**
+ * rsa 私钥
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO

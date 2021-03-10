@@ -37,7 +37,9 @@ import reactor.core.publisher.Mono;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
-/**将表单参数转换为AuthenticationToken
+/**
+ * 将表单参数转换为AuthenticationToken
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -62,46 +64,46 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
         assert address != null;
         InetAddress address1 = address.getAddress();
         String hostAddress = HttpUtils.getIpAddress(request);
-        log.info("登录IP {}",hostAddress);
+        log.info("登录IP {}", hostAddress);
 
         HttpHeaders headers = exchange.getRequest().getHeaders();
         String key = headers.getFirst("verificationCodeKey");
 
-        if (YejuStringUtils.isEmpty(key)){
+        if (YejuStringUtils.isEmpty(key)) {
             throw new ServiceException(RequestStatusEnum.illegalRequest);
         }
 
-    return exchange
-        .getFormData()
-        .map(
-            data -> {
-                String principal = data.getFirst("principal");
-                String certificate = data.getFirst("certificate");
-                String code = data.getFirst("verificationCode");
-                log.info("principal {}",principal);
-                // 账号判空
-                if (YejuStringUtils.isEmpty(principal)) {
-                    throw new RpcServiceException(AuthStatusEnum.accountCannotBeEmpty);
-                }
+        return exchange
+                .getFormData()
+                .map(
+                        data -> {
+                            String principal = data.getFirst("principal");
+                            String certificate = data.getFirst("certificate");
+                            String code = data.getFirst("verificationCode");
+                            log.info("principal {}", principal);
+                            // 账号判空
+                            if (YejuStringUtils.isEmpty(principal)) {
+                                throw new RpcServiceException(AuthStatusEnum.accountCannotBeEmpty);
+                            }
 
-              // 判断登录方式，根据不同的登录方式返回不同的token
+                            // 判断登录方式，根据不同的登录方式返回不同的token
 
-              // 手机号+验证码登录的情况
-              if ((code == null || "".equals(code))) {
-                if (YejuStringUtils.isEmpty(certificate)) {
-                  throw new RpcServiceException(AuthStatusEnum.passwordCanNotBeBlank);
-                }
+                            // 手机号+验证码登录的情况
+                            if ((code == null || "".equals(code))) {
+                                if (YejuStringUtils.isEmpty(certificate)) {
+                                    throw new RpcServiceException(AuthStatusEnum.passwordCanNotBeBlank);
+                                }
 
-                if (certificate != null
-                    && certificate.length() == verificationCodeConfig.getLength()) {
-                  return new LoginRequestToken(principal, certificate, hostAddress, key);
-                } else {
-                  throw new ServiceException(AuthStatusEnum.verificationCodeError);
+                                if (certificate != null
+                                        && certificate.length() == verificationCodeConfig.getLength()) {
+                                    return new LoginRequestToken(principal, certificate, hostAddress, key);
+                                } else {
+                                    throw new ServiceException(AuthStatusEnum.verificationCodeError);
 
-                }
-              }
+                                }
+                            }
 
-              return new LoginRequestToken(principal, certificate, hostAddress, key, code);
-            });
+                            return new LoginRequestToken(principal, certificate, hostAddress, key, code);
+                        });
     }
 }

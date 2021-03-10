@@ -16,7 +16,8 @@
  */
 package pers.lbf.yeju.consumer.auth.sender;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,8 +33,9 @@ import java.util.Map;
  * @date 2021/1/3 22:49
  */
 @Component
-@Slf4j
+
 public class LoginLogSender extends BaseRabbitMQSender {
+    private static final Logger log = LoggerFactory.getLogger(LoginLogSender.class);
 
     @Autowired
     private LoginLogMqExchangeConfig mqConfig;

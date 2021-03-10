@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.pojo;
+package pers.lbf.yeju.base.security.authorization.pojo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -52,6 +52,13 @@ public class AuthorityInfoBean implements Serializable {
 
     private String sessionId;
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     @Override
     public String toString() {
@@ -59,14 +66,6 @@ public class AuthorityInfoBean implements Serializable {
                 "Principal='" + principal + '\'' +
                 ", authority=" + authorityList +
                 '}';
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public String getPrincipal() {

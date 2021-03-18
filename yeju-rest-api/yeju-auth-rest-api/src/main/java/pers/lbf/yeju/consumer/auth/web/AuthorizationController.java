@@ -20,18 +20,18 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRepoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.AuthzSimpleInfoBean;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.IAuthzService;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IAuthorizationService;
+import pers.lbf.yeju.service.interfaces.auth.pojo.AuthorizedCreatArgs;
 import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import pers.lbf.yeju.service.interfaces.session.pojo.SessionDetails;
 import reactor.core.publisher.Mono;
@@ -55,7 +55,7 @@ public class AuthorizationController {
     private ISessionService sessionService;
 
     @DubboReference()
-    private IAuthzService authzService;
+    private IAuthorizationService authzService;
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
@@ -99,6 +99,18 @@ public class AuthorizationController {
         bean.setAccessToken(newToken);
 
         return Mono.just(Result.ok(bean));
+    }
+
+
+    @ApiOperation(value = "对角色授权接口", notes = "对角色授权接口说明", httpMethod = "POST")
+    @PostMapping("/authorize")
+    public Mono<IResult<Boolean>> authorize(@RequestBody AuthorizedCreatArgs args) throws ServiceException {
+
+        return Mono.just(authzService.authorizedToSubject(args))
+                .doOnSuccess(unused -> {
+                    // 同步 r_t_account_resource表 优化查询
+
+                });
     }
 
 

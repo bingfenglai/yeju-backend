@@ -183,7 +183,7 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
     }
 
     private void sendLog(JSONObject jsonObject, String principal, boolean flag) {
-        log.info("发送消息日志");
+        log.info("发送消息日志 {}", jsonObject.toJSONString());
         Long messageId = Long.valueOf(jsonObject.get("messageId").toString());
         log.info("消息 id {}", messageId);
         MessageDeliveryLogCreateArgs args = new MessageDeliveryLogCreateArgs();

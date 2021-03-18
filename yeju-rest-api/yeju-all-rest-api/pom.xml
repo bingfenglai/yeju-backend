@@ -62,7 +62,21 @@
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-job-service-interfaces</artifactId>
-            <version>1.0.0</version>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <!--        产商品服务接口-->
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-product-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <!-- 消息生产者-->
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-base-mq-provider</artifactId>
+            <version>${yeju.version}</version>
         </dependency>
 
 
@@ -79,6 +93,7 @@
         <!--        开发测试环境打包-->
         <profile>
             <id>dev</id>
+
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>

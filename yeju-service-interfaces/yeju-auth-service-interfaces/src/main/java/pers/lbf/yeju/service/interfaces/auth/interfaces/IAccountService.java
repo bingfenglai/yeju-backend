@@ -62,4 +62,11 @@ public interface IAccountService {
     IResult<String> getAccountType(String principal) throws ServiceException;
 
     IResult<Long> findAccountIdByPrincipal(String principal) throws ServiceException;
+
+    IResult<Boolean> deleteByPrincipal(String principal) throws ServiceException;
+
+    IResult<Boolean> deleteById(Long id) throws ServiceException;
+
+    IResult<Boolean> deleteBatch(String[] idList) throws ServiceException;
+    
 }

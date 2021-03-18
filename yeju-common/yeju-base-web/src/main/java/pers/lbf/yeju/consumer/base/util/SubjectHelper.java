@@ -21,6 +21,7 @@ import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
+import pers.lbf.yeju.consumer.base.service.NativeAccountService;
 
 import java.util.Objects;
 
@@ -57,5 +58,16 @@ public class SubjectHelper {
         AuthorizationTokenManager tokenManager = SpringContextUtils.getBean(AuthorizationTokenManager.class);
         AuthorityInfoBean authorityInfoBean = tokenManager.getAuthorityInfo(token);
         return authorityInfoBean.getPrincipal();
+    }
+
+
+    public static Long getAccountId(ServerHttpRequest request) throws Exception {
+        String subjectAccount = getSubjectAccount(request);
+        NativeAccountService accountService = SpringContextUtils.getBean(NativeAccountService.class);
+        return accountService.findAccountIdByPrincipal(subjectAccount).getData();
+    }
+
+    public static Long getAccountId(ServerWebExchange webExchange) throws Exception {
+        return getAccountId(webExchange.getRequest());
     }
 }

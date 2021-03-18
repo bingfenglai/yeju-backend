@@ -14,18 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.interfaces;
+package pers.lbf.yeju.provider.product.house.dao;
 
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.service.interfaces.auth.dto.AuthzSimpleInfoBean;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import pers.lbf.yeju.common.domain.entity.business.HouseInfoTradable;
 
-/** 授权信息服务接口类
+/**
+ * 房源信息表，其中按照添加时的月份进行表分区。并且仅保留待审核状态的记录。待交易（审核已完成）的记录搬table_busi(TableBusinessHouseInfoTradable)表数据库访问层
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @version 1.0
- * @date 2021/2/18 20:23
+ * @since 2021-03-17 15:40:01
  */
-public interface IAuthzService {
+public interface HouseInfoTradableDao extends BaseMapper<HouseInfoTradable> {
 
-    IResult<AuthzSimpleInfoBean> findAuthzInfoByPrincipal(String principal)throws ServiceException;
 }

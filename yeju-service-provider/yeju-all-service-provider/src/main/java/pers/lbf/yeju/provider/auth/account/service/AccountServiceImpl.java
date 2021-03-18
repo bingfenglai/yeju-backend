@@ -18,6 +18,7 @@ package pers.lbf.yeju.provider.auth.account.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,6 +39,9 @@ import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -45,6 +49,7 @@ import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
  * @date 2020/12/16 10:21
  */
 @DubboService(interfaceClass = IAccountService.class)
+@Slf4j
 public class AccountServiceImpl implements IAccountService {
 
     @Autowired
@@ -79,8 +84,6 @@ public class AccountServiceImpl implements IAccountService {
      * @param newPassword 新密码
      * @throws RuntimeException e
      */
-
-
     @CacheEvict(cacheNames = {
             "accountService:simpleAccount",
             "accountService:details"}, key = "#principal")
@@ -177,7 +180,62 @@ public class AccountServiceImpl implements IAccountService {
         queryWrapper.select("account_id");
         queryWrapper.eq("account_status", StatusConstants.ABLE);
         Account account = accountDao.selectOne(queryWrapper);
+        log.info("查询账户ID成功");
         return Result.ok(account.getAccountId());
+    }
+
+    /**
+     * TODO 后续需要补关系表的删除
+     *
+     * @param principal
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/11 13:10
+     */
+    @Override
+    @CacheEvict(cacheNames = {
+            "accountService:accountId",
+            "accountService:details",
+            "accountService:simpleAccount",
+            "accountService:details"
+
+    }, allEntries = true)
+    public IResult<Boolean> deleteByPrincipal(String principal) throws ServiceException {
+
+        QueryWrapper<Account> queryWrapper = getAccountQueryWrapperByPrincipal(principal);
+        accountDao.delete(queryWrapper);
+        return Result.ok(true);
+    }
+
+    @CacheEvict(cacheNames = {
+            "accountService:accountId",
+            "accountService:details",
+            "accountService:simpleAccount",
+            "accountService:details"
+
+    }, allEntries = true)
+    @Override
+    public IResult<Boolean> deleteById(Long id) throws ServiceException {
+        accountDao.deleteById(id);
+        return Result.ok(true);
+    }
+
+    @CacheEvict(cacheNames = {
+            "accountService:accountId",
+            "accountService:details",
+            "accountService:simpleAccount",
+            "accountService:details"
+
+    }, allEntries = true)
+    @Override
+    public IResult<Boolean> deleteBatch(String[] idList) throws ServiceException {
+        List<Long> ids = new LinkedList<>();
+        for (String s : idList) {
+            ids.add(Long.valueOf(s));
+        }
+        accountDao.deleteBatchIds(ids);
+        return Result.ok(true);
     }
 
 

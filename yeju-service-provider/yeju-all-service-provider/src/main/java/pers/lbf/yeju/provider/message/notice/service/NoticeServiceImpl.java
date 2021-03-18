@@ -35,6 +35,7 @@ import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.domain.entity.Notice;
+import pers.lbf.yeju.common.util.DateUtils;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.message.notice.NoticeCacheKeyManager;
 import pers.lbf.yeju.provider.message.notice.dao.INoticeDao;
@@ -42,6 +43,7 @@ import pers.lbf.yeju.provider.message.notice.sender.NoticeSender;
 import pers.lbf.yeju.service.interfaces.message.IGroupMessageService;
 import pers.lbf.yeju.service.interfaces.message.IMessageGroupService;
 import pers.lbf.yeju.service.interfaces.message.notice.INoticeService;
+import pers.lbf.yeju.service.interfaces.message.notice.pojo.NoticeDetailsBean;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
@@ -161,7 +163,7 @@ public class NoticeServiceImpl implements INoticeService {
 
         for (Long groupId : groupIds) {
 
-            String pattern = NoticeCacheKeyManager.generateNoticeKeyAllMessageParrent(groupId);
+            String pattern = NoticeCacheKeyManager.generateNoticeKeyAllMessagePattern(groupId);
             log.info("表达式： {}", pattern);
             Collection<String> keys = redisService.keys(pattern);
             log.info("消息键---> {} {}", keys.size(), Arrays.toString(keys.toArray()));
@@ -207,7 +209,7 @@ public class NoticeServiceImpl implements INoticeService {
      * @version 1.0
      * @date 2021/3/4 23:35
      */
-    @CacheEvict(cacheNames = "noticeService", allEntries = true)
+    @CacheEvict(cacheNames = "noticeService:findPage", allEntries = true)
     @Override
     public IResult<Object> create(NoticeCreateArgs args) throws Exception {
 
@@ -228,8 +230,15 @@ public class NoticeServiceImpl implements INoticeService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "noticeService:findPage", allEntries = true)
     public IResult<Object> update(NoticeUpdateArgs args) throws ServiceException {
         Notice notice = noticeUpdateArgsToNotice(args);
+        if (new Date().before(notice.getEndTime())) {
+            notice.setStatus(StatusConstants.ABLE);
+        } else {
+            notice.setStatus(StatusConstants.DISABLE);
+        }
+
         noticeDao.updateById(notice);
         return SimpleResult.ok();
     }
@@ -259,13 +268,18 @@ public class NoticeServiceImpl implements INoticeService {
      * @version 1.0
      * @date 2021/3/10 11:23
      */
-    @CacheEvict(cacheNames = "noticeService", allEntries = true)
+    @CacheEvict(cacheNames = "noticeService:findPage", allEntries = true)
     @Override
     public IResult<Boolean> deleteBatch(String[] idList) throws ServiceException {
         List<Long> ids = new LinkedList<>();
         for (String s : idList) {
-            String redisKey = NoticeCacheKeyManager.generateAllNoticeKeyParrent(s);
-            redisService.deleteObject(redisKey);
+            String redisKey = NoticeCacheKeyManager.generateAllNoticeKeyPattern(s);
+            log.info("清理redis缓存key {}", redisKey);
+            Collection<String> keys = redisService.keys(redisKey);
+            for (String key : keys) {
+                redisService.deleteObject(key);
+            }
+
             ids.add(Long.valueOf(s));
         }
         // 清理数据库
@@ -287,8 +301,34 @@ public class NoticeServiceImpl implements INoticeService {
     public IResult<Boolean> deleteById(String id) throws ServiceException {
 
         int i = noticeDao.deleteById(Long.valueOf(id));
+        redisService.deleteObject(NoticeCacheKeyManager.generateAllNoticeKeyPattern(id));
         log.info("删除行数 {}", i);
         return Result.ok(true);
+    }
+
+    @Cacheable(cacheNames = "noticeService:details", key = "#id")
+    @Override
+    public IResult<NoticeDetailsBean> findDetailsById(String id) throws ServiceException {
+        Notice notice = noticeDao.selectById(Long.valueOf(id));
+        NoticeDetailsBean bean = noticeToDetailsBean(notice);
+
+        return Result.ok(bean);
+    }
+
+    private NoticeDetailsBean noticeToDetailsBean(Notice notice) {
+        NoticeDetailsBean noticeDetailsBean = new NoticeDetailsBean();
+        noticeDetailsBean.setNoticeId(notice.getNoticeId());
+        noticeDetailsBean.setTitle(notice.getTitle());
+        noticeDetailsBean.setContent(notice.getContent());
+        noticeDetailsBean.setNoticeType(notice.getNoticeType());
+        noticeDetailsBean.setStatus(notice.getStatus());
+        noticeDetailsBean.setSendTo(notice.getSendTo());
+        noticeDetailsBean.setReceiverType(notice.getReceiverType());
+        String[] dateRange = new String[2];
+        dateRange[0] = DateUtils.dateToString(notice.getStartTime());
+        dateRange[1] = DateUtils.dateToString(notice.getEndTime());
+        noticeDetailsBean.setDateRange(dateRange);
+        return noticeDetailsBean;
     }
 
     @Async

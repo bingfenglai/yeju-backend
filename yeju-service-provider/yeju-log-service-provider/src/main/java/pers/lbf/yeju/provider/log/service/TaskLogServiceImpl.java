@@ -17,6 +17,7 @@
 package pers.lbf.yeju.provider.log.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ import java.util.List;
  */
 @DubboService(interfaceClass = ITaskLogService.class)
 @Service
+@Slf4j
 public class TaskLogServiceImpl implements ITaskLogService {
 
     @Autowired
@@ -61,7 +63,7 @@ public class TaskLogServiceImpl implements ITaskLogService {
 
     @Override
     public PageResult<JobLogInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
-
+        
         Page<TaskLog> page = PageUtil.getPage(TaskLog.class, currentPage, size);
         Page<TaskLog> taskLogPage = TaskLogDao.selectPage(page, null);
         List<TaskLog> taskLogList = taskLogPage.getRecords();

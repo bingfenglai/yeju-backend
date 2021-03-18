@@ -20,6 +20,7 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.service.interfaces.message.notice.pojo.NoticeDetailsBean;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
@@ -101,4 +102,6 @@ public interface INoticeService {
      * @date 2021/3/10 14:59
      */
     IResult<Boolean> deleteById(String id) throws ServiceException;
+
+    IResult<NoticeDetailsBean> findDetailsById(String id) throws ServiceException;
 }

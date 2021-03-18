@@ -33,11 +33,14 @@ import pers.lbf.yeju.consumer.base.util.SubjectHelper;
 import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.dictionary.pojo.SimpleLabelAndValueBean;
 import pers.lbf.yeju.service.interfaces.message.notice.INoticeService;
+import pers.lbf.yeju.service.interfaces.message.notice.pojo.NoticeDetailsBean;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
+import pers.lbf.yeju.service.interfaces.message.pojo.NoticeUpdateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.SimpleNoticeInfoBean;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +111,7 @@ public class NoticeController {
      * @date 2021/3/4 15:54
      */
     @ApiOperation(value = "新增通知", notes = "新增通知说明", httpMethod = "POST")
-    @PostMapping("/create")
+    @PostMapping
     public Mono<IResult<Object>> create(@RequestBody @Validated NoticeCreateArgs args, ServerWebExchange webExchange) throws Exception {
         String[] dateRange = args.getDateRange();
         args.setStartTime(DateConvertUtil.stringToDate(dateRange[0]));
@@ -122,8 +125,13 @@ public class NoticeController {
 
     @ApiOperation(value = "批量删除通知", notes = "删除通知说明", httpMethod = "DELETE")
     @DeleteMapping("/deleteBatch")
-    public Mono<IResult<Boolean>> deleteBatch(@ApiParam(name = "id") @RequestBody String[] idList) throws ServiceException {
-
+    public Mono<IResult<Boolean>> deleteBatch(
+            @ApiParam(name = "id")
+            @RequestBody
+            @Validated @Size(min = 1, message = "批量删除参数不能为空") String[] idList) throws ServiceException {
+        if (idList.length == 1) {
+            return Mono.just(noticeService.deleteById(idList[0]));
+        }
         return Mono.just(noticeService.deleteBatch(idList));
     }
 
@@ -132,6 +140,29 @@ public class NoticeController {
     public Mono<IResult<Boolean>> delete(@ApiParam(name = "id") @PathVariable String id) throws ServiceException {
 
         return Mono.just(noticeService.deleteById(id));
+    }
+
+    @ApiOperation(value = "修改接口", notes = "修改接口说明", httpMethod = "PUT")
+    @PutMapping
+    public Mono<IResult<Object>> updateNoticeInfo(@RequestBody NoticeUpdateArgs args, ServerWebExchange webExchange) throws Exception {
+        String[] dateRange = args.getDateRange();
+        args.setStartTime(DateConvertUtil.stringToDate(dateRange[0]));
+        args.setEndTime(DateConvertUtil.stringToDate(dateRange[1]));
+        String account = SubjectHelper.getSubjectAccount(webExchange);
+        args.setCreateBy(account);
+        args.setUpdateTime(new Date());
+        return Mono.just(noticeService.update(args));
+    }
+
+    @ApiOperation(value = "获取通知详情", notes = "通知详情说明", httpMethod = "GET")
+    @GetMapping("/{id}")
+    public Mono<IResult<NoticeDetailsBean>> getDetailsInfo(
+            @ApiParam(name = "id")
+            @PathVariable
+            @Validated @NotNull String id) throws ServiceException {
+
+        return Mono.just(noticeService.findDetailsById(id));
+
     }
 
 

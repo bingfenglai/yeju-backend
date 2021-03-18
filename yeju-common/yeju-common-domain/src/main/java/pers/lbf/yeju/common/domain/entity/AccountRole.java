@@ -31,10 +31,10 @@ import java.util.Date;
 @TableName("r_t_account_role")
 public class AccountRole extends Model<AccountRole> implements Serializable {
     // 账号主键
-    @TableId
+
     private Long accountId;
     // 角色主键
-    @TableId
+    
     private Long roleId;
     /**
      * 状态1启用0不启用

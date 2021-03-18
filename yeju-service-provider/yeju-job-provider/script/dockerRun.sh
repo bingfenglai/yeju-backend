@@ -1,1 +1,1 @@
-docker run -p 20890:20890 --name yeju-job-provider -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-job-provider:1.0.0
+docker run -p 20890:20890  --restart=always  --name yeju-job-provider -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-job-provider:1.0.0

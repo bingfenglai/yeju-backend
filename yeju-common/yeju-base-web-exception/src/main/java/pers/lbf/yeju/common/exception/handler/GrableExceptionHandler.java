@@ -18,8 +18,10 @@ package pers.lbf.yeju.common.exception.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.dubbo.rpc.RpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -31,9 +33,11 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
+import pers.lbf.yeju.common.core.constant.EnvironmentConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.ErrorAndExceptionResult;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.exception.status.DubboRpcExceptionMessageHelper;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -51,6 +55,9 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Logger log = LoggerFactory.getLogger(GrableExceptionHandler.class);
+
+    @Value("spring.profiles.active")
+    private String prefix;
 
     /**
      * Handle the given exception. A completion signal through the return value
@@ -84,9 +91,12 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
         } else if (ex instanceof ServiceException) {
             message = ex.getMessage();
             code = ((ServiceException) ex).getExceptionCode();
-
         } else {
-            message = "内部服务错误，请联系客服" + ex.getMessage();
+            if (EnvironmentConstant.prod.equals(prefix)) {
+                message = "内部服务错误，请联系客服" + ex.getMessage();
+            } else {
+                message = "内部服务错误，请联系客服";
+            }
             code = "e9999";
         }
         String path = String.valueOf(exchange.getRequest().getPath());
@@ -106,11 +116,31 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
             message = errorMsg.toString();
             log.error("[服务异常处理]请求路径:{},异常信息:{}", path, message);
         } else if (ex instanceof ResponseStatusException) {
+            message = ex.getMessage();
             log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
-        } else {
-            log.error("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
+        } else if (ex instanceof NullPointerException) {
+            NullPointerException e = (NullPointerException) ex;
+            message = "空指针异常";
+            log.error("[服务异常处理]请求路径:{},异常信息:{}", path, e.getMessage());
             log.error(String.valueOf(ex));
+        } else if (ex instanceof RpcException) {
+            RpcException e = (RpcException) ex;
+            String dubboMsg = DubboRpcExceptionMessageHelper.getMessage(e);
+            if (!EnvironmentConstant.prod.equals(prefix)) {
+                message = dubboMsg;
+            }
+            log.error("[服务异常处理]请求路径:{},异常信息:{}", path, dubboMsg);
+            log.error(String.valueOf(ex));
+        } else {
+
+            if (EnvironmentConstant.prod.equals(prefix)) {
+                message = "内部服务错误，请联系客服" + ex.getMessage();
+            } else {
+                message = "内部服务错误，请联系客服";
+            }
+
+            code = "e9999";
         }
 
 

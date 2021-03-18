@@ -41,4 +41,12 @@ public interface IRoleDao extends BaseMapper<Role> {
             "from r_t_account_role t " +
             "where t.phone_number = #{principal}")
     List<String> selectRoleNamesByPhoneNumber(String principal);
+
+    @Select("SELECT \n" +
+            "  COUNT(*) \n" +
+            "FROM\n" +
+            "  table_system_role t \n" +
+            "WHERE t.`role_id` = #{roleId} \n" +
+            "LIMIT 1 ;\n")
+    Integer isExist(Long roleId) throws RuntimeException;
 }

@@ -23,7 +23,9 @@ import pers.lbf.yeju.service.interfaces.auth.dto.SimpleRole;
 
 import java.util.List;
 
-/**角色服务接口类
+/**
+ * 角色服务接口类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -31,15 +33,17 @@ import java.util.List;
  */
 public interface IRoleService {
 
-    void deleteById(Long id) throws ServiceException;
+    IResult<Boolean> deleteById(Long id) throws ServiceException;
 
-    void updateById(SimpleRole role) throws ServiceException;
+    IResult<Boolean> updateById(SimpleRole role) throws ServiceException;
 
-    void create(SimpleRole role) throws ServiceException;
+    IResult<Boolean> create(SimpleRole role) throws ServiceException;
 
     IResult<SimpleRole> findById(Long id) throws ServiceException;
 
     PageResult<SimpleRole> findPage(Long currentPage, Long size) throws ServiceException;
 
     IResult<List<String>> getRoleListByPrincipal(String principal) throws ServiceException;
+
+    IResult<Boolean> isExist(Long roleId) throws ServiceException;
 }

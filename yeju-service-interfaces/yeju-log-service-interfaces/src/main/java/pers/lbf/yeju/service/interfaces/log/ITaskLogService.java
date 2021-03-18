@@ -42,4 +42,5 @@ public interface ITaskLogService {
     void addOne(TaskLogCreateArgs args) throws ServiceException;
 
     PageResult<JobLogInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
+
 }

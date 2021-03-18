@@ -40,7 +40,7 @@ public class NoticeCacheKeyManager {
      * @version 1.0
      * @date 2021/3/10 11:58
      */
-    public static String generateAllNoticeKeyParrent(String noticeId) {
+    public static String generateAllNoticeKeyPattern(String noticeId) {
 
         return NoticeConstant.REDIS_KEY_PREFIX + "**" + noticeId;
     }
@@ -55,7 +55,7 @@ public class NoticeCacheKeyManager {
      * @version 1.0
      * @date 2021/3/10 11:57
      */
-    public static String generateNoticeKeyAllMessageParrent(Long sendTo) {
+    public static String generateNoticeKeyAllMessagePattern(Long sendTo) {
 
         return NoticeConstant.REDIS_KEY_PREFIX + sendTo + "**";
     }

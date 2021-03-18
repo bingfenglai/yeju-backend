@@ -75,27 +75,31 @@ public class RoleServiceImpl implements IRoleService {
 
     @CacheEvict(cacheNames = {"roleService"}, allEntries = true)
     @Override
-    public void deleteById(Long id) throws ServiceException {
+    public IResult<Boolean> deleteById(Long id) throws ServiceException {
         roleDao.deleteById(id);
+        return Result.ok(true);
     }
 
     @CachePut(cacheNames = "roleService:id", key = "#role.roleId")
-
     @Override
-    public void updateById(SimpleRole role) throws ServiceException {
-
+    public IResult<Boolean> updateById(SimpleRole role) throws ServiceException {
+        return null;
     }
 
     @CacheEvict(cacheNames = "roleService:list", keyGenerator = "yejuKeyGenerator")
     @Override
-    public void create(SimpleRole role) throws ServiceException {
-
+    public IResult<Boolean> create(SimpleRole role) throws ServiceException {
+        return null;
     }
 
     @Cacheable(cacheNames = "roleService:id", key = "#id")
     @Override
     public IResult<SimpleRole> findById(Long id) throws ServiceException {
-        return null;
+
+        Role role = roleDao.selectById(id);
+        SimpleRole simpleRole = roleToSimpleInfoBean(role);
+
+        return Result.ok(simpleRole);
     }
 
 
@@ -118,6 +122,17 @@ public class RoleServiceImpl implements IRoleService {
         }
 
         return Result.ok(roleNameList);
+    }
+
+    @Override
+    public IResult<Boolean> isExist(Long roleId) throws ServiceException {
+        int count = roleDao.isExist(roleId);
+
+        if (count == 1) {
+            return Result.success();
+        }
+
+        return Result.failed();
     }
 
 

@@ -31,4 +31,5 @@ public interface CreateArgs {
     void setCreateBy(String account);
 
     void setCreateTime(Date date);
+    
 }

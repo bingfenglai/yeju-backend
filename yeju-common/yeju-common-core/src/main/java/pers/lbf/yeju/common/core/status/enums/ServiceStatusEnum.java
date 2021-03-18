@@ -17,11 +17,16 @@ public enum ServiceStatusEnum implements IStatus, Serializable {
     OK("操作成功", "00000"),
 
     /**
+     * 业务操作 结果未不满足条件的情况， 而非系统引起的异常
+     */
+    failed("操作失败", "00001"),
+
+    /**
      * 未知异常
      */
     UNKNOWN_ERROR("未知异常", "e9999"),
 
-    no_data_has_been_found("没有查询到相关数据", "svc01");;
+    no_data_has_been_found("没有查询到相关数据", "svc01");
 
 
     /**

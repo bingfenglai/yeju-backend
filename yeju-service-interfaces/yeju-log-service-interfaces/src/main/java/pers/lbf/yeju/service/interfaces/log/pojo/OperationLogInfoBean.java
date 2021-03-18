@@ -16,6 +16,9 @@
  */
 package pers.lbf.yeju.service.interfaces.log.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,6 +31,7 @@ import java.util.Date;
  */
 public class OperationLogInfoBean implements Serializable {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long operationLogId;
     /**
      * 模块标题
@@ -57,8 +61,8 @@ public class OperationLogInfoBean implements Serializable {
     /**
      * 操作者id
      */
-    private String operatorId;
-    
+    private String operatorAccount;
+
     /**
      * 请求路径
      */
@@ -91,13 +95,145 @@ public class OperationLogInfoBean implements Serializable {
      * 操作时间
      */
     private Date operationTime;
-    /**
-     * 访问ip最后一位数字，用作分区标识
-     */
-    private Integer lastIpNumber;
 
     /**
      * 操作耗时
      */
     private Long executeTime;
+
+    public Long getOperationLogId() {
+        return operationLogId;
+    }
+
+    public void setOperationLogId(Long operationLogId) {
+        this.operationLogId = operationLogId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(Integer businessType) {
+        this.businessType = businessType;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getRequestMethod() {
+        return requestMethod;
+    }
+
+    public void setRequestMethod(String requestMethod) {
+        this.requestMethod = requestMethod;
+    }
+
+    public String getOperatorType() {
+        return operatorType;
+    }
+
+    public void setOperatorType(String operatorType) {
+        this.operatorType = operatorType;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    public String getOperatorAccount() {
+        return operatorAccount;
+    }
+
+    public void setOperatorAccount(String operatorAccount) {
+        this.operatorAccount = operatorAccount;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public Integer getOperationStatus() {
+        return operationStatus;
+    }
+
+    public void setOperationStatus(Integer operationStatus) {
+        this.operationStatus = operationStatus;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public Date getOperationTime() {
+        return operationTime;
+    }
+
+    public void setOperationTime(Date operationTime) {
+        this.operationTime = operationTime;
+    }
+
+    public Long getExecuteTime() {
+        return executeTime;
+    }
+
+    public void setExecuteTime(Long executeTime) {
+        this.executeTime = executeTime;
+    }
 }

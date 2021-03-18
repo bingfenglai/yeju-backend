@@ -18,6 +18,7 @@
         <module>yeju-all-rest-api</module>
         <module>yeju-auth-rest-api</module>
         <module>yeju-message-rest-api</module>
+        <module>yeju-product-web</module>
     </modules>
 
 </project>

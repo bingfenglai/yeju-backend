@@ -1,1 +1,1 @@
-docker run -p 9002:9002 --name yeju_auth_consumer -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-auth-rest-api:1.0.0
+docker run -p 9002:9002 --name yeju-authentication  --restart=always -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-auth-rest-api:1.0.0

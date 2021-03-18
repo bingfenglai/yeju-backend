@@ -1,1 +1,1 @@
-docker run -p 20884:20884 --name yeju_oos_provider -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-oos-service-provider:1.0.0
+docker run -p 20884:20884  --restart=always  --name yeju_oos_provider -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-oos-service-provider:1.0.0

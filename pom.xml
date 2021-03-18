@@ -66,6 +66,7 @@
         <swgger-annotations.version>1.5.20</swgger-annotations.version>
         <micrometer.prometheus.version>1.1.4</micrometer.prometheus.version>
         <springfox.version>3.0.0</springfox.version>
+        <ableHotDeploy>true</ableHotDeploy>
     </properties>
 
 
@@ -535,9 +536,11 @@
         <profile>
             <!--	开发环境		-->
             <id>dev</id>
+
             <properties>
                 <profileActive>dev</profileActive>
             </properties>
+
             <distributionManagement>
                 <repository>
                     <!--必须与 settings.xml 的 id 一致-->

@@ -16,7 +16,9 @@
  */
 package pers.lbf.yeju.common.core.constant;
 
-/** 操作状态编码
+/**
+ * 操作状态编码
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/1/19 16:38
@@ -26,12 +28,12 @@ public enum OperationStatus {
     /**
      * 成功
      */
-    success(0),
+    success(1),
 
     /**
      * 异常
      */
-    abnormal(1);
+    abnormal(0);
 
     private Integer value;
 

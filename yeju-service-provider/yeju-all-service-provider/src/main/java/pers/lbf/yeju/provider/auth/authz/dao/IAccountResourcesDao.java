@@ -1,4 +1,4 @@
-package pers.lbf.yeju.provider.auth.account.dao;
+package pers.lbf.yeju.provider.auth.authz.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import pers.lbf.yeju.common.domain.entity.AccountResources;
@@ -9,4 +9,5 @@ import pers.lbf.yeju.common.domain.entity.AccountResources;
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @since 2020-12-13 10:50:52
  */
-public interface AccountResourcesDao extends BaseMapper<AccountResources> {}
+public interface IAccountResourcesDao extends BaseMapper<AccountResources> {
+}

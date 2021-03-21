@@ -14,35 +14,49 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import pers.lbf.yeju.gateway.web.filter.ApiAccessLimitHandler;
-import pers.lbf.yeju.gateway.web.filter.AuthFilter;
+package pers.lbf.yeju.gateway.exception.status;
+
+import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
 /**
- * 过滤器链配置
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/4 21:19
+ * @date 2021/3/21 9:56
  */
-@Configuration
-public class FilterChainConfig {
-
+public enum ApiAccessStatus implements IStatus {
     /**
-     * 鉴权过滤器
-     *
-     * @return authFilter
+     * 访问频率过高,请稍后重试
      */
-    @Bean
-    public AuthFilter initAuthFilter() {
-        return new AuthFilter();
+    limit("访问频率过高,请稍后重试", "api01");
+
+    private String code;
+    private String message;
+
+    ApiAccessStatus(String message, String code) {
+        this.code = code;
+        this.message = message;
     }
 
-    //@Bean
-    public ApiAccessLimitHandler initApiAccess() {
-        return new ApiAccessLimitHandler();
+    /**
+     * 状态消息
+     *
+     * @return msg
+     */
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * 状态编码
+     *
+     * @return code
+     */
+    @Override
+    public String getCode() {
+        return this.code;
     }
 }

@@ -72,18 +72,23 @@ public class AuthenticationController {
     public Mono<Object> logout(ServerWebExchange webExchange) throws ServiceException {
         //获取token
         String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
-        AuthorityInfoBean authorityInfo = null;
+
+        if (authorization == null) {
+            return Mono.empty();
+        }
+
+        AuthorityInfoBean authorityInfo = new AuthorityInfoBean();
         try {
             authorityInfo = tokenManager.getAuthorityInfo(authorization);
         } catch (Exception e) {
             log.error(String.valueOf(e));
         }
-        assert authorityInfo != null;
-        String principal = authorityInfo.getPrincipal();
-        String sessionId = authorityInfo.getSessionId();
-        return Mono.empty().doFinally(signalType -> {
 
-            sessionService.destroySession(principal);
+        String principal = authorityInfo.getPrincipal();
+        return Mono.empty().doFinally(signalType -> {
+            if (principal != null) {
+                sessionService.destroySession(principal);
+            }
         });
     }
 

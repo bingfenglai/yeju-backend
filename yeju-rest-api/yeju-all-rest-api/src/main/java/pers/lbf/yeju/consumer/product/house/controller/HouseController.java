@@ -21,16 +21,20 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
+import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 /**
  * TODO
@@ -51,8 +55,8 @@ public class HouseController {
     @ApiOperation(value = "获取房源信息列表 分页", notes = "房源信息列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<SimpleHouseInfoBean>> findPage(
-            @Validated @NotNull(message = "每页显示条数") @ApiParam("当前页") @PathVariable Long currentPage,
-            @Validated @NotNull(message = "每页显示大小不能为空") @ApiParam("每页显示条数") @RequestParam Long size
+            @Valid @Positive @ApiParam("当前页必须是一个正数") @PathVariable Long currentPage,
+            @Valid @Size(min = 1, max = 50, message = "每页查询大小必须大于1小于50") @ApiParam("每页显示条数") @RequestParam Long size
     ) throws ServiceException {
         BaseFindPageArgs args = new BaseFindPageArgs();
         args.setCurrentPage(currentPage);
@@ -61,5 +65,15 @@ public class HouseController {
         return Mono.just(houseInfoService.findPage(args.getCurrentPage(), args.getSize()));
     }
 
+
+    @ApiOperation(value = "获取房源信息详情", notes = "房源信息详情说明", httpMethod = "GET")
+    @GetMapping("/{id}")
+    public Mono<IResult<HouseDetailsInfoBean>> getHouseDetailsInfo(
+            @Valid @NotNull(message = "房源标识不能为空") @PathVariable("id") String id,
+            @Valid @NotNull(message = "房源状态不能为空") @RequestParam String houseStatus
+    ) throws ServiceException {
+        return Mono.just(houseInfoService.findDetailsByIdAndStatus(Long.valueOf(id), houseStatus));
+    }
+    
 
 }

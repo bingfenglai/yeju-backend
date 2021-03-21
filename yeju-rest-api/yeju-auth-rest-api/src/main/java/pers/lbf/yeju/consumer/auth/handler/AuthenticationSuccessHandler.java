@@ -117,7 +117,9 @@ public class AuthenticationSuccessHandler extends WebFilterChainServerAuthentica
         // 然后生成新的会话
         String sessionId = authorityInfoBean.getPrincipal() + System.currentTimeMillis();
         authorityInfoBean.setSessionId(sessionId);
-        Boolean success = sessionService.initSession(sessionId, authorityInfoBean.getPrincipal()).isSuccess();
+
+        //Boolean success = sessionService.initSession(sessionId, authorityInfoBean.getPrincipal()).isSuccess();
+        Boolean success = sessionService.initSession(sessionId, authorityInfoBean.getPrincipal(), expires).isSuccess();
 
         if (!success) {
             throw ServiceException.getInstance(SessionStatus.InitFailed);

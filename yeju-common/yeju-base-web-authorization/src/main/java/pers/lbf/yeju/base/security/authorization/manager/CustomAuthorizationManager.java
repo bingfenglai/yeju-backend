@@ -104,14 +104,14 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         String path1 = request.getURI().getPath();
         log.info("用户请求路径：{}", path1);
         for (String s : authorityList) {
-            if (antPathMatcher.match(s, path1)) {
+            if (antPathMatcher.match(s, path1.replace("/", ":").substring(1))) {
                 log.info(String.format("用户请求API校验通过，GrantedAuthority:{%s}  Path:{%s} ", s, path1));
                 return Mono.just(new AuthorizationDecision(true));
             }
 
         }
-        log.info("用户 {} 请求API校验通过", authorityInfoBean.getPrincipal());
-        return Mono.just(new AuthorizationDecision(true));
+        log.info("用户 {} 请求API校验 不 通 过", authorityInfoBean.getPrincipal());
+        return Mono.just(new AuthorizationDecision(false));
 
 
     }

@@ -37,6 +37,7 @@ import pers.lbf.yeju.service.interfaces.session.pojo.SessionDetails;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 权限信息接口
@@ -98,7 +99,10 @@ public class AuthorizationController {
         bean.setExpiresAt(tokenExpiresTime);
         bean.setAccessToken(newToken);
 
-        return Mono.just(Result.ok(bean));
+        return Mono.just(Result.ok(bean))
+                .doFinally(signalType -> {
+                    sessionService.expired(authorityInfo.getPrincipal(), tokenExpiresTime, TimeUnit.SECONDS);
+                }).toProcessor();
     }
 
 

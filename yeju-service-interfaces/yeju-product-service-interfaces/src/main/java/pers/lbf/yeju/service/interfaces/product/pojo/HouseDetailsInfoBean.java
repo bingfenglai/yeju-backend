@@ -19,6 +19,7 @@ package pers.lbf.yeju.service.interfaces.product.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -173,7 +174,7 @@ public class HouseDetailsInfoBean implements Serializable {
     /**
      * 是否有车位
      */
-    private Boolean thereAParkingSpace;
+    private Boolean parkingSpace;
     /**
      * 电价
      */
@@ -183,8 +184,101 @@ public class HouseDetailsInfoBean implements Serializable {
      */
     private Double waterPrice;
 
+    /**
+     * 性别限制
+     * 0不限
+     * 1男
+     * 2女
+     */
+    private Boolean genderRestrictions;
+    /**
+     * 是否有空调
+     */
+    private Boolean itAirConditioned;
+    /**
+     * 是否供暖
+     */
+    private Boolean whetherTheHeating;
+
     private List<HouseResourceInfoBean> houseResourceInfoBeanList;
 
+
+    public void addResource(HouseResourceInfoBean resource) {
+        if (houseResourceInfoBeanList == null) {
+            houseResourceInfoBeanList = new LinkedList<>();
+        }
+        houseResourceInfoBeanList.add(resource);
+    }
+
+
+    @Override
+    public String toString() {
+        return "HouseDetailsInfoBean{" +
+                "houseId=" + houseId +
+                ", ownerId=" + ownerId +
+                ", ownerName='" + ownerName + '\'' +
+                ", title='" + title + '\'' +
+                ", communityId=" + communityId +
+                ", communityName=" + communityName +
+                ", buildingNumber='" + buildingNumber + '\'' +
+                ", buildingUint='" + buildingUint + '\'' +
+                ", buildingFloorNumber='" + buildingFloorNumber + '\'' +
+                ", detailsAddress='" + detailsAddress + '\'' +
+                ", rent=" + rent +
+                ", rentalMode='" + rentalMode + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", houseType='" + houseType + '\'' +
+                ", coveredArea=" + coveredArea +
+                ", useArea=" + useArea +
+                ", floors='" + floors + '\'' +
+                ", houseOrientation='" + houseOrientation + '\'' +
+                ", houseDecorationType='" + houseDecorationType + '\'' +
+                ", houseFacilities='" + houseFacilities + '\'' +
+                ", descs='" + descs + '\'' +
+                ", houseStatus='" + houseStatus + '\'' +
+                ", houseImagesAddress='" + houseImagesAddress + '\'' +
+                ", createTime=" + createTime +
+                ", hotWater=" + hotWater +
+                ", haveKitchen=" + haveKitchen +
+                ", haveLivingRoot=" + haveLivingRoot +
+                ", haveBalcony=" + haveBalcony +
+                ", haveWindow=" + haveWindow +
+                ", separateToilet=" + separateToilet +
+                ", checkInWithBags=" + checkInWithBags +
+                ", haveElevator=" + haveElevator +
+                ", parkingSpace=" + parkingSpace +
+                ", electricityPrice=" + electricityPrice +
+                ", waterPrice=" + waterPrice +
+                ", genderRestrictions=" + genderRestrictions +
+                ", itAirConditioned=" + itAirConditioned +
+                ", whetherTheHeating=" + whetherTheHeating +
+                ", houseResourceInfoBeanList=" + houseResourceInfoBeanList +
+                '}';
+    }
+
+    public Boolean getGenderRestrictions() {
+        return genderRestrictions;
+    }
+
+    public void setGenderRestrictions(Boolean genderRestrictions) {
+        this.genderRestrictions = genderRestrictions;
+    }
+
+    public Boolean getItAirConditioned() {
+        return itAirConditioned;
+    }
+
+    public void setItAirConditioned(Boolean itAirConditioned) {
+        this.itAirConditioned = itAirConditioned;
+    }
+
+    public Boolean getWhetherTheHeating() {
+        return whetherTheHeating;
+    }
+
+    public void setWhetherTheHeating(Boolean whetherTheHeating) {
+        this.whetherTheHeating = whetherTheHeating;
+    }
 
     public Long getHouseId() {
         return houseId;
@@ -442,12 +536,12 @@ public class HouseDetailsInfoBean implements Serializable {
         this.haveElevator = haveElevator;
     }
 
-    public Boolean getThereAParkingSpace() {
-        return thereAParkingSpace;
+    public Boolean getParkingSpace() {
+        return parkingSpace;
     }
 
-    public void setThereAParkingSpace(Boolean thereAParkingSpace) {
-        this.thereAParkingSpace = thereAParkingSpace;
+    public void setParkingSpace(Boolean parkingSpace) {
+        this.parkingSpace = parkingSpace;
     }
 
     public Double getElectricityPrice() {

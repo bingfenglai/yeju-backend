@@ -17,6 +17,7 @@
 package pers.lbf.yeju.provider.product.house.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Update;
 import pers.lbf.yeju.common.domain.entity.business.HouseInfo;
 
 /**
@@ -27,4 +28,10 @@ import pers.lbf.yeju.common.domain.entity.business.HouseInfo;
  */
 public interface HouseInfoDao extends BaseMapper<HouseInfo> {
 
+    @Update("UPDATE \n" +
+            "  table_business_house_info t \n" +
+            "SET\n" +
+            "  t.`house_status` = #{houseStatus}' \n" +
+            "WHERE t.`house_id` = #{id} ;")
+    int updateHouseStatusById(Long id, String houseStatus) throws RuntimeException;
 }

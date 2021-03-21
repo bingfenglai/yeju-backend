@@ -6,6 +6,9 @@ import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.session.pojo.OnlineInfoBean;
 import pers.lbf.yeju.service.interfaces.session.pojo.SessionDetails;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -28,7 +31,7 @@ public interface ISessionService {
      */
 
     void destroySession(String principal) throws ServiceException;
-    
+
 
     /**
      * 登出方法，销毁会话信息
@@ -50,11 +53,38 @@ public interface ISessionService {
      * @return SessionDetails
      * @throws ServiceException e
      */
+    @Deprecated
     IResult<SessionDetails> initSession(String sessionId, String principal) throws ServiceException;
+
+    IResult<SessionDetails> initSession(String sessionId, String principal, Long expired) throws ServiceException;
 
     IResult<SessionDetails> getSessionDetails(String sessionId) throws ServiceException;
 
     IResult<Boolean> isExpired(String principal) throws ServiceException;
 
+    /**
+     * 使会话过期
+     *
+     * @param principal
+     * @param expired
+     * @param timeUnit
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/20 11:18
+     */
+    IResult<Boolean> expired(String principal, Long expired, TimeUnit timeUnit) throws ServiceException;
 
+    /**
+     * 使会话过期
+     *
+     * @param principal
+     * @param expired
+     * @param timeout
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/20 11:19
+     */
+    IResult<Boolean> expiredAt(String principal, String expired, Date timeout) throws ServiceException;
 }

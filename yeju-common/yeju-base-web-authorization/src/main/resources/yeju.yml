@@ -1,0 +1,11 @@
+yeju:
+  security:
+    api-access:
+      limit:
+        path:
+          - /auth/code/image
+        second:
+          - 5
+        count:
+          - 3
+        pathMaps: { /auth-consumer/auth/code/image: [ 5,3 ] }

@@ -18,7 +18,7 @@ package pers.lbf.yeju.consumer.oos.service;
 
 import org.springframework.http.codec.multipart.FilePart;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.common.core.result.IResult;
 import reactor.core.publisher.Mono;
 
 /**
@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
  */
 public interface ObjectUploadService {
 
-    Mono<Result<String>> upload(FilePart filePart ) throws ServiceException;
+    Mono<IResult<String>> upload(FilePart filePart) throws ServiceException;
 
-    Mono<Result<String>> upload(String fileMd5,FilePart filePart ) throws ServiceException;
+    Mono<IResult<String>> upload(String fileMd5, FilePart filePart) throws ServiceException;
 }

@@ -27,6 +27,7 @@ import pers.lbf.yeju.common.core.args.UpdateArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.domain.entity.business.*;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.product.house.constant.HouseStatusConstant;
@@ -36,6 +37,7 @@ import pers.lbf.yeju.provider.product.house.dao.HouseInfoTradableDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseOtherAttributeDao;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
+import pers.lbf.yeju.service.interfaces.product.pojo.HouseResourceInfoBean;
 import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
 
 import java.util.LinkedList;
@@ -109,6 +111,7 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         return null;
     }
 
+    @Cacheable(cacheNames = "house", keyGenerator = "yejuKeyGenerator")
     @Override
     public IResult<HouseDetailsInfoBean> findDetailsByIdAndStatus(Long id, String houseStatus) throws ServiceException {
         HouseDetailsInfoBean houseDetails = new HouseDetailsInfoBean();
@@ -116,15 +119,20 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         //查询基础信息
         if (HouseStatusConstant.auditFailed.equals(houseStatus) || HouseStatusConstant.pendingReview.equals(houseStatus)) {
             HouseInfo houseInfo = houseInfoDao.selectById(id);
-            houseDetails = houseInfoToDetails(houseInfo);
+            if (houseInfo != null) {
+                houseDetails = houseInfoToDetails(houseInfo);
+            }
         } else {
             HouseInfoTradable houseInfoTradable = houseInfoTradableDao.selectById(id);
-            houseDetails = houseInfoToDetails(houseInfoTradable);
+            if (houseInfoTradable != null) {
+                houseDetails = houseInfoToDetails(houseInfoTradable);
+            }
         }
 
         // 查询其他信息
 
         HouseOtherAttribute houseOtherAttribute = houseOtherAttributeDao.selectById(id);
+
         houseOtherAttributeToDetails(houseOtherAttribute, houseDetails);
 
         //查询图片、视频地址
@@ -135,18 +143,56 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         houseImagesAndVideoToDetails(houseImagesAndVideoList, houseDetails);
 
 
-        return null;
+        return Result.ok(houseDetails);
     }
 
-    private void houseImagesAndVideoToDetails(List<HouseImagesAndVideo> imagesAndVideo, HouseDetailsInfoBean houseDetails) {
+    /**
+     * 房源信息审核操作 更改状态
+     *
+     * @param id          房源标识
+     * @param houseStatus 房源状态
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/20 15:43
+     */
+    @Override
+    public IResult<Boolean> verifyById(Long id, String houseStatus) throws ServiceException {
+        int i = houseInfoDao.updateHouseStatusById(id, houseStatus);
+        return Result.ok(i == 1);
+    }
 
+    private void houseImagesAndVideoToDetails(List<HouseImagesAndVideo> imagesAndVideoList, HouseDetailsInfoBean houseDetails) {
+        for (HouseImagesAndVideo houseImagesAndVideo : imagesAndVideoList) {
+            HouseResourceInfoBean bean = houseImagesAndVideoToInfoBean(houseImagesAndVideo);
+            houseDetails.addResource(bean);
+        }
+    }
+
+    private HouseResourceInfoBean houseImagesAndVideoToInfoBean(HouseImagesAndVideo houseImagesAndVideo) {
+        HouseResourceInfoBean houseResourceInfoBean = new HouseResourceInfoBean();
+        houseResourceInfoBean.setHouseId(houseImagesAndVideo.getHouseId());
+        houseResourceInfoBean.setFileName(houseImagesAndVideo.getFileName());
+        houseResourceInfoBean.setFileUrl(houseImagesAndVideo.getFileUrl());
+        houseResourceInfoBean.setResourceStatus(houseImagesAndVideo.getResourceStatus());
+        houseResourceInfoBean.setResourceType(houseImagesAndVideo.getResourceType());
+        houseResourceInfoBean.setResourceId(houseImagesAndVideo.getResourceId());
+        return houseResourceInfoBean;
     }
 
     private void houseOtherAttributeToDetails(HouseOtherAttribute attribute, HouseDetailsInfoBean houseDetails) {
 
         houseDetails.setHotWater(attribute.getIsHotWater() == 1);
         houseDetails.setHaveKitchen(attribute.getIsHaveKitchen() == 1);
-
+        houseDetails.setHaveLivingRoot(attribute.getIsHaveLivingRoot() == 1);
+        houseDetails.setHaveBalcony(attribute.getIsHaveBalcony() == 1);
+        houseDetails.setHaveWindow(attribute.getIsHaveWindow() == 1);
+        houseDetails.setSeparateToilet(attribute.getIsSeparateToilet() == 1);
+        houseDetails.setCheckInWithBags(attribute.getIsCheckInWithBags() == 1);
+        houseDetails.setHaveElevator(attribute.getIsHaveElevator() == 1);
+        houseDetails.setParkingSpace(attribute.getIsThereAParkingSpace() == 1);
+        houseDetails.setElectricityPrice(attribute.getElectricityPrice());
+        houseDetails.setWaterPrice(attribute.getWaterPrice());
 
     }
 

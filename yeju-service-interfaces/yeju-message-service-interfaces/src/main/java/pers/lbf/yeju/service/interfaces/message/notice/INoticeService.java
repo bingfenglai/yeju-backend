@@ -19,7 +19,6 @@ package pers.lbf.yeju.service.interfaces.message.notice;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.service.interfaces.message.notice.pojo.NoticeDetailsBean;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeCreateArgs;
 import pers.lbf.yeju.service.interfaces.message.pojo.NoticeMessage;
@@ -58,9 +57,9 @@ public interface INoticeService {
      * @date 2021/3/3 22:44
      */
     @Deprecated
-    Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList() throws ServiceException;
+    IResult<List<SimpleNoticeInfoBean>> findEffectiveNoticeList() throws ServiceException;
 
-    Result<List<String>> findEffectiveNoticeList(String principal) throws ServiceException;
+    IResult<List<String>> findEffectiveNoticeList(String principal) throws ServiceException;
 
 
     IResult<Object> create(NoticeCreateArgs args) throws Exception;

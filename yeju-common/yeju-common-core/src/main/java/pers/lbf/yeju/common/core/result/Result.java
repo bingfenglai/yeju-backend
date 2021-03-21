@@ -17,7 +17,7 @@ public class Result<T> extends BaseResult<T> implements Serializable, IResult<T>
     private T data;
 
 
-    public static <T> Result<T> ok(T data) {
+    public static <T> IResult<T> ok(T data) {
         return new Result<>(ServiceStatusEnum.OK, data);
     }
 

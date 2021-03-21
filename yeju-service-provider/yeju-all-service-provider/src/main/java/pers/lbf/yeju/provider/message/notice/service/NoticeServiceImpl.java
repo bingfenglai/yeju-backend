@@ -123,7 +123,7 @@ public class NoticeServiceImpl implements INoticeService {
      */
     @Cacheable(cacheNames = "noticeService:effectiveNoticeList", keyGenerator = "yejuKeyGenerator")
     @Override
-    public Result<List<SimpleNoticeInfoBean>> findEffectiveNoticeList() throws ServiceException {
+    public IResult<List<SimpleNoticeInfoBean>> findEffectiveNoticeList() throws ServiceException {
 
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         Date date = new Date();
@@ -155,7 +155,7 @@ public class NoticeServiceImpl implements INoticeService {
      * @date 2021/3/7 15:22
      */
     @Override
-    public Result<List<String>> findEffectiveNoticeList(String principal) throws ServiceException {
+    public IResult<List<String>> findEffectiveNoticeList(String principal) throws ServiceException {
 
         List<Long> groupIds = messageGroupService.findSystemMessageGroupByPrincipal(principal).getData();
 

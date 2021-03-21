@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.constant.ServiceStatusConstant;
+import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -26,10 +27,8 @@ import pers.lbf.yeju.service.interfaces.session.pojo.OnlineInfoBean;
 import pers.lbf.yeju.service.interfaces.session.pojo.SessionAccount;
 import pers.lbf.yeju.service.interfaces.session.pojo.SessionDetails;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -190,6 +189,13 @@ public class SessionServiceImpl implements ISessionService {
     @Override
     public IResult<SessionDetails> initSession(String sessionId, String principal) throws ServiceException {
 
+        return initSession(sessionId, principal, null);
+
+    }
+
+    @Override
+    public IResult<SessionDetails> initSession(String sessionId, String principal, Long expired) throws ServiceException {
+
         SessionDetails sessionDetails;
 
         // 1. 查询账户详情信息
@@ -231,9 +237,16 @@ public class SessionServiceImpl implements ISessionService {
             sessionDetails.setResources(resourceListResult.getData());
         }
         log.info("会话初始化成功{}", principal);
-        redisTemplate.opsForValue().set(SESSION_KEY_PREFIX + sessionId, sessionDetails);
-        return Result.ok(sessionDetails);
 
+        // 如果会话过期时间为空 则使用默认的会话过期时间
+        if (expired == null) {
+            expired = Long.valueOf(TokenConstant.DEFAULT_SESSION_EXPIRES_MINUTE_AT) * 60;
+        }
+
+        String sessionKey = SESSION_KEY_PREFIX + sessionId;
+        redisTemplate.opsForValue().set(sessionKey, sessionDetails);
+        redisTemplate.expire(sessionKey, expired, TimeUnit.SECONDS);
+        return Result.ok(sessionDetails);
     }
 
     @Override
@@ -256,9 +269,67 @@ public class SessionServiceImpl implements ISessionService {
 
     @Override
     public IResult<Boolean> isExpired(String principal) throws ServiceException {
-        Boolean flag = redisTemplate.hasKey(SESSION_KEY_PREFIX + principal);
+        String pattern = SESSION_KEY_PREFIX + principal + "*";
+        Set<String> keys = redisTemplate.keys(pattern);
+
+        Boolean flag = keys != null && keys.size() > 0;
 
         return Result.ok(flag);
+    }
+
+    /**
+     * 使会话过期
+     *
+     * @param principal
+     * @param expired
+     * @param timeUnit
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/20 11:18
+     */
+    @Override
+    public IResult<Boolean> expired(String principal, Long expired, TimeUnit timeUnit) throws ServiceException {
+
+        String pattern = SESSION_KEY_PREFIX + principal + "*";
+        Set<String> keys = redisTemplate.keys(pattern);
+
+        if (keys != null && keys.size() > 0) {
+            for (String key : keys) {
+                redisTemplate.expire(key, expired, timeUnit);
+            }
+        }
+
+        String onlineKey = SESSION_KEY_PREFIX + principal;
+        redisTemplate.expire(onlineKey, expired, timeUnit);
+
+        return Result.success();
+    }
+
+    /**
+     * 使会话过期
+     *
+     * @param principal
+     * @param expired
+     * @param timeout
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/20 11:19
+     */
+    @Override
+    public IResult<Boolean> expiredAt(String principal, String expired, Date timeout) throws ServiceException {
+
+        String pattern = SESSION_KEY_PREFIX + principal + "*";
+        Set<String> keys = redisTemplate.keys(pattern);
+
+        if (keys != null && keys.size() > 0) {
+            for (String key : keys) {
+                redisTemplate.expireAt(key, timeout);
+            }
+        }
+
+        return Result.success();
     }
 
 

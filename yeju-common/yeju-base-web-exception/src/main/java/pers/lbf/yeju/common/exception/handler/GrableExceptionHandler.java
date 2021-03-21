@@ -123,7 +123,7 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
             NullPointerException e = (NullPointerException) ex;
             message = "空指针异常";
             log.error("[服务异常处理]请求路径:{},异常信息:{}", path, e.getMessage());
-            log.error(String.valueOf(ex));
+            log.error(String.valueOf(e));
         } else if (ex instanceof RpcException) {
             RpcException e = (RpcException) ex;
             String dubboMsg = DubboRpcExceptionMessageHelper.getMessage(e);

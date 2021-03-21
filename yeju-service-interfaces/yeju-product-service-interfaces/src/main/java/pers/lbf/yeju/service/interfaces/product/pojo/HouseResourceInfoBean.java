@@ -17,6 +17,8 @@
 
 package pers.lbf.yeju.service.interfaces.product.pojo;
 
+import java.io.Serializable;
+
 /**
  * TODO
  *
@@ -24,7 +26,7 @@ package pers.lbf.yeju.service.interfaces.product.pojo;
  * @version 1.0
  * @date 2021/3/18 10:31
  */
-public class HouseResourceInfoBean {
+public class HouseResourceInfoBean implements Serializable {
 
     private Long resourceId;
     /**
@@ -47,4 +49,52 @@ public class HouseResourceInfoBean {
      * 资源类型0图片1资源
      */
     private Integer resourceType;
+
+    public Long getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Long houseId) {
+        this.houseId = houseId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public Integer getResourceStatus() {
+        return resourceStatus;
+    }
+
+    public void setResourceStatus(Integer resourceStatus) {
+        this.resourceStatus = resourceStatus;
+    }
+
+    public Integer getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(Integer resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public Long getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
+    }
 }

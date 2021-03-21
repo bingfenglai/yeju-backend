@@ -47,4 +47,16 @@ public interface IHouseInfoService {
     IResult<HouseDetailsInfoBean> findDetailsByIdAndStatus(Long id, String houseStatus) throws ServiceException;
 
 
+    /**
+     * 房源信息审核操作 更改状态
+     *
+     * @param id          房源标识
+     * @param houseStatus 房源状态
+     * @return pers.lbf.yeju.common.core.result.IResult<java.lang.Boolean>
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/20 15:43
+     */
+    IResult<Boolean> verifyById(Long id, String houseStatus) throws ServiceException;
+
 }

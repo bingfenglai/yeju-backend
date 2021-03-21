@@ -18,7 +18,9 @@ package pers.lbf.yeju.common.core.constant;
 
 import java.io.Serializable;
 
-/**令牌常量
+/**
+ * 令牌常量
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -38,6 +40,11 @@ public class TokenConstant implements Serializable {
 
     public static final String TOKEN_KEY = "Authorization";
 
+    /**
+     * 默认的会话过期时间 30分钟
+     */
+    public static final Integer DEFAULT_SESSION_EXPIRES_MINUTE_AT = 30;
+    
     /**
      * app 令牌过期时间 单位 秒
      */

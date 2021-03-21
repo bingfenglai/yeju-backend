@@ -14,35 +14,36 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import pers.lbf.yeju.gateway.web.filter.ApiAccessLimitHandler;
-import pers.lbf.yeju.gateway.web.filter.AuthFilter;
+package pers.lbf.yeju.common.util.test;
+
+import org.junit.Test;
+import pers.lbf.yeju.common.util.TimeUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * 过滤器链配置
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/4 21:19
+ * @date 2021/3/20 10:29
  */
-@Configuration
-public class FilterChainConfig {
+public class TimeUtilsTest {
 
-    /**
-     * 鉴权过滤器
-     *
-     * @return authFilter
-     */
-    @Bean
-    public AuthFilter initAuthFilter() {
-        return new AuthFilter();
+    @Test
+    public void test() {
+        Date tomorrow = TimeUtils.getTomorrow();
+
+        System.out.println(tomorrow);
     }
 
-    //@Bean
-    public ApiAccessLimitHandler initApiAccess() {
-        return new ApiAccessLimitHandler();
+    @Test
+    public void test1() {
+        Date futureTime = TimeUtils.getFutureTime(TimeUtils.MINUTE, 3);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(sdf.format(futureTime));
     }
 }

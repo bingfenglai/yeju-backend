@@ -24,7 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
-import pers.lbf.yeju.common.domain.entity.OperationLog;
+import pers.lbf.yeju.common.domain.entity.log.OperationLog;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.log.dao.OperationLogDao;
 import pers.lbf.yeju.service.interfaces.log.IOperationLogService;

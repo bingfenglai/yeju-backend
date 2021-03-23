@@ -48,11 +48,12 @@ public class Customer extends Model<Customer> implements Serializable {
     /**
      * 性别0男1女，详见属性表
      */
-    protected Long gender;
+
     /**
-     * 性别值
+     * 性别值 1男2女3未知
      */
-    protected String genderValue;
+    protected String gender;
+
     /**
      * 手机号
      */
@@ -60,11 +61,8 @@ public class Customer extends Model<Customer> implements Serializable {
     /**
      * 手机区号，比如中国是+86，详见属性表
      */
-    protected Long phoneNumberPrefix;
-    /**
-     * 手机区号值
-     */
-    protected String phoneNumberPrefixValue;
+    protected String phoneNumberPrefix;
+
     /**
      * 客户认证状态0未认证1已认证
      */
@@ -73,18 +71,12 @@ public class Customer extends Model<Customer> implements Serializable {
      * 所在省、自治州
      */
     protected Long province;
-    /**
-     * 所在省、自治州值
-     */
-    protected String provinceValue;
+
     /**
      * 所在城市
      */
     protected Long city;
-    /**
-     * 所在城市值
-     */
-    protected String cityValue;
+
     /**
      * 客户头像地址
      */
@@ -161,20 +153,12 @@ public class Customer extends Model<Customer> implements Serializable {
         this.customerName = customerName;
     }
 
-    public Long getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Long gender) {
+    public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getGenderValue() {
-        return genderValue;
-    }
-
-    public void setGenderValue(String genderValue) {
-        this.genderValue = genderValue;
     }
 
     public String getPhoneNumber() {
@@ -185,20 +169,12 @@ public class Customer extends Model<Customer> implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getPhoneNumberPrefix() {
+    public String getPhoneNumberPrefix() {
         return phoneNumberPrefix;
     }
 
-    public void setPhoneNumberPrefix(Long phoneNumberPrefix) {
+    public void setPhoneNumberPrefix(String phoneNumberPrefix) {
         this.phoneNumberPrefix = phoneNumberPrefix;
-    }
-
-    public String getPhoneNumberPrefixValue() {
-        return phoneNumberPrefixValue;
-    }
-
-    public void setPhoneNumberPrefixValue(String phoneNumberPrefixValue) {
-        this.phoneNumberPrefixValue = phoneNumberPrefixValue;
     }
 
     public String getCustomerStatus() {
@@ -217,28 +193,12 @@ public class Customer extends Model<Customer> implements Serializable {
         this.province = province;
     }
 
-    public String getProvinceValue() {
-        return provinceValue;
-    }
-
-    public void setProvinceValue(String provinceValue) {
-        this.provinceValue = provinceValue;
-    }
-
     public Long getCity() {
         return city;
     }
 
     public void setCity(Long city) {
         this.city = city;
-    }
-
-    public String getCityValue() {
-        return cityValue;
-    }
-
-    public void setCityValue(String cityValue) {
-        this.cityValue = cityValue;
     }
 
     public String getAvatar() {

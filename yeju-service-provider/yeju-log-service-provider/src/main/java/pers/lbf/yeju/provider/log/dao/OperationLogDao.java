@@ -17,7 +17,7 @@
 package pers.lbf.yeju.provider.log.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.OperationLog;
+import pers.lbf.yeju.common.domain.entity.log.OperationLog;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com

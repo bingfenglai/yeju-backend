@@ -28,6 +28,7 @@ import java.util.Date;
  */
 public class SimpleCustomerInfoBean implements Serializable {
 
+    private Long customerId;
     /**
      * 客户姓名
      */
@@ -35,11 +36,8 @@ public class SimpleCustomerInfoBean implements Serializable {
     /**
      * 性别0男1女，详见属性表
      */
-    private Long gender;
-    /**
-     * 性别值
-     */
-    private String genderValue;
+    private String gender;
+
     /**
      * 手机号
      */
@@ -47,11 +45,8 @@ public class SimpleCustomerInfoBean implements Serializable {
     /**
      * 手机区号，比如中国是+86，详见属性表
      */
-    private Long phoneNumberPrefix;
-    /**
-     * 手机区号值
-     */
-    private String phoneNumberPrefixValue;
+    private String phoneNumberPrefix;
+
     /**
      * 客户认证状态0未认证1已认证
      */
@@ -60,18 +55,12 @@ public class SimpleCustomerInfoBean implements Serializable {
      * 所在省、自治州
      */
     private Long province;
-    /**
-     * 所在省、自治州值
-     */
-    private String provinceValue;
+
     /**
      * 所在城市
      */
     private Long city;
-    /**
-     * 所在城市值
-     */
-    private String cityValue;
+
     /**
      * 客户头像地址
      */
@@ -88,21 +77,26 @@ public class SimpleCustomerInfoBean implements Serializable {
     @Override
     public String toString() {
         return "SimpleCustomerInfoBean{" +
-                "customerName='" + customerName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", genderValue='" + genderValue + '\'' +
+                "customerId=" + customerId +
+                ", customerName='" + customerName + '\'' +
+                ", gender=" + gender +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", phoneNumberPrefix=" + phoneNumberPrefix +
-                ", phoneNumberPrefixValue='" + phoneNumberPrefixValue + '\'' +
                 ", customerStatus='" + customerStatus + '\'' +
                 ", province=" + province +
-                ", provinceValue='" + provinceValue + '\'' +
                 ", city=" + city +
-                ", cityValue='" + cityValue + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", email='" + email + '\'' +
                 ", createTime=" + createTime +
                 '}';
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getCustomerName() {
@@ -113,21 +107,14 @@ public class SimpleCustomerInfoBean implements Serializable {
         this.customerName = customerName;
     }
 
-    public Long getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Long gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public String getGenderValue() {
-        return genderValue;
-    }
-
-    public void setGenderValue(String genderValue) {
-        this.genderValue = genderValue;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -137,20 +124,12 @@ public class SimpleCustomerInfoBean implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getPhoneNumberPrefix() {
+    public String getPhoneNumberPrefix() {
         return phoneNumberPrefix;
     }
 
-    public void setPhoneNumberPrefix(Long phoneNumberPrefix) {
+    public void setPhoneNumberPrefix(String phoneNumberPrefix) {
         this.phoneNumberPrefix = phoneNumberPrefix;
-    }
-
-    public String getPhoneNumberPrefixValue() {
-        return phoneNumberPrefixValue;
-    }
-
-    public void setPhoneNumberPrefixValue(String phoneNumberPrefixValue) {
-        this.phoneNumberPrefixValue = phoneNumberPrefixValue;
     }
 
     public String getCustomerStatus() {
@@ -169,28 +148,12 @@ public class SimpleCustomerInfoBean implements Serializable {
         this.province = province;
     }
 
-    public String getProvinceValue() {
-        return provinceValue;
-    }
-
-    public void setProvinceValue(String provinceValue) {
-        this.provinceValue = provinceValue;
-    }
-
     public Long getCity() {
         return city;
     }
 
     public void setCity(Long city) {
         this.city = city;
-    }
-
-    public String getCityValue() {
-        return cityValue;
-    }
-
-    public void setCityValue(String cityValue) {
-        this.cityValue = cityValue;
     }
 
     public String getAvatar() {

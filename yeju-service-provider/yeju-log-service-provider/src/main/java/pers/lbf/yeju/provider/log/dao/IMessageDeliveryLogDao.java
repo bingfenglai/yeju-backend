@@ -19,7 +19,7 @@ package pers.lbf.yeju.provider.log.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import pers.lbf.yeju.common.domain.entity.MessageDeliveryLog;
+import pers.lbf.yeju.common.domain.entity.log.MessageDeliveryLog;
 
 /**
  * 消息投递记录(TableMessageDeliveryLog)表数据库访问层

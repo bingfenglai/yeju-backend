@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.common.domain.entity.TaskLog;
+import pers.lbf.yeju.common.domain.entity.log.TaskLog;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.log.dao.ITaskLogDao;
 import pers.lbf.yeju.service.interfaces.log.ITaskLogService;
@@ -63,7 +63,7 @@ public class TaskLogServiceImpl implements ITaskLogService {
 
     @Override
     public PageResult<JobLogInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
-        
+
         Page<TaskLog> page = PageUtil.getPage(TaskLog.class, currentPage, size);
         Page<TaskLog> taskLogPage = TaskLogDao.selectPage(page, null);
         List<TaskLog> taskLogList = taskLogPage.getRecords();

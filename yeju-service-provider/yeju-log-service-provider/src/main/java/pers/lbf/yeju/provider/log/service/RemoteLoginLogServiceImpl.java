@@ -26,7 +26,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.common.domain.entity.LoginLog;
+import pers.lbf.yeju.common.domain.entity.log.LoginLog;
 import pers.lbf.yeju.provider.log.dao.ILoginLogDao;
 import pers.lbf.yeju.provider.log.pojo.SimpleLoginLogInfoBean;
 import pers.lbf.yeju.service.interfaces.log.ILoginLogService;

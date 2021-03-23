@@ -23,6 +23,9 @@ import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.consumer.base.service.NativeAccountService;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
 
 /**
@@ -53,7 +56,7 @@ public class SubjectHelper {
 
     }
 
-    public static String getSubjectAccount(ServerHttpRequest request) throws Exception {
+    public static String getSubjectAccount(ServerHttpRequest request) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
         String token = Objects.requireNonNull(request.getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
         AuthorizationTokenManager tokenManager = SpringContextUtils.getBean(AuthorizationTokenManager.class);
         AuthorityInfoBean authorityInfoBean = tokenManager.getAuthorityInfo(token);
@@ -61,7 +64,7 @@ public class SubjectHelper {
     }
 
 
-    public static Long getAccountId(ServerHttpRequest request) throws Exception {
+    public static Long getAccountId(ServerHttpRequest request) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
         String subjectAccount = getSubjectAccount(request);
         NativeAccountService accountService = SpringContextUtils.getBean(NativeAccountService.class);
         return accountService.findAccountIdByPrincipal(subjectAccount).getData();

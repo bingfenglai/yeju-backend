@@ -1,0 +1,1 @@
+docker run -p 9005:9005 --name yeju-api  --restart=always -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-product-rest-api:1.0.0

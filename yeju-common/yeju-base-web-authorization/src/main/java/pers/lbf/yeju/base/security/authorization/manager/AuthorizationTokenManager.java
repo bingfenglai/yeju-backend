@@ -30,6 +30,10 @@ import pers.lbf.yeju.common.pojo.Payload;
 import pers.lbf.yeju.common.util.JwtUtils;
 import pers.lbf.yeju.common.util.RsaUtils;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -46,7 +50,7 @@ public class AuthorizationTokenManager {
     private RsaPublicKeyConfig rsaPublicKeyConfig;
 
 
-    public AuthorityInfoBean getAuthorityInfo(String authenticationToken) throws Exception {
+    public AuthorityInfoBean getAuthorityInfo(String authenticationToken) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
         //判断token是否合法
         boolean flag = authenticationToken.startsWith(TokenConstant.getPrefixToken());

@@ -37,8 +37,10 @@ import pers.lbf.yeju.provider.auth.account.strategy.IFindSimpleAccountByPrincipa
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
+import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,6 +56,34 @@ public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     private IAccountDao accountDao;
+
+    /**
+     * 根据账户标识生成客户账号
+     *
+     * @param customerId  客户标识
+     * @param phoneNumber 手机号
+     * @return accountId 账户标识
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/22 11:09
+     */
+    @Override
+    public IResult<Long> generateCustomerAccount(Long customerId, String phoneNumber) throws ServiceException {
+        Account account = new Account();
+        account.setAccountNumber(phoneNumber);
+        account.setSubjectId(customerId);
+        account.setPhoneNumber(phoneNumber);
+
+        account.setAccountStatus(String.valueOf(StatusConstants.ABLE));
+        account.setAccountLevel("0");
+        account.setAccountType(AccountOwnerTypeEnum.Customer_account.getValue());
+        account.setCreateTime(new Date());
+        account.setCreateBy(0L);
+
+        accountDao.insert(account);
+
+        return Result.ok(account.getAccountId());
+    }
 
     /**
      * 根据账户查找账户及权限信息

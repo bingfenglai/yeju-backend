@@ -32,6 +32,18 @@ import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
 public interface IAccountService {
 
     /**
+     * 根据账户标识生成客户账号
+     *
+     * @param customerId  客户标识
+     * @param phoneNumber 手机号
+     * @return accountId 账户标识
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/22 11:09
+     */
+    IResult<Long> generateCustomerAccount(Long customerId, String phoneNumber) throws ServiceException;
+
+    /**
      * 根据账户查找账户及权限信息
      *
      * @param principal 抽象账户
@@ -68,5 +80,5 @@ public interface IAccountService {
     IResult<Boolean> deleteById(Long id) throws ServiceException;
 
     IResult<Boolean> deleteBatch(String[] idList) throws ServiceException;
-    
+
 }

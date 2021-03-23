@@ -1,0 +1,15 @@
+server:
+  port: 9004
+spring:
+  application:
+    name: yeju-customer-rest-api
+
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health, info, prometheus
+

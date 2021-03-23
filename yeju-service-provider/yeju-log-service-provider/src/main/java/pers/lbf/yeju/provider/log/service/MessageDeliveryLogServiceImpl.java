@@ -26,7 +26,7 @@ import pers.lbf.yeju.common.core.constant.StatusConstants;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
-import pers.lbf.yeju.common.domain.entity.MessageDeliveryLog;
+import pers.lbf.yeju.common.domain.entity.log.MessageDeliveryLog;
 import pers.lbf.yeju.provider.log.dao.IMessageDeliveryLogDao;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import pers.lbf.yeju.service.interfaces.log.IMessageDeliveryLogService;

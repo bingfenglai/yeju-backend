@@ -19,7 +19,7 @@ package pers.lbf.yeju.provider.log.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import pers.lbf.yeju.common.domain.entity.TaskLog;
+import pers.lbf.yeju.common.domain.entity.log.TaskLog;
 
 /**
  * (TableSystemTaskLog)表数据库访问层

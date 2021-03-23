@@ -21,11 +21,19 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
+import pers.lbf.yeju.consumer.base.util.SubjectHelper;
+import pers.lbf.yeju.consumer.product.house.args.HouseCheckArgs;
+import pers.lbf.yeju.consumer.product.house.sender.HouseCheckLogSender;
+import pers.lbf.yeju.service.interfaces.log.pojo.HouseCheckLogCreateArgs;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
@@ -35,9 +43,13 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 
 /**
- * TODO
+ * 商品-房源服务 web api
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -51,6 +63,9 @@ public class HouseController {
 
     @DubboReference
     private IHouseInfoService houseInfoService;
+
+    @Autowired
+    private HouseCheckLogSender houseCheckLogSender;
 
     @ApiOperation(value = "获取房源信息列表 分页", notes = "房源信息列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
@@ -69,11 +84,42 @@ public class HouseController {
     @ApiOperation(value = "获取房源信息详情", notes = "房源信息详情说明", httpMethod = "GET")
     @GetMapping("/{id}")
     public Mono<IResult<HouseDetailsInfoBean>> getHouseDetailsInfo(
-            @Valid @NotNull(message = "房源标识不能为空") @PathVariable("id") String id,
-            @Valid @NotNull(message = "房源状态不能为空") @RequestParam String houseStatus
+            @PathVariable("id") @Valid @NotNull(message = "房源标识不能为空") String id,
+            @RequestParam @Valid @NotNull(message = "房源状态不能为空") String houseStatus
     ) throws ServiceException {
         return Mono.just(houseInfoService.findDetailsByIdAndStatus(Long.valueOf(id), houseStatus));
     }
-    
+
+    @ApiOperation(value = "房源审核接口", notes = "说明", httpMethod = "PUT")
+    @PutMapping("/check")
+    public Mono<IResult<Boolean>> check(@RequestBody @Validated HouseCheckArgs args, ServerHttpRequest request) throws ServiceException {
+
+        return Mono.just(houseInfoService.verifyById(Long.valueOf(args.getHouseId()), args.getNewHouseStatus()))
+                .doOnSuccess(resp -> {
+
+                    // 审核之后，发送审核日志 以便日后进行操作日志审计
+                    HouseCheckLogCreateArgs logCreateArgs = houseCheckArgsToLogArgs(args);
+                    logCreateArgs.setCheckTime(new Date());
+                    try {
+                        logCreateArgs.setAccountId(SubjectHelper.getAccountId(request));
+                    } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException e) {
+                        log.error(String.valueOf(e));
+                        throw ServiceException.getInstance(e.getMessage(), ServiceStatusEnum.UNKNOWN_ERROR.getCode());
+                    }
+                    houseCheckLogSender.send(logCreateArgs);
+                });
+
+    }
+
+    private HouseCheckLogCreateArgs houseCheckArgsToLogArgs(HouseCheckArgs args) {
+        HouseCheckLogCreateArgs houseCheckLogCreateArgs = new HouseCheckLogCreateArgs();
+        houseCheckLogCreateArgs.setHouseId(Long.valueOf(args.getHouseId()));
+        houseCheckLogCreateArgs.setHouseOldStatus(args.getOldHouseStatus());
+        houseCheckLogCreateArgs.setHouseNewStatus(args.getNewHouseStatus());
+        houseCheckLogCreateArgs.setCheckTime(new Date());
+        houseCheckLogCreateArgs.setOpinions(args.getOpinions());
+        return houseCheckLogCreateArgs;
+    }
+
 
 }

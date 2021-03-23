@@ -79,6 +79,12 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-customer-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
 
         <!-- 对象存储依赖-->
         <dependency>
@@ -249,6 +255,7 @@
                         <includes>
                             <include>config/logback.xml</include>
                             <include>banner.txt</include>
+
                         </includes>
                         <excludes>
                             <exclude>**/*.properties</exclude>

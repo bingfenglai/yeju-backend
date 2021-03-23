@@ -81,4 +81,12 @@ public interface IAccountService {
 
     IResult<Boolean> deleteBatch(String[] idList) throws ServiceException;
 
+    /**
+     * 判断手机号是否已被注册
+     *
+     * @param phoneNumber 手机号
+     * @return flag
+     * @throws ServiceException
+     */
+    IResult<Boolean> isExitPhoneNumber(String phoneNumber) throws ServiceException;
 }

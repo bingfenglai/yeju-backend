@@ -16,6 +16,9 @@
  */
 package pers.lbf.yeju.service.interfaces.customer.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,6 +31,7 @@ import java.util.Date;
  */
 public class SimpleCustomerInfoBean implements Serializable {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long customerId;
     /**
      * 客户姓名

@@ -18,6 +18,8 @@
 package pers.lbf.yeju.provider.test.product;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,5 +60,13 @@ public class CustomerDaoTest {
         int i = customerDao.saveAuthenticateInfo(args);
 
         log.info("修改记录数 {}", i);
+    }
+
+    @Test
+    public void testIsExist() {
+        boolean flag = customerDao.isExist("17330937086");
+        log.info(String.valueOf(flag));
+        Assert.assertTrue(flag);
+
     }
 }

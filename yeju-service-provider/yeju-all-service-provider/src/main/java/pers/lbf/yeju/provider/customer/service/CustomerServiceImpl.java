@@ -30,6 +30,7 @@ import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.customer.constant.CustomerStatusConstant;
 import pers.lbf.yeju.provider.customer.dao.ICustomerDao;
 import pers.lbf.yeju.provider.customer.dao.ICustomerValidDao;
+import pers.lbf.yeju.provider.customer.status.CustomerServiceStatus;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import pers.lbf.yeju.service.interfaces.customer.ICustomerService;
 import pers.lbf.yeju.service.interfaces.customer.pojo.*;
@@ -58,6 +59,24 @@ public class CustomerServiceImpl implements ICustomerService {
     private IAccountService accountService;
 
     /**
+     * 验证手机号是否已被注册
+     *
+     * @param phoneNumber 手机号
+     * @return flag
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/23 21:05
+     */
+    @Override
+    public IResult<Boolean> isExitPhoneNumber(String phoneNumber) throws ServiceException {
+        boolean flag = customerDao.isExist(phoneNumber);
+        if (flag) {
+            throw ServiceException.getInstance(CustomerServiceStatus.mobilePhoneNumberHasBeenRegistered);
+        }
+        return Result.success();
+    }
+
+    /**
      * 客户注册
      *
      * @param args 客户注册参数封装类
@@ -69,6 +88,7 @@ public class CustomerServiceImpl implements ICustomerService {
      */
     @Override
     public IResult<Boolean> registering(CustomerRegisteringArgs args) throws ServiceException {
+
         Customer customer = customerRegisteringArgsToCustomer(args);
 
         customerDao.insert(customer);
@@ -171,6 +191,7 @@ public class CustomerServiceImpl implements ICustomerService {
      */
     @Override
     public IResult<CustomerDetailsInfo> findDetailsInfoByCustomerId(Long customerId) throws ServiceException {
+
         return null;
     }
 

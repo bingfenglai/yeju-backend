@@ -1,7 +1,10 @@
 spring:
   application:
-    name: yeju-employee-service-provider
+    name: yeju-platform-service-provider
 logging:
   config: classpath:config/logback.xml
-
+dubbo:
+  protocol:
+    name: dubbo
+    port: 20886
 

@@ -16,9 +16,7 @@
  */
 package pers.lbf.yeju.common.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -36,6 +34,7 @@ public class Customer extends Model<Customer> implements Serializable {
     /**
      * 主键
      */
+    @TableId
     protected Long customerId;
     /**
      * 账户id
@@ -110,10 +109,12 @@ public class Customer extends Model<Customer> implements Serializable {
     /**
      * 字段版本
      */
+    @Version
     protected Integer versionNumber;
     /**
      * 删除标识
      */
+    @TableLogic
     protected Integer isDelete;
     /**
      * 完成认证时所在月份，table_business_customer_valid分区标识

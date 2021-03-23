@@ -35,6 +35,7 @@ import pers.lbf.yeju.provider.auth.account.enums.AccountStatusEnum;
 import pers.lbf.yeju.provider.auth.account.factory.AccountStrategyFactory;
 import pers.lbf.yeju.provider.auth.account.strategy.IFindSimpleAccountByPrincipalStrategy;
 import pers.lbf.yeju.provider.base.util.SubjectUtils;
+import pers.lbf.yeju.provider.customer.status.CustomerServiceStatus;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
 import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
@@ -266,6 +267,22 @@ public class AccountServiceImpl implements IAccountService {
         }
         accountDao.deleteBatchIds(ids);
         return Result.ok(true);
+    }
+
+    /**
+     * 判断手机号是否已被注册
+     *
+     * @param phoneNumber 手机号
+     * @return flag
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Boolean> isExitPhoneNumber(String phoneNumber) throws ServiceException {
+        boolean flag = accountDao.isExitPhoneNumber(phoneNumber);
+        if (flag) {
+            throw ServiceException.getInstance(CustomerServiceStatus.mobilePhoneNumberHasBeenRegistered);
+        }
+        return Result.success();
     }
 
 

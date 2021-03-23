@@ -2,5 +2,6 @@ spring:
   application:
     name: yeju-message-service-provider
 dubbo:
-  provider:
+  protocol:
     port: 20889
+    name: dubbo

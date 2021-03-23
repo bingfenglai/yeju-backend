@@ -29,13 +29,4 @@ import java.io.Serializable;
 @TableName("table_business_customer_valid")
 public class CustomerValid extends Customer implements Serializable {
 
-    /**
-     * 获取主键值
-     *
-     * @return 主键值
-     */
-    @Override
-    protected Serializable pkVal() {
-        return this.customerId;
-    }
 }

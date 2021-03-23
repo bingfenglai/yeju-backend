@@ -31,6 +31,17 @@ import pers.lbf.yeju.service.interfaces.customer.pojo.*;
 public interface ICustomerService {
 
     /**
+     * 验证手机号是否已被注册
+     *
+     * @param phoneNumber 手机号
+     * @return flag
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/3/23 21:05
+     */
+    IResult<Boolean> isExitPhoneNumber(String phoneNumber) throws ServiceException;
+
+    /**
      * 客户注册
      *
      * @param args 客户注册参数封装类
@@ -86,7 +97,7 @@ public interface ICustomerService {
      * @date 2021/3/22 10:29
      */
     IResult<CustomerDetailsInfo> findDetailsInfoByCustomerId(Long customerId) throws ServiceException;
-
+    
 
     /**
      * 更新客户资料

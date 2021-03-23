@@ -2,7 +2,7 @@
 <configuration scanPeriod="10 seconds">
     <!--凡是springProperty的配置都将出现在生成的json中，如果原json中已有相同key则将覆盖-->
     <springProperty scope="context" name="spring.application.name" source="spring.application.name"/>
-    <springProperty scope="context" name="server.port" source="server.port"/>
+    <springProperty scope="context" name="server.port" source="dubbo.protocol.port"/>
     <springProperty scope="context" name="logstash.server-address" source="logstash.server-address"/>
     <springProperty scope="context" name="log.level" source="log.level"/>
     <springProperty scope="context" name="log.path" source="log.path"/>
@@ -12,7 +12,11 @@
     <property name="LOG_HOME" value="${log.path}"/>
     <property name="baseFileName" value="${spring.application.name}"/>
     <property name="ServiceName" value="${spring.application.name}"/>
-    <property name="service-port" value="${dubbo.provider.port}"/>
+    <property name="service-port" value="${dubbo.protocol.port}"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%(%date{yyyy-MM-dd HH:mm:ss:SSS}) |%highlight(%-5level) |%blue(%thread) |%blue(%file:%line) |%green(%logger) |%cyan(%msg%n)"/>
+
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="UTF-8">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>

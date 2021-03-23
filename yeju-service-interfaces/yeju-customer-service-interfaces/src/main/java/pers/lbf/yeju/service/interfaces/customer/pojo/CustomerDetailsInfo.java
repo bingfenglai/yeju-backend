@@ -26,5 +26,6 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2021/3/22 10:26
  */
-public class CustomerDetailsInfo implements Serializable {
+public class CustomerDetailsInfo extends SimpleCustomerInfoBean implements Serializable {
+    
 }

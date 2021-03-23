@@ -2,6 +2,7 @@ package pers.lbf.yeju.provider.customer.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import pers.lbf.yeju.common.domain.entity.Customer;
 import pers.lbf.yeju.service.interfaces.customer.pojo.CustomerAuthenticationArgs;
@@ -36,4 +37,12 @@ public interface ICustomerDao extends BaseMapper<Customer> {
             "WHERE t.`customer_id` = #{args.customerId} \n" +
             "LIMIT 1 ;")
     int saveAuthenticateInfo(@Param("args") CustomerAuthenticationArgs args) throws RuntimeException;
+
+    @Select("SELECT \n" +
+            "  COUNT(t.`customer_id`) \n" +
+            "FROM\n" +
+            "  table_business_customer t \n" +
+            "WHERE t.`phone_number` = '17330937086' \n" +
+            "LIMIT 1 ;")
+    boolean isExist(String phoneNumber);
 }

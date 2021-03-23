@@ -31,17 +31,9 @@ yeju-gateway ---- > 81
 
 ### 服务提供方端口规划(dubbo)
 
-#### 认证服务提供方
+#### 单节点部署
 
-yeju-auth-service-provider ----> 20885
-
-#### 客户服务提供方
-
-yeju-customer-service-provider ----> 20887
-
-#### 员工服务提供方
-
-yeju-employee-service-provider ----> 20886
+yeju-all-provider-----20882
 
 #### 日志服务提供方
 
@@ -50,6 +42,18 @@ yeju-log-service-provider ----> 20883
 #### 对象存储服务提供方
 
 yeju-oos-service-provider ----> 20884
+
+#### 认证服务提供方
+
+yeju-auth-service-provider ----> 20885
+
+#### 平台服务提供方
+
+yeju-platform-service-provider ----> 20886
+
+#### 客户服务提供方
+
+yeju-customer-service-provider ----> 20887
 
 #### 产品服务提供方
 

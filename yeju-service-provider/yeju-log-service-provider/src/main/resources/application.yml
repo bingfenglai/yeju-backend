@@ -1,8 +1,10 @@
 spring:
   application:
-    name: log-server
+    name: log-service-provider
 
 dubbo:
-  provider:
+  protocol:
     port: 20883
+    name: dubbo
+
 

@@ -178,7 +178,7 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
             addLoginLogRequestBean.setMessage("登录成功");
             loginLogService.addLog(addLoginLogRequestBean);
             return Mono.just(authenticationToken);
-            
+
 
         }
 
@@ -215,7 +215,6 @@ public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuth
     protected Mono<UserDetails> retrieveUser(String username) {
         return userDetailsService.findByUsername(username);
     }
-
 
     /**
      * 获取授权信息体

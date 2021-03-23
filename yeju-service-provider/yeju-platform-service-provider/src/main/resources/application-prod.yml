@@ -7,8 +7,6 @@ dubbo:
     check: false
   config-center:
     namespace: yeju-dubbob6649ae6-6781-4a30-94a0-132f823a00eb
-  provider:
-    port: 20886
   metadata-report:
     address: nacos://${spring.cloud.nacos.config.server-addr}
     sync-report: true

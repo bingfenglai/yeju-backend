@@ -44,9 +44,9 @@ public class CustomerAuthenticationArgs implements Serializable {
     protected Long city;
 
 
-    private Date updateTime;
+    protected Date updateTime;
 
-    private Long changedBy;
+    protected Long changedBy;
 
     public Long getCustomerId() {
         return customerId;

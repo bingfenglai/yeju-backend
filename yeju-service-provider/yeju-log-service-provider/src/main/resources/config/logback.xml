@@ -13,6 +13,9 @@
     <property name="baseFileName" value="${spring.application.name}"/>
     <property name="ServiceName" value="${spring.application.name}"/>
     <property name="service-port" value="${dubbo.provider.port}"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%(%date{yyyy-MM-dd HH:mm:ss:SSS}) |%highlight(%-5level) |%blue(%thread) |%blue(%file:%line) |%green(%logger) |%cyan(%msg%n)"/>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="UTF-8">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>

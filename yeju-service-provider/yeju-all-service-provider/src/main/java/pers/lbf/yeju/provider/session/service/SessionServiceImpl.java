@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  * @Description TODO
  * @date 2020/11/29 20:05
  */
-@DubboService(interfaceClass = ISessionService.class)
+@DubboService(interfaceClass = ISessionService.class, timeout = 10000, retries = 0)
 @Slf4j
 @Service(value = "sessionService")
 public class SessionServiceImpl implements ISessionService {

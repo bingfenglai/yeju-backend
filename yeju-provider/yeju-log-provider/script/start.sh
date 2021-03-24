@@ -1,0 +1,1 @@
+nohup java -Xms128m -Xmx256m -jar ../dist/yeju-log-provider-1.0.0.jar >> /data/yeju/yeju-log-provider-1.0.0/log/start.log 2>&1 &

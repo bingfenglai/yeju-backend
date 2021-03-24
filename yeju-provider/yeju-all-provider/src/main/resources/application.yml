@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: yeju-provider
+
+dubbo:
+  application:
+    name: ${spring.application.name}
+  #采用协议方式和端口号
+  protocol:
+    name: dubbo
+    port: 20882
+  registry:
+    file: ../cachefile/dubbo.cache
+
+logging:
+  level:
+    pers.lbf.yeju.provider.message.notice.dao: debug
+    pers.lbf.yeju.provider.customer.dao: debug
+

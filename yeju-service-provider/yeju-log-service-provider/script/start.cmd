@@ -1,1 +1,0 @@
-java -Xms128m -Xmx256m -jar ../dist/yeju-log-service-provider-1.0.0.jar

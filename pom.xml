@@ -19,8 +19,8 @@
     <modules>
         <module>yeju-common</module>
         <module>yeju-service-interfaces</module>
-        <module>yeju-service-provider</module>
-        <module>yeju-rest-api</module>
+        <module>yeju-provider</module>
+        <module>yeju-api</module>
         <module>yeju-gateway</module>
 
     </modules>

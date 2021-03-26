@@ -34,7 +34,7 @@ public class ErrorAndExceptionResult extends BaseResult<Object> implements IResu
         return new ErrorAndExceptionResult(statusEnum, path);
     }
 
-    public static ErrorAndExceptionResult getInstance(String code, String message, String path){
+    public static ErrorAndExceptionResult getInstance(String code, String message, String path) {
         return new ErrorAndExceptionResult(code, message, path);
     }
 
@@ -45,7 +45,7 @@ public class ErrorAndExceptionResult extends BaseResult<Object> implements IResu
         this.path = path;
     }
 
-    private ErrorAndExceptionResult(String code, String message, String path) {
+    public ErrorAndExceptionResult(String code, String message, String path) {
         this.code = code;
         this.message = message;
         this.path = path;

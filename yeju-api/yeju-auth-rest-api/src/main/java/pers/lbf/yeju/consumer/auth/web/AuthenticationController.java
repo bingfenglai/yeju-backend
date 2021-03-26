@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.auth.web;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -37,6 +38,9 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
 
 /**
@@ -69,7 +73,7 @@ public class AuthenticationController {
 
     @ApiOperation(value = "登出方法", notes = "登出方法说明", httpMethod = "DELETE")
     @DeleteMapping("/logout")
-    public Mono<Object> logout(ServerWebExchange webExchange) throws ServiceException {
+    public Mono<Object> logout(ServerWebExchange webExchange) throws ServiceException, InvalidKeySpecException, NoSuchAlgorithmException, IOException, ExpiredJwtException {
         //获取token
         String authorization = Objects.requireNonNull(webExchange.getRequest().getHeaders().get(TokenConstant.TOKEN_KEY)).get(0);
 
@@ -78,14 +82,12 @@ public class AuthenticationController {
         }
 
         AuthorityInfoBean authorityInfo = new AuthorityInfoBean();
-        try {
-            authorityInfo = tokenManager.getAuthorityInfo(authorization);
-        } catch (Exception e) {
-            log.error(String.valueOf(e));
-        }
+
+        authorityInfo = tokenManager.getAuthorityInfo(authorization);
 
         String principal = authorityInfo.getPrincipal();
         return Mono.empty().doFinally(signalType -> {
+
             if (principal != null) {
                 sessionService.destroySession(principal);
             }
@@ -136,10 +138,10 @@ public class AuthenticationController {
      * @date 2020/12/28 16:48
      */
     @GetMapping("/code/phone/{phoneNumber}")
-    public Mono<IResult<VerityDTO<String>>> getPhoneCode(@PathVariable
-                                                         @Valid @NotNull(message = "手机号不能为空")
-                                                                 String phoneNumber)
-            throws Exception {
+    public Mono<IResult<VerityDTO<String>>> getPhoneCode(
+            @PathVariable
+            @Valid @NotNull(message = "手机号不能为空") String phoneNumber) throws Exception {
+
         IResult<VerityDTO<String>> result = codeService.getVerificationCode(VerificationCodeTypeEnum.MOBILE_VERIFICATION_CODE);
         return Mono.just(result);
     }

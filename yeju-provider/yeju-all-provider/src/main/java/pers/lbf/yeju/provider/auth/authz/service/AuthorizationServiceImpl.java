@@ -126,7 +126,7 @@ public class AuthorizationServiceImpl implements IAuthorizationService {
      * @date 2021/3/11 13:19
      */
     @Override
-    public IResult<Boolean> authorizedToSubject(AuthorizedCreatArgs args) throws ServiceException {
+    public IResult<Boolean> authorizedToRole(AuthorizedCreatArgs args) throws ServiceException {
         //1 验证角色是否存在
         Boolean flag = roleService.isExist(Long.valueOf(args.getRoleId())).getData();
 

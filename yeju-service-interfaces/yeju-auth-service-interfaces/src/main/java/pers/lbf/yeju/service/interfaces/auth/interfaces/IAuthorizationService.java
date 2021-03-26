@@ -52,7 +52,7 @@ public interface IAuthorizationService {
      * @version 1.0
      * @date 2021/3/11 13:19
      */
-    IResult<Boolean> authorizedToSubject(AuthorizedCreatArgs args) throws ServiceException;
+    IResult<Boolean> authorizedToRole(AuthorizedCreatArgs args) throws ServiceException;
 
 
     void synchronousAuthorizedToAccount(SynchronousAuthorizedCreateArgs args) throws ServiceException;

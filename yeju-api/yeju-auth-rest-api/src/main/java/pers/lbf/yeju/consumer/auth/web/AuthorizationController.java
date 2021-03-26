@@ -110,7 +110,7 @@ public class AuthorizationController {
     @PostMapping("/authorize")
     public Mono<IResult<Boolean>> authorize(@RequestBody AuthorizedCreatArgs args) throws ServiceException {
 
-        return Mono.just(authzService.authorizedToSubject(args))
+        return Mono.just(authzService.authorizedToRole(args))
                 .doOnSuccess(unused -> {
                     // 同步 r_t_account_resource表 优化查询
 

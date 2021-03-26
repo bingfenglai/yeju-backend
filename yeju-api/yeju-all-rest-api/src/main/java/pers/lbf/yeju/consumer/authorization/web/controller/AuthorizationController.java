@@ -58,7 +58,7 @@ public class AuthorizationController {
         log.info(args.toString());
         ArgsHelper.createArgsHelper(args, webExchange);
         log.info(args.toString());
-        return Mono.just(authorizationService.authorizedToSubject(args))
+        return Mono.just(authorizationService.authorizedToRole(args))
                 .doOnSuccess(unused -> {
                     // 同步 r_t_account_resource表 优化查询
                     SynchronousAuthorizedCreateArgs syncArgs = authorizedCreatArgsToSynchronousAuthorizedCreateArgs(args);

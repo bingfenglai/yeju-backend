@@ -7,7 +7,6 @@ dubbo:
   protocol:
     name: dubbo
     port: 20890
-
   registry:
     file: ../cachefile/dubbo.cache
 

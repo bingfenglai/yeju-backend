@@ -18,7 +18,9 @@ package pers.lbf.yeju.common.core.args;
 
 import java.io.Serializable;
 
-/**基础分页查询参数类
+/**
+ * 基础分页查询参数类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/13 14:40
@@ -38,7 +40,7 @@ public class BaseFindPageArgs implements IFindPageArgs, Serializable {
     }
 
     public void setCurrentPage(Long currentPage) {
-        if (currentPage>=this.currentPage){
+        if (currentPage >= this.currentPage) {
             this.currentPage = currentPage;
         }
     }
@@ -47,7 +49,7 @@ public class BaseFindPageArgs implements IFindPageArgs, Serializable {
 
         long minSize = 1L;
         long maxSize = 50L;
-        if (minSize <=size&& maxSize >=size){
+        if (minSize <= size && maxSize >= size) {
             this.size = size;
         }
     }

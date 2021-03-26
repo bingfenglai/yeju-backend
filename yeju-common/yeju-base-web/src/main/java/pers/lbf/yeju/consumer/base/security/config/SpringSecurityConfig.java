@@ -48,7 +48,6 @@ public class SpringSecurityConfig {
     @Autowired
     private CustomAuthorizationManager authorizationManager;
 
-
     /**
      * 构建过滤器链
      *
@@ -73,7 +72,7 @@ public class SpringSecurityConfig {
                 //认证路径
                 .formLogin().loginPage("/auth/login")
                 //认证管理器
-                //.authenticationManager(authenticationManager)
+                //.authenticationManager()
                 //认证成功
                 //.authenticationSuccessHandler(authenticationSuccessHandler)
                 //登陆验证失败

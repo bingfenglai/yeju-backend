@@ -20,6 +20,7 @@
         <module>yeju-message-rest-api</module>
         <module>yeju-product-rest-api</module>
         <module>yeju-customer-rest-api</module>
+        <module>yeju-open-ability-api</module>
     </modules>
 
 </project>

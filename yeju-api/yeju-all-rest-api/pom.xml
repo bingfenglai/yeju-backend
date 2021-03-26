@@ -85,6 +85,12 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-payment-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
 
         <!-- 对象存储依赖-->
         <dependency>

@@ -28,6 +28,10 @@
             <version>${dubbo.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+        </dependency>
 
     </dependencies>
 

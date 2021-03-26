@@ -1,0 +1,1 @@
+nohup java -Xms128m -Xmx256m -jar ../dist/yeju-open-ability-api-1.0.0.jar >> /data/yeju/yeju-open-ability-api-1.0.0/log/start.log 2>&1 &

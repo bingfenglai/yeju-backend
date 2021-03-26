@@ -18,13 +18,12 @@ package pers.lbf.yeju.common.exception.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.dubbo.rpc.RpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +36,7 @@ import pers.lbf.yeju.common.core.constant.EnvironmentConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.ErrorAndExceptionResult;
 import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.exception.status.DubboRpcExceptionMessageHelper;
 import reactor.core.publisher.Mono;
 
@@ -49,8 +49,9 @@ import java.util.List;
  * @Description TODO
  * @date 2020/12/9 22:04
  */
-@Configuration
-@Order(-2)
+//@Configuration
+//@Order(-2)
+@Deprecated
 public class GrableExceptionHandler implements ErrorWebExceptionHandler {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -75,9 +76,10 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
             return Mono.error(ex);
         }
 
-        String message;
-        String code;
+        String message = "内部服务错误，请联系客服";
+        String code = "e9999";
         IResult<Object> result;
+        String path = String.valueOf(exchange.getRequest().getPath());
         if (ex instanceof ResponseStatusException) {
             if (HttpStatus.NOT_FOUND.equals(((ResponseStatusException) ex).getStatus())) {
                 message = "服务不存在";
@@ -91,20 +93,12 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
         } else if (ex instanceof ServiceException) {
             message = ex.getMessage();
             code = ((ServiceException) ex).getExceptionCode();
-        } else {
-            if (EnvironmentConstant.prod.equals(prefix)) {
-                message = "内部服务错误，请联系客服" + ex.getMessage();
-            } else {
-                message = "内部服务错误，请联系客服";
-            }
-            code = "e9999";
-        }
-        String path = String.valueOf(exchange.getRequest().getPath());
-
-        if (ex instanceof ServiceException) {
             log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
             log.info(Arrays.toString(ex.getStackTrace()));
-        } else if (ex instanceof WebExchangeBindException) {
+        }
+
+
+        if (ex instanceof WebExchangeBindException) {
             WebExchangeBindException exception = (WebExchangeBindException) ex;
             //List<FieldError> allErrors = exception.getBindingResult().getFieldErrors();
             List<ObjectError> allErrors = exception.getBindingResult().getAllErrors();
@@ -115,10 +109,6 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
 
             message = errorMsg.toString();
             log.error("[服务异常处理]请求路径:{},异常信息:{}", path, message);
-        } else if (ex instanceof ResponseStatusException) {
-            message = ex.getMessage();
-            log.info("[服务异常处理]请求路径:{},异常信息:{}", path, ex.getMessage());
-            log.info(Arrays.toString(ex.getStackTrace()));
         } else if (ex instanceof NullPointerException) {
             NullPointerException e = (NullPointerException) ex;
             message = "空指针异常";
@@ -133,14 +123,14 @@ public class GrableExceptionHandler implements ErrorWebExceptionHandler {
             log.error("[服务异常处理]请求路径:{},异常信息:{}", path, dubboMsg);
             log.error(String.valueOf(ex));
         } else {
-
             if (EnvironmentConstant.prod.equals(prefix)) {
                 message = "内部服务错误，请联系客服" + ex.getMessage();
-            } else {
-                message = "内部服务错误，请联系客服";
             }
+        }
 
-            code = "e9999";
+        if (ex instanceof ExpiredJwtException) {
+            message = AuthStatusEnum.NO_TOKEN.getMessage();
+            code = AuthStatusEnum.NO_TOKEN.getCode();
         }
 
 

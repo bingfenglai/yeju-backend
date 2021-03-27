@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.customer.web.controller;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,13 @@ import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.consumer.base.args.FindPageArgs;
 import pers.lbf.yeju.service.interfaces.customer.ICustomerService;
 import pers.lbf.yeju.service.interfaces.customer.pojo.CustomerUpdateArgs;
 import pers.lbf.yeju.service.interfaces.customer.pojo.SimpleCustomerInfoBean;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
@@ -44,16 +47,18 @@ import javax.validation.constraints.Size;
 @RestController
 @RequestMapping("/customer")
 @Slf4j
+@ApiModel(description = "客户服务接口")
 public class CustomerController {
 
     @DubboReference
     private ICustomerService customerService;
 
+    @Deprecated
     @ApiOperation(value = "获取客户信息列表 分页", notes = "客户信息列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<SimpleCustomerInfoBean>> findPage(
-            @Validated @Positive @ApiParam("当前页必须是一个正数") @PathVariable Long currentPage,
-            @Validated @Size(min = 1, max = 50, message = "每页查询大小必须大于1小于50") @ApiParam("每页显示条数") @RequestParam Long size
+            @ApiParam("当前页必须是一个正数") @PathVariable @Valid @Positive Long currentPage,
+            @ApiParam("每页显示条数") @RequestParam @Valid @Size(min = 1, max = 50, message = "每页查询大小必须大于1小于50") Long size
     ) throws ServiceException {
         BaseFindPageArgs args = new BaseFindPageArgs();
         args.setCurrentPage(currentPage);
@@ -62,10 +67,18 @@ public class CustomerController {
         return Mono.just(customerService.findPage(args.getCurrentPage(), args.getSize()));
     }
 
+    
+    @ApiOperation(value = "获取客户信息列表 分页", notes = "客户信息列表说明", httpMethod = "GET")
+    @GetMapping("/list/v2")
+    public Mono<PageResult<SimpleCustomerInfoBean>> findPageV2(@ApiParam("分页查询参数") @Valid FindPageArgs args) throws ServiceException {
+
+        return Mono.just(customerService.findPage((long) args.getCurrentPage(), (long) args.getSize()));
+    }
+
 
     @ApiOperation(value = "修改个人信息接口", notes = "说明", httpMethod = "PUT")
     @PutMapping
-    public Mono<IResult<Boolean>> update(@RequestBody CustomerUpdateArgs args) throws ServiceException {
+    public Mono<IResult<Boolean>> update(@RequestBody @Validated CustomerUpdateArgs args) throws ServiceException {
 
         return Mono.just(customerService.update(args));
     }

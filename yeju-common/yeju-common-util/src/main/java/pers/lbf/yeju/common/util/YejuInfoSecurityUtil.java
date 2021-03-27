@@ -29,18 +29,19 @@ public class YejuInfoSecurityUtil {
     private YejuInfoSecurityUtil() {
 
     }
+    
 
-
-
-    /** 保留前几位明文
+    /**
+     * 保留前几位明文
+     *
+     * @param str   明文
+     * @param start
+     * @return java.lang.String
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/21 0:18
-     * @param str 明文
-     * @param start
-     * @return java.lang.String
      */
-    public static String left(String str,int start) {
+    public static String left(String str, int start) {
 
         if (StringUtils.isBlank(str)) {
             return "";
@@ -49,14 +50,16 @@ public class YejuInfoSecurityUtil {
         return StringUtils.rightPad(name, StringUtils.length(str), "*");
     }
 
-    /** 保留前几位，后几位
+    /**
+     * 保留前几位，后几位
+     *
+     * @param str   明文
+     * @param start 前几位明文
+     * @param end   后几位明文
+     * @return java.lang.String
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/21 0:18
-     * @param str 明文
-     * @param start 前几位明文
-     * @param end 后几位明文
-     * @return java.lang.String
      */
     public static String around(String str, int start, int end) {
 
@@ -67,22 +70,22 @@ public class YejuInfoSecurityUtil {
     }
 
 
-
-    /** 保留后几位
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2021/2/21 0:17
+    /**
+     * 保留后几位
+     *
      * @param str 明文
      * @param end 最后几位 ？
      * @return java.lang.String
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/2/21 0:17
      */
-    public static String right(String str,int end) {
+    public static String right(String str, int end) {
 
         if (StringUtils.isBlank(str)) {
             return "";
         }
         return StringUtils.leftPad(StringUtils.right(str, end), StringUtils.length(str), "*");
     }
-
 
 }

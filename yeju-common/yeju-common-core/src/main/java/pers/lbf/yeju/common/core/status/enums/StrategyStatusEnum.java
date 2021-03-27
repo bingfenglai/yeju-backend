@@ -18,7 +18,9 @@ package pers.lbf.yeju.common.core.status.enums;
 
 import pers.lbf.yeju.common.core.status.insterfaces.IStatus;
 
-/**策略状态枚举
+/**
+ * 策略状态枚举
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -28,7 +30,7 @@ public enum StrategyStatusEnum implements IStatus {
     /**
      *
      */
-    NOT_FOUND("没有找到对应策略","str01");
+    NOT_FOUND("没有找到对应策略,请检查配置", "str01");
 
     private String message;
     private String code;

@@ -18,6 +18,8 @@ package pers.lbf.yeju.service.interfaces.customer.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import pers.lbf.yeju.common.core.anotations.Blur;
+import pers.lbf.yeju.common.core.constant.ParameterConstants;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -36,6 +38,7 @@ public class SimpleCustomerInfoBean implements Serializable {
     /**
      * 客户姓名
      */
+    @Blur(ParameterConstants.NAME)
     private String customerName;
     /**
      * 性别0男1女，详见属性表
@@ -45,6 +48,7 @@ public class SimpleCustomerInfoBean implements Serializable {
     /**
      * 手机号
      */
+    @Blur(ParameterConstants.PHONE_NUMBER)
     private String phoneNumber;
     /**
      * 手机区号，比如中国是+86，详见属性表

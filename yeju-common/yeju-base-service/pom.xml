@@ -21,6 +21,12 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-common-blur</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
         <!--            dubbo 依赖 服务调用-->
         <dependency>
             <groupId>org.apache.dubbo</groupId>

@@ -1,0 +1,55 @@
+/*
+ * Copyright 2020 赖柄沣 bingfengdev@aliyun.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+package pers.lbf.yeju.common.blur.strategy.impl;
+
+import pers.lbf.yeju.common.blur.strategy.BlurStrategy;
+import pers.lbf.yeju.common.util.YejuInfoSecurityUtil;
+
+import java.io.Serializable;
+
+/**
+ * 手机号模糊策略 枚举实现单例模式
+ *
+ * @author 赖柄沣 bingfengdev@aliyun.com
+ * @version 1.0
+ * @date 2021/3/27 14:33
+ */
+public enum PhoneNumberBlurStrategy implements BlurStrategy, Serializable {
+    /**
+     * 实例
+     */
+    INSTANCE;
+
+    private final int prefix = 3;
+    private final int suffix = 4;
+
+    @Override
+    public int getPrefix() {
+        return this.prefix;
+    }
+
+    @Override
+    public int getSuffix() {
+        return this.suffix;
+    }
+
+    @Override
+    public String doBlur(String value) {
+        return YejuInfoSecurityUtil.around(value, prefix, suffix);
+    }
+}

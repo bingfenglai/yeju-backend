@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import pers.lbf.yeju.common.core.anotations.DoBlur;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -137,6 +138,7 @@ public class CustomerServiceImpl implements ICustomerService {
      * @throws ServiceException e
      */
     @Override
+    @DoBlur
     public PageResult<SimpleCustomerInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
         Page<Customer> page = PageUtil.getPage(Customer.class, currentPage, size);
 

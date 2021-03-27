@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.service.interfaces.customer;
 
+
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -73,6 +74,7 @@ public interface ICustomerService {
      * @return list SimpleCustomerInfoBean
      * @throws ServiceException e
      */
+    
     PageResult<SimpleCustomerInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 
     /**
@@ -97,7 +99,7 @@ public interface ICustomerService {
      * @date 2021/3/22 10:29
      */
     IResult<CustomerDetailsInfo> findDetailsInfoByCustomerId(Long customerId) throws ServiceException;
-    
+
 
     /**
      * 更新客户资料

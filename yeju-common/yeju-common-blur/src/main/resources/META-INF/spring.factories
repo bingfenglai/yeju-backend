@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  pers.lbf.yeju.common.blur.aop.BlurResolver,\
+  pers.lbf.yeju.common.blur.strategy.manager.BlurResolveManager
+  

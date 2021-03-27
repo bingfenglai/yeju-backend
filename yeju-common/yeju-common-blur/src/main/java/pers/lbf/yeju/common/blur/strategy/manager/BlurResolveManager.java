@@ -57,8 +57,8 @@ public class BlurResolveManager {
         Class clz = obj.getClass();
         String name = this.firstUpperCase(field.getName());
         // 设置操作权限为true
-        field.setAccessible(true);
-
+        //field.setAccessible(true);
+        
         //获取属性的getter方法
         try {
 

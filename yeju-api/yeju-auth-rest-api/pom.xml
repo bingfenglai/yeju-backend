@@ -47,6 +47,19 @@
             <version>${spring-cloud-alibaba.version}</version>
         </dependency>
 
+        <!--        服务流控-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <version>${spring-cloud-alibaba.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-sentinel-datasource</artifactId>
+            <version>${spring-cloud-alibaba.version}</version>
+        </dependency>
+
         <!-- 服务监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -158,11 +171,6 @@
             <version>${yeju.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>pers.lbf</groupId>
-            <artifactId>yeju-base-web-exception</artifactId>
-            <version>${yeju.version}</version>
-        </dependency>
     </dependencies>
 
 

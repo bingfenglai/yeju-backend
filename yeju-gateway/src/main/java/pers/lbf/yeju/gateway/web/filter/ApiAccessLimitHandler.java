@@ -99,12 +99,4 @@ public class ApiAccessLimitHandler implements GlobalFilter, Ordered {
 
     }
 
-
-    public static void main(String[] args) {
-        AntPathMatcher antPathMatcher = new AntPathMatcher();
-        boolean match = antPathMatcher.match("auth-consumer:auth:code:image", "/auth-consumer/auth/code/image".replace("/", ":").substring(1));
-
-        System.out.println(match);
-    }
-
 }

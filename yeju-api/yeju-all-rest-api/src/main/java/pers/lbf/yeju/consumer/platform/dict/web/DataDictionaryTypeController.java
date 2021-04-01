@@ -52,37 +52,35 @@ public class DataDictionaryTypeController {
     @DubboReference
     private IDataDictionaryInfoService dataDictionaryInfoService;
 
-    @ApiOperation(value = "获取数据字典信息列表 分页",notes = "数据字典列表说明",httpMethod = "GET")
+    @ApiOperation(value = "获取数据字典信息列表 分页", notes = "数据字典列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<SimpleDataDictionaryTypeBean>> findPage(
-            @Validated @NotNull(message = "每页显示条数")  @ApiParam("当前页") @PathVariable Long currentPage,
+            @Validated @NotNull(message = "每页显示条数") @ApiParam("当前页") @PathVariable Long currentPage,
             @Validated @NotNull(message = "每页显示大小不能为空") @ApiParam("每页显示条数") @RequestParam Long size
-    )throws ServiceException {
+    ) throws ServiceException {
         BaseFindPageArgs args = new BaseFindPageArgs();
         args.setCurrentPage(currentPage);
         args.setSize(size);
 
-        return Mono.just(dictionaryTypeService.findPage(args.getCurrentPage(),args.getSize()));
+        return Mono.just(dictionaryTypeService.findPage(args.getCurrentPage(), args.getSize()));
     }
 
 
-    @ApiOperation(value = "获取通用状态列表",notes = "获取通用状态列表",httpMethod = "GET")
+    @ApiOperation(value = "获取通用状态列表", notes = "获取通用状态列表", httpMethod = "GET")
     @GetMapping("/status/list")
-    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList()throws ServiceException {
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList() throws ServiceException {
         IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.STATUS);
         return Mono.just(result);
     }
 
-    @ApiOperation(value = "获取通用状态列表",notes = "获取通用状态列表",httpMethod = "GET")
+    @ApiOperation(value = "获取通用状态列表", notes = "获取通用状态列表", httpMethod = "GET")
     @GetMapping("/{type}/list")
     public Mono<IResult<List<SimpleLabelAndValueBean>>> getLabelAndValueList(
             @ApiParam("字典类型") @Validated @NotNull(message = "字典类型不能为空") @PathVariable("type") String type
-    )throws ServiceException {
+    ) throws ServiceException {
         IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(type);
         return Mono.just(result);
     }
 
 
-
-    
 }

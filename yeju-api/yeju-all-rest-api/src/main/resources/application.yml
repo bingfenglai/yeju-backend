@@ -1,8 +1,10 @@
 server:
   port: 9001
+
 spring:
   application:
     name: yeju-all-rest-api
+
 
 #management:
 #  endpoint:

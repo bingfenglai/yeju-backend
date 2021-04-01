@@ -6,6 +6,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.constant.OperationStatus;
 import pers.lbf.yeju.common.core.constant.OperationType;
@@ -32,6 +33,7 @@ import java.util.Objects;
  */
 
 @Slf4j
+@Component
 public class AuthFilter implements GlobalFilter, Ordered {
 
     private static final String START_TIME = "startTime";
@@ -112,7 +114,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         return OperationType.OTHER.getValue();
 
     }
-    
+
 
     @Override
     public int getOrder() {

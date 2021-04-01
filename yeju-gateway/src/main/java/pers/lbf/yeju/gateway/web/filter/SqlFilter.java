@@ -14,34 +14,15 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.gateway.config;
 
-import org.springframework.context.annotation.Configuration;
-import pers.lbf.yeju.gateway.web.filter.ApiAccessLimitHandler;
-import pers.lbf.yeju.gateway.web.filter.AuthFilter;
+package pers.lbf.yeju.gateway.web.filter;
 
 /**
- * 过滤器链配置
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/2/4 21:19
+ * @date 2021/4/1 23:26
  */
-@Configuration
-public class FilterChainConfig {
-
-    /**
-     * 鉴权过滤器
-     *
-     * @return authFilter
-     */
-    //@Bean
-    public AuthFilter initAuthFilter() {
-        return new AuthFilter();
-    }
-
-    //@Bean
-    public ApiAccessLimitHandler initApiAccess() {
-        return new ApiAccessLimitHandler();
-    }
+public class SqlFilter {
 }

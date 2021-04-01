@@ -31,13 +31,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Slf4j
 public class PasswordTest {
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(128);
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Test
     public void test() {
         String s = "123456";
         String s1 = passwordEncoder.encode(s);
         log.info("密码原文：{}", s);
-        log.info("密码密文： {}", s1);
+        log.info("密码密文： {}", s1.length());
     }
 }

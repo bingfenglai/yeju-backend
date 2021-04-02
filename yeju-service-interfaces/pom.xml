@@ -24,6 +24,7 @@
         <module>yeju-job-service-interfaces</module>
         <module>yeju-session-service-interfaces</module>
         <module>yeju-payment-service-interfaces</module>
+        <module>yeju-advertisement-service-interfaces</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

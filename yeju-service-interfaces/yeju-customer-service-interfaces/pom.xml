@@ -22,6 +22,11 @@
             <version>${yeju.version}</version>
         </dependency>
         <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-common-blur-annotions</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+        <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>

@@ -32,7 +32,7 @@ import pers.lbf.yeju.service.interfaces.payment.pojo.SimpleIntegrationInfoBean;
 import reactor.core.publisher.Mono;
 
 /**
- * TODO
+ * 积分服务
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
@@ -55,6 +55,6 @@ public class IntegrationController {
 
         return Mono.just(integrationService.findPage(args));
     }
-    
+
 
 }

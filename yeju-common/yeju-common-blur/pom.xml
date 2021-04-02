@@ -28,6 +28,11 @@
             <version>${yeju.version}</version>
         </dependency>
         <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-common-blur-annotions</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>

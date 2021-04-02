@@ -18,8 +18,8 @@ package pers.lbf.yeju.service.interfaces.customer.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import pers.lbf.yeju.common.core.anotations.Blur;
-import pers.lbf.yeju.common.core.constant.ParameterConstants;
+import pers.lbf.common.blur.anotations.Blur;
+import pers.lbf.common.blur.constants.ParameterConstants;
 
 import java.io.Serializable;
 import java.util.Date;

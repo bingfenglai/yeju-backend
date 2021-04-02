@@ -171,6 +171,12 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-base-web-exception</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
     </dependencies>
 
 

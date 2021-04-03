@@ -1,3 +1,0 @@
-#Dubbo Registry Cache
-#Tue Mar 23 18:01:43 CST 2021
-pers.lbf.yeju.service.interfaces.customer.ICustomerValidService=empty\://172.30.192.1/pers.lbf.yeju.service.interfaces.customer.ICustomerValidService?application\=yeju-provider&category\=providers&check\=false&dubbo\=2.0.2&init\=false&interface\=pers.lbf.yeju.service.interfaces.customer.ICustomerValidService&metadata-type\=remote&methods\=findDetailsById&pid\=15228&qos.enable\=false&release\=2.7.8&side\=consumer&sticky\=false&timestamp\=1616493701954

@@ -6,6 +6,7 @@ spring:
     name: yeju-all-rest-api
 
 
+
 #management:
 #  endpoint:
 #    health:

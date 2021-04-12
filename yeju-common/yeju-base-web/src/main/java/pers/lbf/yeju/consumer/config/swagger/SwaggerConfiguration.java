@@ -47,12 +47,12 @@ import java.util.*;
 public class SwaggerConfiguration extends Swagger2WebFluxConfiguration {
 
     @Autowired
-    private  SwaggerPropertiesConfig config;
+    private SwaggerPropertiesConfig config;
 
     @Bean
     public Docket createRestApi() {
 
-        return new Docket(DocumentationType.OAS_30).pathMapping("/yeju-all-rest-api")
+        return new Docket(DocumentationType.OAS_30).pathMapping("/" + config.getApplicationName())
                 // 定义是否开启swagger，false为关闭，可以通过变量控制
                 .enable(config.getEnable())
                 .apiInfo(createApiInfo())
@@ -80,9 +80,9 @@ public class SwaggerConfiguration extends Swagger2WebFluxConfiguration {
                         .securityReferences(
                                 Collections.singletonList(
                                         new SecurityReference(TokenConstant.TOKEN_KEY,
-                                        new AuthorizationScope[]{
-                                                new AuthorizationScope("global",
-                                                        "")})))
+                                                new AuthorizationScope[]{
+                                                        new AuthorizationScope("global",
+                                                                "")})))
                         .build()
         );
 
@@ -101,7 +101,7 @@ public class SwaggerConfiguration extends Swagger2WebFluxConfiguration {
         return null;
     }
 
-    public ApiInfo createApiInfo(){
+    public ApiInfo createApiInfo() {
         return new ApiInfoBuilder().title(config.getApplicationName() + " Api Doc")
                 .description(config.getApplicationDescription())
                 .contact(new Contact("赖 柄沣", null, "bingfengdev@aliyun.com"))

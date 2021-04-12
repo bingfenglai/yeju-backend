@@ -14,7 +14,8 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.message.notice.receiver;
+
+package pers.lbf.yeju.consumer.message.privated.receiver;
 
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -24,49 +25,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
-import pers.lbf.yeju.consumer.message.notice.web.SystemNoticeWebsocketHandler;
 import pers.lbf.yeju.service.interfaces.message.MessageDeliver;
 
 import java.util.Map;
 
 /**
+ * TODO
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2021/1/3 22:37
+ * @date 2021/4/7 11:05
  */
 @Component
 @Slf4j
-@EnableAsync
-public class NoticeMessageRabbitReceiver {
+public class PrivateMessageRabbitReceiver {
 
     @Autowired
-    private SystemNoticeWebsocketHandler noticeHandler;
+    @Qualifier("privateMessageDeliveryManager")
+    private MessageDeliver messageDeliver;
 
-    @Autowired
-    @Qualifier("noticeMessageDeliverManager")
-    private MessageDeliver messageDeliverManager;
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue,
-            exchange = @Exchange(value = "${spring.rabbitmq.listener.notice.exchange.name}",
-                    durable = "${spring.rabbitmq.listener.notice.exchange.durable}",
-                    type = "${spring.rabbitmq.listener.notice.exchange.type}",
-                    ignoreDeclarationExceptions = "${spring.rabbitmq.listener.notice.exchange.ignoreDeclarationExceptions}"),
-            key = "${spring.rabbitmq.listener.notice.exchange.key}"
+            exchange = @Exchange(value = "${spring.rabbitmq.listener.private-message.exchange.name}",
+                    durable = "${spring.rabbitmq.listener.private-message.exchange.durable}",
+                    type = "${spring.rabbitmq.listener.private-message.exchange.type}",
+                    ignoreDeclarationExceptions = "${spring.rabbitmq.listener.private-message.exchange.ignoreDeclarationExceptions}"),
+            key = "${spring.rabbitmq.listener.private-message.exchange.key}"
     )
     )
     @RabbitHandler
-    public void messageHandler(@Payload String msg,
+    public void messageHandler(@Payload String keyMsg,
                                Channel channel,
                                @Headers Map<String, Object> headers) throws Exception {
 
-        log.info("收到消息 {}", msg);
+        log.info("收到消息 {}", keyMsg);
 
-
-        messageDeliverManager.delive(msg);
+        messageDeliver.delive(keyMsg);
         Long deliveryTag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
         //手工ACK
         channel.basicAck(deliveryTag, false);

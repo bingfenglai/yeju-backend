@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.service.interfaces.message;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -25,7 +26,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/2/17 21:15
  */
-public class TextMessage extends BaseMessage<String> implements Message<String> {
+public class TextMessage extends BaseMessage<String> implements Message<String>, Serializable {
     @Override
     public String getMessage() {
         return this.message;
@@ -54,5 +55,52 @@ public class TextMessage extends BaseMessage<String> implements Message<String> 
     @Override
     public Long getMessageId() {
         return messageId;
+    }
+
+    @Override
+    public String toString() {
+        return "TextMessage{" +
+                "message=" + message +
+                ", form='" + form + '\'' +
+                ", sendTo=" + sendTo +
+                ", date=" + date +
+                ", messageType='" + messageType + '\'' +
+                ", messageId=" + messageId +
+                '}';
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public void setForm(String form) {
+        this.form = form;
+    }
+
+    @Override
+    public void setSendTo(Long sendTo) {
+        this.sendTo = sendTo;
+    }
+
+    @Override
+    public Date getDate() {
+        return this.date;
+    }
+
+    @Override
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    @Override
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
     }
 }

@@ -14,29 +14,30 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.constant;
+
+package pers.lbf.yeju.provider.base.util;
+
+import com.baomidou.mybatisplus.core.toolkit.Sequence;
+import org.springframework.stereotype.Component;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/7 14:50
+ * @date 2021/4/7 10:55
  */
-public class MessageCacheKeyConstant {
+@Component
+public class IdHelper {
+    private final Sequence sequence;
 
-    /**
-     * 消息缓存前缀
-     */
-    public static final String PREFIX = "yeju:message:";
+    public IdHelper() {
+        sequence = new Sequence();
+    }
 
-    /**
-     * 群消息已读缓存前缀
-     */
-    public static final String READ_PREFIX = PREFIX + "read:";
+    public Long nextId() {
+        return this.sequence.nextId();
+    }
 
-    /**
-     * 私信未读缓存前缀
-     */
-    public static final String UN_READ_PREFIX = PREFIX + "private:unread:";
+
 }

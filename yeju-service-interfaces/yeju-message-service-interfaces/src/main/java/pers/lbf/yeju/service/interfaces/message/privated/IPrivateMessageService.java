@@ -14,39 +14,23 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.manager;
+
+package pers.lbf.yeju.service.interfaces.message.privated;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.service.interfaces.message.Message;
-import pers.lbf.yeju.service.interfaces.message.MessageDeliver;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.message.TextMessage;
 
 /**
- * 通知投递管理器
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 15:45
+ * @date 2021/4/6 21:07
  */
-public abstract class MessageDeliverManager implements MessageDeliver {
+public interface IPrivateMessageService {
 
+    IResult<Boolean> addMessage(TextMessage message) throws ServiceException;
 
-    protected void doBeforeDelive(Message<?> message) throws ServiceException {
-
-    }
-
-
-    protected void doAfterDelive(Message<?> message) throws ServiceException {
-
-    }
-
-
-    /**
-     * 投递消息
-     *
-     * @param jsonMsgString 消息
-     * @author 赖柄沣 bingfengdev@aliyun.com
-     * @version 1.0
-     * @date 2021/3/6 16:30
-     */
-    public abstract void doDelive(String jsonMsgString) throws ServiceException;
+    IResult<String> pullMessage(String messageId) throws ServiceException;
 }

@@ -31,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import pers.lbf.yeju.base.security.authorization.config.SessionCheckConfig;
 import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.core.constant.TokenConstant;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -40,6 +41,9 @@ import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 /**
@@ -63,6 +67,9 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
     @DubboReference
     private ISessionService sessionService;
 
+    @Autowired
+    private SessionCheckConfig sessionCheckConfig;
+
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
 
@@ -73,25 +80,31 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
         String token = headers.getFirst(TokenConstant.TOKEN_KEY);
 
         if (token == null) {
+            log.info("没有获取到token");
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         AuthorityInfoBean authorityInfoBean = null;
+
         try {
             authorityInfoBean = tokenManager.getAuthorityInfo(token);
-        } catch (Exception e) {
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
         }
+
 
         if (authorityInfoBean == null) {
             throw new ServiceException(AuthStatusEnum.NO_TOKEN);
         }
 
         // 判断账户有没有被强制过期
-        Boolean flag = sessionService.isExpired(authorityInfoBean.getSessionId()).getData();
-        if (!flag) {
-            throw new ServiceException(AuthStatusEnum.NO_TOKEN);
+        if (sessionCheckConfig.isSessionCheckEnabled()) {
+            Boolean flag = sessionService.isExpired(authorityInfoBean.getSessionId()).getData();
+            if (!flag) {
+                throw new ServiceException(AuthStatusEnum.NO_TOKEN);
+            }
         }
+        
 
         List<String> authorityList = authorityInfoBean.getAuthorityList();
 

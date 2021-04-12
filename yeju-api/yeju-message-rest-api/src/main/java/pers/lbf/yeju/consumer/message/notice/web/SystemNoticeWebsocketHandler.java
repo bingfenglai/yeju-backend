@@ -80,23 +80,7 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
         }).doOnCancel(() -> {
             log.info("on cancel");
         }).doOnNext(webSocketMessage -> {
-            if (webSocketMessage.getType().equals(WebSocketMessage.Type.TEXT)) {
-                String token = webSocketMessage.getPayloadAsText();
-                AuthorityInfoBean authorityInfoBean = null;
-                try {
-                    authorityInfoBean = tokenManager.getAuthorityInfo(token);
-                    log.debug(authorityInfoBean.toString());
-                    String principal = authorityInfoBean.getPrincipal();
-                    sessionMap.put(principal, session);
-                    log.info("会话key {}", principal);
-                    this.pullUnReadNotice(principal);
-                } catch (Exception e) {
-                    log.error(String.valueOf(e));
-                }
-
-
-            }
-
+            doAuthenticate(webSocketMessage, session);
 
         }).doOnError(throwable -> {
             log.error("ws 发生错误");
@@ -199,6 +183,25 @@ public class SystemNoticeWebsocketHandler implements WebSocketHandler {
         args.setPrincipal(principal);
         logSender.send(args);
 
+    }
+
+    private void doAuthenticate(WebSocketMessage webSocketMessage, WebSocketSession session) {
+        if (webSocketMessage.getType().equals(WebSocketMessage.Type.TEXT)) {
+            String token = webSocketMessage.getPayloadAsText();
+            AuthorityInfoBean authorityInfoBean = null;
+            try {
+                authorityInfoBean = tokenManager.getAuthorityInfo(token);
+                log.debug(authorityInfoBean.toString());
+                String principal = authorityInfoBean.getPrincipal();
+                sessionMap.put(principal, session);
+                log.info("会话key {}", principal);
+                this.pullUnReadNotice(principal);
+            } catch (Exception e) {
+                log.error(String.valueOf(e));
+            }
+
+
+        }
     }
 
 }

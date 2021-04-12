@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.message.notice.config;
+package pers.lbf.yeju.consumer.message.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +28,7 @@ import org.springframework.web.reactive.socket.server.support.HandshakeWebSocket
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 import org.springframework.web.reactive.socket.server.upgrade.ReactorNettyRequestUpgradeStrategy;
 import pers.lbf.yeju.consumer.message.notice.web.SystemNoticeWebsocketHandler;
+import pers.lbf.yeju.consumer.message.web.handler.MessageWebsocketHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,10 +49,14 @@ public class WebsocketConfig {
     @Autowired
     private SystemNoticeWebsocketHandler handler;
 
+    @Autowired
+    private MessageWebsocketHandler messageWebsocketHandler;
+
     @Bean
     public HandlerMapping handlerMapping() {
         Map<String, WebSocketHandler> map = new HashMap<>();
-        map.put("/ws/notice",handler);
+        map.put("/ws/notice", handler);
+        map.put("/ws/message", messageWebsocketHandler);
 
         SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
         mapping.setUrlMap(map);

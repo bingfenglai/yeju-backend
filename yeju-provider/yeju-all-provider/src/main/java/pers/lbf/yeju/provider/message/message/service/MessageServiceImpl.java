@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import pers.lbf.yeju.service.interfaces.message.IMessageService;
+import pers.lbf.yeju.service.interfaces.message.TextMessage;
 import pers.lbf.yeju.service.interfaces.message.constant.ReceiverTypeConstant;
 import pers.lbf.yeju.service.interfaces.message.manager.MessageCacheKeyManager;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
@@ -85,5 +86,11 @@ public class MessageServiceImpl implements IMessageService {
 
         Long receiverId = accountService.findAccountIdByPrincipal(principal).getData();
         confirmRead(messageId, receiverId, receiverType);
+    }
+
+    @Override
+    public void addMessage(TextMessage message) throws ServiceException {
+       
+
     }
 }

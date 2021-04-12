@@ -1,0 +1,1 @@
+docker run -p 9010:9010 --net=host --name yeju-api  --restart=always -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-message-rest -api:1.0.0

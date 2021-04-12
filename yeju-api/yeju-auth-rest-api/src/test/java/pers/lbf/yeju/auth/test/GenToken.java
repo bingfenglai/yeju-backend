@@ -27,6 +27,7 @@ import pers.lbf.yeju.common.util.FileUtils;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.consumer.auth.start.YejuAuthConsumerApplication;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,14 +48,17 @@ public class GenToken {
     public void test1() {
         AuthorityInfoBean authorityInfoBean = new AuthorityInfoBean();
         authorityInfoBean.setSessionId("9693911614612442339");
-        authorityInfoBean.setPrincipal(String.valueOf(969391));
+        authorityInfoBean.setPrincipal(String.valueOf(969392));
         authorityInfoBean.setTimeUnit(TimeUnit.DAYS);
-        authorityInfoBean.setExpiration(66);
+        authorityInfoBean.setExpiration(666);
+        authorityInfoBean.setAuthorityList(Collections.singletonList("*:**"));
 
         try {
-            String token = tokenManager.getBuilder(authorityInfoBean, 6666L)
+            String token = tokenManager.getBuilder(authorityInfoBean, 666L)
                     .build();
-            FileUtils.writeFile("E:\\graduation project\\yeju_code\\yeju_dev\\yeju-gateway\\token", token);
+            log.info(token);
+            FileUtils.writeFile("E:\\graduation project\\yeju_code\\yeju_dev\\token", token);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

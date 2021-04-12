@@ -14,29 +14,25 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.constant;
+
+package pers.lbf.yeju.consumer.message.vo;
+
+import pers.lbf.yeju.service.interfaces.message.BaseMessage;
+
+import java.util.Date;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/7 14:50
+ * @date 2021/4/5 14:41
  */
-public class MessageCacheKeyConstant {
+public class AuthenticationMessageVO extends BaseMessage<String> {
+    
+    @Override
+    public Date getSendDate() {
 
-    /**
-     * 消息缓存前缀
-     */
-    public static final String PREFIX = "yeju:message:";
-
-    /**
-     * 群消息已读缓存前缀
-     */
-    public static final String READ_PREFIX = PREFIX + "read:";
-
-    /**
-     * 私信未读缓存前缀
-     */
-    public static final String UN_READ_PREFIX = PREFIX + "private:unread:";
+        return null;
+    }
 }

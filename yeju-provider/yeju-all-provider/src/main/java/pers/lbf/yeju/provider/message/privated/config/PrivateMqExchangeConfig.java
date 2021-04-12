@@ -14,29 +14,24 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message.constant;
+package pers.lbf.yeju.provider.message.privated.config;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.stereotype.Component;
+import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/7 14:50
+ * @date 2021/3/6 0:18
  */
-public class MessageCacheKeyConstant {
+@Component
+@RefreshScope
+@ConfigurationProperties(prefix = "spring.rabbitmq.listener.private-message.exchange")
+public class PrivateMqExchangeConfig extends BaseRabbitMqExchangeConfig {
 
-    /**
-     * 消息缓存前缀
-     */
-    public static final String PREFIX = "yeju:message:";
 
-    /**
-     * 群消息已读缓存前缀
-     */
-    public static final String READ_PREFIX = PREFIX + "read:";
-
-    /**
-     * 私信未读缓存前缀
-     */
-    public static final String UN_READ_PREFIX = PREFIX + "private:unread:";
 }

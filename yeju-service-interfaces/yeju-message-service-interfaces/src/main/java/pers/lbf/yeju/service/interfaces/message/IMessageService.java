@@ -31,5 +31,6 @@ public interface IMessageService {
 
     void confirmRead(Long messageId, String principal, String receiverType) throws ServiceException;
 
+    void addMessage(TextMessage message) throws ServiceException;
 
 }

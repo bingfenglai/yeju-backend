@@ -37,7 +37,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2021/3/6 16:10
  */
-@Component
+@Component("noticeMessageDeliverManager")
 public class NoticeMessageDeliverManager extends MessageDeliverManager {
 
     @Autowired

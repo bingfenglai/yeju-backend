@@ -74,6 +74,14 @@ public class AuthorityInfoTokenBuilder {
         if (this.expireAt == null) {
             this.expireAt = this.defaultExpiresAt;
         }
+
+        if (authorityInfoBean.getTimeUnit() != null && authorityInfoBean.getExpiration() != null) {
+            logger.info("自定义过期时间");
+            token = JwtUtils.generateToken(authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()), authorityInfoBean.getExpiration(), authorityInfoBean.getTimeUnit());
+            return TokenConstant.getPrefixToken() + token;
+
+        }
+
         if (authorityInfoBean.getTimeUnit() == null || authorityInfoBean.getExpiration() == null) {
             token = JwtUtils.generateTokenExpireInSeconds(
                     authorityInfoBean, RsaUtils.getPrivateKey(rsaPrivateKeyConfig.getPath()),

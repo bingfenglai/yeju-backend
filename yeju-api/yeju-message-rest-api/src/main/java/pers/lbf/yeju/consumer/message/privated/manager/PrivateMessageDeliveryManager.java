@@ -92,9 +92,7 @@ public class PrivateMessageDeliveryManager extends MessageDeliverManager {
             String jsonMsg = privateMessageService.pullMessage(jsonMsgString).getData();
             log.info("未读消息：{}", jsonMsg);
             JSONObject jsonObject = JSONObject.parseObject(jsonMsg);
-            Object message = jsonObject.get("message");
-            jsonObject.put("content", message);
-            jsonObject.remove("message");
+            
             jsonObject.put("type", "0");
             jsonObject.put("pic", "/static/logo.png");
             WebSocketSession session = MessageWebsocketHandler.getMessageSessionMap().get(receiverId);

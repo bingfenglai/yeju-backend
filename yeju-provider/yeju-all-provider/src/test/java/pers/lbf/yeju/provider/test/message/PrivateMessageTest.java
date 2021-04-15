@@ -29,6 +29,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pers.lbf.yeju.provider.start.YejuProviderApplication;
 import pers.lbf.yeju.service.interfaces.message.privated.IPrivateMessageService;
 
+import java.util.List;
+
 /**
  * TODO
  *
@@ -63,6 +65,12 @@ public class PrivateMessageTest {
         redisTemplate.opsForValue().set(key, key);
         Boolean aBoolean = redisTemplate.hasKey(key);
         log.info("flag {}", aBoolean);
+    }
+    
+    @Test
+    public void test2() {
+        List<String> data = privateMessageService.pullMessageByAccountId(2L).getData();
+        log.info(data.toString());
     }
 
 

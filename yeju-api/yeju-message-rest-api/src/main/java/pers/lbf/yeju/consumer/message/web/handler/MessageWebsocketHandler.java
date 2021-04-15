@@ -17,7 +17,9 @@
 
 package pers.lbf.yeju.consumer.message.web.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
@@ -27,8 +29,10 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 import pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
 import pers.lbf.yeju.common.util.JsonUtils;
-import pers.lbf.yeju.service.interfaces.message.Message;
+import pers.lbf.yeju.service.interfaces.message.IMessageService;
 import pers.lbf.yeju.service.interfaces.message.TextMessage;
+import pers.lbf.yeju.service.interfaces.message.privated.IPrivateMessageService;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -53,6 +57,12 @@ public class MessageWebsocketHandler implements WebSocketHandler {
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
+
+    @DubboReference
+    private IMessageService messageService;
+
+    @DubboReference
+    private IPrivateMessageService privateMessageService;
 
     @Override
     public Mono<Void> handle(WebSocketSession session) {
@@ -102,29 +112,48 @@ public class MessageWebsocketHandler implements WebSocketHandler {
             }
             if (!authcFlags) {
                 log.info("会话{}还未认证，进行认证...", session.getId());
-                doAuthenticate(msg.getMessage(), session);
-                // 认证成功之后，拉去未读消息
-                pullUnReadMsg(senderId);
+                if (doAuthenticate(msg.getMessage(), session)) {
+                    // 认证成功之后，拉去未读消息
+                    //更新会话
+                    log.info("更新会话 key={}", senderId);
+                    messageSessionMap.put(senderId, session);
+                    pullUnReadMsg(senderId);
+                }
+
+
             } else {
 
                 log.info("会话{}已认证", session.getId());
-
+                //更新会话
+                log.info("更新会话 key={}", senderId);
+                pullUnReadMsg(senderId);
+                messageSessionMap.remove(senderId);
+                messageSessionMap.put(senderId, session);
             }
-            //更新会话
-            log.info("更新会话 key={}", senderId);
-            messageSessionMap.put(senderId, session);
+
 
         }
 
 
     }
 
-    private void pullUnReadMsg(String principal) {
-        List<? extends Message<?>> msgList = getUnReadMessageList(principal);
-        if (messageSessionMap.containsKey(principal)) {
-            WebSocketSession session = messageSessionMap.get(principal);
-            this.doPushMessage(session, msgList);
+    private void pullUnReadMsg(String accountId) {
+        log.info("拉取未读消息");
+        List<String> msgList = getUnReadMessageListByAccountId(accountId);
+        log.info("未读消息共{}条", msgList.size());
+        if (msgList.size() == 0) {
+            log.info("账号{}没有未读消息", accountId);
+        } else {
+            if (messageSessionMap.containsKey(accountId)) {
+                WebSocketSession session = messageSessionMap.get(accountId);
+                this.doPushMessage(session, msgList);
+
+            } else {
+                log.info("消息接收者不在本实例上");
+            }
         }
+
+
     }
 
 
@@ -138,13 +167,31 @@ public class MessageWebsocketHandler implements WebSocketHandler {
      * @version 1.0
      * @date 2021/4/5 17:50
      */
-    private void doPushMessage(WebSocketSession session, List<? extends Message<?>> msgList) {
+    private void doPushMessage(WebSocketSession session, List<String> msgList) {
+        log.info("开始推送消息{},总共 {} 条", session.getId(), msgList.size());
 
+        for (String s : msgList) {
+
+            JSONObject jsonObject = JSONObject.parseObject(s);
+            Object messageId = jsonObject.get("messageId");
+            log.info("开始推送第{}条消息{}", msgList.indexOf(s), messageId);
+
+
+            session.send(Flux.just(session.textMessage(s)))
+                    .doOnSuccess(unused -> {
+                        log.info("消息{}投递成功", msgList.indexOf(s));
+                        //发布消息推送成功事件
+                    })
+                    .doOnError(un -> {
+                        log.info("消息{}投递失败", msgList.indexOf(s));
+                        //发布消息投递失败事件
+                    })
+                    .toProcessor();
+        }
     }
 
-    private List<? extends Message<?>> getUnReadMessageList(String principal) {
-
-        return null;
+    private List<String> getUnReadMessageListByAccountId(String accountId) {
+        return privateMessageService.pullMessageByAccountId(Long.valueOf(accountId)).getData();
     }
 
 
@@ -156,14 +203,9 @@ public class MessageWebsocketHandler implements WebSocketHandler {
      * @version 1.0
      * @date 2021/4/5 17:11
      */
-    private void doAuthenticate(String token, WebSocketSession session) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
-        AuthorityInfoBean authorityInfoBean = null;
-
-        authorityInfoBean = tokenManager.getAuthorityInfo(token);
-        log.debug(authorityInfoBean.toString());
-        String principal = authorityInfoBean.getPrincipal();
-
-
+    private boolean doAuthenticate(String token, WebSocketSession session) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+        AuthorityInfoBean authorityInfoBean = tokenManager.getAuthorityInfo(token);
+        return authorityInfoBean != null;
     }
 
 

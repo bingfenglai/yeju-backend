@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>yeju-advertisement-service-interfaces</artifactId>
+    <artifactId>yeju-sms-service-interfaces</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

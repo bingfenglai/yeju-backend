@@ -21,12 +21,16 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import pers.lbf.yeju.service.interfaces.message.IMessageService;
 import pers.lbf.yeju.service.interfaces.message.TextMessage;
 import pers.lbf.yeju.service.interfaces.message.constant.ReceiverTypeConstant;
 import pers.lbf.yeju.service.interfaces.message.manager.MessageCacheKeyManager;
+import pers.lbf.yeju.service.interfaces.message.privated.IPrivateMessageService;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
+
+import java.util.List;
 
 /**
  * TODO
@@ -35,7 +39,7 @@ import pers.lbf.yeju.service.interfaces.redis.IRedisService;
  * @version 1.0
  * @date 2021/3/7 18:24
  */
-@DubboService(interfaceClass = IMessageService.class)
+@DubboService(interfaceClass = IMessageService.class, timeout = 10000, retries = 0)
 @Slf4j
 public class MessageServiceImpl implements IMessageService {
 
@@ -44,6 +48,9 @@ public class MessageServiceImpl implements IMessageService {
 
     @DubboReference
     private IAccountService accountService;
+
+    @DubboReference
+    private IPrivateMessageService privateMessageService;
 
     /**
      * 确认读
@@ -90,7 +97,17 @@ public class MessageServiceImpl implements IMessageService {
 
     @Override
     public void addMessage(TextMessage message) throws ServiceException {
-       
+
+
+    }
+
+    @Override
+    public IResult<List<String>> pullMessageByAccountId(Long accountId) throws ServiceException {
+        // 1. 拉取系统未读消息
+        // 2. 拉去群消息
+        // 3. 拉取私人消息
+        // 暂时只实现拉取私人消息
+        return privateMessageService.pullMessageByAccountId(accountId);
 
     }
 }

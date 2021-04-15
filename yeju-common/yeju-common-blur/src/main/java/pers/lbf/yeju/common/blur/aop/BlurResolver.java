@@ -22,7 +22,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pers.lbf.common.blur.anotations.Blur;
+import pers.lbf.yeju.common.blur.anotations.Blur;
 import pers.lbf.yeju.common.blur.strategy.manager.BlurResolveManager;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -60,7 +60,7 @@ public class BlurResolver {
 
     }
 
-    @Pointcut("@annotation(pers.lbf.common.blur.anotations.DoBlur)")
+    @Pointcut("@annotation(pers.lbf.yeju.common.blur.anotations.DoBlur)")
     public void pointV2() {
 
     }

@@ -14,28 +14,22 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message;
+package pers.lbf.yeju.consumer.advertisement.smstemplate.web.controller;
 
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
-
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 消息服务接口类
+ * 短信模板服务接口
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/7 18:18
+ * @date 2021/4/15 21:46
  */
-public interface IMessageService {
-
-    void confirmRead(Long messageId, Long receiverId, String receiverType) throws ServiceException;
-
-    void confirmRead(Long messageId, String principal, String receiverType) throws ServiceException;
-
-    void addMessage(TextMessage message) throws ServiceException;
-
-    IResult<List<String>> pullMessageByAccountId(Long accountId) throws ServiceException;
+@RestController
+@RequestMapping("advertisement/sms/template")
+@Slf4j
+public class SmsTemplateController {
 
 }

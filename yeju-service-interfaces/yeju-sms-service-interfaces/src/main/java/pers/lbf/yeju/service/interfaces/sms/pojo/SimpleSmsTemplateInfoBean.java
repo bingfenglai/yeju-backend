@@ -15,39 +15,14 @@
  *
  */
 
-package pers.lbf.common.blur.constants;
+package pers.lbf.yeju.service.interfaces.sms.pojo;
 
 /**
- * 参数常量
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/26 23:17
+ * @date 2021/4/15 22:00
  */
-public enum ParameterConstants {
-    /**
-     * 姓名
-     */
-    NAME,
-    /**
-     * 银行卡
-     */
-    ID_CODE,
-    /**
-     * 手机号
-     */
-    PHONE_NUMBER,
-    /**
-     * 地址
-     */
-    ADDRESS,
-    /**
-     * 银行卡
-     */
-    BANK_CODE,
-    /**
-     * 其他需要模糊化处理的属性
-     */
-    OTHER;
-
+public class SimpleSmsTemplateInfoBean {
 }

@@ -31,6 +31,10 @@ import pers.lbf.yeju.service.interfaces.message.manager.MessageCacheKeyManager;
 import pers.lbf.yeju.service.interfaces.message.privated.IPrivateMessageService;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * TODO
  *
@@ -80,5 +84,19 @@ public class PrivateMessageServiceImpl implements IPrivateMessageService {
         String jsonMsg = (String) redisTemplate.opsForValue().get(messageId);
         log.info("拉取到消息：{}", jsonMsg);
         return Result.ok(jsonMsg);
+    }
+
+    @Override
+    public IResult<List<String>> pullMessageByAccountId(Long accountId) throws ServiceException {
+        log.info("拉取{}私信", accountId);
+        List<String> result = new LinkedList<>();
+        String pattern = MessageCacheKeyManager.generatePrivateMessageUnReadCacheKeyPattern(accountId, "**");
+        Collection<String> keys = redisService.keys(pattern);
+        for (String key : keys) {
+            String jsonMessageStr = (String) redisService.getCacheObject(key);
+            result.add(jsonMessageStr);
+        }
+
+        return Result.ok(result);
     }
 }

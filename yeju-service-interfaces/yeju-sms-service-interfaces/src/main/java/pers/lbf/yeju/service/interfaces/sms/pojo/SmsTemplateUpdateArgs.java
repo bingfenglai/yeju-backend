@@ -15,27 +15,14 @@
  *
  */
 
-package pers.lbf.common.blur.anotations;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+package pers.lbf.yeju.service.interfaces.sms.pojo;
 
 /**
- * 该注解表明此方法需要做敏感信息过滤处理
- * 标注在实现方法上
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/27 21:52
+ * @date 2021/4/15 22:02
  */
-@Target(METHOD)
-@Retention(RUNTIME)
-@Documented
-@Inherited
-public @interface DoBlur {
+public class SmsTemplateUpdateArgs {
 }

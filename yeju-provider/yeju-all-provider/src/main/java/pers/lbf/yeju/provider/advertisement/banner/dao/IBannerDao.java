@@ -14,22 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.advertisement.banner.controller;
+package pers.lbf.yeju.provider.advertisement.banner.dao;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import pers.lbf.yeju.common.domain.entity.business.Banner;
 
 /**
- * 轮播图服务
+ * 轮播图信息表(TableBusinessBanner)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @version 1.0
- * @date 2021/4/2 16:21
+ * @since 2021-04-15 19:33:17
  */
-@RestController
-@RequestMapping("/advertisement/banner")
-@Slf4j
-public class BannerController {
+public interface IBannerDao extends BaseMapper<Banner> {
 
 }

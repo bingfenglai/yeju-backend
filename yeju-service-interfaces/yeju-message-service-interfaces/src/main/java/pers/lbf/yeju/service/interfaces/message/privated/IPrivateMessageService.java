@@ -21,6 +21,8 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.message.TextMessage;
 
+import java.util.List;
+
 /**
  * TODO
  *
@@ -33,4 +35,7 @@ public interface IPrivateMessageService {
     IResult<Boolean> addMessage(TextMessage message) throws ServiceException;
 
     IResult<String> pullMessage(String messageId) throws ServiceException;
+
+    IResult<List<String>> pullMessageByAccountId(Long AccountId) throws ServiceException;
+
 }

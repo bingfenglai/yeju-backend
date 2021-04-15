@@ -14,28 +14,15 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message;
 
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
-
-import java.util.List;
+package pers.lbf.yeju.service.interfaces.sms.pojo;
 
 /**
- * 消息服务接口类
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/7 18:18
+ * @date 2021/4/15 22:01
  */
-public interface IMessageService {
-
-    void confirmRead(Long messageId, Long receiverId, String receiverType) throws ServiceException;
-
-    void confirmRead(Long messageId, String principal, String receiverType) throws ServiceException;
-
-    void addMessage(TextMessage message) throws ServiceException;
-
-    IResult<List<String>> pullMessageByAccountId(Long accountId) throws ServiceException;
-
+public class SmsTemplateCreateArgs {
 }

@@ -14,28 +14,28 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message;
 
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
+package pers.lbf.yeju.common.blur.anotations;
 
-import java.util.List;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 消息服务接口类
+ * 该注解表明此方法需要做敏感信息过滤处理
+ * 标注在实现方法上
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/7 18:18
+ * @date 2021/3/27 21:52
  */
-public interface IMessageService {
-
-    void confirmRead(Long messageId, Long receiverId, String receiverType) throws ServiceException;
-
-    void confirmRead(Long messageId, String principal, String receiverType) throws ServiceException;
-
-    void addMessage(TextMessage message) throws ServiceException;
-
-    IResult<List<String>> pullMessageByAccountId(Long accountId) throws ServiceException;
-
+@Target(METHOD)
+@Retention(RUNTIME)
+@Documented
+@Inherited
+public @interface DoBlur {
 }

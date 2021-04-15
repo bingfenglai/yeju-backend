@@ -15,9 +15,9 @@
  *
  */
 
-package pers.lbf.common.blur.anotations;
+package pers.lbf.yeju.common.blur.anotations;
 
-import pers.lbf.common.blur.constants.ParameterConstants;
+import pers.lbf.yeju.common.blur.constants.ParameterConstants;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;

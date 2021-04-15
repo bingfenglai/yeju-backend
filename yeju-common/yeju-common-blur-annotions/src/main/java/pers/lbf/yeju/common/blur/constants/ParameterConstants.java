@@ -14,28 +14,40 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.message;
 
-import pers.lbf.yeju.common.core.exception.service.ServiceException;
-import pers.lbf.yeju.common.core.result.IResult;
-
-import java.util.List;
+package pers.lbf.yeju.common.blur.constants;
 
 /**
- * 消息服务接口类
+ * 参数常量
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/7 18:18
+ * @date 2021/3/26 23:17
  */
-public interface IMessageService {
-
-    void confirmRead(Long messageId, Long receiverId, String receiverType) throws ServiceException;
-
-    void confirmRead(Long messageId, String principal, String receiverType) throws ServiceException;
-
-    void addMessage(TextMessage message) throws ServiceException;
-
-    IResult<List<String>> pullMessageByAccountId(Long accountId) throws ServiceException;
+public enum ParameterConstants {
+    /**
+     * 姓名
+     */
+    NAME,
+    /**
+     * 银行卡
+     */
+    ID_CODE,
+    /**
+     * 手机号
+     */
+    PHONE_NUMBER,
+    /**
+     * 地址
+     */
+    ADDRESS,
+    /**
+     * 银行卡
+     */
+    BANK_CODE,
+    /**
+     * 其他需要模糊化处理的属性
+     */
+    OTHER;
 
 }

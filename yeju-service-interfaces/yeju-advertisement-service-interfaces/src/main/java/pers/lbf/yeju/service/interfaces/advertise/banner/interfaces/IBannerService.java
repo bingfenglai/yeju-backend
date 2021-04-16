@@ -34,6 +34,14 @@ import java.util.Set;
  */
 public interface IBannerService {
 
+    /**
+     * 获取当前最新的轮播图
+     *
+     * @param size 个数
+     * @return
+     * @throws ServiceException
+     */
+    IResult<List<BannerInfoBean>> getLatest(Integer size) throws ServiceException;
 
     /**
      * 轮播图条件查询

@@ -67,5 +67,14 @@ public class ObjectUploadController {
 
     }
 
+    @ApiOperation(value = "根据文件MD5值判断文件是否存在",
+            notes = "说明:根据文件MD5值判断文件是否存在 存在则返回文件url,不存在返回false", httpMethod = "GET")
+    @GetMapping("/{md5}")
+    public Mono<IResult<String>> check(@PathVariable String md5) throws ServiceException {
+
+        return Mono.just(fileUploadService.isExited(md5));
+
+    }
+
 
 }

@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -52,6 +54,18 @@ public class BannerServiceImpl implements IBannerService {
     private IBannerDao bannerDao;
 
     /**
+     * 获取当前最新的轮播图
+     *
+     * @param size 个数
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<List<BannerInfoBean>> getLatest(Integer size) throws ServiceException {
+        return null;
+    }
+
+    /**
      * 轮播图条件查询
      *
      * @param queryArgs 查询参数
@@ -61,6 +75,7 @@ public class BannerServiceImpl implements IBannerService {
      * @date 2021/4/15 19:55
      */
     @Override
+    @Cacheable(cacheNames = "banner:page", keyGenerator = "yejuKeyGenerator")
     public PageResult<SimpleBannerInfoBean> queryPage(BannerQueryArgsBean queryArgs) throws ServiceException {
         Page<Banner> page = PageUtil.getPage(Banner.class, queryArgs.getCurrentPage(), queryArgs.getSize());
         QueryWrapper<Banner> queryWrapper = buildQueryWrapper(queryArgs);
@@ -77,6 +92,7 @@ public class BannerServiceImpl implements IBannerService {
 
     private SimpleBannerInfoBean bannerToSimpleInfoBean(Banner banner) {
         SimpleBannerInfoBean simpleBannerInfoBean = new SimpleBannerInfoBean();
+        simpleBannerInfoBean.setSort(banner.getSort());
         simpleBannerInfoBean.setId(banner.getId());
         simpleBannerInfoBean.setImageUrl(banner.getImageUrl());
         simpleBannerInfoBean.setTitle(banner.getTitle());
@@ -85,6 +101,7 @@ public class BannerServiceImpl implements IBannerService {
         simpleBannerInfoBean.setCreateTime(banner.getCreateTime());
         simpleBannerInfoBean.setCreateBy(banner.getCreateBy());
         return simpleBannerInfoBean;
+
     }
 
     private QueryWrapper<Banner> buildQueryWrapper(BannerQueryArgsBean queryArgs) {
@@ -128,6 +145,7 @@ public class BannerServiceImpl implements IBannerService {
      * @throws ServiceException
      */
     @Override
+    @CacheEvict(cacheNames = "banner:page", allEntries = true)
     public IResult<Boolean> create(BannerCreateArgs args) throws ServiceException {
         Banner banner = createArgsToBanner(args);
         int count = bannerDao.insert(banner);
@@ -141,7 +159,7 @@ public class BannerServiceImpl implements IBannerService {
 
     private Banner createArgsToBanner(BannerCreateArgs args) {
         Banner banner = new Banner();
-
+        banner.setSort(args.getSort());
         banner.setImageUrl(args.getImageUrl());
         banner.setTitle(args.getTitle());
         banner.setBannerStatus(args.getBannerStatus());
@@ -152,9 +170,11 @@ public class BannerServiceImpl implements IBannerService {
         banner.setRemark(args.getRemark());
 
         return banner;
+
     }
 
     @Override
+    @CacheEvict(cacheNames = "banner:page", allEntries = true)
     public IResult<Boolean> updateById(BannerUpdateArgs args) throws ServiceException {
         Banner banner = updateArgsToBanner(args);
         int i = bannerDao.updateById(banner);
@@ -167,6 +187,7 @@ public class BannerServiceImpl implements IBannerService {
 
     private Banner updateArgsToBanner(BannerUpdateArgs args) {
         Banner banner = new Banner();
+        banner.setSort(args.getSort());
         banner.setId(args.getId());
         banner.setImageUrl(args.getImageUrl());
         banner.setTitle(args.getTitle());
@@ -189,6 +210,7 @@ public class BannerServiceImpl implements IBannerService {
      * @throws ServiceException e
      */
     @Override
+    @CacheEvict(cacheNames = "banner:page", allEntries = true)
     public IResult<Boolean> removeBatch(Set<Long> bannerIdList) throws ServiceException {
         bannerDao.deleteBatchIds(bannerIdList);
         return Result.success();
@@ -203,6 +225,7 @@ public class BannerServiceImpl implements IBannerService {
      * @throws ServiceException e
      */
     @Override
+    @CacheEvict(cacheNames = "banner:page", allEntries = true)
     public IResult<Boolean> createBatch(List<BannerCreateArgs> bannerCreateArgsList) throws ServiceException {
         for (BannerCreateArgs bannerCreateArgs : bannerCreateArgsList) {
             Banner banner = this.createArgsToBanner(bannerCreateArgs);

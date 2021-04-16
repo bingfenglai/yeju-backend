@@ -20,7 +20,7 @@ package pers.lbf.yeju.service.interfaces.advertise.banner.pojo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -34,8 +34,8 @@ import java.util.Date;
  */
 public class SimpleBannerInfoBean implements Serializable {
 
-    @JsonSerialize(as = StringSerializer.class)
-    @JsonDeserialize(as = NumberDeserializers.LongDeserializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
     private Long id;
     /**
      * 图片路径
@@ -61,6 +61,16 @@ public class SimpleBannerInfoBean implements Serializable {
      * 创建者
      */
     private Long createBy;
+
+    private Integer sort;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
     public Long getId() {
         return id;

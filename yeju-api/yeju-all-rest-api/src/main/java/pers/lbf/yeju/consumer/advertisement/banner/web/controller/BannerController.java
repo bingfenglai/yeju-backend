@@ -52,7 +52,7 @@ public class BannerController {
 
     @ApiOperation(value = "条件查询", notes = "BannerController说明", httpMethod = "GET")
     @GetMapping("/list")
-    public Mono<PageResult<SimpleBannerInfoBean>> list(@RequestParam @Validated BannerQueryArgsBean args) throws ServiceException {
+    public Mono<PageResult<SimpleBannerInfoBean>> list(@Validated BannerQueryArgsBean args) throws ServiceException {
 
         return Mono.just(bannerService.queryPage(args));
     }

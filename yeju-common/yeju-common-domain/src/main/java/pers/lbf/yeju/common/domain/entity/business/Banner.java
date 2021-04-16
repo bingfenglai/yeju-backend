@@ -85,6 +85,15 @@ public class Banner extends Model<Banner> {
     @TableLogic
     private Integer isDelete;
 
+    private Integer sort;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
     public Long getId() {
         return id;

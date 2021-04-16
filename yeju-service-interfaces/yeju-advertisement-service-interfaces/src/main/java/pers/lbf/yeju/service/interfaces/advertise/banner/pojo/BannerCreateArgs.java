@@ -20,6 +20,7 @@ package pers.lbf.yeju.service.interfaces.advertise.banner.pojo;
 import pers.lbf.yeju.common.core.args.CreateArgs;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -29,7 +30,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/4/15 20:23
  */
-public class BannerCreateArgs implements CreateArgs {
+public class BannerCreateArgs implements CreateArgs, Serializable {
     /**
      * 图片路径
      */
@@ -62,6 +63,20 @@ public class BannerCreateArgs implements CreateArgs {
      * 备注
      */
     private String remark;
+
+    private Integer sort;
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -102,7 +117,7 @@ public class BannerCreateArgs implements CreateArgs {
     public Long getCreateBy() {
         return createBy;
     }
-    
+
 
     public String getRemark() {
         return remark;

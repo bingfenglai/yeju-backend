@@ -19,9 +19,9 @@ package pers.lbf.yeju.service.interfaces.advertise.banner.pojo;
 
 import pers.lbf.yeju.common.core.args.IFindPageArgs;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,7 +39,8 @@ public class BannerQueryArgsBean implements Serializable, IFindPageArgs {
     private Long currentPage;
 
     @NotNull(message = "每页显示大小不能为空")
-    @Size(min = 1, max = 50)
+    @Min(1)
+    @Max(50)
     private Long size;
 
     private String title;

@@ -19,12 +19,11 @@ package pers.lbf.yeju.provider.oos.service;
 
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
-import pers.lbf.yeju.common.core.result.SimpleResult;
-import pers.lbf.yeju.common.core.status.enums.FileStatus;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.domain.entity.ResourceMd5;
 import pers.lbf.yeju.provider.oos.dao.ResourceMd5Dao;
@@ -75,7 +74,7 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
      */
     @Override
     @Cacheable(value = "objectUploadService:fileMd5", key = "#fileMd5")
-    public IResult<Object> isExited(String fileMd5) throws ServiceException {
+    public IResult<String> isExited(String fileMd5) throws ServiceException {
 
         if (fileMd5 == null || fileMd5.length() == 0) {
             throw ServiceException.getInstance("文件md5值不能为空！", ParameStatusEnum.Parameter_cannot_be_empty.getCode());
@@ -83,12 +82,13 @@ public class ObjectUploadServiceImpl implements IFileUploadService {
 
         String url = resourceMd5Dao.selectResourceUrlByMd5(fileMd5);
         if (url == null || url.length() == 0) {
-            return SimpleResult.failed(FileStatus.NOT_Found);
+            return Result.ok("");
         }
         return Result.ok(url);
     }
 
 
+    @CacheEvict(value = "objectUploadService:fileMd5", key = "#args.md5")
     @Override
     public void saveMd5(SaveMd5Args args) throws ServiceException {
         ResourceMd5 resourceMd5 = new ResourceMd5();

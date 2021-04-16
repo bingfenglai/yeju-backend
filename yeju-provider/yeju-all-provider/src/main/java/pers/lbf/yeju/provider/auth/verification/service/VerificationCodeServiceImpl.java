@@ -33,13 +33,15 @@ import pers.lbf.yeju.service.interfaces.redis.IRedisService;
 
 import java.util.Arrays;
 
-/**验证码服务
+/**
+ * 验证码服务
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
  * @date 2020/12/14 22:42
  */
-@DubboService(interfaceClass = IVerificationCodeService.class)
+@DubboService(interfaceClass = IVerificationCodeService.class, timeout = 10000, retries = 0)
 public class VerificationCodeServiceImpl implements IVerificationCodeService {
     private final Logger logger = LoggerFactory.getLogger(VerificationCodeServiceImpl.class);
 
@@ -53,7 +55,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
     private EasyCaptchaConfig captchaConfig;
 
     @Override
-    public  IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException{
+    public IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException {
 
         VerityDTO<String> verityDTO;
         try {
@@ -62,7 +64,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
             throw ServiceException.getInstance(VerificationCodeStatusEnum.GEN_FAILED);
         }
 
-        if (verityDTO.getCode().length()==captchaConfig.getLength()){
+        if (verityDTO.getCode().length() == captchaConfig.getLength()) {
             verityDTO.setCode("");
         }
         return Result.ok(verityDTO);
@@ -72,7 +74,7 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
     public IResult<Boolean> verify(String key, String code) throws ServiceException {
         String c;
         try {
-             c  = (String) redisService.getCacheObject(key);
+            c = (String) redisService.getCacheObject(key);
 
         } catch (Exception e) {
             logger.error(e.getMessage());

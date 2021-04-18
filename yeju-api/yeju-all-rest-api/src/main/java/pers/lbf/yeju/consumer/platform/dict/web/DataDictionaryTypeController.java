@@ -81,6 +81,6 @@ public class DataDictionaryTypeController {
         IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(type);
         return Mono.just(result);
     }
-
+    
 
 }

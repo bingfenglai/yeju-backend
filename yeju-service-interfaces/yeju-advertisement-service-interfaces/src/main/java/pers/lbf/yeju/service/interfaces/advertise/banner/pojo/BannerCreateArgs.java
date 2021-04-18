@@ -17,7 +17,7 @@
 
 package pers.lbf.yeju.service.interfaces.advertise.banner.pojo;
 
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/4/15 20:23
  */
-public class BannerCreateArgs implements CreateArgs, Serializable {
+public class BannerCreateArgs implements ICreateArgs, Serializable {
     /**
      * 图片路径
      */

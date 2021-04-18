@@ -14,22 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.advertisement.smstemplate.web.controller;
+package pers.lbf.yeju.provider.sms.template.dao;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import pers.lbf.yeju.common.domain.entity.business.SmsTemplate;
 
 /**
- * 短信模板服务接口
+ * 营销短信模板(TableBusinessSmsTemplate)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @version 1.0
- * @date 2021/4/15 21:46
+ * @since 2021-04-17 12:08:16
  */
-@RestController
-@RequestMapping("advertisement/sms/template")
-@Slf4j
-public class SmsTemplateController {
+public interface ISmsTemplateDao extends BaseMapper<SmsTemplate> {
 
 }

@@ -19,7 +19,7 @@ package pers.lbf.yeju.service.interfaces.auth.pojo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiParam;
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -34,7 +34,7 @@ import java.util.List;
  * @date 2021/3/11 13:21
  */
 @ApiModel("授权接口参数")
-public class AuthorizedCreatArgs implements CreateArgs, Serializable {
+public class AuthorizedCreatArgs implements ICreateArgs, Serializable {
 
 
     @ApiParam(value = "主体标识")

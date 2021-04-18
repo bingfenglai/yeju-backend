@@ -77,6 +77,10 @@ public class YejuStringUtils extends StringUtils {
         return !isEmpty(coll);
     }
 
+    public static boolean isNotNUllAndNotEmpty(String s) {
+        return s != null && !s.isEmpty();
+    }
+
     /**
      * * 判断一个对象数组是否为空
      *
@@ -519,5 +523,5 @@ public class YejuStringUtils extends StringUtils {
         return (T) obj;
     }
 
-    
+
 }

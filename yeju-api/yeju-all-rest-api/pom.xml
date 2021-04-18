@@ -96,6 +96,18 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-sms-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-base-data-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
 
         <!-- 对象存储依赖-->
         <dependency>

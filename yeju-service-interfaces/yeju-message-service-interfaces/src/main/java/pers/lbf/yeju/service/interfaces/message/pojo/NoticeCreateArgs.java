@@ -16,7 +16,7 @@
  */
 package pers.lbf.yeju.service.interfaces.message.pojo;
 
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/3/3 22:47
  */
-public class NoticeCreateArgs implements Serializable, CreateArgs {
+public class NoticeCreateArgs implements Serializable, ICreateArgs {
 
     /**
      * 通知标题

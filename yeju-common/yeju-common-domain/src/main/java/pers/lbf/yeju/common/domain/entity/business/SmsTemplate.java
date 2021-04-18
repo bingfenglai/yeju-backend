@@ -14,28 +14,29 @@
  * limitations under the License.
  *
  */
+package pers.lbf.yeju.common.domain.entity.business;
 
-package pers.lbf.yeju.service.interfaces.sms.pojo;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 短信模板 分页查询结果封装类
+ * 营销短信模板(TableBusinessSmsTemplate)表实体类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @version 1.0
- * @date 2021/4/15 22:00
+ * @since 2021-04-17 12:16:15
  */
-public class SimpleSmsTemplateInfoBean implements Serializable {
-
-    @JsonSerialize(using = ToStringSerializer.class)
-    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
+@TableName("table_business_sms_template")
+public class SmsTemplate extends Model<SmsTemplate> {
+    /**
+     * 主键
+     */
+    @TableId
     private Long id;
     /**
      * 模板内容
@@ -57,8 +58,28 @@ public class SimpleSmsTemplateInfoBean implements Serializable {
      * 创建者
      */
     private Long createBy;
-
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+    /**
+     * 更改者
+     */
+    private Long changedBy;
+    /**
+     * 备注
+     */
     private String remark;
+    /**
+     * 字段版本
+     */
+    @Version
+    private Integer versionNumber;
+    /**
+     * 删除标识
+     */
+    @TableLogic
+    private Integer isDelete;
 
 
     public Long getId() {
@@ -109,11 +130,53 @@ public class SimpleSmsTemplateInfoBean implements Serializable {
         this.createBy = createBy;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getChangedBy() {
+        return changedBy;
+    }
+
+    public void setChangedBy(Long changedBy) {
+        this.changedBy = changedBy;
+    }
+
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(Integer versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    /**
+     * 获取主键值
+     *
+     * @return 主键值
+     */
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
     }
 }

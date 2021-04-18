@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 import pers.lbf.yeju.common.core.args.UpdateArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
@@ -44,13 +44,13 @@ public class ArgsHelper {
     private static IAccountService accountService;
 
 
-    public static void createArgsHelper(CreateArgs args, ServerHttpRequest request) throws ServiceException {
+    public static void createArgsHelper(ICreateArgs args, ServerHttpRequest request) throws ServiceException {
         String subjectAccount = getSubjectAccount(request);
         args.setCreateBy(subjectAccount);
         args.setCreateTime(new Date());
     }
 
-    public static void createArgsHelper(CreateArgs args, ServerWebExchange exchange) throws ServiceException {
+    public static void createArgsHelper(ICreateArgs args, ServerWebExchange exchange) throws ServiceException {
         createArgsHelper(args, exchange.getRequest());
     }
 

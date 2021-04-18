@@ -23,6 +23,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -91,5 +92,17 @@ public class BannerQueryArgsBean implements Serializable, IFindPageArgs {
     @Override
     public Long getSize() {
         return this.size;
+    }
+
+
+    @Override
+    public String toString() {
+        return "BannerQueryArgsBean{" +
+                "currentPage=" + currentPage +
+                ", size=" + size +
+                ", title='" + title + '\'' +
+                ", bannerStatus='" + bannerStatus + '\'' +
+                ", between=" + Arrays.toString(between) +
+                '}';
     }
 }

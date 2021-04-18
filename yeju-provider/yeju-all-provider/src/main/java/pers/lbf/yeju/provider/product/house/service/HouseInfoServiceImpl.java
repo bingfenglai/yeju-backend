@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 import pers.lbf.yeju.common.core.args.UpdateArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -92,7 +92,7 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
     }
 
     @Override
-    public IResult<Boolean> addOne(CreateArgs args) throws ServiceException {
+    public IResult<Boolean> addOne(ICreateArgs args) throws ServiceException {
         return null;
     }
 

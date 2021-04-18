@@ -17,7 +17,7 @@
 
 package pers.lbf.yeju.service.interfaces.log.pojo;
 
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -29,7 +29,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/3/21 17:54
  */
-public class HouseCheckLogCreateArgs implements CreateArgs, Serializable {
+public class HouseCheckLogCreateArgs implements ICreateArgs, Serializable {
 
     private Long houseId;
     /**

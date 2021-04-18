@@ -18,7 +18,7 @@
 package pers.lbf.yeju.service.interfaces.auth.pojo;
 
 import io.swagger.annotations.ApiModel;
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,7 +32,7 @@ import java.util.List;
  * @date 2021/3/11 22:59
  */
 @ApiModel("同步授权信息到账户-资源表")
-public class SynchronousAuthorizedCreateArgs implements CreateArgs, Serializable {
+public class SynchronousAuthorizedCreateArgs implements ICreateArgs, Serializable {
 
     List<String> authorityIdList;
 

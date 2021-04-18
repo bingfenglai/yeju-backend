@@ -26,10 +26,10 @@ import java.util.Date;
  * @date 2021/3/4 10:03
  */
 
-public interface CreateArgs {
+public interface ICreateArgs {
 
     void setCreateBy(String account);
 
     void setCreateTime(Date date);
-    
+
 }

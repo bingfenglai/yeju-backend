@@ -17,7 +17,7 @@
 
 package pers.lbf.yeju.service.interfaces.customer.pojo;
 
-import pers.lbf.yeju.common.core.args.CreateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -31,7 +31,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/3/22 9:40
  */
-public class CustomerRegisteringArgs implements CreateArgs, Serializable {
+public class CustomerRegisteringArgs implements ICreateArgs, Serializable {
 
     /**
      * 手机号

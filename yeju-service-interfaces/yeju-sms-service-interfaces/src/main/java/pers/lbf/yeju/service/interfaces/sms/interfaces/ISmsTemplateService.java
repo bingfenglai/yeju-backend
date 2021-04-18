@@ -41,6 +41,8 @@ public interface ISmsTemplateService {
     IResult<Boolean> updateById(SmsTemplateUpdateArgs args) throws ServiceException;
 
     IResult<Boolean> removeBatch(Set<Long> ids) throws ServiceException;
-    
+
     PageResult<SimpleSmsTemplateInfoBean> queryPage(SmsTemplateQueryArgs args) throws ServiceException;
+
+    IResult<Boolean> deleteById(Long id) throws ServiceException;
 }

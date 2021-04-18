@@ -137,7 +137,7 @@ public class GrableExceptionHandlerV2 implements ErrorWebExceptionHandler {
     private void doHandleJwtException(JwtException ex, ErrorAndExceptionResult result) {
         if (ex instanceof ExpiredJwtException) {
             result.setMessage(AuthStatusEnum.NO_TOKEN.getMessage());
-            result.setCode(AuthStatusEnum.NO_ACCOUNT.getCode());
+            result.setCode(AuthStatusEnum.NO_TOKEN.getCode());
         } else {
             result.setMessage(ex.getMessage());
         }

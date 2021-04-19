@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.common.core.args;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Date;
  * @date 2021/3/4 10:03
  */
 
-public interface ICreateArgs {
+public interface ICreateArgs extends Serializable {
 
     void setCreateBy(String account);
 

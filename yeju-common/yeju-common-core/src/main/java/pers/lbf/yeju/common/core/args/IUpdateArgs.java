@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.common.core.args;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -25,7 +26,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/3/4 10:06
  */
-public interface UpdateArgs {
+public interface IUpdateArgs extends Serializable {
 
     void setChangedBy(String account);
 

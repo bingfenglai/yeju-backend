@@ -22,7 +22,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.args.ICreateArgs;
-import pers.lbf.yeju.common.core.args.UpdateArgs;
+import pers.lbf.yeju.common.core.args.IUpdateArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
@@ -54,7 +54,7 @@ public class ArgsHelper {
         createArgsHelper(args, exchange.getRequest());
     }
 
-    public static void updateArgsHelper(UpdateArgs args, ServerHttpRequest request) {
+    public static void updateArgsHelper(IUpdateArgs args, ServerHttpRequest request) {
         String subjectAccount = getSubjectAccount(request);
 
         args.setChangedBy(subjectAccount);
@@ -62,7 +62,7 @@ public class ArgsHelper {
 
     }
 
-    public static void updateArgsHelper(UpdateArgs args, ServerWebExchange webExchange) {
+    public static void updateArgsHelper(IUpdateArgs args, ServerWebExchange webExchange) {
         ServerHttpRequest request = webExchange.getRequest();
         updateArgsHelper(args, request);
     }

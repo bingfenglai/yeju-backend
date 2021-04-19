@@ -20,16 +20,17 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.consumer.base.util.ArgsHelper;
 import pers.lbf.yeju.service.basedata.interfaces.IDistrictService;
+import pers.lbf.yeju.service.basedata.pojo.DistrictCreateArgs;
 import pers.lbf.yeju.service.basedata.pojo.DistrictQueryArgs;
+import pers.lbf.yeju.service.basedata.pojo.DistrictUpdateArgs;
 import pers.lbf.yeju.service.basedata.pojo.SimpleDistrictInfoBean;
 import reactor.core.publisher.Mono;
 
@@ -50,12 +51,34 @@ public class DistrictController {
     @DubboReference
     private IDistrictService districtService;
 
+    @ApiOperation(value = "新增地域", notes = "说明", httpMethod = "POST")
+    @PostMapping
+    public Mono<IResult<Boolean>> create(
+            @ApiParam("地域创建参数封装类") @RequestBody @Validated DistrictCreateArgs args, ServerHttpRequest request) throws ServiceException {
+        ArgsHelper.createArgsHelper(args, request);
+        return Mono.just(districtService.create(args));
+    }
+
+    @ApiOperation(value = "修改地域", notes = "说明", httpMethod = "PUT")
+    @PutMapping
+    public Mono<IResult<Boolean>> updateById(@RequestBody DistrictUpdateArgs args, ServerHttpRequest request) throws ServiceException {
+        ArgsHelper.updateArgsHelper(args, request);
+        return Mono.just(districtService.update(args));
+    }
+
 
     @ApiOperation(value = "获取地域树", notes = "地域列表说明", httpMethod = "GET")
     @GetMapping("/tree")
     public Mono<IResult<List<SimpleDistrictInfoBean>>> queryTree() throws ServiceException {
 
         return Mono.just(districtService.queryTree());
+    }
+
+    @ApiOperation(value = "获取地域树", notes = "地域列表说明", httpMethod = "GET")
+    @GetMapping("/tree/v2")
+    public Mono<IResult<List<SimpleDistrictInfoBean>>> queryTreeV2(@Validated DistrictQueryArgs args) throws ServiceException {
+
+        return Mono.just(districtService.queryTree(args));
     }
 
     @ApiOperation(value = "获取地域名称", notes = "地域名称说明", httpMethod = "GET")
@@ -74,7 +97,7 @@ public class DistrictController {
 
 
     @ApiOperation(value = "获取直接子地域节点", notes = "直接子地域节点说明", httpMethod = "GET")
-    @GetMapping("/direct/district{id}")
+    @GetMapping("/direct/{id}")
     public Mono<IResult<List<SimpleDistrictInfoBean>>> getDirectDistrictListById(@PathVariable Long id) throws ServiceException {
         return Mono.just(districtService.findDirectDistrictById(id));
     }

@@ -17,7 +17,7 @@
 
 package pers.lbf.yeju.service.interfaces.customer.pojo;
 
-import pers.lbf.yeju.common.core.args.UpdateArgs;
+import pers.lbf.yeju.common.core.args.IUpdateArgs;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -31,7 +31,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/3/22 10:31
  */
-public class CustomerUpdateArgs extends CustomerAuthenticationArgs implements UpdateArgs, Serializable {
+public class CustomerUpdateArgs extends CustomerAuthenticationArgs implements IUpdateArgs, Serializable {
 
     @NotBlank(message = "手机号不能为空")
     @Pattern(regexp = "^[1][3,4,5,6,7,8,9][0-9]{9}$", message = "手机号格式不正确")

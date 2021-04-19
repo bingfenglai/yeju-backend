@@ -20,7 +20,9 @@ package pers.lbf.yeju.service.basedata.interfaces;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.basedata.pojo.DistrictCreateArgs;
 import pers.lbf.yeju.service.basedata.pojo.DistrictQueryArgs;
+import pers.lbf.yeju.service.basedata.pojo.DistrictUpdateArgs;
 import pers.lbf.yeju.service.basedata.pojo.SimpleDistrictInfoBean;
 
 import java.util.List;
@@ -33,6 +35,12 @@ import java.util.List;
  * @date 2021/4/17 19:53
  */
 public interface IDistrictService {
+
+
+    IResult<Boolean> create(DistrictCreateArgs args) throws ServiceException;
+
+    IResult<Boolean> update(DistrictUpdateArgs args) throws ServiceException;
+
 
     IResult<String> findCityNameByCityId(Long cityId) throws ServiceException;
 

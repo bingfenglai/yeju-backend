@@ -15,16 +15,10 @@
  *
  */
 
-package pers.lbf.yeju.service.interfaces.advertise.banner.pojo;
+package pers.lbf.yeju.service.basedata.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import pers.lbf.yeju.common.core.args.IUpdateArgs;
 
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -32,15 +26,9 @@ import java.util.Date;
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/15 20:42
+ * @date 2021/4/18 21:01
  */
-public class BannerUpdateArgs extends BannerCreateArgs implements Serializable, IUpdateArgs {
-
-    @NotNull(message = "轮播图标识不能为空")
-    @JsonSerialize(as = StringSerializer.class)
-    @JsonDeserialize(as = NumberDeserializers.LongDeserializer.class)
-    private Long id;
-
+public class DistrictUpdateArgs extends DistrictCreateArgs implements IUpdateArgs {
     /**
      * 更新时间
      */
@@ -49,22 +37,6 @@ public class BannerUpdateArgs extends BannerCreateArgs implements Serializable, 
      * 更改者
      */
     private Long changedBy;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public Long getChangedBy() {
-        return changedBy;
-    }
 
     @Override
     public void setChangedBy(String account) {
@@ -75,4 +47,13 @@ public class BannerUpdateArgs extends BannerCreateArgs implements Serializable, 
     public void setUpdateTime(Date date) {
         this.updateTime = date;
     }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public Long getChangedBy() {
+        return changedBy;
+    }
+    
 }

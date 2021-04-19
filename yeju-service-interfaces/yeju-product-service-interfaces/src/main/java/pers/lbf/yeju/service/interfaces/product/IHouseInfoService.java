@@ -18,7 +18,7 @@
 package pers.lbf.yeju.service.interfaces.product;
 
 import pers.lbf.yeju.common.core.args.ICreateArgs;
-import pers.lbf.yeju.common.core.args.UpdateArgs;
+import pers.lbf.yeju.common.core.args.IUpdateArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -38,7 +38,7 @@ public interface IHouseInfoService {
 
     IResult<Boolean> addOne(ICreateArgs args) throws ServiceException;
 
-    IResult<Boolean> update(UpdateArgs args) throws ServiceException;
+    IResult<Boolean> update(IUpdateArgs args) throws ServiceException;
 
     IResult<Boolean> deleteBatch(String[] ids) throws ServiceException;
 

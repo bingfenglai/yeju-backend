@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
@@ -32,7 +33,9 @@ import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.basedata.district.dao.IDistrictDao;
 import pers.lbf.yeju.provider.basedata.district.status.DistrictStatusEnum;
 import pers.lbf.yeju.service.basedata.interfaces.IDistrictService;
+import pers.lbf.yeju.service.basedata.pojo.DistrictCreateArgs;
 import pers.lbf.yeju.service.basedata.pojo.DistrictQueryArgs;
+import pers.lbf.yeju.service.basedata.pojo.DistrictUpdateArgs;
 import pers.lbf.yeju.service.basedata.pojo.SimpleDistrictInfoBean;
 
 import java.util.LinkedList;
@@ -51,6 +54,48 @@ public class DistrictServiceImpl implements IDistrictService {
 
     @Autowired
     private IDistrictDao districtDao;
+
+    @Override
+    @CacheEvict(cacheNames = {
+            "district:tree",
+            "district:page",
+            "district:tree:all",
+            "district:directChildNode"}, allEntries = true)
+    public IResult<Boolean> create(DistrictCreateArgs args) throws ServiceException {
+        District district = districtCreateArgsToDistrict(args);
+        int insert = districtDao.insert(district);
+        return Result.ok(insert == 1);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = {
+            "district:tree",
+            "district:page",
+            "district:tree:all",
+            "district:name",
+            "district:directChildNode"}, allEntries = true)
+    public IResult<Boolean> update(DistrictUpdateArgs args) throws ServiceException {
+        District district = districtCreateArgsToDistrict(args);
+        district.setChangedBy(args.getChangedBy());
+        district.setUpdateTime(args.getUpdateTime());
+
+        int i = districtDao.updateById(district);
+        return Result.ok(i == 1);
+    }
+
+
+    private District districtCreateArgsToDistrict(DistrictCreateArgs args) {
+        District district = new District();
+        district.setParentId(args.getParentId());
+        district.setName(args.getName());
+        district.setType(args.getType());
+        district.setHierarchy(args.getHierarchy());
+        district.setCreateTime(args.getCreateTime());
+        district.setCreateBy(args.getCreateBy());
+        district.setRemark(args.getRemark());
+
+        return district;
+    }
 
     @Cacheable(cacheNames = "district:name", key = "#cityId")
     @Override
@@ -87,37 +132,21 @@ public class DistrictServiceImpl implements IDistrictService {
      * @throws ServiceException
      */
     @Override
-    @Cacheable(cacheNames = "district:tree")
+    @Cacheable(cacheNames = "district:tree", key = "#args")
     public IResult<List<SimpleDistrictInfoBean>> queryTree(DistrictQueryArgs args) throws ServiceException {
         QueryWrapper<District> queryWrapper = this.queryWrapperBuild(args);
         List<District> districts = districtDao.selectList(queryWrapper);
+
         List<SimpleDistrictInfoBean> allDistricts = new LinkedList<>();
         for (District district : districts) {
             SimpleDistrictInfoBean bean = districtToBean(district);
+            List<Long> ids = districtDao.hasChildren(district.getDistrictId());
+            bean.setHasChildren(ids.size() == 1);
             allDistricts.add(bean);
         }
 
-        //构建递归树
+        return Result.ok(allDistricts);
 
-        List<SimpleDistrictInfoBean> result = new LinkedList<>();
-        List<SimpleDistrictInfoBean> otherDistrict = new LinkedList<>();
-
-        //1. 获取二级节点
-        for (SimpleDistrictInfoBean district : allDistricts) {
-            if (district.getParentId() == 0) {
-                result.add(district);
-            } else {
-                otherDistrict.add(district);
-            }
-        }
-
-        // 2.构建递归树
-        for (SimpleDistrictInfoBean parent : result) {
-            recursiveTree(parent, otherDistrict);
-        }
-
-
-        return Result.ok(result);
     }
 
     /**
@@ -141,8 +170,16 @@ public class DistrictServiceImpl implements IDistrictService {
      * @throws ServiceException
      */
     @Override
+    @Cacheable(value = "district:directChildNode", key = "#parentId")
     public IResult<List<SimpleDistrictInfoBean>> findDirectDistrictById(Long parentId) throws ServiceException {
         List<SimpleDistrictInfoBean> districtList = districtDao.findDirectDistrictById(parentId);
+
+        for (SimpleDistrictInfoBean bean : districtList) {
+            bean.setChildrenList(new LinkedList<>());
+            List<Long> ids = districtDao.hasChildren(bean.getDistrictId());
+            bean.setHasChildren(ids.size() == 1);
+        }
+
         return Result.ok(districtList);
     }
 
@@ -159,6 +196,8 @@ public class DistrictServiceImpl implements IDistrictService {
             if (bean.getParentId().equals(parent.getDistrictId())) {
                 recursiveTree(bean, otherDistrict);
                 parent.addChildren(bean);
+                //多了如下一行
+
             }
 
         }
@@ -169,11 +208,13 @@ public class DistrictServiceImpl implements IDistrictService {
 
     private SimpleDistrictInfoBean districtToBean(District district) {
         SimpleDistrictInfoBean simpleDistrictInfoBean = new SimpleDistrictInfoBean();
+        simpleDistrictInfoBean.setCreateTime(district.getCreateTime());
         simpleDistrictInfoBean.setDistrictId(district.getDistrictId());
         simpleDistrictInfoBean.setParentId(district.getParentId());
         simpleDistrictInfoBean.setName(district.getName());
         simpleDistrictInfoBean.setType(district.getType());
         simpleDistrictInfoBean.setHierarchy(district.getHierarchy());
+        simpleDistrictInfoBean.setRemark(district.getRemark());
         return simpleDistrictInfoBean;
     }
 

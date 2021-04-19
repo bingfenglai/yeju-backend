@@ -17,7 +17,7 @@
 
 package pers.lbf.yeju.service.interfaces.sms.pojo;
 
-import pers.lbf.yeju.common.core.args.UpdateArgs;
+import pers.lbf.yeju.common.core.args.IUpdateArgs;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -29,7 +29,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2021/4/15 22:02
  */
-public class SmsTemplateUpdateArgs extends SmsTemplateCreateArgs implements Serializable, UpdateArgs {
+public class SmsTemplateUpdateArgs extends SmsTemplateCreateArgs implements Serializable, IUpdateArgs {
     private Long id;
     /**
      * 更新时间

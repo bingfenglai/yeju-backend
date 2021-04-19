@@ -17,62 +17,49 @@
 
 package pers.lbf.yeju.service.basedata.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
- * 区域条件分页查询结果封装类
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/17 19:57
+ * @date 2021/4/18 20:47
  */
-public class SimpleDistrictInfoBean implements Serializable {
+public class DistrictCreateArgs implements ICreateArgs, Serializable {
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
-    private Long districtId;
     /**
      * 所属上一级城市id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
-    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
+    @NotNull(message = "上一级地域标识不能为空")
+//    @JsonSerialize(using = ToStringSerializer.class)
+//    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
     private Long parentId;
     /**
      * 城市名称
      */
+    @NotBlank(message = "地域名字不能为空")
     private String name;
     /**
      * 城市类型0国1省2市3区
      */
+    @NotNull(message = "地域类型不能为空")
     private Integer type;
     /**
      * 地区所处的层级
      */
+    @NotNull(message = "地域所属层级不能为空")
     private Integer hierarchy;
 
+    private Long createBy;
     private Date createTime;
 
     private String remark;
-
-    private Boolean hasChildren;
-
-    public Boolean getHasChildren() {
-        return hasChildren;
-    }
-
-    public void setHasChildren(Boolean hasChildren) {
-        this.hasChildren = hasChildren;
-    }
-
-    private List<SimpleDistrictInfoBean> childrenList;
 
     public String getRemark() {
         return remark;
@@ -80,38 +67,6 @@ public class SimpleDistrictInfoBean implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public void addChildren(SimpleDistrictInfoBean children) {
-        if (childrenList == null) {
-            childrenList = new LinkedList<>();
-        }
-
-        childrenList.add(children);
-    }
-
-    public List<SimpleDistrictInfoBean> getChildrenList() {
-        return childrenList;
-    }
-
-    public void setChildrenList(List<SimpleDistrictInfoBean> childrenList) {
-        this.childrenList = childrenList;
-    }
-
-    public Long getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(Long districtId) {
-        this.districtId = districtId;
     }
 
     public Long getParentId() {
@@ -144,5 +99,27 @@ public class SimpleDistrictInfoBean implements Serializable {
 
     public void setHierarchy(Integer hierarchy) {
         this.hierarchy = hierarchy;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateBy(String account) {
+        this.createBy = Long.valueOf(account);
+    }
+
+    @Override
+    public void setCreateTime(Date date) {
+        this.createTime = date;
     }
 }

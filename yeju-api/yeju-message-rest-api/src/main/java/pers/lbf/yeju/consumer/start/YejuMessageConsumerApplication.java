@@ -16,9 +16,11 @@
  */
 package pers.lbf.yeju.consumer.start;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 
 /**
  * TODO
@@ -29,9 +31,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer")
 @EnableDiscoveryClient
+@EnableWebFluxSecurity
+@Slf4j
 public class YejuMessageConsumerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(YejuMessageConsumerApplication.class, args);
+        log.info("############################################");
+        log.info("#--------------消息服务启动成功！------------#");
+        log.info("############################################");
     }
 }

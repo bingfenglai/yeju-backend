@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -38,6 +39,7 @@ import pers.lbf.yeju.base.security.authorization.manager.CustomAuthorizationMana
  */
 @EnableWebFluxSecurity
 @Configuration
+@Primary
 public class SpringSecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SpringSecurityConfig.class);
@@ -56,6 +58,7 @@ public class SpringSecurityConfig {
      * @throws Exception
      */
     @Bean
+    @Primary
     public SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
 
         log.info("业务网关配置白名单：{}", ignoreWhiteProperties.getWhites().toString());
@@ -71,18 +74,8 @@ public class SpringSecurityConfig {
                 .and()
                 //认证路径
                 .formLogin().loginPage("/auth/login")
-                //认证管理器
-                //.authenticationManager()
-                //认证成功
-                //.authenticationSuccessHandler(authenticationSuccessHandler)
-                //登陆验证失败
-                //.authenticationFailureHandler(authenticationFailHandler)
-                //.and()
-                //登出
-//                .logout().logoutUrl("/auth/logout")
-//                .logoutSuccessHandler(logoutSuccessHandler)
-//                .logoutHandler(logoutHandler)
-                //关闭跨域请求保护
+
+                //关闭security默认的跨域请求保护,自定义实现
                 .and().csrf().disable()
                 .httpBasic().disable()
                 .build();

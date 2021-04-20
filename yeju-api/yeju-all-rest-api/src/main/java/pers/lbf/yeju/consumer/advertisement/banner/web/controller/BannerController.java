@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.advertisement.banner.web.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -45,6 +46,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/advertisement/banner")
 @Slf4j
+@Api(tags = "轮播图服务")
 public class BannerController {
 
     @DubboReference

@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.domain.entity.data.District;
-import pers.lbf.yeju.service.basedata.pojo.SimpleDistrictInfoBean;
+import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
 
 import java.util.List;
 

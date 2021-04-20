@@ -21,6 +21,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -60,6 +61,7 @@ import java.util.Date;
  */
 @Component
 @EnableAsync
+@Primary
 public class CustomAuthenticationManager extends AbstractUserDetailsReactiveAuthenticationManager {
     private static final Logger log = LoggerFactory.getLogger(CustomAuthenticationManager.class);
     private final Scheduler scheduler = Schedulers.boundedElastic();

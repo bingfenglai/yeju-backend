@@ -20,8 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 
-/**平台接口启动类
+/**
+ * 平台接口启动类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -30,12 +33,13 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer")
 @Slf4j
+@EnableWebFluxSecurity
 public class YejuConsumerApplication {
 
-  public static void main(String[] args) {
-      SpringApplication.run( YejuConsumerApplication.class, args);
-      log.info("############################################");
-      log.info("#--------------服务消费方启动成功！------------#");
-      log.info("############################################");
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(YejuConsumerApplication.class, args);
+        log.info("############################################");
+        log.info("#--------------服务消费方启动成功！------------#");
+        log.info("############################################");
+    }
 }

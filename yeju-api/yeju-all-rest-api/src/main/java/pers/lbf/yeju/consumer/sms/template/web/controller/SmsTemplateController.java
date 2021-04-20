@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.sms.template.web.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("sms/template")
 @Slf4j
+@Api(tags = "短信模板服务")
 public class SmsTemplateController {
 
     @DubboReference

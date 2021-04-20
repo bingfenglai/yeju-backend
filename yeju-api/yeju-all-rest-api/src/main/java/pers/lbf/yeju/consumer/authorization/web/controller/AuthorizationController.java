@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.authorization.web.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -44,6 +45,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/authorization")
 @Slf4j
+@Api(tags = "授权服务")
 public class AuthorizationController {
 
     @DubboReference

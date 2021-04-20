@@ -1,0 +1,193 @@
+/*
+ * Copyright 2020 赖柄沣 bingfengdev@aliyun.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+package pers.lbf.yeju.provider.basedata.community.service;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.beans.factory.annotation.Autowired;
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.common.domain.entity.business.Community;
+import pers.lbf.yeju.common.util.YejuStringUtils;
+import pers.lbf.yeju.provider.base.util.PageUtil;
+import pers.lbf.yeju.provider.basedata.community.dao.ICommunityDao;
+import pers.lbf.yeju.service.basedata.community.interfaces.ICommunityService;
+import pers.lbf.yeju.service.basedata.community.pojo.CommunityCreateArgs;
+import pers.lbf.yeju.service.basedata.community.pojo.CommunityQueryArgs;
+import pers.lbf.yeju.service.basedata.community.pojo.CommunityUpdateArgs;
+import pers.lbf.yeju.service.basedata.community.pojo.SimpleCommunityInfoBean;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 社区服务实现类
+ *
+ * @author 赖柄沣 bingfengdev@aliyun.com
+ * @version 1.0
+ * @date 2021/4/19 21:40
+ */
+@DubboService(interfaceClass = ICommunityService.class, timeout = 10000, retries = 0)
+@Slf4j
+public class CommunityServiceImpl implements ICommunityService {
+
+    @Autowired
+    private ICommunityDao communityDao;
+
+    /**
+     * 综合分页查询接口
+     *
+     * @param args
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public PageResult<SimpleCommunityInfoBean> query(CommunityQueryArgs args) throws ServiceException {
+        Page<Community> page = PageUtil.getPage(Community.class, args.getCurrentPage(), args.getSize());
+        QueryWrapper<Community> queryWrapper = queryWrapperBuild(args);
+        Page<Community> communityPage = communityDao.selectPage(page, queryWrapper);
+        List<SimpleCommunityInfoBean> result = new LinkedList<>();
+        for (Community community : communityPage.getRecords()) {
+            SimpleCommunityInfoBean bean = communityToSimpleInfoBean(community);
+            result.add(bean);
+        }
+        return PageResult.ok(communityPage.getTotal(), communityPage.getCurrent(), communityPage.getSize(), result);
+    }
+
+
+    /**
+     * 添加一个社区
+     *
+     * @param args
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Boolean> create(CommunityCreateArgs args) throws ServiceException {
+        Community community = createArgsToCommunity(args);
+        int count = communityDao.insert(community);
+        return Result.ok(count == 1);
+    }
+
+    private Community createArgsToCommunity(CommunityCreateArgs args) {
+        Community community = new Community();
+        community.setName(args.getName());
+        community.setAreaId(args.getAreaId());
+        community.setDetailedAddress(args.getDetailedAddress());
+        community.setCreateTime(args.getCreateTime());
+        community.setCreateBy(args.getCreateBy());
+        community.setRemark(args.getRemark());
+        return community;
+    }
+
+    /**
+     * 批量创建
+     *
+     * @param argsList
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Boolean> createBatch(List<CommunityCreateArgs> argsList) throws ServiceException {
+        int i = 0;
+        for (CommunityCreateArgs communityCreateArgs : argsList) {
+            Community community = createArgsToCommunity(communityCreateArgs);
+            communityDao.insert(community);
+            i += 1;
+        }
+        return Result.ok(i == argsList.size());
+    }
+
+    /**
+     * 更新指定Id的社区信息
+     *
+     * @param args
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Boolean> updateById(CommunityUpdateArgs args) throws ServiceException {
+        Community community = createArgsToCommunity(args);
+        community.setCommunityId(args.getCommunityId());
+        community.setChangedBy(args.getChangedBy());
+        community.setUpdateTime(args.getUpdateTime());
+        int i = communityDao.updateById(community);
+
+        return Result.ok(i == 1);
+    }
+
+    /**
+     * 移除指定id社区
+     *
+     * @param id
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Boolean> removeById(Long id) throws ServiceException {
+        communityDao.deleteById(id);
+        return Result.success();
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param ids
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Boolean> removeBatch(Set<Long> ids) throws ServiceException {
+        communityDao.deleteBatchIds(ids);
+        return Result.success();
+    }
+
+
+    private SimpleCommunityInfoBean communityToSimpleInfoBean(Community community) {
+        SimpleCommunityInfoBean simpleCommunityInfoBean = new SimpleCommunityInfoBean();
+        simpleCommunityInfoBean.setCommunityId(community.getCommunityId());
+        simpleCommunityInfoBean.setName(community.getName());
+        simpleCommunityInfoBean.setAreaId(community.getAreaId());
+        simpleCommunityInfoBean.setDetailedAddress(community.getDetailedAddress());
+        simpleCommunityInfoBean.setCreateTime(community.getCreateTime());
+        return simpleCommunityInfoBean;
+    }
+
+    private QueryWrapper<Community> queryWrapperBuild(CommunityQueryArgs args) {
+        QueryWrapper<Community> queryWrapper = new QueryWrapper<>();
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getDetailedAddress())) {
+            queryWrapper.like("detailed_address", args.getDetailedAddress());
+        }
+
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getName())) {
+            queryWrapper.like("name", args.getName());
+
+        }
+
+        if (YejuStringUtils.isNotEmpty(args.getBetween()) && args.getBetween().length == 2) {
+            String[] between = args.getBetween();
+            queryWrapper.between("create_time", between[0], between[1]);
+        }
+
+        return queryWrapper;
+    }
+}

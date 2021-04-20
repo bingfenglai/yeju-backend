@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.platform.department.web.controlller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/platform/department")
 @Slf4j
+@Api(tags = "部门服务接口")
 public class DepartmentController {
 
     @DubboReference
@@ -58,29 +60,29 @@ public class DepartmentController {
     @DubboReference
     private IDataDictionaryInfoService dataDictionaryInfoService;
 
-    @ApiOperation(value = "获取部门状态列表",notes = "获取部门状态列表",httpMethod = "GET")
+    @ApiOperation(value = "获取部门状态列表", notes = "获取部门状态列表", httpMethod = "GET")
     @GetMapping("/status/list")
-    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList()throws ServiceException {
+    public Mono<IResult<List<SimpleLabelAndValueBean>>> getMenuStatusInfoList() throws ServiceException {
         IResult<List<SimpleLabelAndValueBean>> result = dataDictionaryInfoService.findLabelAndValueByType(DataDictionaryTypeConstant.DEPARTMENT_STATUS);
         return Mono.just(result);
     }
 
 
-    @ApiOperation(value = "获取DepartmentTree",notes = "DepartmentTree说明",httpMethod = "GET")
+    @ApiOperation(value = "获取DepartmentTree", notes = "DepartmentTree说明", httpMethod = "GET")
     @GetMapping("/getDepartmentTree")
-    public Mono<IResult<List<DepartmentTreeVO>>> getDepartmentTreeInfo()throws ServiceException {
+    public Mono<IResult<List<DepartmentTreeVO>>> getDepartmentTreeInfo() throws ServiceException {
 
         List<DepartmentTreeVO> result = null;
 
         IResult<List<DepartmentIdAndName>> resultDepartmentIdAndName = departmentService.findAll();
-        if (resultDepartmentIdAndName.isSuccess()){
+        if (resultDepartmentIdAndName.isSuccess()) {
             List<DepartmentIdAndName> all = resultDepartmentIdAndName.getData();
             result = new LinkedList<>();
             List<DepartmentTreeVO> other = new LinkedList<>();
             for (DepartmentIdAndName departmentIdAndName : all) {
-                if (departmentIdAndName.getParentId()==0){
+                if (departmentIdAndName.getParentId() == 0) {
                     result.add(beanToDepartmentTreeVO(departmentIdAndName));
-                }else {
+                } else {
                     other.add(beanToDepartmentTreeVO(departmentIdAndName));
                 }
 
@@ -96,27 +98,25 @@ public class DepartmentController {
         }
 
 
-
         return Mono.just(Result.ok(result));
     }
 
 
-    @ApiOperation(value = "获取Department列表 分页",notes = "Department列表说明",httpMethod = "GET")
+    @ApiOperation(value = "获取Department列表 分页", notes = "Department列表说明", httpMethod = "GET")
     @GetMapping("/list/{currentPage}")
     public Mono<PageResult<SimpleDepartmentInfoBean>> findPage(
-            @Validated @NotNull(message = "每页显示条数")  @ApiParam("当前页") @PathVariable Long currentPage,
+            @Validated @NotNull(message = "每页显示条数") @ApiParam("当前页") @PathVariable Long currentPage,
             @Validated @NotNull(message = "每页显示大小不能为空") @ApiParam("每页显示条数") @RequestParam Long size
-        )throws ServiceException {
+    ) throws ServiceException {
         BaseFindPageArgs args = new BaseFindPageArgs();
         args.setCurrentPage(currentPage);
         args.setSize(size);
 
-        return Mono.just(departmentService.findPage(args.getCurrentPage(),args.getSize()));
+        return Mono.just(departmentService.findPage(args.getCurrentPage(), args.getSize()));
     }
 
 
-
-    private DepartmentTreeVO beanToDepartmentTreeVO(DepartmentIdAndName bean){
+    private DepartmentTreeVO beanToDepartmentTreeVO(DepartmentIdAndName bean) {
 
         DepartmentTreeVO vo = new DepartmentTreeVO();
         vo.setId(bean.getId());
@@ -126,9 +126,9 @@ public class DepartmentController {
         return vo;
     }
 
-    private DepartmentTreeVO recursiveDepartmentTree(DepartmentTreeVO parent,List<DepartmentTreeVO> list){
+    private DepartmentTreeVO recursiveDepartmentTree(DepartmentTreeVO parent, List<DepartmentTreeVO> list) {
         for (DepartmentTreeVO departmentTreeVO : list) {
-            if (parent.getId().equals(departmentTreeVO.getParentId())){
+            if (parent.getId().equals(departmentTreeVO.getParentId())) {
                 recursiveDepartmentTree(departmentTreeVO, list);
                 parent.addChildren(departmentTreeVO);
             }

@@ -19,7 +19,6 @@ package pers.lbf.yeju.provider.test.message;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +51,11 @@ public class PrivateMessageTest {
 
     @Test
     public void test() {
-        String key = "yeju:message:private:unread:2:1380439006257795073";
-        String data = privateMessageService.pullMessage(key).getData();
-
-        log.info("消息 {}", data);
-        Assert.assertNotNull(data);
+//        String key = "yeju:message:private:unread:2:1380439006257795073";
+//        String data = privateMessageService.pullMessage(key).getData();
+//
+//        log.info("消息 {}", data);
+//        Assert.assertNotNull(data);
     }
 
     @Test
@@ -66,7 +65,7 @@ public class PrivateMessageTest {
         Boolean aBoolean = redisTemplate.hasKey(key);
         log.info("flag {}", aBoolean);
     }
-    
+
     @Test
     public void test2() {
         List<String> data = privateMessageService.pullMessageByAccountId(2L).getData();

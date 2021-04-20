@@ -17,24 +17,29 @@
 package pers.lbf.yeju.provider.base.util;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import pers.lbf.yeju.common.core.args.IFindPageArgs;
 
-/**分页查询工具类
+/**
+ * 分页查询工具类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @date 2021/2/16 15:18
  */
 public class PageUtil {
 
-    /** 获取mybatis plus 分页查询参数 page
+    /**
+     * 获取mybatis plus 分页查询参数 page
+     *
+     * @param clazz       类型
+     * @param currentPage 当前页
+     * @param size        每页显示的记录数
+     * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<T>
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/2/16 15:23
-     * @param clazz 类型
-     * @param currentPage 当前页
-     * @param size 每页显示的记录数
-     * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<T>
      */
-    public static <T> Page<T> getPage(Class<T> clazz,Long currentPage,Long size){
+    public static <T> Page<T> getPage(Class<T> clazz, Long currentPage, Long size) {
 
         Page<T> page = new Page<>();
         page.setPages(currentPage);
@@ -42,6 +47,11 @@ public class PageUtil {
 
         return page;
     }
+
+    public static <T> Page<T> getPage(Class<T> clazz, IFindPageArgs args) {
+        return getPage(clazz, args.getCurrentPage(), args.getSize());
+    }
+
 
     private PageUtil() {
 

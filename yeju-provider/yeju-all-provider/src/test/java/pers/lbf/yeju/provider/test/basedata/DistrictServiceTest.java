@@ -25,9 +25,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pers.lbf.yeju.provider.start.YejuProviderApplication;
-import pers.lbf.yeju.service.basedata.interfaces.IDistrictService;
-import pers.lbf.yeju.service.basedata.pojo.DistrictQueryArgs;
-import pers.lbf.yeju.service.basedata.pojo.SimpleDistrictInfoBean;
+import pers.lbf.yeju.service.basedata.district.interfaces.IDistrictService;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictQueryArgs;
+import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
 
 import java.util.List;
 

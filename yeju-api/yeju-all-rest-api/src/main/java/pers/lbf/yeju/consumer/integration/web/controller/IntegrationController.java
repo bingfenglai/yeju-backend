@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.integration.web.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -41,6 +42,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/integration")
 @Slf4j
+@Api(tags = "积分服务")
 public class IntegrationController {
 
     @DubboReference

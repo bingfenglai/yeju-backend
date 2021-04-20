@@ -16,7 +16,7 @@
  */
 package pers.lbf.yeju.consumer.customer.web.controller;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ import javax.validation.constraints.Size;
 @RestController
 @RequestMapping("/customer")
 @Slf4j
-@ApiModel(description = "客户服务接口")
+@Api(tags = "客户服务接口")
 public class CustomerController {
 
     @DubboReference
@@ -67,7 +67,7 @@ public class CustomerController {
         return Mono.just(customerService.findPage(args.getCurrentPage(), args.getSize()));
     }
 
-    
+
     @ApiOperation(value = "获取客户信息列表 分页", notes = "客户信息列表说明", httpMethod = "GET")
     @GetMapping("/list/v2")
     public Mono<PageResult<SimpleCustomerInfoBean>> findPageV2(@ApiParam("分页查询参数") @Valid FindPageArgs args) throws ServiceException {

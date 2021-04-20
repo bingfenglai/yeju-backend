@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.consumer.basedata.district.web.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +28,11 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.consumer.base.util.ArgsHelper;
-import pers.lbf.yeju.service.basedata.interfaces.IDistrictService;
-import pers.lbf.yeju.service.basedata.pojo.DistrictCreateArgs;
-import pers.lbf.yeju.service.basedata.pojo.DistrictQueryArgs;
-import pers.lbf.yeju.service.basedata.pojo.DistrictUpdateArgs;
-import pers.lbf.yeju.service.basedata.pojo.SimpleDistrictInfoBean;
+import pers.lbf.yeju.service.basedata.district.interfaces.IDistrictService;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictCreateArgs;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictQueryArgs;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictUpdateArgs;
+import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -46,6 +47,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/basedata/district")
 @Slf4j
+@Api(tags = "地域服务")
 public class DistrictController {
 
     @DubboReference

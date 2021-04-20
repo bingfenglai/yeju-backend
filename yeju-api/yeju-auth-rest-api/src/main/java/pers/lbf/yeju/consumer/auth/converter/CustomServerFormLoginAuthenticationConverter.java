@@ -18,6 +18,7 @@ package pers.lbf.yeju.consumer.auth.converter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
@@ -47,6 +48,7 @@ import java.net.InetSocketAddress;
  */
 @Component
 @Slf4j
+@Primary
 public class CustomServerFormLoginAuthenticationConverter extends ServerFormLoginAuthenticationConverter {
 
     @Autowired

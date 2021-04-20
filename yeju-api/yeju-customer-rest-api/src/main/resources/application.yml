@@ -4,12 +4,12 @@ spring:
   application:
     name: yeju-customer-rest-api
 
-#management:
-#  endpoint:
-#    health:
-#      show-details: always
-#  endpoints:
-#    web:
-#      exposure:
-#        include: health, info, prometheus
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
 

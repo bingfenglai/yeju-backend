@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 
 /**
  * TODO
@@ -32,6 +33,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer.product")
 @Slf4j
 @EnableDiscoveryClient
+@EnableWebFluxSecurity
 public class ProductApplication {
 
     public static void main(String[] args) {

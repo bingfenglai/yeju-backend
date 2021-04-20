@@ -29,6 +29,7 @@
             <artifactId>yeju-customer-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
+
     </dependencies>
 
     <profiles>

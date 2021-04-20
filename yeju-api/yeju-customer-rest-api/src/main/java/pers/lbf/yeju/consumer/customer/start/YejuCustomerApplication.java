@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 
 /**
  * TODO
@@ -29,13 +30,18 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @version 1.0
  * @date 2021/3/23 9:38
  */
-@SpringBootApplication(scanBasePackages = "pers.lbf.yeju.consumer.customer")
+@SpringBootApplication(
+        scanBasePackages = "pers.lbf.yeju.consumer.customer")
 @EnableDiscoveryClient
 @Slf4j
+@EnableWebFluxSecurity
 public class YejuCustomerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(YejuCustomerApplication.class, args);
 
+        SpringApplication.run(YejuCustomerApplication.class, args);
+        log.info("############################################");
+        log.info("#--------------客户服务消费方启动成功！------------#");
+        log.info("############################################");
     }
 }

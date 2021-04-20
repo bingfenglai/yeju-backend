@@ -104,7 +104,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
                 throw new ServiceException(AuthStatusEnum.NO_TOKEN);
             }
         }
-        
+
 
         List<String> authorityList = authorityInfoBean.getAuthorityList();
 
@@ -124,7 +124,7 @@ public class CustomAuthorizationManager implements ReactiveAuthorizationManager<
 
         }
         log.info("用户 {} 请求API校验 不 通 过", authorityInfoBean.getPrincipal());
-        return Mono.just(new AuthorizationDecision(false));
+        throw new ServiceException(AuthStatusEnum.unauthorized);
 
 
     }

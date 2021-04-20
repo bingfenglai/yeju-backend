@@ -39,7 +39,7 @@ import pers.lbf.yeju.consumer.auth.builder.AuthorityInfoTokenBuilder;
 @Slf4j
 @Primary
 public class AuthorizationTokenManager extends pers.lbf.yeju.base.security.authorization.manager.AuthorizationTokenManager {
-    
+
     @Autowired
     private AuthorityInfoTokenBuilder builder;
 
@@ -57,7 +57,6 @@ public class AuthorizationTokenManager extends pers.lbf.yeju.base.security.autho
     }
 
     public Long getTokenExpiresTime(ServerWebExchange exchange) {
-
 
         HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
         String userAgent = requestHeaders.getFirst("User-Agent");

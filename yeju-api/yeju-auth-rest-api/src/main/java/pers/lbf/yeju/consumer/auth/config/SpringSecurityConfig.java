@@ -49,6 +49,7 @@ import java.util.LinkedList;
  */
 @EnableWebFluxSecurity
 @Configuration
+@Primary
 public class SpringSecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SpringSecurityConfig.class);

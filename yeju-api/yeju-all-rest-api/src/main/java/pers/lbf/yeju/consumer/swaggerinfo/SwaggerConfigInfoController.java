@@ -16,7 +16,7 @@
  */
 package pers.lbf.yeju.consumer.swaggerinfo;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -32,25 +32,27 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.Min;
 
-/** 测试用API
+/**
+ * 测试用API
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
  * @date 2021/1/15 0:32
  */
-@ApiModel(value = "测试用API",description = "测试用API")
+@Api(tags = "测试用API")
 @RestController
 @RequestMapping("/test")
 @Validated
 public class SwaggerConfigInfoController {
 
-    @ApiModelProperty(value="swagger config info")
+    @ApiModelProperty(value = "swagger config info")
     @Autowired
     private SwaggerPropertiesConfig config;
 
-    @ApiOperation(value = "获取详情",notes = "说明",httpMethod = "GET")
+    @ApiOperation(value = "获取详情", notes = "说明", httpMethod = "GET")
     @GetMapping("/swaggerInfo")
-    public Mono<String> getSwaggerInfo()throws ServiceException {
+    public Mono<String> getSwaggerInfo() throws ServiceException {
         return Mono.just(config.toString());
     }
 
@@ -63,21 +65,20 @@ public class SwaggerConfigInfoController {
             @PathVariable Long currentPage,
             @ApiParam(name = "每页显示条数")
             @RequestParam Long size
-                                                )throws ServiceException {
+    ) throws ServiceException {
         return Mono.empty();
     }
 
 
-    @ApiOperation(value = "获取SwaggerDetails",notes = "SwaggerDetails说明",httpMethod = "GET")
+    @ApiOperation(value = "获取SwaggerDetails", notes = "SwaggerDetails说明", httpMethod = "GET")
     @GetMapping("/createSwaggerDetails")
     public Mono<IResult> getSwaggerDetailsInfo(
-             @Min(value = 10,message = "hheheheheh")
+            @Min(value = 10, message = "hheheheheh")
             @RequestParam Long id
-    )throws ServiceException {
+    ) throws ServiceException {
 
         return Mono.just(SimpleResult.ok());
     }
 
-    
-    
+
 }

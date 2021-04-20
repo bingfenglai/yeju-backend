@@ -32,11 +32,11 @@ import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.basedata.district.dao.IDistrictDao;
 import pers.lbf.yeju.provider.basedata.district.status.DistrictStatusEnum;
-import pers.lbf.yeju.service.basedata.interfaces.IDistrictService;
-import pers.lbf.yeju.service.basedata.pojo.DistrictCreateArgs;
-import pers.lbf.yeju.service.basedata.pojo.DistrictQueryArgs;
-import pers.lbf.yeju.service.basedata.pojo.DistrictUpdateArgs;
-import pers.lbf.yeju.service.basedata.pojo.SimpleDistrictInfoBean;
+import pers.lbf.yeju.service.basedata.district.interfaces.IDistrictService;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictCreateArgs;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictQueryArgs;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictUpdateArgs;
+import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class DistrictServiceImpl implements IDistrictService {
         District district = districtCreateArgsToDistrict(args);
         district.setChangedBy(args.getChangedBy());
         district.setUpdateTime(args.getUpdateTime());
-
+        district.setDistrictId(args.getDistrictId());
         int i = districtDao.updateById(district);
         return Result.ok(i == 1);
     }

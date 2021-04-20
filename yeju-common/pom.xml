@@ -25,6 +25,7 @@
         <module>yeju-common-blur</module>
         <module>yeju-api-access-limit</module>
         <module>yeju-common-blur-annotions</module>
+        <module>yeju-base-web-health</module>
 
 
     </modules>

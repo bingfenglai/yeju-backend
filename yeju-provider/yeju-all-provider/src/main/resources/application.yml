@@ -16,4 +16,5 @@ logging:
   level:
     pers.lbf.yeju.provider.message.notice.dao: debug
     pers.lbf.yeju.provider.customer.dao: debug
+    pers.lbf.yeju.provider.basedata.community.dao: debug
 

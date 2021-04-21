@@ -29,6 +29,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.domain.entity.business.*;
+import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.product.house.constant.HouseStatusConstant;
 import pers.lbf.yeju.provider.product.house.dao.HouseImagesAndVideoDao;
@@ -37,6 +38,7 @@ import pers.lbf.yeju.provider.product.house.dao.HouseInfoTradableDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseOtherAttributeDao;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
+import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoQueryArgs;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseResourceInfoBean;
 import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
 
@@ -66,6 +68,56 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
     @Autowired
     private HouseImagesAndVideoDao houseImagesAndVideoDao;
 
+    /**
+     * 房源综合查询接口
+     *
+     * @param args
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    @Cacheable(cacheNames = "house:query", key = "#args")
+    public PageResult<SimpleHouseInfoBean> query(HouseInfoQueryArgs args) throws ServiceException {
+        Page<HouseInfo> page = PageUtil.getPage(HouseInfo.class, args.getCurrentPage(), args.getSize());
+        QueryWrapper<HouseInfo> queryWrapper = buildQueryWrapper(args);
+        Page<HouseInfo> houseInfoPage = houseInfoDao.selectPage(page, queryWrapper);
+        List<SimpleHouseInfoBean> result = new LinkedList<>();
+        for (HouseInfo houseInfo : houseInfoPage.getRecords()) {
+            SimpleHouseInfoBean bean = houseInfoToBean(houseInfo);
+            result.add(bean);
+        }
+        return PageResult.ok(houseInfoPage.getTotal(), houseInfoPage.getCurrent(), houseInfoPage.getSize(), result);
+    }
+
+    private QueryWrapper<HouseInfo> buildQueryWrapper(HouseInfoQueryArgs args) {
+        QueryWrapper<HouseInfo> queryWrapper = new QueryWrapper<>();
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getHouseDecorationType())) {
+            queryWrapper.eq("house_decoration_type", args.getHouseDecorationType());
+        }
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getHouseStatus())) {
+            queryWrapper.eq("house_status", args.getHouseStatus());
+        }
+
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getHouseOrientation())) {
+            queryWrapper.eq("house_orientation", args.getHouseOrientation());
+        }
+
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getPaymentMethod())) {
+            queryWrapper.eq("payment_method", args.getPaymentMethod());
+        }
+
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getRentalMode())) {
+            queryWrapper.eq("rental_mode", args.getRentalMode());
+        }
+
+        if (YejuStringUtils.isNotEmpty(args.getDateRange()) && args.getDateRange().length == 2) {
+            String[] dateRange = args.getDateRange();
+            queryWrapper.between("create_time", dateRange[0], dateRange[1]);
+        }
+
+        return queryWrapper;
+    }
+
     @Override
     @Cacheable(cacheNames = "house", keyGenerator = "yejuKeyGenerator")
     public PageResult<SimpleHouseInfoBean> findPage(Long currentPage, Long size) throws ServiceException {
@@ -84,10 +136,12 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         simpleHouseInfoBean.setHouseId(houseInfo.getHouseId());
         simpleHouseInfoBean.setTitle(houseInfo.getTitle());
         simpleHouseInfoBean.setRent(houseInfo.getRent());
+        simpleHouseInfoBean.setRentUnit(houseInfo.getRentUnit());
         simpleHouseInfoBean.setRentalMode(houseInfo.getRentalMode());
         simpleHouseInfoBean.setHouseStatus(houseInfo.getHouseStatus());
         simpleHouseInfoBean.setCreateTime(houseInfo.getCreateTime());
         simpleHouseInfoBean.setPaymentMethod(houseInfo.getPaymentMethod());
+
         return simpleHouseInfoBean;
     }
 

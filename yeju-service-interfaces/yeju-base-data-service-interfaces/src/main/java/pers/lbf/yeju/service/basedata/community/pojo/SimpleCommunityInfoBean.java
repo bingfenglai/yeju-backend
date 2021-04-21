@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import pers.lbf.yeju.service.basedata.district.pojo.SimpleAddressInfoBean;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -43,12 +44,6 @@ public class SimpleCommunityInfoBean implements Serializable {
     private String name;
 
     /**
-     * 所在区（县）
-     */
-    @JsonSerialize(using = ToStringSerializer.class)
-    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
-    private Long areaId;
-    /**
      * 详细地址
      */
     private String detailedAddress;
@@ -57,6 +52,25 @@ public class SimpleCommunityInfoBean implements Serializable {
      */
     private Date createTime;
 
+    private String remark;
+
+    private SimpleAddressInfoBean addressInfo;
+
+    public SimpleAddressInfoBean getAddressInfo() {
+        return addressInfo;
+    }
+
+    public void setAddressInfo(SimpleAddressInfoBean addressInfo) {
+        this.addressInfo = addressInfo;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public Long getCommunityId() {
         return communityId;
@@ -72,14 +86,6 @@ public class SimpleCommunityInfoBean implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getAreaId() {
-        return areaId;
-    }
-
-    public void setAreaId(Long areaId) {
-        this.areaId = areaId;
     }
 
     public String getDetailedAddress() {

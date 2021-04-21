@@ -20,10 +20,7 @@ package pers.lbf.yeju.service.basedata.district.interfaces;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictCreateArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictQueryArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictUpdateArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
+import pers.lbf.yeju.service.basedata.district.pojo.*;
 
 import java.util.List;
 
@@ -35,6 +32,25 @@ import java.util.List;
  * @date 2021/4/17 19:53
  */
 public interface IDistrictService {
+
+    
+    /**
+     * 根据上一级id获取地域选项列表
+     *
+     * @param id
+     * @return
+     * @throws ServiceException
+     */
+    IResult<List<DistrictNameAndIdVO>> getDistrictNameAndIdListByParentId(Long id) throws ServiceException;
+
+    /**
+     * 根据id查找对应的name 并返回name 、id
+     *
+     * @param id
+     * @return
+     * @throws ServiceException
+     */
+    IResult<DistrictNameAndIdVO> getDistrictNameAndIdListById(Long id) throws ServiceException;
 
 
     IResult<Boolean> create(DistrictCreateArgs args) throws ServiceException;

@@ -17,9 +17,13 @@
 
 package pers.lbf.yeju.gateway.start;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  * 微服务网关
@@ -39,6 +43,12 @@ public class YejuGatewayApp {
         log.info("#------------  微服务网关启动成功！ -----------#");
         log.info("############################################");
 
+    }
+
+    @Bean
+    public MeterRegistryCustomizer<MeterRegistry> configurer(
+            @Value("${spring.application.name}") String applicationName) {
+        return (registry) -> registry.config().commonTags("application", applicationName);
     }
 
 

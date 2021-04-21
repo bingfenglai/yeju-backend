@@ -19,8 +19,11 @@ package pers.lbf.yeju.provider.basedata.community.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -34,6 +37,8 @@ import pers.lbf.yeju.service.basedata.community.pojo.CommunityCreateArgs;
 import pers.lbf.yeju.service.basedata.community.pojo.CommunityQueryArgs;
 import pers.lbf.yeju.service.basedata.community.pojo.CommunityUpdateArgs;
 import pers.lbf.yeju.service.basedata.community.pojo.SimpleCommunityInfoBean;
+import pers.lbf.yeju.service.basedata.district.interfaces.IDistrictService;
+import pers.lbf.yeju.service.basedata.district.pojo.SimpleAddressInfoBean;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,6 +58,9 @@ public class CommunityServiceImpl implements ICommunityService {
     @Autowired
     private ICommunityDao communityDao;
 
+    @DubboReference
+    private IDistrictService districtService;
+
     /**
      * 综合分页查询接口
      *
@@ -61,13 +69,17 @@ public class CommunityServiceImpl implements ICommunityService {
      * @throws ServiceException
      */
     @Override
+    @Cacheable(cacheNames = "community:page", key = "#args")
     public PageResult<SimpleCommunityInfoBean> query(CommunityQueryArgs args) throws ServiceException {
+        log.info("page {} size {}", args.getCurrentPage(), args.getSize());
         Page<Community> page = PageUtil.getPage(Community.class, args.getCurrentPage(), args.getSize());
         QueryWrapper<Community> queryWrapper = queryWrapperBuild(args);
         Page<Community> communityPage = communityDao.selectPage(page, queryWrapper);
+        log.info("total {}", communityPage.getTotal());
         List<SimpleCommunityInfoBean> result = new LinkedList<>();
         for (Community community : communityPage.getRecords()) {
             SimpleCommunityInfoBean bean = communityToSimpleInfoBean(community);
+
             result.add(bean);
         }
         return PageResult.ok(communityPage.getTotal(), communityPage.getCurrent(), communityPage.getSize(), result);
@@ -82,6 +94,7 @@ public class CommunityServiceImpl implements ICommunityService {
      * @throws ServiceException
      */
     @Override
+    @CacheEvict(cacheNames = "community:page", allEntries = true)
     public IResult<Boolean> create(CommunityCreateArgs args) throws ServiceException {
         Community community = createArgsToCommunity(args);
         int count = communityDao.insert(community);
@@ -107,6 +120,7 @@ public class CommunityServiceImpl implements ICommunityService {
      * @throws ServiceException
      */
     @Override
+    @CacheEvict(cacheNames = "community:page", allEntries = true)
     public IResult<Boolean> createBatch(List<CommunityCreateArgs> argsList) throws ServiceException {
         int i = 0;
         for (CommunityCreateArgs communityCreateArgs : argsList) {
@@ -125,6 +139,7 @@ public class CommunityServiceImpl implements ICommunityService {
      * @throws ServiceException
      */
     @Override
+    @CacheEvict(cacheNames = "community:page", allEntries = true)
     public IResult<Boolean> updateById(CommunityUpdateArgs args) throws ServiceException {
         Community community = createArgsToCommunity(args);
         community.setCommunityId(args.getCommunityId());
@@ -143,6 +158,7 @@ public class CommunityServiceImpl implements ICommunityService {
      * @throws ServiceException
      */
     @Override
+    @CacheEvict(cacheNames = "community:page", allEntries = true)
     public IResult<Boolean> removeById(Long id) throws ServiceException {
         communityDao.deleteById(id);
         return Result.success();
@@ -156,6 +172,7 @@ public class CommunityServiceImpl implements ICommunityService {
      * @throws ServiceException
      */
     @Override
+    @CacheEvict(cacheNames = "community:page", allEntries = true)
     public IResult<Boolean> removeBatch(Set<Long> ids) throws ServiceException {
         communityDao.deleteBatchIds(ids);
         return Result.success();
@@ -164,12 +181,31 @@ public class CommunityServiceImpl implements ICommunityService {
 
     private SimpleCommunityInfoBean communityToSimpleInfoBean(Community community) {
         SimpleCommunityInfoBean simpleCommunityInfoBean = new SimpleCommunityInfoBean();
+
+        simpleCommunityInfoBean.setRemark(community.getRemark());
         simpleCommunityInfoBean.setCommunityId(community.getCommunityId());
         simpleCommunityInfoBean.setName(community.getName());
-        simpleCommunityInfoBean.setAreaId(community.getAreaId());
         simpleCommunityInfoBean.setDetailedAddress(community.getDetailedAddress());
         simpleCommunityInfoBean.setCreateTime(community.getCreateTime());
+
+        SimpleAddressInfoBean addressInfo = new SimpleAddressInfoBean();
+        addressInfo.setAreaId(community.getAreaId());
+        addressInfo.setCityId(community.getCityId());
+        addressInfo.setProvinceId(community.getProvinceId());
+        if (community.getAreaId() != null) {
+            addressInfo.setAreaName(districtService.findCityNameByCityId(community.getAreaId()).getData());
+        }
+        if (community.getCityId() != null) {
+            addressInfo.setCityName(districtService.findCityNameByCityId(community.getCityId()).getData());
+
+        }
+        if (community.getProvinceId() != null) {
+            addressInfo.setProvinceName(districtService.findCityNameByCityId(community.getProvinceId()).getData());
+        }
+        simpleCommunityInfoBean.setAddressInfo(addressInfo);
+
         return simpleCommunityInfoBean;
+
     }
 
     private QueryWrapper<Community> queryWrapperBuild(CommunityQueryArgs args) {

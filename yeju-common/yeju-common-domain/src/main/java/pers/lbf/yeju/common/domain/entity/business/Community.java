@@ -47,6 +47,8 @@ public class Community extends Model<Community> {
      * 所在区（县）
      */
     private Long areaId;
+    private Long cityId;
+    private Long provinceId;
     /**
      * 详细地址
      */
@@ -82,6 +84,21 @@ public class Community extends Model<Community> {
     @TableLogic
     private Integer isDelete;
 
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+    public Long getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
 
     public Long getCommunityId() {
         return communityId;

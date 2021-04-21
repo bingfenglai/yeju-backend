@@ -96,7 +96,7 @@ public class ResourcesServiceImpl implements IResourcesService {
                 .or()
                 .eq("resource_type", ResourceType.is_menu.getValue());
         queryWrapper.eq("resource_status", ResourceStatus.able.getValue());
-
+        queryWrapper.orderByAsc("order_number");
         List<Resource> resources = resourceDao.selectList(queryWrapper);
 
         List<MenuInfoBean> menuInfoBeanList = new LinkedList<>();

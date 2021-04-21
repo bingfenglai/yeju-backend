@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.domain.entity.data.District;
+import pers.lbf.yeju.service.basedata.district.pojo.DistrictNameAndIdVO;
 import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
 
 import java.util.List;
@@ -69,4 +70,23 @@ public interface IDistrictDao extends BaseMapper<District> {
             "LIMIT 1;")
     List<Long> hasChildren(Long districtId) throws ServiceException;
 
+    @Select("SELECT \n" +
+            "  t.`district_id` AS value,\n" +
+            "  t.`name` AS label \n" +
+            "FROM\n" +
+            "  table_data_district t \n" +
+            "WHERE t.`parent_id` = #{id} \n" +
+            "  AND t.`is_delete` = 0 ")
+    List<DistrictNameAndIdVO> findDistrictNameAndIdListByParentId(Long id);
+
+    @Select("SELECT \n" +
+            "  t.`district_id` AS VALUE,\n" +
+            "  t.`name` AS label \n" +
+            "FROM\n" +
+            "  table_data_district t \n" +
+            "WHERE t.`district_id`= #{id} \n" +
+            "  AND t.`is_delete` = 0")
+    DistrictNameAndIdVO findDistrictNameAndIdListById(Long id);
+
+   
 }

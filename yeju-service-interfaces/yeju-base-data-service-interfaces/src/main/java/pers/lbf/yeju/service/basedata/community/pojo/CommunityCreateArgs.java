@@ -17,9 +17,7 @@
 
 package pers.lbf.yeju.service.basedata.community.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import pers.lbf.yeju.common.core.args.ICreateArgs;
 
@@ -46,9 +44,13 @@ public class CommunityCreateArgs implements ICreateArgs {
      * 所在区（县）
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
+    //@JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
     @NotNull(message = "小区(社区)所属县（区）不能为空")
     private Long areaId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long cityId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long provinceId;
     /**
      * 详细地址
      */
@@ -67,6 +69,22 @@ public class CommunityCreateArgs implements ICreateArgs {
      * 备注
      */
     private String remark;
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+    public Long getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
 
     public String getName() {
         return name;

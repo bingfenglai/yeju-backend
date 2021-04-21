@@ -69,6 +69,10 @@ public class HouseInfo extends Model<HouseInfo> implements Serializable, IHouseI
      */
     private Double rent;
     /**
+     * 租金单位/0按月 1按季 2按年
+     */
+    private String rentUnit;
+    /**
      * 出租方式（0整租，1合租，2可合租可整租）详见参数表
      */
     private String rentalMode;
@@ -155,6 +159,14 @@ public class HouseInfo extends Model<HouseInfo> implements Serializable, IHouseI
      * 房源交易完成时的月份。历史表的分区依据
      */
     private Integer monthCompleted;
+
+    public String getRentUnit() {
+        return rentUnit;
+    }
+
+    public void setRentUnit(String rentUnit) {
+        this.rentUnit = rentUnit;
+    }
 
     @Override
     public Long getHouseId() {

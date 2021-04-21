@@ -18,7 +18,7 @@
 package pers.lbf.yeju.provider.product.house.constant;
 
 /**
- * TODO
+ * 房源状态常量
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0

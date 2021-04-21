@@ -17,35 +17,19 @@
 
 package pers.lbf.yeju.service.interfaces.product.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
+import pers.lbf.yeju.common.core.args.IFindPageArgs;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.util.Arrays;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/17 15:31
+ * @date 2021/4/21 19:20
  */
-public class SimpleHouseInfoBean implements Serializable {
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long houseId;
-    /**
-     * 房源标题
-     */
-    private String title;
-    /**
-     * 租金
-     */
-    private Double rent;
-
-    /**
-     * 租金单位/0按月 1按季 2按年
-     */
-    private String rentUnit;
+public class HouseInfoQueryArgs extends BaseFindPageArgs implements IFindPageArgs {
     /**
      * 出租方式（0整租，1合租，2可合租可整租）详见参数表
      */
@@ -63,41 +47,36 @@ public class SimpleHouseInfoBean implements Serializable {
      * 详见数据字典
      */
     private String houseStatus;
+
     /**
-     * 创建时间
+     * 朝向，1坐北朝南，2坐东朝西，3坐南朝北，4坐西朝东  详见参数表
      */
-    private Date createTime;
+    private String houseOrientation;
+    /**
+     * 房屋装修类型，1简装，2精装，3毛胚
+     */
+    private String houseDecorationType;
 
-    public String getRentUnit() {
-        return rentUnit;
+
+    /**
+     * 创建时间范围
+     */
+    private String[] dateRange;
+
+    public String getHouseOrientation() {
+        return houseOrientation;
     }
 
-    public void setRentUnit(String rentUnit) {
-        this.rentUnit = rentUnit;
+    public void setHouseOrientation(String houseOrientation) {
+        this.houseOrientation = houseOrientation;
     }
 
-    public Long getHouseId() {
-        return houseId;
+    public String getHouseDecorationType() {
+        return houseDecorationType;
     }
 
-    public void setHouseId(Long houseId) {
-        this.houseId = houseId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Double getRent() {
-        return rent;
-    }
-
-    public void setRent(Double rent) {
-        this.rent = rent;
+    public void setHouseDecorationType(String houseDecorationType) {
+        this.houseDecorationType = houseDecorationType;
     }
 
     public String getRentalMode() {
@@ -124,11 +103,25 @@ public class SimpleHouseInfoBean implements Serializable {
         this.houseStatus = houseStatus;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String[] getDateRange() {
+        return dateRange;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setDateRange(String[] dateRange) {
+        this.dateRange = dateRange;
+    }
+
+    @Override
+    public String toString() {
+        return "HouseInfoQueryArgs{" +
+                "currentPage=" + currentPage +
+                ", size=" + size +
+                ", rentalMode='" + rentalMode + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", houseStatus='" + houseStatus + '\'' +
+                ", houseOrientation='" + houseOrientation + '\'' +
+                ", houseDecorationType='" + houseDecorationType + '\'' +
+                ", dateRange=" + Arrays.toString(dateRange) +
+                '}';
     }
 }

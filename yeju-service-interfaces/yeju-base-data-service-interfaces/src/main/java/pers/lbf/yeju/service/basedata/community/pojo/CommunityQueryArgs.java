@@ -21,6 +21,7 @@ import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.args.IFindPageArgs;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * TODO
@@ -59,4 +60,14 @@ public class CommunityQueryArgs extends BaseFindPageArgs implements IFindPageArg
     }
 
 
+    @Override
+    public String toString() {
+        return "CommunityQueryArgs{" +
+                "currentPage=" + currentPage +
+                ", size=" + size +
+                ", name='" + name + '\'' +
+                ", detailedAddress='" + detailedAddress + '\'' +
+                ", between=" + Arrays.toString(between) +
+                '}';
+    }
 }

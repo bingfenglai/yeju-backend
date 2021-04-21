@@ -33,10 +33,7 @@ import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.basedata.district.dao.IDistrictDao;
 import pers.lbf.yeju.provider.basedata.district.status.DistrictStatusEnum;
 import pers.lbf.yeju.service.basedata.district.interfaces.IDistrictService;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictCreateArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictQueryArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictUpdateArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
+import pers.lbf.yeju.service.basedata.district.pojo.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,12 +52,43 @@ public class DistrictServiceImpl implements IDistrictService {
     @Autowired
     private IDistrictDao districtDao;
 
+
+    /**
+     * 根据上一级id获取地域选项列表
+     *
+     * @param id
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    @Cacheable(cacheNames = "district:options", key = "#id")
+    public IResult<List<DistrictNameAndIdVO>> getDistrictNameAndIdListByParentId(Long id) throws ServiceException {
+        List<DistrictNameAndIdVO> result = districtDao.findDistrictNameAndIdListByParentId(id);
+        return Result.ok(result);
+    }
+
+    /**
+     * 根据id查找对应的name 并返回name 、id
+     *
+     * @param id
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    @Cacheable(cacheNames = "district:options:id", key = "#id")
+    public IResult<DistrictNameAndIdVO> getDistrictNameAndIdListById(Long id) throws ServiceException {
+        DistrictNameAndIdVO vo = districtDao.findDistrictNameAndIdListById(id);
+
+        return Result.ok(vo);
+    }
+
     @Override
     @CacheEvict(cacheNames = {
             "district:tree",
             "district:page",
             "district:tree:all",
-            "district:directChildNode"}, allEntries = true)
+            "district:directChildNode",
+            "district:options"}, allEntries = true)
     public IResult<Boolean> create(DistrictCreateArgs args) throws ServiceException {
         District district = districtCreateArgsToDistrict(args);
         int insert = districtDao.insert(district);
@@ -73,7 +101,9 @@ public class DistrictServiceImpl implements IDistrictService {
             "district:page",
             "district:tree:all",
             "district:name",
-            "district:directChildNode"}, allEntries = true)
+            "district:directChildNode",
+            "district:options",
+            "district:options:id"}, allEntries = true)
     public IResult<Boolean> update(DistrictUpdateArgs args) throws ServiceException {
         District district = districtCreateArgsToDistrict(args);
         district.setChangedBy(args.getChangedBy());

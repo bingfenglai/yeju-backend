@@ -29,10 +29,7 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.consumer.base.util.ArgsHelper;
 import pers.lbf.yeju.service.basedata.district.interfaces.IDistrictService;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictCreateArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictQueryArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.DistrictUpdateArgs;
-import pers.lbf.yeju.service.basedata.district.pojo.SimpleDistrictInfoBean;
+import pers.lbf.yeju.service.basedata.district.pojo.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -52,6 +49,18 @@ public class DistrictController {
 
     @DubboReference
     private IDistrictService districtService;
+
+    @ApiOperation(value = "根据id查找地域选项", notes = "说明", httpMethod = "GET")
+    @GetMapping("/option/{id}")
+    public Mono<IResult<DistrictNameAndIdVO>> getDistrictOptionById(@PathVariable Long id) throws ServiceException {
+        return Mono.just(districtService.getDistrictNameAndIdListById(id));
+    }
+
+    @ApiOperation(value = "根据父节点ID获取地域选项", notes = "地域选项说明", httpMethod = "GET")
+    @GetMapping("/option/parent/{id}")
+    public Mono<IResult<List<DistrictNameAndIdVO>>> getDistrictOptionList(@PathVariable Long id) throws ServiceException {
+        return Mono.just(districtService.getDistrictNameAndIdListByParentId(id));
+    }
 
     @ApiOperation(value = "新增地域", notes = "说明", httpMethod = "POST")
     @PostMapping

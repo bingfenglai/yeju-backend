@@ -4,10 +4,10 @@ spring:
   main:
     allow-bean-definition-overriding: true
 management:
-  endpoint:
-    health:
-      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
   endpoints:
     web:
       exposure:
-        include: health, info, prometheus
+        include: "*"

@@ -23,6 +23,7 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
+import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoQueryArgs;
 import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
 
 /**
@@ -34,6 +35,16 @@ import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
  */
 public interface IHouseInfoService {
 
+    /**
+     * 房源综合查询接口
+     *
+     * @param args
+     * @return
+     * @throws ServiceException
+     */
+    PageResult<SimpleHouseInfoBean> query(HouseInfoQueryArgs args) throws ServiceException;
+
+    @Deprecated
     PageResult<SimpleHouseInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 
     IResult<Boolean> addOne(ICreateArgs args) throws ServiceException;

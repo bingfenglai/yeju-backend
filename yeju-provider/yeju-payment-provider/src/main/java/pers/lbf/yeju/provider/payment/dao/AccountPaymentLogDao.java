@@ -14,17 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.basedata.community.dao;
+package pers.lbf.yeju.provider.payment.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.data.Community;
+import pers.lbf.yeju.common.domain.entity.business.payment.AccountPaymentLog;
 
 /**
- * 小区信息表(TableBusinessCommunity)表数据库访问层
+ * 账户支付记录表 当发生交易时，会产生支付 这张表用于记录客户的支付信息 对账用(TableBusinessAccountPaymentLog)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-04-19 21:22:00
+ * @since 2021-04-22 00:44:50
  */
-public interface ICommunityDao extends BaseMapper<Community> {
+public interface AccountPaymentLogDao extends BaseMapper<AccountPaymentLog> {
 
 }

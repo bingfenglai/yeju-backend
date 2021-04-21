@@ -14,17 +14,18 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.basedata.community.dao;
+package pers.lbf.yeju.provider.payment.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.data.Community;
+import pers.lbf.yeju.common.domain.entity.business.payment.AccountBalanceChangeLog;
 
 /**
- * 小区信息表(TableBusinessCommunity)表数据库访问层
+ * 对于平台内部充值账户的余额转入转出记录,  交易费用记录  以月份作为分区标识
+ * 账户余额变动记录表(TableBusinessAccountBalanceChangeLog)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-04-19 21:22:00
+ * @since 2021-04-22 00:44:21
  */
-public interface ICommunityDao extends BaseMapper<Community> {
+public interface AccountBalanceChangeLogDao extends BaseMapper<AccountBalanceChangeLog> {
 
 }

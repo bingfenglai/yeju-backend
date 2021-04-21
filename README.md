@@ -67,6 +67,10 @@ yeju-message-service-provider -----20889
 
 yeju-job-provider ------------------>20890
 
+#### 支付服务提供方
+
+yeju-payment-provider---------------20891
+
 ### 服务消费方端口规划(http)
 
 #### minio对象存储端口

@@ -28,7 +28,7 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.core.result.Result;
-import pers.lbf.yeju.common.domain.entity.business.Community;
+import pers.lbf.yeju.common.domain.entity.data.Community;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.provider.base.util.PageUtil;
 import pers.lbf.yeju.provider.basedata.community.dao.ICommunityDao;

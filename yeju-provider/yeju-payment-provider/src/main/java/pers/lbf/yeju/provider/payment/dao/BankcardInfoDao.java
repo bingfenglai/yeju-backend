@@ -14,17 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.basedata.community.dao;
+package pers.lbf.yeju.provider.payment.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.data.Community;
+import pers.lbf.yeju.common.domain.entity.business.payment.BankcardInfo;
 
 /**
- * 小区信息表(TableBusinessCommunity)表数据库访问层
+ * 记录客户（房东、房客）绑定的银行卡信息(TableBusinessBankcardInfo)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-04-19 21:22:00
+ * @since 2021-04-22 00:45:47
  */
-public interface ICommunityDao extends BaseMapper<Community> {
+public interface BankcardInfoDao extends BaseMapper<BankcardInfo> {
 
 }

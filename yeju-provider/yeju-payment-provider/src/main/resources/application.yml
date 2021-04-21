@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: yeju-payment-provider
+
+dubbo:
+  application:
+    name: ${spring.application.name}
+  #采用协议方式和端口号
+  protocol:
+    name: dubbo
+    port: 20891
+    host: 192.168.1.110
+
+
+
+

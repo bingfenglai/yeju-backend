@@ -1,0 +1,1 @@
+java -Xms128m -Xmx256m -jar ../dist/yeju-trade-rest-api-1.0.0.jar

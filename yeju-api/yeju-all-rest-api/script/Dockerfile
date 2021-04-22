@@ -3,6 +3,7 @@ USER root
 ADD ./dist/yeju-all-rest-api-1.0.0.jar /data/yeju-all-rest-api-1.0.0.jar
 COPY ./bin/config/ /data/config
 COPY ./lib/ /lib
+COPY ./bin/publicKey.txt /
 RUN chmod +x /data/yeju-all-rest-api-1.0.0.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/data/yeju-all-rest-api-1.0.0.jar"]
 EXPOSE 9001

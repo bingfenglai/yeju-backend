@@ -63,6 +63,8 @@
             <version>${webflux.version}</version>
         </dependency>
 
+        <!--        服务监控-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

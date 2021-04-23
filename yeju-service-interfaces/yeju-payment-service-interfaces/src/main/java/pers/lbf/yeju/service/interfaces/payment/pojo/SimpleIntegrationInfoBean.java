@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,14 +34,12 @@ import java.util.Date;
  * @date 2021/3/25 13:17
  */
 public class SimpleIntegrationInfoBean implements Serializable {
-    @JsonSerialize(using = StringSerializer.class)
-    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 客户账户主键
      */
-    @JsonSerialize(using = StringSerializer.class)
-    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long accountId;
     /**
      * 积分数

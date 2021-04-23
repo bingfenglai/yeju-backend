@@ -46,6 +46,7 @@ public class TradeEvaluationServiceImpl implements ITradeEvaluationService {
 
     @Override
     public PageResult<SimpleTradeEvaluationInfoBean> queryPage(TradeEvaluationQueryArgs args) throws ServiceException {
+        
         return null;
     }
 

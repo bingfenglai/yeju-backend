@@ -19,14 +19,18 @@ package pers.lbf.yeju.provider.assets.integration.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.common.domain.entity.Integration;
+import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.provider.assets.integration.dao.IIntegrationDao;
 import pers.lbf.yeju.provider.base.util.PageUtil;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
 import pers.lbf.yeju.service.interfaces.payment.IIntegrationService;
 import pers.lbf.yeju.service.interfaces.payment.pojo.IntegrationFindPageArgs;
 import pers.lbf.yeju.service.interfaces.payment.pojo.SimpleIntegrationInfoBean;
@@ -49,6 +53,9 @@ public class IntegrationServiceImpl implements IIntegrationService {
     @Autowired
     private IIntegrationDao integrationDao;
 
+    @DubboReference
+    private IAccountService accountService;
+
     /**
      * 积分分页条件查询接口
      *
@@ -57,15 +64,26 @@ public class IntegrationServiceImpl implements IIntegrationService {
      * @throws ServiceException e
      */
     @Override
+    @Cacheable(cacheNames = "integration:page", key = "#args")
     public PageResult<SimpleIntegrationInfoBean> findPage(IntegrationFindPageArgs args) throws ServiceException {
+        Long accountId = null;
+        if (YejuStringUtils.isNotNUllAndNotEmpty(args.getAccount())) {
+            accountId = accountService.findAccountIdByPrincipal(args.getAccount()).getData();
+        }
+
         List<SimpleIntegrationInfoBean> results = new LinkedList<>();
         Page<Integration> page = PageUtil.getPage(Integration.class, args.getCurrentPage(), args.getSize());
 
         QueryWrapper<Integration> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("assets_type", args.getAssetType().getValue());
+
         if (args.getIntegrationType() != null) {
-            queryWrapper.eq("integration_type", args.getIntegrationType().getValue());
+            queryWrapper.eq("integration_type", args.getIntegrationType());
         }
+
+        if (accountId != null) {
+            queryWrapper.eq("account_id", accountId);
+        }
+
         Page<Integration> integrationPage = integrationDao.selectPage(page, queryWrapper);
         for (Integration integration : integrationPage.getRecords()) {
             SimpleIntegrationInfoBean bean = integrationToSimpleInfoBean(integration);

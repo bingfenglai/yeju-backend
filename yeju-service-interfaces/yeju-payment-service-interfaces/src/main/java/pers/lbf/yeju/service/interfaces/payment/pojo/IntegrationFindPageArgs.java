@@ -18,8 +18,6 @@
 package pers.lbf.yeju.service.interfaces.payment.pojo;
 
 import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
-import pers.lbf.yeju.service.interfaces.payment.type.AssetsType;
-import pers.lbf.yeju.service.interfaces.payment.type.IntegrationType;
 
 import java.io.Serializable;
 
@@ -32,19 +30,35 @@ import java.io.Serializable;
  */
 public class IntegrationFindPageArgs extends BaseFindPageArgs implements Serializable {
 
-    private final AssetsType assetType = AssetsType.Integration;
-    
-    private IntegrationType integrationType;
 
-    public AssetsType getAssetType() {
-        return assetType;
-    }
+    private String account;
 
-    public IntegrationType getIntegrationType() {
+    private String integrationType;
+
+
+    public String getIntegrationType() {
         return integrationType;
     }
 
-    public void setIntegrationType(IntegrationType integrationType) {
+    public void setIntegrationType(String integrationType) {
         this.integrationType = integrationType;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    @Override
+    public String toString() {
+        return "IntegrationFindPageArgs{" +
+                "currentPage=" + currentPage +
+                ", size=" + size +
+                ", account='" + account + '\'' +
+                ", integrationType=" + integrationType +
+                '}';
     }
 }

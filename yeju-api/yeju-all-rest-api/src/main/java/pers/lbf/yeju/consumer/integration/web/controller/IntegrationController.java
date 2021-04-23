@@ -23,7 +23,6 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -50,9 +49,9 @@ public class IntegrationController {
 
 
     @ApiOperation(value = "获取积分列表 分页", notes = "积分列表说明", httpMethod = "GET")
-    @GetMapping("/list/{currentPage}")
+    @GetMapping("/list")
     public Mono<PageResult<SimpleIntegrationInfoBean>> findPage(
-            @RequestParam @Validated IntegrationFindPageArgs args
+            @Validated IntegrationFindPageArgs args
     ) throws ServiceException {
 
         return Mono.just(integrationService.findPage(args));

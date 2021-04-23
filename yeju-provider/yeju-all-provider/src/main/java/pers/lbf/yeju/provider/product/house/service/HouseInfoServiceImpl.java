@@ -41,6 +41,7 @@ import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoQueryArgs;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseResourceInfoBean;
 import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
+import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -198,6 +199,11 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
 
 
         return Result.ok(houseDetails);
+    }
+
+    @Override
+    public IResult<HouseStatusEnum> getHouseStatusEnumById(Long id) throws ServiceException {
+        return null;
     }
 
     /**

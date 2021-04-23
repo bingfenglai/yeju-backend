@@ -25,6 +25,7 @@ import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoQueryArgs;
 import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
+import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 
 /**
  * 房源服务接口类
@@ -56,6 +57,9 @@ public interface IHouseInfoService {
     IResult<Boolean> deleteById(Long id) throws ServiceException;
 
     IResult<HouseDetailsInfoBean> findDetailsByIdAndStatus(Long id, String houseStatus) throws ServiceException;
+
+
+    IResult<HouseStatusEnum> getHouseStatusEnumById(Long id) throws ServiceException;
 
 
     /**

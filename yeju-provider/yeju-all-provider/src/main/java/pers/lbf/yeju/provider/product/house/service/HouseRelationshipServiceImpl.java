@@ -19,6 +19,7 @@ package pers.lbf.yeju.provider.product.house.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
@@ -73,5 +74,20 @@ public class HouseRelationshipServiceImpl implements IHouseRelationshipService {
     public IResult<Boolean> removeRelationshipById(Long id) throws ServiceException {
         int i = dao.deleteById(id);
         return Result.ok(i == 1);
+    }
+
+    /**
+     * 获取与房源对应关系的客户标识
+     *
+     * @param houseId          房源标识
+     * @param relationshipType 关系类型
+     * @return customerId
+     * @throws ServiceException e
+     */
+    @Override
+    @Cacheable(cacheNames = "customer:id:hr")
+    public IResult<Long> getCustomerIdByHouseIdAndRelationshipType(Long houseId, String relationshipType) throws ServiceException {
+        Long landlordId = dao.getCustomerIdByHouseIdAndRelationshipType(houseId, relationshipType);
+        return Result.ok(landlordId);
     }
 }

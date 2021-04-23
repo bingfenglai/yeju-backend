@@ -20,10 +20,10 @@ package pers.lbf.yeju.service.interfaces.trade;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.service.interfaces.trade.pojo.HouseTradeCreateArgs;
+import pers.lbf.yeju.service.interfaces.trade.pojo.HouseTradeUpdateArgs;
 import pers.lbf.yeju.service.interfaces.trade.pojo.SimpleTradeInfoBean;
-import pers.lbf.yeju.service.interfaces.trade.pojo.TradeCreateArgs;
 import pers.lbf.yeju.service.interfaces.trade.pojo.TradeQueryArgs;
-import pers.lbf.yeju.service.interfaces.trade.pojo.TradeUpdateArgs;
 import pers.lbf.yeju.service.interfaces.trade.status.TradeStatusConstants;
 
 /**
@@ -37,9 +37,16 @@ public interface ITradeService {
 
     PageResult<SimpleTradeInfoBean> queryPage(TradeQueryArgs args) throws ServiceException;
 
-    IResult<Boolean> create(TradeCreateArgs args) throws ServiceException;
+    /**
+     * TODO
+     *
+     * @param args
+     * @return
+     * @throws ServiceException
+     */
+    IResult<Boolean> createHouseTrade(HouseTradeCreateArgs args) throws ServiceException;
 
-    IResult<Boolean> updateById(TradeUpdateArgs args) throws ServiceException;
+    IResult<Boolean> updateById(HouseTradeUpdateArgs args) throws ServiceException;
 
     IResult<Boolean> removeById(Long id) throws ServiceException;
 

@@ -107,6 +107,8 @@ public class HouseInfoTradable extends Model<HouseInfoTradable> implements IHous
      */
     private String descs;
     /**
+     * 0 审核未通过
+     * 1.待审
      * 2待租
      * 3预租
      * 4在租

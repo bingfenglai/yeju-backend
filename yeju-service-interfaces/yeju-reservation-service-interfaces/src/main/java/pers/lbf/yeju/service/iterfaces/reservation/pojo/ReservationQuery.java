@@ -15,27 +15,14 @@
  *
  */
 
-package pers.lbf.yeju.service.interfaces.trade.pojo;
-
-import pers.lbf.yeju.common.core.args.ICreateArgs;
-
-import java.util.Date;
+package pers.lbf.yeju.service.iterfaces.reservation.pojo;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/22 11:06
+ * @date 2021/4/24 1:28
  */
-public class TradeCreateArgs implements ICreateArgs {
-    @Override
-    public void setCreateBy(String account) {
-        
-    }
-
-    @Override
-    public void setCreateTime(Date date) {
-
-    }
+public class ReservationQuery {
 }

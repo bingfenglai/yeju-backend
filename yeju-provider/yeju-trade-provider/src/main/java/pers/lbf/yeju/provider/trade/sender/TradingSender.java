@@ -17,7 +17,14 @@
 
 package pers.lbf.yeju.provider.trade.sender;
 
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import pers.lbf.yeju.base.mq.sender.BaseRabbitMQSender;
 import pers.lbf.yeju.base.mq.sender.Sender;
+import pers.lbf.yeju.provider.trade.config.TradeMqExchangeConfig;
 
 /**
  * 房源状态更改消息发送者
@@ -27,6 +34,21 @@ import pers.lbf.yeju.base.mq.sender.Sender;
  * @date 2021/4/22 16:41
  */
 @Sender
-public class HouseStatusSender {
-    
+@Slf4j
+public class TradingSender extends BaseRabbitMQSender {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private TradeMqExchangeConfig config;
+
+    @Async
+    public void send(Object message) throws RuntimeException {
+        String jsonMsg = JSONObject.toJSONString(message);
+        super.send(jsonMsg, null, config);
+        
+    }
+
+
 }

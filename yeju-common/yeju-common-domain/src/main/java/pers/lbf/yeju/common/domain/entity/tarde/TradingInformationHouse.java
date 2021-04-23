@@ -82,6 +82,11 @@ public class TradingInformationHouse extends Model<TradingInformationHouse> {
     private String rentUnit;
 
     /**
+     * 按租金单位计算的租用期限
+     */
+    private Integer tenancy;
+
+    /**
      * 交易创建时间
      */
     private Date createTime;
@@ -119,6 +124,14 @@ public class TradingInformationHouse extends Model<TradingInformationHouse> {
      * 4退押金
      */
     private String tradingType;
+
+    public Integer getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Integer tenancy) {
+        this.tenancy = tenancy;
+    }
 
     public Double getFree() {
         return free;

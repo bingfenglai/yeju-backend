@@ -29,8 +29,8 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
 import pers.lbf.yeju.consumer.base.util.ArgsHelper;
 import pers.lbf.yeju.service.interfaces.trade.ITradeService;
+import pers.lbf.yeju.service.interfaces.trade.pojo.HouseTradeCreateArgs;
 import pers.lbf.yeju.service.interfaces.trade.pojo.SimpleTradeInfoBean;
-import pers.lbf.yeju.service.interfaces.trade.pojo.TradeCreateArgs;
 import pers.lbf.yeju.service.interfaces.trade.pojo.TradeQueryArgs;
 import reactor.core.publisher.Mono;
 
@@ -60,10 +60,10 @@ public class TradeController {
     @ApiOperation(value = "创建交易", notes = "说明", httpMethod = "POST")
     @PostMapping
     public Mono<IResult<Boolean>> create(ServerHttpRequest request,
-                                         @RequestBody @Validated TradeCreateArgs args) throws ServiceException {
+                                         @RequestBody @Validated HouseTradeCreateArgs args) throws ServiceException {
         ArgsHelper.createArgsHelper(args, request);
-        return Mono.just(tradeService.create(args));
+        return Mono.just(tradeService.createHouseTrade(args));
     }
-    
+
 
 }

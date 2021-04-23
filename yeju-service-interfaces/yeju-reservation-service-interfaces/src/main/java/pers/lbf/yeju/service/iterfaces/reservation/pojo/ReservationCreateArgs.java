@@ -15,9 +15,9 @@
  *
  */
 
-package pers.lbf.yeju.service.interfaces.trade.pojo;
+package pers.lbf.yeju.service.iterfaces.reservation.pojo;
 
-import pers.lbf.yeju.common.core.args.IUpdateArgs;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
 import java.util.Date;
 
@@ -26,16 +26,16 @@ import java.util.Date;
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/22 11:07
+ * @date 2021/4/24 1:22
  */
-public class TradeUpdateArgs extends TradeCreateArgs implements IUpdateArgs {
+public class ReservationCreateArgs implements ICreateArgs {
     @Override
-    public void setChangedBy(String account) {
+    public void setCreateBy(String account) {
         
     }
 
     @Override
-    public void setUpdateTime(Date date) {
+    public void setCreateTime(Date date) {
 
     }
 }

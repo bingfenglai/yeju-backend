@@ -17,6 +17,8 @@
 package pers.lbf.yeju.provider.product.house.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import pers.lbf.yeju.common.domain.entity.business.product.house.RelationshipCustomerHouse;
 
 /**
@@ -27,4 +29,20 @@ import pers.lbf.yeju.common.domain.entity.business.product.house.RelationshipCus
  */
 public interface IRelationshipCustomerHouseDao extends BaseMapper<RelationshipCustomerHouse> {
 
+    /**
+     * 根据房源主键和关系类型查询客户主键
+     *
+     * @param houseId
+     * @return
+     */
+    @Select("SELECT \n" +
+            "  t.`customer_id` \n" +
+            "FROM\n" +
+            "  table_relationship_customer_house t \n" +
+            "WHERE t.`house_id` = #{houseId} \n" +
+            "  AND t.`relationship_type` = #{relationshipType} \n" +
+            "LIMIT 1 ;")
+    Long getCustomerIdByHouseIdAndRelationshipType(
+            @Param("houseId") Long houseId,
+            @Param("relationshipType") String relationshipType);
 }

@@ -46,4 +46,14 @@ public interface IHouseRelationshipService {
 
     IResult<Boolean> removeRelationshipById(Long id) throws ServiceException;
 
+    /**
+     * 获取与房源对应关系的客户标识
+     *
+     * @param houseId          房源标识
+     * @param relationshipType 关系类型
+     * @return customerId
+     * @throws ServiceException
+     */
+    IResult<Long> getCustomerIdByHouseIdAndRelationshipType(Long houseId, String relationshipType) throws ServiceException;
+
 }

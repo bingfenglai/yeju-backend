@@ -17,10 +17,10 @@
 
 package pers.lbf.yeju.service.interfaces.trade.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
+import pers.lbf.yeju.common.core.args.ICreateArgs;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -28,26 +28,37 @@ import java.util.Date;
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/22 11:05
+ * @date 2021/4/22 11:06
  */
-public class SimpleTradeInfoBean implements Serializable {
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long tradeId;
+public class HouseTradeCreateArgs implements ICreateArgs {
+
     /**
      * 房源id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
     private Long houseId;
-    /**
-     * 房东标识
-     */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long landlordId;
+
     /**
      * (准)房客标识
      */
-    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
     private Long tenantId;
+    /**
+     * 交易状态
+     * 0交易创建成功
+     * 1已支付
+     * 2已收货（房东已交房、卡卷已到账）
+     * 3商家已收款（房租已转入房东账户）
+     * 4交易异常申诉中(此时创建申述工单，并进入状态10)
+     * 5交易正常结束（货款两清）
+     * 9交易非正常结束
+     * 10交易暂停
+     * 11交易取消
+     * <p>
+     * 详细见数据字典
+     */
+    private String tradingStatus;
+
     /**
      * 本单交易最终支付金额
      */
@@ -64,24 +75,51 @@ public class SimpleTradeInfoBean implements Serializable {
     private String rentUnit;
 
     /**
-     * 交易状态
-     * 0交易创建成功
-     * 1已支付
-     * 2已收货（房东已交房、卡卷已到账）
-     * 3商家已收款（房租已转入房东账户）
-     * 4交易异常申诉中(此时创建申述工单，并进入状态10)
-     * 5交易正常结束（货款两清）
-     * 9交易非正常结束
-     * 10交易暂停
-     * 11交易取消
-     * <p>
-     * 详细见数据字典
+     * 按租金单位计算的租用期限
      */
-    private String tradingStatus;
-    /**
-     * 交易创建时间
-     */
-    private Date createTime;
+    private Integer tenancy;
+
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Integer tenancy) {
+        this.tenancy = tenancy;
+    }
+
+    public Long getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Long houseId) {
+        this.houseId = houseId;
+    }
+
+    public Long getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getTradingStatus() {
+        return tradingStatus;
+    }
+
+    public void setTradingStatus(String tradingStatus) {
+        this.tradingStatus = tradingStatus;
+    }
 
     public Double getFree() {
         return free;
@@ -107,51 +145,13 @@ public class SimpleTradeInfoBean implements Serializable {
         this.rentUnit = rentUnit;
     }
 
-    public Long getTradeId() {
-        return tradeId;
+    @Override
+    public void setCreateBy(String account) {
+
     }
 
-    public void setTradeId(Long tradeId) {
-        this.tradeId = tradeId;
-    }
+    @Override
+    public void setCreateTime(Date date) {
 
-    public Long getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(Long houseId) {
-        this.houseId = houseId;
-    }
-
-    public Long getLandlordId() {
-        return landlordId;
-    }
-
-    public void setLandlordId(Long landlordId) {
-        this.landlordId = landlordId;
-    }
-
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public String getTradingStatus() {
-        return tradingStatus;
-    }
-
-    public void setTradingStatus(String tradingStatus) {
-        this.tradingStatus = tradingStatus;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 }

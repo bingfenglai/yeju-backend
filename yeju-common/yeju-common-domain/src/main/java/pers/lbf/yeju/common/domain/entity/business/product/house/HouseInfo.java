@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.domain.entity.business;
+package pers.lbf.yeju.common.domain.entity.business.product.house;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
@@ -26,13 +26,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 房源信息表，。待交易状态的房源
+ * 房源信息表，其中按照添加时的月份进行表分区。
+ * 并且仅保留待审核状态的记录。待交易（审核已完成）
+ * 的记录搬table_busi(TableBusinessHouseInfo)表实体类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-03-17 15:39:56
+ * @since 2021-03-17 15:39:05
  */
-@TableName("table_business_house_info_tradable")
-public class HouseInfoTradable extends Model<HouseInfoTradable> implements IHouseInfo {
+@TableName("table_business_house_info")
+public class HouseInfo extends Model<HouseInfo> implements Serializable, IHouseInfo {
     /**
      * 主键
      */
@@ -66,6 +68,10 @@ public class HouseInfoTradable extends Model<HouseInfoTradable> implements IHous
      * 租金
      */
     private Double rent;
+    /**
+     * 租金单位/0按月 1按季 2按年
+     */
+    private String rentUnit;
     /**
      * 出租方式（0整租，1合租，2可合租可整租）详见参数表
      */
@@ -107,10 +113,12 @@ public class HouseInfoTradable extends Model<HouseInfoTradable> implements IHous
      */
     private String descs;
     /**
+     * 0审核中
+     * 1审核未通过
      * 2待租
-     * 3预租
-     * 4在租
-     * 详见参数表
+     * 3预交易
+     * 4交易生效中
+     * 详见数据字典
      */
     private String houseStatus;
     /**
@@ -152,6 +160,13 @@ public class HouseInfoTradable extends Model<HouseInfoTradable> implements IHous
      */
     private Integer monthCompleted;
 
+    public String getRentUnit() {
+        return rentUnit;
+    }
+
+    public void setRentUnit(String rentUnit) {
+        this.rentUnit = rentUnit;
+    }
 
     @Override
     public Long getHouseId() {

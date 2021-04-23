@@ -17,7 +17,7 @@
 package pers.lbf.yeju.provider.product.house.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.business.HouseImagesAndVideo;
+import pers.lbf.yeju.common.domain.entity.business.product.house.HouseImagesAndVideo;
 
 /**
  * 房屋图片视频信息表。每个房屋ID最多可以对应5张图片和1个视频。数据库中存储的是url(TableBusinessHouseImagesAndVideo)表数据库访问层

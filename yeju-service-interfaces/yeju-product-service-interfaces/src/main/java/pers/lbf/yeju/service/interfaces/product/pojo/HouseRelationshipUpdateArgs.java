@@ -14,18 +14,28 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.product.house.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.business.product.house.HouseOtherAttribute;
+package pers.lbf.yeju.service.interfaces.product.pojo;
+
+import pers.lbf.yeju.common.core.args.IUpdateArgs;
+
+import java.util.Date;
 
 /**
- * 房源其他属性表.包括一些可选的属性以及客户自定义属性（<=3）
- * 。(TableBusinessHouseOtherAttribute)表数据库访问层
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-03-17 15:40:06
+ * @version 1.0
+ * @date 2021/4/23 8:31
  */
-public interface HouseOtherAttributeDao extends BaseMapper<HouseOtherAttribute> {
+public class HouseRelationshipUpdateArgs extends HouseRelationshipCreateArgs implements IUpdateArgs {
+    @Override
+    public void setChangedBy(String account) {
+        
+    }
 
+    @Override
+    public void setUpdateTime(Date date) {
+
+    }
 }

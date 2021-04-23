@@ -18,7 +18,7 @@ package pers.lbf.yeju.provider.product.house.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Update;
-import pers.lbf.yeju.common.domain.entity.business.HouseInfo;
+import pers.lbf.yeju.common.domain.entity.business.product.house.HouseInfo;
 
 /**
  * 房源信息表，其中按照添加时的月份进行表分区。并且仅保留待审核状态的记录。待交易（审核已完成）的记录搬table_busi(TableBusinessHouseInfo)表数据库访问层

@@ -17,15 +17,14 @@
 package pers.lbf.yeju.provider.product.house.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.business.product.house.HouseOtherAttribute;
+import pers.lbf.yeju.common.domain.entity.business.product.house.RelationshipCustomerHouse;
 
 /**
- * 房源其他属性表.包括一些可选的属性以及客户自定义属性（<=3）
- * 。(TableBusinessHouseOtherAttribute)表数据库访问层
+ * 客户-房源关系表。主要有租赁关系、归属关系，收藏关系，推荐关系，踩 关系，待交租金关系，待需交租金关系、租赁过 关系.关(TableRelationshipCustomerHouse)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-03-17 15:40:06
+ * @since 2021-04-23 08:11:06
  */
-public interface HouseOtherAttributeDao extends BaseMapper<HouseOtherAttribute> {
+public interface IRelationshipCustomerHouseDao extends BaseMapper<RelationshipCustomerHouse> {
 
 }

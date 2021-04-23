@@ -15,7 +15,7 @@
  *
  */
 
-package pers.lbf.yeju.common.domain.entity.business;
+package pers.lbf.yeju.common.domain.entity.business.product.house;
 
 import java.util.Date;
 

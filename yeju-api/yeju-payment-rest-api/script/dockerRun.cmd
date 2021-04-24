@@ -1,0 +1,1 @@
+docker run -p 9008:9008 --net=host --name yeju-api  --restart=always -d onedata-docker.pkg.coding.net/yeju/docker_repo/yeju-payment-rest-api:1.0.0

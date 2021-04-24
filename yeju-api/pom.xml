@@ -22,6 +22,7 @@
         <module>yeju-customer-rest-api</module>
         <module>yeju-open-ability-api</module>
         <module>yeju-trade-rest-api</module>
+        <module>yeju-payment-rest-api</module>
     </modules>
 
 </project>

@@ -193,7 +193,7 @@ public class YejuJobScheduler extends YejuBaseScheduler {
 
         try {
             scheduler.deleteJob(jobKey);
-            log.debug("移除定时任务 {} {} {} {}", jobName, jobGroupName, triggerName, triggerGroupName);
+            log.info("移除定时任务 {} {} {} {}", jobName, jobGroupName, triggerName, triggerGroupName);
         } catch (SchedulerException e) {
             log.error(String.valueOf(e));
             throw TaskException.getInstance(TaskExecutionStatus.FailedToDeleteJob);
@@ -494,11 +494,11 @@ public class YejuJobScheduler extends YejuBaseScheduler {
      * @date 2021/2/23 21:45
      */
     public static CronTrigger createTriggerAndStart(JobTriggerInfoBean triggerInfoBean, String cronExpression) {
-
+        //构建一分钟后再执行，以确保spring bean已加载
         return TriggerBuilder.newTrigger()
                 .withIdentity(triggerInfoBean.getName(),
                         triggerInfoBean.getGroup())
-                .startNow() // 立即执行
+
                 // 时间表达式
                 .withSchedule(
                         CronScheduleBuilder.cronSchedule(cronExpression)

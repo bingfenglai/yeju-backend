@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.common.domain.dao;
+package pers.lbf.yeju.provider.reservation.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import pers.lbf.yeju.common.domain.entity.business.Reservation;

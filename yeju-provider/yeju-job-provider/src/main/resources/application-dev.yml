@@ -21,3 +21,7 @@ spring:
         namespace: ed63a92c-9b8c-4169-9a60-bc19059ae061
       config:
         namespace: b6649ae6-6781-4a30-94a0-132f823a00eb
+
+logging:
+  level:
+    pers.lbf.yeju.provider.job: debug

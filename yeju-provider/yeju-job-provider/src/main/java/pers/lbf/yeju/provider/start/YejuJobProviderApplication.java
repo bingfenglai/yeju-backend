@@ -22,14 +22,17 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import pers.lbf.yeju.common.util.TimeUtils;
 import pers.lbf.yeju.provider.job.scheduler.YejuBaseScheduler;
 import pers.lbf.yeju.provider.job.scheduler.YejuJobScheduler;
 import pers.lbf.yeju.provider.job.task.HelloTask;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobInfoBean;
 import pers.lbf.yeju.service.interfaces.job.pojo.JobTriggerInfoBean;
 
+import javax.annotation.PostConstruct;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * TODO
@@ -55,27 +58,31 @@ public class YejuJobProviderApplication {
 
     }
 
-    //@PostConstruct
+    @PostConstruct
     private void task1() {
         JobInfoBean infoBean = new JobInfoBean();
         infoBean.setJobName("测试任务");
         infoBean.setJobGroup("yeju_job_default_group");
-        infoBean.setCronExpression("0/3 * * * * ?");
+        infoBean.setCronExpression("0/15 * * * * ?");
         infoBean.setInvokeTargetStr(HelloTask.class.getName());
         infoBean.setExecute(true);
+        Properties properties = new Properties();
+        properties.put("name", "王礼");
+        infoBean.setJobProperties(properties);
         JobTriggerInfoBean triggerInfoBean = new JobTriggerInfoBean();
         triggerInfoBean.setGroup(YejuBaseScheduler.TRIGGER_DEFAULT_GROUP);
         triggerInfoBean.setName(YejuBaseScheduler.TRIGGER_DEFAULT_NAME);
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        Date futureTime = TimeUtils.getFutureTime(TimeUtils.MINUTE, 1);
 
-        triggerInfoBean.setStartTime(calendar.getTime());
-        //YejuJobScheduler.createOneJob(infoBean, triggerInfoBean);
+        triggerInfoBean.setStartTime(futureTime);
+        YejuJobScheduler.createOneJob(infoBean, triggerInfoBean, properties);
         YejuJobScheduler.startJobScheduler();
 
 
-        YejuJobScheduler.runAJob(infoBean.getJobName(), infoBean.getJobGroup());
+        //YejuJobScheduler.runAJob(infoBean.getJobName(), infoBean.getJobGroup());
         //YejuJobScheduler.runJob(infoBean, triggerInfoBean);
     }
 

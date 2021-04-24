@@ -45,7 +45,6 @@ public abstract class BaseJob implements Job {
      */
     private static ThreadLocal<Date> threadLocal = new ThreadLocal<>();
 
-
     private TaskLogSender logSender;
 
     @Override
@@ -72,6 +71,7 @@ public abstract class BaseJob implements Job {
         if (logSender == null) {
             try {
                 logSender = SpringContextUtils.getBean(TaskLogSender.class);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

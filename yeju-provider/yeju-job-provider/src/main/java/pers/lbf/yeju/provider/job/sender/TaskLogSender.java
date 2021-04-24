@@ -44,7 +44,7 @@ public class TaskLogSender extends BaseRabbitMQSender {
 
 
     public void send(Object message, Map<String, Object> properties) throws RuntimeException {
-        log.debug("发送任务调度日志");
+        log.info("发送任务调度日志");
         super.rabbitTemplate = rabbitTemplate;
         super.send(message, properties, config);
     }

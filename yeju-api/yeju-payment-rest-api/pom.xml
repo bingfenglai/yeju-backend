@@ -14,7 +14,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <mainClassName>pers.lbf.yeju.cosumer.payment.start.YejuConsumerPayment</mainClassName>
+        <mainClassName>pers.lbf.yeju.consumer.payment.start.YejuConsumerPayment</mainClassName>
     </properties>
 
     <dependencies>
@@ -22,6 +22,18 @@
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-base-web</artifactId>
             <version>${yeju.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>4.13.0.ALL</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
     </dependencies>

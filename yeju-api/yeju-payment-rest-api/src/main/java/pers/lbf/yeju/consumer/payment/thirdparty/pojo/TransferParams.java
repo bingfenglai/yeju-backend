@@ -1,0 +1,81 @@
+/*
+ * Copyright 2020 赖柄沣 bingfengdev@aliyun.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+package pers.lbf.yeju.consumer.payment.thirdparty.pojo;
+
+import lombok.Data;
+
+/**
+ * TODO
+ *
+ * @author 赖柄沣 bingfengdev@aliyun.com
+ * @version 1.0
+ * @date 2021/4/25 10:09
+ */
+@Data
+public class TransferParams {
+    /**
+     * 应用编号
+     */
+    private Long appId;
+
+    /**
+     * 创建人id
+     */
+    private Long createdBy;
+
+    /**
+     * 转账业务订单号
+     */
+    private String outBizNo;
+
+    /**
+     * 收款方识别方式
+     */
+    private String payeeType;
+
+    /**
+     * 收款方账号，可以是支付宝userId或者支付宝loginId
+     */
+    private String payeeAccount;
+
+    /**
+     * 转账金额，单位分
+     */
+    private String amount;
+
+    /**
+     * 付款方名称
+     */
+    private String payerShowName;
+
+    /**
+     * 收款方名称
+     */
+    private String payeeRealName;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 支付宝转账流水号
+     */
+    private String orderId;
+
+}

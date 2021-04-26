@@ -118,9 +118,9 @@ public class TradeServiceImpl implements ITradeService {
 
 
         // 发布 订单创建成功事件 走支付流程
-        
 
-        return null;
+
+        return Result.success();
     }
 
     private TradingInformationHouse buildTrade(HouseTradeCreateArgs args) {

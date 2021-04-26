@@ -146,7 +146,7 @@ public class MessageWebsocketHandler implements WebSocketHandler {
         } else {
             if (messageSessionMap.containsKey(accountId)) {
                 WebSocketSession session = messageSessionMap.get(accountId);
-                this.doPushMessage(session, msgList);
+                this.doPushMessage(accountId, msgList);
 
             } else {
                 log.info("消息接收者不在本实例上");
@@ -158,16 +158,18 @@ public class MessageWebsocketHandler implements WebSocketHandler {
 
 
     /**
+     * 注意： 不可以讲websocket session对象当作参数传递，那样将无效 导致消息推送失败
      * 指定的会话推送方法
      *
-     * @param session
+     * @param accountId
      * @param msgList
      * @return void
      * @author 赖柄沣 bingfengdev@aliyun.com
      * @version 1.0
      * @date 2021/4/5 17:50
      */
-    private void doPushMessage(WebSocketSession session, List<String> msgList) {
+    private void doPushMessage(String accountId, List<String> msgList) {
+        WebSocketSession session = getMessageSessionMap().get(accountId);
         log.info("开始推送消息{},总共 {} 条", session.getId(), msgList.size());
 
         for (String s : msgList) {

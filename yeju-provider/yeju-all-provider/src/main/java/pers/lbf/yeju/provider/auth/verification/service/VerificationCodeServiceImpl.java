@@ -26,6 +26,7 @@ import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.provider.auth.verification.config.EasyCaptchaConfig;
 import pers.lbf.yeju.provider.auth.verification.enums.VerificationCodeStatusEnum;
 import pers.lbf.yeju.provider.auth.verification.manager.CaptchaGenerateManager;
+import pers.lbf.yeju.provider.auth.verification.manager.VerifyCodeSendManager;
 import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
 import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
 import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
@@ -54,6 +55,9 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
     @Autowired
     private EasyCaptchaConfig captchaConfig;
 
+    @Autowired
+    private VerifyCodeSendManager verifyCodeSendManager;
+
     @Override
     public IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException {
 
@@ -68,6 +72,24 @@ public class VerificationCodeServiceImpl implements IVerificationCodeService {
             verityDTO.setCode("");
         }
         return Result.ok(verityDTO);
+    }
+
+    @Override
+    public IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type, String target) {
+
+        try {
+            VerityDTO<String> verityDTO = captchaGenerateManager.generateVerityCode(type);
+            verifyCodeSendManager.send(type, target, verityDTO.getCode());
+
+            if (verityDTO.getCode().length() == captchaConfig.getLength()) {
+                verityDTO.setCode("");
+            }
+            return Result.ok(verityDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.ok(null);
     }
 
     @Override

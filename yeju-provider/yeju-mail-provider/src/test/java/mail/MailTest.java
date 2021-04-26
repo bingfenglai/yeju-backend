@@ -14,27 +14,36 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.enums;
+
+package mail;
+
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import pers.lbf.yeju.provider.start.YejuMailProviderApplication;
+import pers.lbf.yeju.service.interfaces.mail.IMailService;
 
 /**
- * 验证码类型枚举类
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/14 22:29
+ * @date 2021/4/26 13:13
  */
-public enum VerificationCodeTypeEnum {
+@SpringBootTest(classes = YejuMailProviderApplication.class)
+@RunWith(SpringRunner.class)
+@Slf4j
+public class MailTest {
 
-    /**
-     * 手机验证码
-     */
-    MOBILE_VERIFICATION_CODE,
+    @DubboReference
+    private IMailService mailService;
 
-    /**
-     * 图片验证码
-     */
-    PICTURE_VERIFICATION_CODE,
+    @Test
+    public void test() {
+        
+    }
 
-    emailCode;
 }

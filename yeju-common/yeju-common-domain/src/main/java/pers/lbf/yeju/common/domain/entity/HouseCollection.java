@@ -32,7 +32,7 @@ import java.util.Date;
  * @since 2021-04-24 20:55:10
  */
 @TableName("table_business_collection")
-public class Collection extends Model<Collection> {
+public class HouseCollection extends Model<HouseCollection> {
     /**
      * 主键
      */

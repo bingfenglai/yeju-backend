@@ -14,27 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.enums;
+package pers.lbf.yeju.provider.log.dao.mailsendlog;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import pers.lbf.yeju.common.domain.entity.MailLog;
 
 /**
- * 验证码类型枚举类
+ * 邮件发送日志表(YejuMailLog)表数据库访问层
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @version 1.0
- * @Description TODO
- * @date 2020/12/14 22:29
+ * @since 2021-04-26 10:06:15
  */
-public enum VerificationCodeTypeEnum {
+public interface IMailLogDao extends BaseMapper<MailLog> {
 
-    /**
-     * 手机验证码
-     */
-    MOBILE_VERIFICATION_CODE,
-
-    /**
-     * 图片验证码
-     */
-    PICTURE_VERIFICATION_CODE,
-
-    emailCode;
 }

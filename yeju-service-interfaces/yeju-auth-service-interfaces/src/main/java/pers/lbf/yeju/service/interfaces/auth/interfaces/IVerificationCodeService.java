@@ -21,7 +21,9 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
 import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
 
-/**验证码服务接口类
+/**
+ * 验证码服务接口类
+ *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
@@ -31,7 +33,9 @@ public interface IVerificationCodeService {
 
     IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type) throws ServiceException;
 
-    IResult<Boolean> verify(String key,String code) throws ServiceException;
+    IResult<VerityDTO<String>> getVerificationCode(VerificationCodeTypeEnum type, String target);
+
+    IResult<Boolean> verify(String key, String code) throws ServiceException;
 
 
 }

@@ -75,6 +75,10 @@ yeju-payment-provider---------------20891
 
 yeju-trade-provider-----------------20892
 
+#### 邮件服务提供者
+
+yeju-mail-provider------------------20893
+
 ### 服务消费方端口规划(http)
 
 #### minio对象存储端口

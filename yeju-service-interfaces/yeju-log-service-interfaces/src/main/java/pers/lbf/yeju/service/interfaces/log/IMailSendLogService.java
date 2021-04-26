@@ -14,27 +14,23 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.enums;
+
+package pers.lbf.yeju.service.interfaces.log;
+
+import pers.lbf.yeju.common.core.exception.service.ServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
+import pers.lbf.yeju.service.interfaces.log.pojo.mailsend.MailSendLogCreateArgs;
 
 /**
- * 验证码类型枚举类
+ * 邮件发送日志接口
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/14 22:29
+ * @date 2021/4/26 10:07
  */
-public enum VerificationCodeTypeEnum {
+public interface IMailSendLogService {
 
-    /**
-     * 手机验证码
-     */
-    MOBILE_VERIFICATION_CODE,
+    IResult<Boolean> create(MailSendLogCreateArgs args) throws ServiceException;
 
-    /**
-     * 图片验证码
-     */
-    PICTURE_VERIFICATION_CODE,
 
-    emailCode;
 }

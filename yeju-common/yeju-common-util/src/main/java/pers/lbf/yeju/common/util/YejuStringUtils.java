@@ -22,6 +22,8 @@ import pers.lbf.yeju.common.text.StrFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 赖柄沣 bingfengdev@aliyun.com
@@ -189,6 +191,30 @@ public class YejuStringUtils extends StringUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 邮箱校验
+     * " \w"：匹配字母、数字、下划线。等价于'[A-Za-z0-9_]'。
+     * "|"  : 或的意思，就是二选一
+     * "*" : 出现0次或者多次
+     * "+" : 出现1次或者多次
+     * "{n,m}" : 至少出现n个，最多出现m个
+     * "$" : 以前面的字符结束
+     *
+     * @param content 待校验字段
+     * @return flag
+     * @author 赖柄沣 bingfengdev@aliyun.com
+     * @version 1.0
+     * @date 2021/4/26 17:01
+     */
+    public static boolean checkEmailFormat(String content) {
+
+        String REGEX = "^\\w+((-\\w+)|(\\.\\w+))*@\\w+(\\.\\w{2,3}){1,3}$";
+        Pattern p = Pattern.compile(REGEX);
+        Matcher matcher = p.matcher(content);
+
+        return matcher.matches();
     }
 
 

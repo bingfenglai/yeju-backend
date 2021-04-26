@@ -55,17 +55,18 @@ public class CaptchaGenerateManager {
 
     private static final ConcurrentHashMap<VerificationCodeTypeEnum, ICaptchaGenerateStrategy<Map<String, String>>> strategyMap = new ConcurrentHashMap<>();
 
-    public CaptchaGenerateManager(){
+    public CaptchaGenerateManager() {
         strategyMap.put(VerificationCodeTypeEnum.PICTURE_VERIFICATION_CODE, MapImageCapchaCodeGenerateStrategy.INSTANCE);
         strategyMap.put(VerificationCodeTypeEnum.MOBILE_VERIFICATION_CODE, MapNumberCaptchaCodeGenerateStrategy.INSTANCE);
+        strategyMap.put(VerificationCodeTypeEnum.emailCode, MapNumberCaptchaCodeGenerateStrategy.INSTANCE);
     }
 
     @Deprecated
-    public  VerityDTO<String> getVerityCode(VerificationCodeTypeEnum type){
+    public VerityDTO<String> getVerityCode(VerificationCodeTypeEnum type) {
         VerityDTO<String> verity = new VerityDTO<>();
         String code = "";
         String key = captchaConfig.getPrefix();
-        if (VerificationCodeTypeEnum.MOBILE_VERIFICATION_CODE.equals(type)){
+        if (VerificationCodeTypeEnum.MOBILE_VERIFICATION_CODE.equals(type)) {
             code = NumberCaptchaCodeGenerateStrategy.
                     INSTANCE.
                     generate(captchaConfig.getWidth(), captchaConfig.getHeight(), captchaConfig.getLength());
@@ -81,21 +82,21 @@ public class CaptchaGenerateManager {
 
         verity.setCode(code);
         String s = UUID.randomUUID().toString();
-        key = key +s;
+        key = key + s;
         verity.setToken(key);
 
         return verity;
     }
 
 
-    public VerityDTO<String> generateVerityCode(VerificationCodeTypeEnum type) throws Exception{
+    public VerityDTO<String> generateVerityCode(VerificationCodeTypeEnum type) throws Exception {
         Map<String, String> map = strategyMap.get(type).generate(captchaConfig.getWidth(), captchaConfig.getHeight(), captchaConfig.getLength());
 
 
-        String key = captchaConfig.getPrefix()+UUID.randomUUID().toString();
+        String key = captchaConfig.getPrefix() + UUID.randomUUID().toString();
 
         log.info("将验证码存入缓存");
-        redisService.addCacheObject(key,map.get(VerificationConstant.CODE_VALUE),captchaConfig.getTimeout(), TimeUnit.MINUTES);
+        redisService.addCacheObject(key, map.get(VerificationConstant.CODE_VALUE), captchaConfig.getTimeout(), TimeUnit.MINUTES);
         log.info("构造dto");
         VerityDTO<String> verity = new VerityDTO<>();
 

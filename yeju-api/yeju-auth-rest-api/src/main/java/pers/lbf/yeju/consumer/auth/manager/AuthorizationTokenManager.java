@@ -59,8 +59,8 @@ public class AuthorizationTokenManager extends pers.lbf.yeju.base.security.autho
     public Long getTokenExpiresTime(ServerWebExchange exchange) {
 
         HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
-        String userAgent = requestHeaders.getFirst("User-Agent");
-        if ("client".equalsIgnoreCase(userAgent)) {
+        String userAgent = requestHeaders.getFirst("yeju-client-yeju-agent");
+        if ("yeju-client".equalsIgnoreCase(userAgent)) {
             return TokenConstant.AppTokenExpiresAt;
         } else {
             return TokenConstant.PcTokenExpiresAt;

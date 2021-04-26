@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: yeju-mail-provider
+#  mail:
+#    host: smtp.qq.com #SMTP服务器地址
+#    username: 1904454128@qq.com #登陆账号
+#    password: jpooehlnoxobdbhh #登陆密码（或授权码)
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+#    default-encoding: utf-8
+
+dubbo:
+  application:
+    name: ${spring.application.name}
+  #采用协议方式和端口号
+  protocol:
+    name: dubbo
+    port: 20893
+    host: 192.168.1.110
+
+
+
+

@@ -14,27 +14,17 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.enums;
+
+package pers.lbf.yeju.provider.auth.verification.sender;
 
 /**
- * 验证码类型枚举类
+ * 验证码下发接口
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/14 22:29
+ * @date 2021/4/26 15:21
  */
-public enum VerificationCodeTypeEnum {
+public interface VerifyCodeSender {
 
-    /**
-     * 手机验证码
-     */
-    MOBILE_VERIFICATION_CODE,
-
-    /**
-     * 图片验证码
-     */
-    PICTURE_VERIFICATION_CODE,
-
-    emailCode;
+    void send(Object message);
 }

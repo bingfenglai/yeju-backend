@@ -30,6 +30,8 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.SimpleResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
+import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
 import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
 import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
@@ -38,6 +40,7 @@ import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -144,8 +147,18 @@ public class AuthenticationController {
             @PathVariable
             @Valid @NotNull(message = "手机号不能为空") String phoneNumber) throws Exception {
 
-        IResult<VerityDTO<String>> result = codeService.getVerificationCode(VerificationCodeTypeEnum.MOBILE_VERIFICATION_CODE);
+        IResult<VerityDTO<String>> result = codeService.getVerificationCode(VerificationCodeTypeEnum.MOBILE_VERIFICATION_CODE, phoneNumber);
         return Mono.just(result);
+    }
+
+    @ApiOperation(value = "获取邮箱验证码", notes = "邮箱验证码说明", httpMethod = "GET")
+    @GetMapping("/code/email")
+    public Mono<IResult<VerityDTO<String>>> getEmailCode(@Valid @NotNull @Email String email) throws ServiceException {
+        boolean flag = YejuStringUtils.checkEmailFormat(email);
+        if (!flag) {
+            throw ServiceException.getInstance("邮箱格式不正确", ParameStatusEnum.invalidParameter.getCode());
+        }
+        return Mono.just(codeService.getVerificationCode(VerificationCodeTypeEnum.emailCode, email));
     }
 
 

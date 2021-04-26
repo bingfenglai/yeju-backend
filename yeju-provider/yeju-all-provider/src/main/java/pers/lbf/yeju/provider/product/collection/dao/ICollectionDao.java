@@ -19,7 +19,7 @@ package pers.lbf.yeju.provider.product.collection.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
-import pers.lbf.yeju.common.domain.entity.Collection;
+import pers.lbf.yeju.common.domain.entity.HouseCollection;
 
 /**
  * 客户收藏信息表,用于记录用户的收藏页信息。收藏的内容可以是图文、视频和房源此表存于mongodb。本表主要用来记录用户收(TableBusinessCollection)表数据库访问层
@@ -27,7 +27,7 @@ import pers.lbf.yeju.common.domain.entity.Collection;
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @since 2021-04-24 20:55:17
  */
-public interface ICollectionDao extends BaseMapper<Collection> {
+public interface ICollectionDao extends BaseMapper<HouseCollection> {
 
     @Update("UPDATE \n" +
             "  table_business_collection t \n" +

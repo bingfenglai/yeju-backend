@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
-import pers.lbf.yeju.common.domain.entity.Collection;
+import pers.lbf.yeju.common.domain.entity.HouseCollection;
 import pers.lbf.yeju.provider.product.collection.constants.CollectionStatusConstants;
 import pers.lbf.yeju.provider.product.collection.dao.ICollectionDao;
 import pers.lbf.yeju.service.interfaces.product.IProductCollectionService;
@@ -45,26 +45,26 @@ public class ProductCollectionServiceImpl implements IProductCollectionService {
 
     @Override
     public IResult<Boolean> create(HouseCollectionCreateArgs args) throws ServiceException {
-        Collection collection = createArgsToCollection(args);
-        int i = collectionDao.insert(collection);
+        HouseCollection houseCollection = createArgsToCollection(args);
+        int i = collectionDao.insert(houseCollection);
         return Result.ok(i == 1);
     }
 
-    private Collection createArgsToCollection(HouseCollectionCreateArgs args) {
-        Collection collection = new Collection();
-        collection.setCustomerId(args.getCustomerId());
-        collection.setHouseId(args.getHouseId());
-        collection.setStatus(args.getStatus());
-        collection.setCreateTime(args.getCreateTime());
-        collection.setCreateBy(args.getCreateBy());
-        return collection;
+    private HouseCollection createArgsToCollection(HouseCollectionCreateArgs args) {
+        HouseCollection houseCollection = new HouseCollection();
+        houseCollection.setCustomerId(args.getCustomerId());
+        houseCollection.setHouseId(args.getHouseId());
+        houseCollection.setStatus(args.getStatus());
+        houseCollection.setCreateTime(args.getCreateTime());
+        houseCollection.setCreateBy(args.getCreateBy());
+        return houseCollection;
     }
 
     @Override
     public IResult<Boolean> updateById(HouseCollectionUpdateArgs args) throws ServiceException {
-        Collection collection = createArgsToCollection(args);
-        collection.setCollectionId(args.getCollectionId());
-        int i = collectionDao.updateById(collection);
+        HouseCollection houseCollection = createArgsToCollection(args);
+        houseCollection.setCollectionId(args.getCollectionId());
+        int i = collectionDao.updateById(houseCollection);
         return Result.ok(i == 1);
     }
 

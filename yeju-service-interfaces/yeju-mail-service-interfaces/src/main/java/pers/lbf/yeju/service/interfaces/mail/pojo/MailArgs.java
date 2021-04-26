@@ -14,27 +14,19 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.enums;
+
+package pers.lbf.yeju.service.interfaces.mail.pojo;
+
+import java.io.Serializable;
 
 /**
- * 验证码类型枚举类
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @Description TODO
- * @date 2020/12/14 22:29
+ * @date 2021/4/26 8:50
  */
-public enum VerificationCodeTypeEnum {
+public class MailArgs extends SimpleMailArgs implements Serializable {
 
-    /**
-     * 手机验证码
-     */
-    MOBILE_VERIFICATION_CODE,
 
-    /**
-     * 图片验证码
-     */
-    PICTURE_VERIFICATION_CODE,
-
-    emailCode;
 }

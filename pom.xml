@@ -23,7 +23,6 @@
         <module>yeju-api</module>
         <module>yeju-gateway</module>
 
-
     </modules>
 
     <properties>
@@ -160,11 +159,6 @@
                 <version>${spring.boot.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -295,6 +289,7 @@
                 <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
+
             <!--            数据连接层 end-->
 
 

@@ -153,6 +153,13 @@
             <version>${yeju.version}</version>
         </dependency>
 
+        <!--        搜索相关-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <scope>3.9.1</scope>
+        </dependency>
+
     </dependencies>
 
 

@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,11 +34,13 @@ import java.util.Date;
  * @since 2021-03-17 15:39:56
  */
 @TableName("table_business_house_info_tradable")
+@Document(indexName = "house", type = "_doc")
 public class HouseInfoTradable extends Model<HouseInfoTradable> implements IHouseInfo {
     /**
      * 主键
      */
     @TableId
+    @Id
     private Long houseId;
     /**
      * 业主
@@ -154,6 +158,39 @@ public class HouseInfoTradable extends Model<HouseInfoTradable> implements IHous
      */
     private Integer monthCompleted;
 
+    @Override
+    public String toString() {
+        return "HouseInfoTradable{" +
+                "houseId=" + houseId +
+                ", ownerId=" + ownerId +
+                ", title='" + title + '\'' +
+                ", communityId=" + communityId +
+                ", buildingNumber='" + buildingNumber + '\'' +
+                ", buildingUint='" + buildingUint + '\'' +
+                ", buildingFloorNumber='" + buildingFloorNumber + '\'' +
+                ", rent=" + rent +
+                ", rentalMode='" + rentalMode + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", houseType='" + houseType + '\'' +
+                ", coveredArea=" + coveredArea +
+                ", useArea=" + useArea +
+                ", floors='" + floors + '\'' +
+                ", houseOrientation='" + houseOrientation + '\'' +
+                ", houseDecorationType='" + houseDecorationType + '\'' +
+                ", houseFacilities='" + houseFacilities + '\'' +
+                ", descs='" + descs + '\'' +
+                ", houseStatus='" + houseStatus + '\'' +
+                ", houseImagesAddress='" + houseImagesAddress + '\'' +
+                ", createTime=" + createTime +
+                ", createBy=" + createBy +
+                ", updateTime=" + updateTime +
+                ", changedBy=" + changedBy +
+                ", versionNumber=" + versionNumber +
+                ", isDelete=" + isDelete +
+                ", monthAdded=" + monthAdded +
+                ", monthCompleted=" + monthCompleted +
+                '}';
+    }
 
     @Override
     public Long getHouseId() {

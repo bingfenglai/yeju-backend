@@ -15,12 +15,12 @@
  *
  */
 
-package pers.lbf.yeju.provider.search.repository;
+package pers.lbf.yeju.provider.product.house.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import pers.lbf.yeju.common.domain.entity.business.product.house.HouseInfoTradable;
+import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoDoc;
 
 /**
  * 房源信息 es 查询同步 数据访问层
@@ -29,7 +29,7 @@ import pers.lbf.yeju.common.domain.entity.business.product.house.HouseInfoTradab
  * @version 1.0
  * @date 2021/4/26 20:06
  */
-public interface HouseInfoElasticsearchRepository extends ElasticsearchRepository<HouseInfoTradable, String> {
+public interface HouseInfoElasticsearchRepository extends ElasticsearchRepository<HouseInfoDoc, String> {
 
 
     /**
@@ -40,6 +40,6 @@ public interface HouseInfoElasticsearchRepository extends ElasticsearchRepositor
      * @return
      * @throws RuntimeException
      */
-    Page<HouseInfoTradable> findByTitle(String title, Pageable pageable) throws RuntimeException;
+    Page<HouseInfoDoc> findByTitle(String title, Pageable pageable) throws RuntimeException;
 
 }

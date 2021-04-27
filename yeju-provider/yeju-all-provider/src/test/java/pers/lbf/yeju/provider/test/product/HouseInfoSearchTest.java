@@ -17,16 +17,27 @@
 
 package pers.lbf.yeju.provider.test.product;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pers.lbf.yeju.common.domain.entity.business.product.house.HouseInfoTradable;
-import pers.lbf.yeju.provider.search.repository.HouseInfoElasticsearchRepository;
+import pers.lbf.yeju.provider.base.util.IdHelper;
+import pers.lbf.yeju.provider.product.house.repository.HouseInfoElasticsearchRepository;
 import pers.lbf.yeju.provider.start.YejuProviderApplication;
+import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoDoc;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 
 /**
@@ -42,41 +53,92 @@ import java.util.Date;
 public class HouseInfoSearchTest {
 
     @Autowired
-    private HouseInfoElasticsearchRepository houseInfoElasticsearchRepository;
+    private IdHelper idHelper;
 
-    @Test
+    @Autowired
+    private HouseInfoElasticsearchRepository houseInfoRepository;
+
+
+    //@Test
     public void test() {
-        HouseInfoTradable houseInfoTradable = new HouseInfoTradable();
+        HouseInfoDoc houseInfoDoc = new HouseInfoDoc();
+        houseInfoDoc.setHouseId(idHelper.nextId());
+        houseInfoDoc.setTitle("整租两室一厅，小区中间位置，近地铁商场，好价格");
+        houseInfoDoc.setRent(887.89D);
+        houseInfoDoc.setHouseType("2室1厅1卫");
+        houseInfoDoc.setCoveredArea(68);
+        houseInfoDoc.setHouseOrientation("坐北朝南");
+        houseInfoDoc.setHouseDecorationType("精装修");
+        houseInfoDoc.setHouseImagesAddress("http://8.129.77.225:9000/yeju/house/1.png");
+        houseInfoDoc.setRentUnit("");
+        houseInfoDoc.setRentalMode("整租");
+        houseInfoDoc.setPaymentMethod("季付");
+        houseInfoDoc.setCreateTime(new Date());
+        houseInfoDoc.setDetailsAddress("美兰区人民大道58号");
 
-        houseInfoTradable.setOwnerId(2L);
-        houseInfoTradable.setTitle("海大房源出租了");
-        houseInfoTradable.setCommunityId(1384757130706276354L);
-        houseInfoTradable.setBuildingNumber("10");
-        houseInfoTradable.setBuildingUint("一单元");
-        houseInfoTradable.setBuildingFloorNumber("1020");
-        houseInfoTradable.setRent(9699.98D);
-        houseInfoTradable.setRentalMode("1");
-        houseInfoTradable.setPaymentMethod("1");
-        houseInfoTradable.setHouseType("1");
-        houseInfoTradable.setCoveredArea(63);
-        houseInfoTradable.setUseArea(45);
-        houseInfoTradable.setFloors("1/6");
-        houseInfoTradable.setHouseOrientation("1");
-        houseInfoTradable.setHouseDecorationType("1");
-        houseInfoTradable.setHouseFacilities("1");
-        houseInfoTradable.setDescs("1");
-        houseInfoTradable.setHouseStatus("1");
-        houseInfoTradable.setHouseImagesAddress("海南省海口市美兰区人民大道58号");
-        houseInfoTradable.setCreateTime(new Date());
-        houseInfoTradable.setCreateBy(0L);
-        houseInfoTradable.setUpdateTime(new Date());
-        houseInfoTradable.setChangedBy(0L);
-        houseInfoTradable.setVersionNumber(0);
-        houseInfoTradable.setIsDelete(0);
-        houseInfoTradable.setMonthAdded(0);
-        houseInfoTradable.setMonthCompleted(0);
+        houseInfoRepository.save(houseInfoDoc);
 
-        houseInfoElasticsearchRepository.save(houseInfoTradable);
 
     }
+
+
+    //@Test
+    public void test1() {
+
+
+        // Read file in stream mode
+        try {
+            InputStream inputStream = new FileInputStream("E:\\graduation project\\yeju_code\\yeju_dev\\yeju-provider\\yeju-all-provider\\src\\test\\resources\\data.json");
+
+            JsonReader reader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
+            Gson gson = new GsonBuilder().create();
+            reader.beginArray();
+            int i = 0;
+            while (reader.hasNext()) {
+                // Read data into object model
+                HouseInputModel inputModel = gson.fromJson(reader, HouseInputModel.class);
+                HouseInfoDoc doc = modelToDoc(inputModel);
+                houseInfoRepository.save(doc);
+                log.info("正在录入第{}个房源", i + 1);
+                i = i + 1;
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private HouseInfoDoc modelToDoc(HouseInputModel inputModel) {
+        final String baseUrl = "http://8.129.77.225:9000/yeju/house/p/";
+        HouseInfoDoc houseInfoDoc = new HouseInfoDoc();
+        houseInfoDoc.setHouseId(idHelper.nextId());
+        houseInfoDoc.setTitle(inputModel.getTitle());
+        houseInfoDoc.setRent(inputModel.getRent());
+        houseInfoDoc.setHouseType(inputModel.getHouseType());
+        houseInfoDoc.setCoveredArea((int) (Math.random() * 5000));
+        houseInfoDoc.setHouseOrientation("坐北朝南");
+        houseInfoDoc.setHouseDecorationType("精装修");
+        houseInfoDoc.setHouseImagesAddress(baseUrl + inputModel.getImage());
+        houseInfoDoc.setRentUnit("每月");
+        houseInfoDoc.setRentalMode(inputModel.getRentMethod());
+        houseInfoDoc.setPaymentMethod("季付");
+        houseInfoDoc.setCreateTime(new Date());
+        houseInfoDoc.setDetailsAddress("海口市美兰区金山花园");
+        return houseInfoDoc;
+    }
+
+
+    @Test
+    public void test3() {
+
+        PageRequest page = PageRequest.of(1, 10);
+        Page<HouseInfoDoc> search = houseInfoRepository.search(QueryBuilders.multiMatchQuery("季付", "title", "paymentMethod"), page);
+        for (HouseInfoDoc houseInfoDoc : search.getContent()) {
+            log.info(houseInfoDoc.toString());
+        }
+    }
+
+
 }

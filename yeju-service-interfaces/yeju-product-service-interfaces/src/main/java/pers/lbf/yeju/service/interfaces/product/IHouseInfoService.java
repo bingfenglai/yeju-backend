@@ -22,9 +22,7 @@ import pers.lbf.yeju.common.core.args.IUpdateArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
-import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
-import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoQueryArgs;
-import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
+import pers.lbf.yeju.service.interfaces.product.pojo.*;
 import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 
 /**
@@ -35,6 +33,17 @@ import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
  * @date 2021/3/17 15:28
  */
 public interface IHouseInfoService {
+
+
+    /**
+     * 房源搜索接口
+     *
+     * @param searchArgs
+     * @return
+     * @throws ServiceException
+     */
+    PageResult<HouseInfoDoc> search(HouseSearchArgs searchArgs) throws ServiceException;
+
 
     /**
      * 房源综合查询接口

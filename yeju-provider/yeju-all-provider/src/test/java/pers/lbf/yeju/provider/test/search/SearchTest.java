@@ -51,10 +51,13 @@ public class SearchTest {
     public void test() {
         TestDocument test = new TestDocument(idHelper.nextId(), "海南大学");
         testElasticsearchRepository.save(test);
+       
     }
 
     @Test
     public void test1() {
+        TestDocument test = new TestDocument(idHelper.nextId(), "海南大学");
+        testElasticsearchRepository.save(test);
         Iterable<TestDocument> all = testElasticsearchRepository.findAll();
         log.info(all.iterator().next().toString());
     }

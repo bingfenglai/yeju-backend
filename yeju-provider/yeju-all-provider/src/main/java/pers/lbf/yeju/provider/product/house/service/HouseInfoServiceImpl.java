@@ -20,8 +20,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
 import pers.lbf.yeju.common.core.args.ICreateArgs;
 import pers.lbf.yeju.common.core.args.IUpdateArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
@@ -36,11 +39,9 @@ import pers.lbf.yeju.provider.product.house.dao.HouseImagesAndVideoDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseInfoDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseInfoTradableDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseOtherAttributeDao;
+import pers.lbf.yeju.provider.product.house.repository.HouseInfoElasticsearchRepository;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
-import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
-import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoQueryArgs;
-import pers.lbf.yeju.service.interfaces.product.pojo.HouseResourceInfoBean;
-import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
+import pers.lbf.yeju.service.interfaces.product.pojo.*;
 import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 
 import java.util.LinkedList;
@@ -68,6 +69,37 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
 
     @Autowired
     private HouseImagesAndVideoDao houseImagesAndVideoDao;
+
+    @Autowired
+    private HouseInfoElasticsearchRepository houseInfoElasticsearchRepository;
+
+
+    /**
+     * 房源搜索接口
+     *
+     * @param searchArgs
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public PageResult<HouseInfoDoc> search(HouseSearchArgs searchArgs) throws ServiceException {
+        int page = Math.toIntExact(searchArgs.getCurrentPage());
+        int size = Math.toIntExact(searchArgs.getSize());
+        PageRequest pageRequest = PageRequest.of(page, size);
+        MultiMatchQueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(
+                searchArgs.getKeyWord(),
+                "title",
+                "paymentMethod",
+                "rentalMode",
+                "houseType",
+                "houseDecorationType");
+
+        org.springframework.data.domain.Page<HouseInfoDoc> search = houseInfoElasticsearchRepository.search(queryBuilder, pageRequest);
+        List<HouseInfoDoc> content = search.getContent();
+        log.info(content.toString());
+        return PageResult.ok(search.getTotalElements(), (long) page, (long) size, content);
+
+    }
 
     /**
      * 房源综合查询接口

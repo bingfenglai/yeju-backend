@@ -20,6 +20,7 @@ package pers.lbf.yeju.provider.search.document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
 
@@ -30,13 +31,13 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2021/4/26 21:20
  */
-@Document(indexName = "test_index", type = "_doc")
+@Document(indexName = "test", type = "_doc", shards = 1, replicas = 0)
 public class TestDocument implements Serializable {
 
     @Id
     private Long id;
 
-    @Field
+    @Field(type = FieldType.Keyword)
     private String name;
 
     public TestDocument(Long id, String name) {
@@ -45,7 +46,7 @@ public class TestDocument implements Serializable {
     }
 
     public TestDocument() {
-        
+
     }
 
     @Override

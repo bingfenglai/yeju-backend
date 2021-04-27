@@ -21,7 +21,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableDiscoveryClient
 @EnableDubbo(scanBasePackages = "pers.lbf.yeju.provider.**.service")
 @MapperScan(basePackages = {"pers.lbf.yeju.provider.**.dao"})
-@EnableElasticsearchRepositories(basePackages = "pers.lbf.yeju.provider.search.repository")
+@EnableElasticsearchRepositories(basePackages = "pers.lbf.yeju.provider.**.repository")
 public class YejuProviderApplication {
 
     private static final Logger log = LoggerFactory.getLogger(YejuProviderApplication.class);

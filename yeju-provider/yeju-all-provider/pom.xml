@@ -154,10 +154,15 @@
         </dependency>
 
         <!--        搜索相关-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.data</groupId>-->
+        <!--            <artifactId>spring-data-elasticsearch</artifactId>-->
+        <!--            <scope>3.9.1</scope>-->
+        <!--        </dependency>-->
+
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-elasticsearch</artifactId>
-            <scope>3.9.1</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
 
     </dependencies>

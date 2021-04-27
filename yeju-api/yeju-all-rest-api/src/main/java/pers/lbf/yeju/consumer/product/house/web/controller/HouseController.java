@@ -35,9 +35,7 @@ import pers.lbf.yeju.consumer.product.house.args.HouseCheckArgs;
 import pers.lbf.yeju.consumer.product.house.sender.HouseCheckLogSender;
 import pers.lbf.yeju.service.interfaces.log.pojo.HouseCheckLogCreateArgs;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
-import pers.lbf.yeju.service.interfaces.product.pojo.HouseDetailsInfoBean;
-import pers.lbf.yeju.service.interfaces.product.pojo.HouseInfoQueryArgs;
-import pers.lbf.yeju.service.interfaces.product.pojo.SimpleHouseInfoBean;
+import pers.lbf.yeju.service.interfaces.product.pojo.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -67,6 +65,15 @@ public class HouseController {
 
     @Autowired
     private HouseCheckLogSender houseCheckLogSender;
+
+
+    @ApiOperation(value = "房源信息综合搜索接口", notes = "说明", httpMethod = "GET")
+    @GetMapping("/search")
+    public Mono<PageResult<HouseInfoDoc>> search(
+            @Validated HouseSearchArgs args) throws ServiceException {
+        return Mono.just(houseInfoService.search(args));
+    }
+
 
     @ApiOperation(value = "获取房源信息列表 分页", notes = "说明", httpMethod = "GET")
     @GetMapping

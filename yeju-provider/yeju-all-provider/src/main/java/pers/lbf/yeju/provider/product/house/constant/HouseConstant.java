@@ -14,24 +14,22 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.basedata.community.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Select;
-import pers.lbf.yeju.common.domain.entity.data.Community;
+package pers.lbf.yeju.provider.product.house.constant;
 
 /**
- * 小区信息表(TableBusinessCommunity)表数据库访问层
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-04-19 21:22:00
+ * @version 1.0
+ * @date 2021/4/27 20:54
  */
-public interface ICommunityDao extends BaseMapper<Community> {
+public class HouseConstant {
+    public static final String HOUSE_TYPE = "house_type";
+    public static final String HOUSE_ORIENTATION = "house_orientation";
+    public static final String HOUSE_DECORATION_TYPE = "house_decoration_type";
+    public static final String RENT_UNIT = "rent_unit";
+    public static final String RENTAL_MODE = "rental_mode";
 
-    @Select("select \n" +
-            "  t.`detailed_address` \n" +
-            "from\n" +
-            "  table_data_community t \n" +
-            "where t.`community_id` = #{communityId} ")
-    String findDetailsAddressById(Long communityId);
+    public static final String PAYMENT_METHOD = "payment_method";
 }

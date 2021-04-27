@@ -92,4 +92,11 @@ public interface ICommunityService {
      */
     IResult<Boolean> removeBatch(Set<Long> ids) throws ServiceException;
 
+    /**
+     * 根据小区id查找详细地址
+     *
+     * @param communityId
+     * @throws ServiceException
+     */
+    IResult<String> findDetailsAddressById(Long communityId) throws ServiceException;
 }

@@ -16,6 +16,7 @@
  */
 package pers.lbf.yeju.common.domain.entity.business.product.house;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
@@ -33,17 +34,16 @@ import java.util.Date;
 @TableName("table_relationship_customer_house")
 public class RelationshipCustomerHouse extends Model<RelationshipCustomerHouse> {
 
+    @TableId
     private Long id;
 
     /**
      * 客户主键
      */
-
     private Long customerId;
     /**
      * 房源主键
      */
-
     private Long houseId;
     /**
      * 关系类型,主要有
@@ -106,7 +106,7 @@ public class RelationshipCustomerHouse extends Model<RelationshipCustomerHouse> 
      */
     private Integer relationshipStatus;
     /**
-     * 是否开启关系到期预警0不开启1开启
+     * 是否开启关系到期预警0不开启1开启 仅当关系类型为租赁使用关系时有效
      */
     private Integer isWarning;
 

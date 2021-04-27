@@ -14,24 +14,37 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.basedata.community.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Select;
-import pers.lbf.yeju.common.domain.entity.data.Community;
+package pers.lbf.yeju.service.interfaces.customer.pojo;
+
+import java.io.Serializable;
 
 /**
- * 小区信息表(TableBusinessCommunity)表数据库访问层
+ * 根据手机号注销客户信息 ----敏感操作 需要获取验证码
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-04-19 21:22:00
+ * @version 1.0
+ * @date 2021/4/28 1:54
  */
-public interface ICommunityDao extends BaseMapper<Community> {
+public class CustomerCancellationArgs implements Serializable {
 
-    @Select("select \n" +
-            "  t.`detailed_address` \n" +
-            "from\n" +
-            "  table_data_community t \n" +
-            "where t.`community_id` = #{communityId} ")
-    String findDetailsAddressById(Long communityId);
+    private String phoneNumber;
+    private String code;
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

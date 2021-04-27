@@ -28,12 +28,13 @@ import java.util.Date;
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @since 2021-04-24 20:55:39
  */
-@TableName("TableBusinessComment")
+@TableName("table_business_comment")
 public class Comment extends Model<Comment> {
     /**
      * 主键
      */
-    private Long answerId;
+
+    private Long commentId;
     /**
      * 评论者名字
      */
@@ -84,12 +85,12 @@ public class Comment extends Model<Comment> {
     private Integer isDelete;
 
 
-    public Long getAnswerId() {
-        return answerId;
+    public Long getCommentId() {
+        return commentId;
     }
 
-    public void setAnswerId(Long answerId) {
-        this.answerId = answerId;
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
     }
 
     public String getReviewersName() {

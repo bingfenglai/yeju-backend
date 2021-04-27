@@ -27,8 +27,11 @@ import pers.lbf.yeju.common.core.args.BaseFindPageArgs;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.PageResult;
+import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
+import pers.lbf.yeju.common.util.PhoneUtils;
 import pers.lbf.yeju.consumer.base.args.FindPageArgs;
 import pers.lbf.yeju.service.interfaces.customer.ICustomerService;
+import pers.lbf.yeju.service.interfaces.customer.pojo.CustomerRegisteringArgs;
 import pers.lbf.yeju.service.interfaces.customer.pojo.CustomerUpdateArgs;
 import pers.lbf.yeju.service.interfaces.customer.pojo.SimpleCustomerInfoBean;
 import reactor.core.publisher.Mono;
@@ -52,6 +55,26 @@ public class CustomerController {
 
     @DubboReference
     private ICustomerService customerService;
+
+    @Deprecated
+    @ApiOperation(value = "客户注册接口", notes = "说明", httpMethod = "POST")
+    @PostMapping("/registering")
+    public Mono<IResult<Boolean>> registering(@RequestBody CustomerRegisteringArgs args) throws ServiceException {
+
+        return Mono.just(customerService.registering(args));
+    }
+
+
+    @Deprecated
+    @ApiOperation(value = "校验客户手机号是否存在", notes = "说明", httpMethod = "GET")
+    @GetMapping("/{phoneNumber}")
+    public Mono<IResult<Boolean>> checkPhoneNumber(@PathVariable String phoneNumber) throws ServiceException {
+        boolean flag = PhoneUtils.isPhone(phoneNumber);
+        if (!flag) {
+            throw ServiceException.getInstance("手机号格式不正确", ParameStatusEnum.invalidParameter.getCode());
+        }
+        return Mono.just(customerService.isExitPhoneNumber(phoneNumber));
+    }
 
     @Deprecated
     @ApiOperation(value = "获取客户信息列表 分页", notes = "客户信息列表说明", httpMethod = "GET")

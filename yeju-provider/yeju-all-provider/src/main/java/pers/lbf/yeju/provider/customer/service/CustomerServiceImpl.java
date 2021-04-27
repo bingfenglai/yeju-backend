@@ -90,6 +90,7 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     public IResult<Boolean> registering(CustomerRegisteringArgs args) throws ServiceException {
 
+
         Customer customer = customerRegisteringArgsToCustomer(args);
 
         customerDao.insert(customer);
@@ -99,6 +100,11 @@ public class CustomerServiceImpl implements ICustomerService {
         customerDao.initAccountIdByCustomerId(customer.getCustomerId(), accountId);
 
         return Result.success();
+    }
+
+    @Override
+    public IResult<Boolean> cancelling(CustomerCancellationArgs cancellationArgs) throws ServiceException {
+        return null;
     }
 
     private Customer customerRegisteringArgsToCustomer(CustomerRegisteringArgs args) {

@@ -36,6 +36,7 @@ import pers.lbf.yeju.consumer.product.house.sender.HouseCheckLogSender;
 import pers.lbf.yeju.service.interfaces.log.pojo.HouseCheckLogCreateArgs;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
 import pers.lbf.yeju.service.interfaces.product.pojo.*;
+import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -124,6 +125,16 @@ public class HouseController {
                         throw ServiceException.getInstance(e.getMessage(), ServiceStatusEnum.UNKNOWN_ERROR.getCode());
                     }
                     houseCheckLogSender.send(logCreateArgs);
+
+                    //如果是审核通过 则同步房源数据到可交易表、ES
+                    // 如果是 审核未通过（下架） 需要检查ES中索引是否存在 存在则需要删除
+                    if (HouseStatusEnum.offShelf.getValue().equals(args.getNewHouseStatus())) {
+                        houseInfoService.removeByIdFromES(args.getHouseId());
+                    } else if (HouseStatusEnum.tradable.getValue().equals(args.getNewHouseStatus())) {
+                        houseInfoService.copyHouseInfoToTradable(Long.valueOf(args.getHouseId()));
+                    }
+                    
+
                 });
 
     }

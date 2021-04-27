@@ -178,6 +178,18 @@ public class CommunityServiceImpl implements ICommunityService {
         return Result.success();
     }
 
+    /**
+     * 根据小区id查找详细地址
+     *
+     * @param communityId
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<String> findDetailsAddressById(Long communityId) throws ServiceException {
+        String address = communityDao.findDetailsAddressById(communityId);
+        return Result.ok(address);
+    }
+
 
     private SimpleCommunityInfoBean communityToSimpleInfoBean(Community community) {
         SimpleCommunityInfoBean simpleCommunityInfoBean = new SimpleCommunityInfoBean();

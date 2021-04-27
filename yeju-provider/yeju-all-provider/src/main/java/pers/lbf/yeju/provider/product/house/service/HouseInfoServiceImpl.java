@@ -19,6 +19,7 @@ package pers.lbf.yeju.provider.product.house.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -34,16 +35,20 @@ import pers.lbf.yeju.common.core.result.Result;
 import pers.lbf.yeju.common.domain.entity.business.product.house.*;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.provider.base.util.PageUtil;
+import pers.lbf.yeju.provider.product.house.constant.HouseConstant;
 import pers.lbf.yeju.provider.product.house.constant.HouseStatusConstant;
 import pers.lbf.yeju.provider.product.house.dao.HouseImagesAndVideoDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseInfoDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseInfoTradableDao;
 import pers.lbf.yeju.provider.product.house.dao.HouseOtherAttributeDao;
 import pers.lbf.yeju.provider.product.house.repository.HouseInfoElasticsearchRepository;
+import pers.lbf.yeju.service.basedata.community.interfaces.ICommunityService;
+import pers.lbf.yeju.service.interfaces.dictionary.IDataDictionaryInfoService;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
 import pers.lbf.yeju.service.interfaces.product.pojo.*;
 import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,8 +76,13 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
     private HouseImagesAndVideoDao houseImagesAndVideoDao;
 
     @Autowired
+    private IDataDictionaryInfoService dataDictionaryInfoService;
+
+    @Autowired
     private HouseInfoElasticsearchRepository houseInfoElasticsearchRepository;
 
+    @DubboReference
+    private ICommunityService communityService;
 
     /**
      * 房源搜索接口
@@ -99,6 +109,93 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         log.info(content.toString());
         return PageResult.ok(search.getTotalElements(), (long) page, (long) size, content);
 
+    }
+
+    @Override
+    public IResult<Boolean> removeByIdFromES(String id) throws ServiceException {
+        if (houseInfoElasticsearchRepository.existsById(id)) {
+            houseInfoElasticsearchRepository.deleteById(id);
+        }
+        return Result.success();
+    }
+
+    /**
+     * 拷贝 房源信息进可交易表、es数据库
+     *
+     * @param houseId
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Boolean> copyHouseInfoToTradable(Long houseId) throws ServiceException {
+
+        HouseInfo houseInfo = houseInfoDao.selectById(houseId);
+        HouseInfoTradable houseInfoTradable = houseInfoToTradable(houseInfo);
+
+        houseInfoTradableDao.insert(houseInfoTradable);
+        HouseInfoDoc houseInfoDoc = buildHouseInfoDoc(houseInfo);
+        houseInfoElasticsearchRepository.save(houseInfoDoc);
+        return Result.success();
+    }
+
+    private HouseInfoDoc buildHouseInfoDoc(HouseInfo houseInfo) {
+        HouseInfoDoc houseInfoDoc = new HouseInfoDoc();
+        houseInfoDoc.setHouseId(houseInfo.getHouseId());
+        houseInfoDoc.setTitle(houseInfo.getTitle());
+        houseInfoDoc.setRent(houseInfo.getRent());
+
+        houseInfoDoc.setHouseType(dataConversion(HouseConstant.HOUSE_TYPE, houseInfo.getHouseType()));
+        houseInfoDoc.setCoveredArea(houseInfo.getCoveredArea());
+        houseInfoDoc.setHouseOrientation(dataConversion(HouseConstant.HOUSE_ORIENTATION, houseInfo.getHouseOrientation()));
+        houseInfoDoc.setHouseDecorationType(dataConversion(HouseConstant.HOUSE_DECORATION_TYPE, houseInfo.getHouseDecorationType()));
+        houseInfoDoc.setHouseImagesAddress(houseInfo.getHouseImagesAddress());
+        houseInfoDoc.setRentUnit(dataConversion(HouseConstant.RENT_UNIT, houseInfo.getRentUnit()));
+        houseInfoDoc.setRentalMode(dataConversion(HouseConstant.RENTAL_MODE, houseInfo.getRentalMode()));
+        houseInfoDoc.setPaymentMethod(dataConversion(HouseConstant.PAYMENT_METHOD, houseInfo.getPaymentMethod()));
+        houseInfoDoc.setCreateTime(houseInfo.getCreateTime());
+        if (houseInfo.getCommunityId() != null) {
+            String address = communityService.findDetailsAddressById(houseInfo.getCommunityId()).getData();
+            houseInfoDoc.setDetailsAddress(address);
+        }
+
+        return houseInfoDoc;
+    }
+
+    private String dataConversion(String name, String value) {
+        return dataDictionaryInfoService.getDictMap(name).getData().get(value);
+    }
+
+    private HouseInfoTradable houseInfoToTradable(HouseInfo houseInfo) {
+        HouseInfoTradable houseInfoTradable = new HouseInfoTradable();
+        houseInfoTradable.setHouseId(houseInfo.getHouseId());
+        houseInfoTradable.setOwnerId(houseInfo.getOwnerId());
+        houseInfoTradable.setTitle(houseInfo.getTitle());
+        houseInfoTradable.setCommunityId(houseInfo.getCommunityId());
+        houseInfoTradable.setBuildingNumber(houseInfo.getBuildingNumber());
+        houseInfoTradable.setBuildingUint(houseInfo.getBuildingUint());
+        houseInfoTradable.setBuildingFloorNumber(houseInfo.getBuildingFloorNumber());
+        houseInfoTradable.setRent(houseInfo.getRent());
+        houseInfoTradable.setRentalMode(houseInfo.getRentalMode());
+        houseInfoTradable.setPaymentMethod(houseInfo.getPaymentMethod());
+        houseInfoTradable.setHouseType(houseInfo.getHouseType());
+        houseInfoTradable.setCoveredArea(houseInfo.getCoveredArea());
+        houseInfoTradable.setUseArea(houseInfo.getUseArea());
+        houseInfoTradable.setFloors(houseInfo.getFloors());
+        houseInfoTradable.setHouseOrientation(houseInfo.getHouseOrientation());
+        houseInfoTradable.setHouseDecorationType(houseInfo.getHouseDecorationType());
+        houseInfoTradable.setHouseFacilities(houseInfo.getHouseFacilities());
+        houseInfoTradable.setDescs(houseInfo.getDescs());
+        houseInfoTradable.setHouseStatus(houseInfo.getHouseStatus());
+        houseInfoTradable.setHouseImagesAddress(houseInfo.getHouseImagesAddress());
+        houseInfoTradable.setCreateTime(houseInfo.getCreateTime());
+        houseInfoTradable.setCreateBy(houseInfo.getCreateBy());
+        houseInfoTradable.setUpdateTime(new Date());
+        houseInfoTradable.setChangedBy(houseInfo.getChangedBy());
+        houseInfoTradable.setVersionNumber(houseInfo.getVersionNumber());
+        houseInfoTradable.setIsDelete(houseInfo.getIsDelete());
+        houseInfoTradable.setMonthAdded(houseInfo.getMonthAdded());
+        houseInfoTradable.setMonthCompleted(houseInfo.getMonthCompleted());
+        return houseInfoTradable;
     }
 
     /**
@@ -235,6 +332,7 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
 
     @Override
     public IResult<HouseStatusEnum> getHouseStatusEnumById(Long id) throws ServiceException {
+
         return null;
     }
 

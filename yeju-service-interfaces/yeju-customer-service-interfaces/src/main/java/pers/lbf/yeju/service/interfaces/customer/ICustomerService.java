@@ -54,6 +54,9 @@ public interface ICustomerService {
      */
     IResult<Boolean> registering(CustomerRegisteringArgs args) throws ServiceException;
 
+
+    IResult<Boolean> cancelling(CustomerCancellationArgs cancellationArgs) throws ServiceException;
+
     /**
      * 将客户认证信息存入数据库
      *
@@ -74,7 +77,7 @@ public interface ICustomerService {
      * @return list SimpleCustomerInfoBean
      * @throws ServiceException e
      */
-    
+
     PageResult<SimpleCustomerInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
 
     /**

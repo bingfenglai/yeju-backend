@@ -31,20 +31,38 @@ public enum HouseStatusEnum implements Serializable {
     /**
      * 未审核
      */
-    unCheck,
+    unCheck("0"),
     /**
      * 可交易,待租
      */
-    tradable,
+    tradable("1"),
 
     /**
      * 预交易(房客已付款，房东未交房的状态)
      */
-    pre_transaction,
+    pre_transaction("2"),
 
     /**
      * 在租赁中
      */
-    renting;
+    renting("4"),
 
+    /**
+     * 下架状态 审核未通过
+     */
+    offShelf("3");
+
+    private String value;
+
+    HouseStatusEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

@@ -44,6 +44,16 @@ public interface IHouseInfoService {
      */
     PageResult<HouseInfoDoc> search(HouseSearchArgs searchArgs) throws ServiceException;
 
+    IResult<Boolean> removeByIdFromES(String id) throws ServiceException;
+
+    /**
+     * 拷贝 房源信息进可交易表、es数据库
+     *
+     * @param houseId
+     * @return
+     * @throws ServiceException
+     */
+    IResult<Boolean> copyHouseInfoToTradable(Long houseId) throws ServiceException;
 
     /**
      * 房源综合查询接口

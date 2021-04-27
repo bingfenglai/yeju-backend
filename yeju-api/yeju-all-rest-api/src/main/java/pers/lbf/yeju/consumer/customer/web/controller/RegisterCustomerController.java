@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.consumer.auth.web.controller;
+package pers.lbf.yeju.consumer.customer.web.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +40,7 @@ import java.util.Date;
  * @date 2021/3/23 21:21
  */
 @RestController
-@RequestMapping("/register/customer")
+@RequestMapping("/customer/register")
 @Slf4j
 @Api(tags = "客户注册接口")
 public class RegisterCustomerController {
@@ -60,7 +60,7 @@ public class RegisterCustomerController {
     }
 
     @ApiOperation(value = "判断手机号是否已被注册接口", notes = "说明", httpMethod = "GET")
-    @GetMapping("/{phoneNumber}")
+    @GetMapping("/check/{phoneNumber}")
     public Mono<IResult<Boolean>> checkPhoneNumberIsExist(@PathVariable String phoneNumber) throws ServiceException {
         boolean flag = PhoneUtils.isPhone(phoneNumber);
         if (!flag) {

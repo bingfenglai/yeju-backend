@@ -35,6 +35,9 @@ import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 public interface IHouseInfoService {
 
 
+    IResult<Boolean> updateStatusById(Long houseId, HouseStatusEnum status) throws ServiceException;
+
+
     /**
      * 房源搜索接口
      *
@@ -44,7 +47,7 @@ public interface IHouseInfoService {
      */
     PageResult<HouseInfoDoc> search(HouseSearchArgs searchArgs) throws ServiceException;
 
-    IResult<Boolean> removeByIdFromES(String id) throws ServiceException;
+    IResult<Boolean> removeByIdFromElasticsearch(String id) throws ServiceException;
 
     /**
      * 拷贝 房源信息进可交易表、es数据库
@@ -66,6 +69,15 @@ public interface IHouseInfoService {
 
     @Deprecated
     PageResult<SimpleHouseInfoBean> findPage(Long currentPage, Long size) throws ServiceException;
+
+    /**
+     * 根据房源id查询交易需要到的信息
+     *
+     * @param id
+     * @return
+     * @throws ServiceException
+     */
+    IResult<HouseAboutTradeInfoBean> findAboutTradeInfoById(Long id) throws ServiceException;
 
     IResult<Boolean> addOne(ICreateArgs args) throws ServiceException;
 

@@ -129,11 +129,11 @@ public class HouseController {
                     //如果是审核通过 则同步房源数据到可交易表、ES
                     // 如果是 审核未通过（下架） 需要检查ES中索引是否存在 存在则需要删除
                     if (HouseStatusEnum.offShelf.getValue().equals(args.getNewHouseStatus())) {
-                        houseInfoService.removeByIdFromES(args.getHouseId());
+                        houseInfoService.removeByIdFromElasticsearch(args.getHouseId());
                     } else if (HouseStatusEnum.tradable.getValue().equals(args.getNewHouseStatus())) {
                         houseInfoService.copyHouseInfoToTradable(Long.valueOf(args.getHouseId()));
                     }
-                    
+
 
                 });
 

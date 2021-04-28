@@ -113,7 +113,7 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju-auth-service-interfaces</artifactId>
+            <artifactId>yeju-account-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 
@@ -139,6 +139,12 @@
         <dependency>
             <groupId>pers.lbf</groupId>
             <artifactId>yeju-mail-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-verification-code-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import pers.lbf.yeju.common.core.args.ICreateArgs;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -36,12 +37,14 @@ public class HouseTradeCreateArgs implements ICreateArgs {
      * 房源id
      */
     @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
+    @NotNull(message = "房源标识不能为空")
     private Long houseId;
 
     /**
      * (准)房客标识
      */
     @JsonDeserialize(using = NumberDeserializers.LongDeserializer.class)
+    @NotNull(message = "(准)房客标识不能为空")
     private Long tenantId;
     /**
      * 交易状态

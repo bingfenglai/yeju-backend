@@ -59,11 +59,6 @@ public class SimpleTradeInfoBean implements Serializable {
     private Double houseRentUnitFree;
 
     /**
-     * 租金单位
-     */
-    private String rentUnit;
-
-    /**
      * 交易状态
      * 0交易创建成功
      * 1已支付
@@ -98,15 +93,7 @@ public class SimpleTradeInfoBean implements Serializable {
     public void setHouseRentUnitFree(Double houseRentUnitFree) {
         this.houseRentUnitFree = houseRentUnitFree;
     }
-
-    public String getRentUnit() {
-        return rentUnit;
-    }
-
-    public void setRentUnit(String rentUnit) {
-        this.rentUnit = rentUnit;
-    }
-
+    
     public Long getTradeId() {
         return tradeId;
     }

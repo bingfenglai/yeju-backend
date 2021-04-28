@@ -38,6 +38,7 @@ import pers.lbf.yeju.provider.trade.status.TradeServiceStatusEnum;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
 import pers.lbf.yeju.service.interfaces.product.IHouseRelationshipService;
 import pers.lbf.yeju.service.interfaces.product.constants.RelationshipCustomerHouseTypeConstants;
+import pers.lbf.yeju.service.interfaces.product.pojo.HouseAboutTradeInfoBean;
 import pers.lbf.yeju.service.interfaces.product.status.HouseStatusEnum;
 import pers.lbf.yeju.service.interfaces.trade.ITradeService;
 import pers.lbf.yeju.service.interfaces.trade.pojo.HouseTradeCreateArgs;
@@ -46,6 +47,7 @@ import pers.lbf.yeju.service.interfaces.trade.pojo.SimpleTradeInfoBean;
 import pers.lbf.yeju.service.interfaces.trade.pojo.TradeQueryArgs;
 import pers.lbf.yeju.service.interfaces.trade.status.TradeStatusConstants;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Date;
 import java.util.LinkedList;
@@ -93,14 +95,14 @@ public class TradeServiceImpl implements ITradeService {
 
 
     @Override
-    public IResult<Boolean> createHouseTrade(HouseTradeCreateArgs args) throws ServiceException {
-        // 判断房源状态，如果可用 则锁上
-        IResult<HouseStatusEnum> rpcResult = houseInfoService.getHouseStatusEnumById(args.getHouseId());
+    public IResult<String> createHouseTrade(HouseTradeCreateArgs args) throws ServiceException {
+
+        IResult<HouseAboutTradeInfoBean> rpcResult = houseInfoService.findAboutTradeInfoById(args.getHouseId());
         if (!rpcResult.isSuccess()) {
             throw ServiceException.getInstance(TradeServiceStatusEnum.create_trade_fail_unkonw_house_status);
         }
 
-        if (!HouseStatusEnum.tradable.equals(rpcResult.getData())) {
+        if (!HouseStatusEnum.tradable.getValue().equals(rpcResult.getData().getStatus())) {
             throw ServiceException.getInstance(TradeServiceStatusEnum.create_trade_fail_house_un_tradable);
         }
 
@@ -111,24 +113,28 @@ public class TradeServiceImpl implements ITradeService {
         if (!flag) {
             throw ServiceException.getInstance(TradeServiceStatusEnum.create_trade_fail_house_un_tradable);
         }
-
-        TradingInformationHouse trade = buildTrade(args);
+        IResult<Boolean> changeHouseStatusRpcResult = houseInfoService.updateStatusById(args.getHouseId(), HouseStatusEnum.pre_transaction);
+        if (!changeHouseStatusRpcResult.isSuccess()) {
+            throw ServiceException.getInstance(TradeServiceStatusEnum.update_house_status_failed);
+        }
+        
+        TradingInformationHouse trade = buildTrade(args, rpcResult.getData());
 
         tradeDao.insert(trade);
 
 
         // 发布 订单创建成功事件 走支付流程
+        //tradeSender.send(trade);
 
-
-        return Result.success();
+        return null;
     }
 
-    private TradingInformationHouse buildTrade(HouseTradeCreateArgs args) {
+    private TradingInformationHouse buildTrade(HouseTradeCreateArgs args, HouseAboutTradeInfoBean houseTradeInfo) {
         TradingInformationHouse tradingInformationHouse = new TradingInformationHouse();
         tradingInformationHouse.setTenancy(args.getTenancy());
-        tradingInformationHouse.setFree(args.getFree());
-        tradingInformationHouse.setHouseRentUnitFree(args.getHouseRentUnitFree());
-        tradingInformationHouse.setRentUnit(args.getRentUnit());
+        Double free = calculateTheTotalPrice(args.getTenancy(), houseTradeInfo.getRent());
+        tradingInformationHouse.setFree(free);
+        tradingInformationHouse.setHouseRentUnitFree(houseTradeInfo.getRent().doubleValue());
 
         tradingInformationHouse.setHouseId(args.getHouseId());
         Long landlordId = houseRelationshipService.getCustomerIdByHouseIdAndRelationshipType(args.getHouseId(),
@@ -142,6 +148,17 @@ public class TradeServiceImpl implements ITradeService {
 
         tradingInformationHouse.setTradingType(TradingTypeConstants.HOUSE_TRADE);
         return tradingInformationHouse;
+    }
+
+    /**
+     * 结算方法 抽取出来便以后续引入优惠策略
+     *
+     * @param tenancy
+     * @param rent
+     * @return
+     */
+    private Double calculateTheTotalPrice(Integer tenancy, BigDecimal rent) {
+        return rent.doubleValue() * tenancy;
     }
 
     @Override
@@ -165,7 +182,7 @@ public class TradeServiceImpl implements ITradeService {
         SimpleTradeInfoBean simpleTradeInfoBean = new SimpleTradeInfoBean();
         simpleTradeInfoBean.setFree(trade.getFree());
         simpleTradeInfoBean.setHouseRentUnitFree(trade.getHouseRentUnitFree());
-        simpleTradeInfoBean.setRentUnit(trade.getRentUnit());
+
         simpleTradeInfoBean.setTradeId(trade.getTradeId());
         simpleTradeInfoBean.setHouseId(trade.getHouseId());
         simpleTradeInfoBean.setLandlordId(trade.getLandlordId());

@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.interfaces;
+package pers.lbf.yeju.service.interfaces.verificationcode;
 
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
-import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
-import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
+import pers.lbf.yeju.service.interfaces.verificationcode.pojo.VerityDTO;
+import pers.lbf.yeju.service.interfaces.verificationcode.status.VerificationCodeTypeEnum;
 
 /**
  * 验证码服务接口类

@@ -38,13 +38,14 @@ public interface ITradeService {
     PageResult<SimpleTradeInfoBean> queryPage(TradeQueryArgs args) throws ServiceException;
 
     /**
-     * TODO
+     * 创建交易单
+     * 交易创建成功返回本次交易待支付账单信息
      *
      * @param args
      * @return
      * @throws ServiceException
      */
-    IResult<Boolean> createHouseTrade(HouseTradeCreateArgs args) throws ServiceException;
+    IResult<String> createHouseTrade(HouseTradeCreateArgs args) throws ServiceException;
 
     IResult<Boolean> updateById(HouseTradeUpdateArgs args) throws ServiceException;
 

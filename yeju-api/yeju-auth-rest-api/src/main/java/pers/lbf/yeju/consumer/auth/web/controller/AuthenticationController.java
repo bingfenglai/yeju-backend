@@ -33,10 +33,10 @@ import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
-import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
-import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.service.interfaces.session.ISessionService;
+import pers.lbf.yeju.service.interfaces.verificationcode.IVerificationCodeService;
+import pers.lbf.yeju.service.interfaces.verificationcode.pojo.VerityDTO;
+import pers.lbf.yeju.service.interfaces.verificationcode.status.VerificationCodeTypeEnum;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;

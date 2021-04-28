@@ -82,10 +82,7 @@ public class HouseDetailsInfoBean implements Serializable {
      * 出租方式（0整租，1合租，2可合租可整租）详见参数表
      */
     private String rentalMode;
-    /**
-     * 支付方式（1押一付一，2押一付二，3押一付三，4押一付六，5押一付年，6其他）详见参数表
-     */
-    private String paymentMethod;
+
     /**
      * 户型 详见参数表
      */
@@ -226,7 +223,6 @@ public class HouseDetailsInfoBean implements Serializable {
                 ", detailsAddress='" + detailsAddress + '\'' +
                 ", rent=" + rent +
                 ", rentalMode='" + rentalMode + '\'' +
-                ", paymentMethod='" + paymentMethod + '\'' +
                 ", houseType='" + houseType + '\'' +
                 ", coveredArea=" + coveredArea +
                 ", useArea=" + useArea +
@@ -374,14 +370,6 @@ public class HouseDetailsInfoBean implements Serializable {
 
     public void setRentalMode(String rentalMode) {
         this.rentalMode = rentalMode;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 
     public String getHouseType() {

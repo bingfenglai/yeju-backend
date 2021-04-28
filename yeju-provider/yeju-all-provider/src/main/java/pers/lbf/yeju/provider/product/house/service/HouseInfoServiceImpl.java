@@ -24,6 +24,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import pers.lbf.yeju.common.core.args.ICreateArgs;
@@ -84,6 +85,18 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
     @DubboReference
     private ICommunityService communityService;
 
+    @CacheEvict(cacheNames = "house*", allEntries = true)
+    @Override
+    public IResult<Boolean> updateStatusById(Long houseId, HouseStatusEnum status) throws ServiceException {
+        houseInfoElasticsearchRepository.deleteById(String.valueOf(houseId));
+        houseInfoDao.updateHouseStatusById(houseId, status.getValue());
+        houseInfoTradableDao.updateHouseStatusById(houseId, status.getValue());
+        HouseInfo houseInfo = houseInfoDao.selectById(houseId);
+        HouseInfoDoc houseInfoDoc = buildHouseInfoDoc(houseInfo);
+        houseInfoElasticsearchRepository.save(houseInfoDoc);
+        return Result.success();
+    }
+
     /**
      * 房源搜索接口
      *
@@ -112,7 +125,7 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
     }
 
     @Override
-    public IResult<Boolean> removeByIdFromES(String id) throws ServiceException {
+    public IResult<Boolean> removeByIdFromElasticsearch(String id) throws ServiceException {
         if (houseInfoElasticsearchRepository.existsById(id)) {
             houseInfoElasticsearchRepository.deleteById(id);
         }
@@ -149,9 +162,9 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         houseInfoDoc.setHouseOrientation(dataConversion(HouseConstant.HOUSE_ORIENTATION, houseInfo.getHouseOrientation()));
         houseInfoDoc.setHouseDecorationType(dataConversion(HouseConstant.HOUSE_DECORATION_TYPE, houseInfo.getHouseDecorationType()));
         houseInfoDoc.setHouseImagesAddress(houseInfo.getHouseImagesAddress());
-        houseInfoDoc.setRentUnit(dataConversion(HouseConstant.RENT_UNIT, houseInfo.getRentUnit()));
+
         houseInfoDoc.setRentalMode(dataConversion(HouseConstant.RENTAL_MODE, houseInfo.getRentalMode()));
-        houseInfoDoc.setPaymentMethod(dataConversion(HouseConstant.PAYMENT_METHOD, houseInfo.getPaymentMethod()));
+
         houseInfoDoc.setCreateTime(houseInfo.getCreateTime());
         if (houseInfo.getCommunityId() != null) {
             String address = communityService.findDetailsAddressById(houseInfo.getCommunityId()).getData();
@@ -176,7 +189,7 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         houseInfoTradable.setBuildingFloorNumber(houseInfo.getBuildingFloorNumber());
         houseInfoTradable.setRent(houseInfo.getRent());
         houseInfoTradable.setRentalMode(houseInfo.getRentalMode());
-        houseInfoTradable.setPaymentMethod(houseInfo.getPaymentMethod());
+
         houseInfoTradable.setHouseType(houseInfo.getHouseType());
         houseInfoTradable.setCoveredArea(houseInfo.getCoveredArea());
         houseInfoTradable.setUseArea(houseInfo.getUseArea());
@@ -261,16 +274,29 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
         return PageResult.ok(houseInfoPage.getTotal(), currentPage, size, result);
     }
 
+    /**
+     * 根据房源id查询交易需要到的信息
+     *
+     * @param id
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<HouseAboutTradeInfoBean> findAboutTradeInfoById(Long id) throws ServiceException {
+
+        HouseAboutTradeInfoBean houseAboutTradeInfo = houseInfoTradableDao.selectAboutTradeInfoById(id);
+        return Result.ok(houseAboutTradeInfo);
+    }
+
     private SimpleHouseInfoBean houseInfoToBean(HouseInfo houseInfo) {
         SimpleHouseInfoBean simpleHouseInfoBean = new SimpleHouseInfoBean();
         simpleHouseInfoBean.setHouseId(houseInfo.getHouseId());
         simpleHouseInfoBean.setTitle(houseInfo.getTitle());
         simpleHouseInfoBean.setRent(houseInfo.getRent());
-        simpleHouseInfoBean.setRentUnit(houseInfo.getRentUnit());
         simpleHouseInfoBean.setRentalMode(houseInfo.getRentalMode());
         simpleHouseInfoBean.setHouseStatus(houseInfo.getHouseStatus());
         simpleHouseInfoBean.setCreateTime(houseInfo.getCreateTime());
-        simpleHouseInfoBean.setPaymentMethod(houseInfo.getPaymentMethod());
+
 
         return simpleHouseInfoBean;
     }
@@ -400,7 +426,7 @@ public class HouseInfoServiceImpl implements IHouseInfoService {
 
         houseDetailsInfoBean.setRent(houseInfo.getRent());
         houseDetailsInfoBean.setRentalMode(houseInfo.getRentalMode());
-        houseDetailsInfoBean.setPaymentMethod(houseInfo.getPaymentMethod());
+
         houseDetailsInfoBean.setHouseType(houseInfo.getHouseType());
         houseDetailsInfoBean.setCoveredArea(houseInfo.getCoveredArea());
         houseDetailsInfoBean.setUseArea(houseInfo.getUseArea());

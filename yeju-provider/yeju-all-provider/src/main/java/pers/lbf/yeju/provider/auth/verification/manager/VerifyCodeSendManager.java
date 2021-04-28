@@ -23,8 +23,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import pers.lbf.yeju.provider.auth.verification.config.EasyCaptchaConfig;
 import pers.lbf.yeju.provider.auth.verification.sender.VerifyCodeSender;
-import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
 import pers.lbf.yeju.service.interfaces.mail.pojo.SimpleMailArgs;
+import pers.lbf.yeju.service.interfaces.verificationcode.status.VerificationCodeTypeEnum;
 
 /**
  * 验证码发送管理器

@@ -27,9 +27,9 @@ import pers.lbf.yeju.provider.auth.verification.strategy.impl.ImageCaptchaCodeGe
 import pers.lbf.yeju.provider.auth.verification.strategy.impl.MapImageCapchaCodeGenerateStrategy;
 import pers.lbf.yeju.provider.auth.verification.strategy.impl.MapNumberCaptchaCodeGenerateStrategy;
 import pers.lbf.yeju.provider.auth.verification.strategy.impl.NumberCaptchaCodeGenerateStrategy;
-import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
-import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
+import pers.lbf.yeju.service.interfaces.verificationcode.pojo.VerityDTO;
+import pers.lbf.yeju.service.interfaces.verificationcode.status.VerificationCodeTypeEnum;
 
 import java.util.Map;
 import java.util.UUID;

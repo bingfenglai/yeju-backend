@@ -77,19 +77,11 @@ public class HouseInfoDoc implements Serializable {
     private String houseImagesAddress;
 
     /**
-     * 租金单位/0按月 1按季 2按年
-     */
-    private String rentUnit;
-    /**
      * 出租方式（0整租，1合租，2可合租可整租）详见参数表
      */
     @Field(type = FieldType.Keyword)
     private String rentalMode;
-    /**
-     * 支付方式（1押一付一，2押一付二，3押一付三，4押一付六，5押一付年，6其他）详见参数表
-     */
-    @Field(type = FieldType.Keyword)
-    private String paymentMethod;
+
 
     /**
      * 创建时间
@@ -105,7 +97,7 @@ public class HouseInfoDoc implements Serializable {
 
     }
 
-    public HouseInfoDoc(Long houseId, String title, Double rent, String houseType, Integer coveredArea, String houseOrientation, String houseDecorationType, String houseImagesAddress, String rentUnit, String rentalMode, String paymentMethod, Date createTime, String detailsAddress) {
+    public HouseInfoDoc(Long houseId, String title, Double rent, String houseType, Integer coveredArea, String houseOrientation, String houseDecorationType, String houseImagesAddress, String rentalMode, Date createTime, String detailsAddress) {
         this.houseId = houseId;
         this.title = title;
         this.rent = rent;
@@ -114,9 +106,7 @@ public class HouseInfoDoc implements Serializable {
         this.houseOrientation = houseOrientation;
         this.houseDecorationType = houseDecorationType;
         this.houseImagesAddress = houseImagesAddress;
-        this.rentUnit = rentUnit;
         this.rentalMode = rentalMode;
-        this.paymentMethod = paymentMethod;
         this.createTime = createTime;
         this.detailsAddress = detailsAddress;
     }
@@ -132,9 +122,7 @@ public class HouseInfoDoc implements Serializable {
                 ", houseOrientation='" + houseOrientation + '\'' +
                 ", houseDecorationType='" + houseDecorationType + '\'' +
                 ", houseImagesAddress='" + houseImagesAddress + '\'' +
-                ", rentUnit='" + rentUnit + '\'' +
                 ", rentalMode='" + rentalMode + '\'' +
-                ", paymentMethod='" + paymentMethod + '\'' +
                 ", createTime=" + createTime +
                 ", detailsAddress='" + detailsAddress + '\'' +
                 '}';
@@ -204,13 +192,6 @@ public class HouseInfoDoc implements Serializable {
         this.houseImagesAddress = houseImagesAddress;
     }
 
-    public String getRentUnit() {
-        return rentUnit;
-    }
-
-    public void setRentUnit(String rentUnit) {
-        this.rentUnit = rentUnit;
-    }
 
     public String getRentalMode() {
         return rentalMode;
@@ -220,14 +201,7 @@ public class HouseInfoDoc implements Serializable {
         this.rentalMode = rentalMode;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
+  
     public Date getCreateTime() {
         return createTime;
     }

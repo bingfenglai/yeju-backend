@@ -59,8 +59,8 @@ public class TradeController {
 
     @ApiOperation(value = "创建交易", notes = "说明", httpMethod = "POST")
     @PostMapping
-    public Mono<IResult<Boolean>> create(ServerHttpRequest request,
-                                         @RequestBody @Validated HouseTradeCreateArgs args) throws ServiceException {
+    public Mono<IResult<String>> create(ServerHttpRequest request,
+                                        @RequestBody @Validated HouseTradeCreateArgs args) throws ServiceException {
         ArgsHelper.createArgsHelper(args, request);
         return Mono.just(tradeService.createHouseTrade(args));
     }

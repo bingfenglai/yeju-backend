@@ -14,27 +14,43 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.service.interfaces.auth.enums;
+package pers.lbf.yeju.service.interfaces.verificationcode.pojo;
+
+import java.io.Serializable;
 
 /**
- * 验证码类型枚举类
- *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
  * @Description TODO
- * @date 2020/12/14 22:29
+ * @date 2020/12/14 22:38
  */
-public enum VerificationCodeTypeEnum {
+public class VerityDTO<T> implements Serializable {
 
-    /**
-     * 手机验证码
-     */
-    MOBILE_VERIFICATION_CODE,
+    private String token;
 
-    /**
-     * 图片验证码
-     */
-    PICTURE_VERIFICATION_CODE,
+    private T code;
 
-    emailCode;
+    @Override
+    public String toString() {
+        return "VerityDTO{" +
+                "token='" + token + '\'' +
+                ", code=" + code +
+                '}';
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public T getCode() {
+        return code;
+    }
+
+    public void setCode(T code) {
+        this.code = code;
+    }
 }

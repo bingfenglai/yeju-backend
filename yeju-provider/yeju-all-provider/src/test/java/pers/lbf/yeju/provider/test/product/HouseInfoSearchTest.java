@@ -60,29 +60,6 @@ public class HouseInfoSearchTest {
 
 
     //@Test
-    public void test() {
-        HouseInfoDoc houseInfoDoc = new HouseInfoDoc();
-        houseInfoDoc.setHouseId(idHelper.nextId());
-        houseInfoDoc.setTitle("整租两室一厅，小区中间位置，近地铁商场，好价格");
-        houseInfoDoc.setRent(887.89D);
-        houseInfoDoc.setHouseType("2室1厅1卫");
-        houseInfoDoc.setCoveredArea(68);
-        houseInfoDoc.setHouseOrientation("坐北朝南");
-        houseInfoDoc.setHouseDecorationType("精装修");
-        houseInfoDoc.setHouseImagesAddress("http://8.129.77.225:9000/yeju/house/1.png");
-        houseInfoDoc.setRentUnit("");
-        houseInfoDoc.setRentalMode("整租");
-        houseInfoDoc.setPaymentMethod("季付");
-        houseInfoDoc.setCreateTime(new Date());
-        houseInfoDoc.setDetailsAddress("美兰区人民大道58号");
-
-        houseInfoRepository.save(houseInfoDoc);
-
-
-    }
-
-
-    //@Test
     public void test1() {
 
 
@@ -121,9 +98,9 @@ public class HouseInfoSearchTest {
         houseInfoDoc.setHouseOrientation("坐北朝南");
         houseInfoDoc.setHouseDecorationType("精装修");
         houseInfoDoc.setHouseImagesAddress(baseUrl + inputModel.getImage());
-        houseInfoDoc.setRentUnit("每月");
+
         houseInfoDoc.setRentalMode(inputModel.getRentMethod());
-        houseInfoDoc.setPaymentMethod("季付");
+
         houseInfoDoc.setCreateTime(new Date());
         houseInfoDoc.setDetailsAddress("海口市美兰区金山花园");
         return houseInfoDoc;

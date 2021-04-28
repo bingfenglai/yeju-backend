@@ -27,10 +27,10 @@ import pers.lbf.yeju.provider.auth.verification.config.EasyCaptchaConfig;
 import pers.lbf.yeju.provider.auth.verification.enums.VerificationCodeStatusEnum;
 import pers.lbf.yeju.provider.auth.verification.manager.CaptchaGenerateManager;
 import pers.lbf.yeju.provider.auth.verification.manager.VerifyCodeSendManager;
-import pers.lbf.yeju.service.interfaces.auth.dto.VerityDTO;
-import pers.lbf.yeju.service.interfaces.auth.enums.VerificationCodeTypeEnum;
-import pers.lbf.yeju.service.interfaces.auth.interfaces.IVerificationCodeService;
 import pers.lbf.yeju.service.interfaces.redis.IRedisService;
+import pers.lbf.yeju.service.interfaces.verificationcode.IVerificationCodeService;
+import pers.lbf.yeju.service.interfaces.verificationcode.pojo.VerityDTO;
+import pers.lbf.yeju.service.interfaces.verificationcode.status.VerificationCodeTypeEnum;
 
 import java.util.Arrays;
 

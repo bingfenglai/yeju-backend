@@ -14,23 +14,41 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.trade.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Component;
-import pers.lbf.yeju.base.mq.config.BaseRabbitMqExchangeConfig;
+package pers.lbf.yeju.service.interfaces.product.pojo;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/3/6 0:18
+ * @date 2021/4/28 15:07
  */
-@Component
-@RefreshScope
-@ConfigurationProperties(prefix = "spring.rabbitmq.listener.trade.exchange")
-public class TradeMqExchangeConfig extends BaseRabbitMqExchangeConfig {
+public class HouseAboutTradeInfoBean implements Serializable {
 
+    private String status;
+    /**
+     * 租金
+     */
+    private BigDecimal rent;
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public BigDecimal getRent() {
+        return rent;
+    }
+
+    public void setRent(BigDecimal rent) {
+        this.rent = rent;
+    }
 }

@@ -32,7 +32,9 @@ public enum TradeServiceStatusEnum implements IStatus {
      */
     create_trade_fail_unkonw_house_status("创建交易失败，无法获取房源状态", "tss01"),
 
-    create_trade_fail_house_un_tradable("交易创建失败，该房源无法进行交易", "tss02");
+    create_trade_fail_house_un_tradable("交易创建失败，该房源无法进行交易", "tss02"),
+
+    update_house_status_failed("更新房源状态失败", "tss03");
 
     private String message;
     private String code;

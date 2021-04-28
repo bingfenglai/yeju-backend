@@ -76,15 +76,12 @@ public class TradingInformationHouse extends Model<TradingInformationHouse> {
      */
     private Double houseRentUnitFree;
 
-    /**
-     * 租金单位
-     */
-    private String rentUnit;
 
     /**
      * 按租金单位计算的租用期限
      */
     private Integer tenancy;
+
 
     /**
      * 交易创建时间
@@ -147,14 +144,6 @@ public class TradingInformationHouse extends Model<TradingInformationHouse> {
 
     public void setHouseRentUnitFree(Double houseRentUnitFree) {
         this.houseRentUnitFree = houseRentUnitFree;
-    }
-
-    public String getRentUnit() {
-        return rentUnit;
-    }
-
-    public void setRentUnit(String rentUnit) {
-        this.rentUnit = rentUnit;
     }
 
     public Long getTradeId() {

@@ -53,9 +53,6 @@ public interface IHouseInfo {
     String getRentalMode();
 
 
-    String getPaymentMethod();
-
-
     String getHouseType();
 
 

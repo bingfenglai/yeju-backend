@@ -36,7 +36,10 @@ public class PaymentAdvance extends Model<PaymentAdvance> {
      * 主键
      */
     @TableId
-    private Long withholdingId;
+    private Long paymentAdvanceId;
+
+    private Long tradeId;
+
     /**
      * 转出账户id
      */
@@ -44,7 +47,7 @@ public class PaymentAdvance extends Model<PaymentAdvance> {
     /**
      * 目标账户id
      */
-    private Long ransferToAccountId;
+    private Long targetToAccountId;
     /**
      * 支付流水号
      */
@@ -88,12 +91,20 @@ public class PaymentAdvance extends Model<PaymentAdvance> {
     @Version
     private Integer isDelete;
 
-    public Long getWithholdingId() {
-        return withholdingId;
+    public Long getTradeId() {
+        return tradeId;
     }
 
-    public void setWithholdingId(Long withholdingId) {
-        this.withholdingId = withholdingId;
+    public void setTradeId(Long tradeId) {
+        this.tradeId = tradeId;
+    }
+
+    public Long getPaymentAdvanceId() {
+        return paymentAdvanceId;
+    }
+
+    public void setPaymentAdvanceId(Long paymentAdvanceId) {
+        this.paymentAdvanceId = paymentAdvanceId;
     }
 
     public Long getTransferOutAccountId() {
@@ -104,12 +115,12 @@ public class PaymentAdvance extends Model<PaymentAdvance> {
         this.transferOutAccountId = transferOutAccountId;
     }
 
-    public Long getRansferToAccountId() {
-        return ransferToAccountId;
+    public Long getTargetToAccountId() {
+        return targetToAccountId;
     }
 
-    public void setRansferToAccountId(Long ransferToAccountId) {
-        this.ransferToAccountId = ransferToAccountId;
+    public void setTargetToAccountId(Long targetToAccountId) {
+        this.targetToAccountId = targetToAccountId;
     }
 
     public Long getPaymentId() {

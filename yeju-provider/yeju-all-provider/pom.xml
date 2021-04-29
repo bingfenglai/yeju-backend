@@ -82,6 +82,13 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
+            <artifactId>yeju-bill-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
             <artifactId>yeju-redis-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
@@ -169,6 +176,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-encryption-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

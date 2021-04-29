@@ -14,17 +14,15 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.payment.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.business.payment.PaymentAdvance;
+package pers.lbf.yeju.service.interfaces.bill.pojo;
 
 /**
- * (TableBusinessPaymentAdvance)表数据库访问层
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-04-22 00:46:58
+ * @version 1.0
+ * @date 2021/4/28 20:43
  */
-public interface PaymentAdvanceDao extends BaseMapper<PaymentAdvance> {
-
+public class SimpleBillInfoBean {
 }

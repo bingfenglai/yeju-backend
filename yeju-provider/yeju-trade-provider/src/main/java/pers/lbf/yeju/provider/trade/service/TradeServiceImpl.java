@@ -35,6 +35,11 @@ import pers.lbf.yeju.provider.trade.constants.TradingTypeConstants;
 import pers.lbf.yeju.provider.trade.dao.ITradeDao;
 import pers.lbf.yeju.provider.trade.sender.TradingSender;
 import pers.lbf.yeju.provider.trade.status.TradeServiceStatusEnum;
+import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
+import pers.lbf.yeju.service.interfaces.auth.interfaces.IAccountService;
+import pers.lbf.yeju.service.interfaces.payment.IPaymentAdvanceService;
+import pers.lbf.yeju.service.interfaces.payment.pojo.CreatePaymentAdvanceArgs;
+import pers.lbf.yeju.service.interfaces.payment.status.PaymentStatusEnum;
 import pers.lbf.yeju.service.interfaces.product.IHouseInfoService;
 import pers.lbf.yeju.service.interfaces.product.IHouseRelationshipService;
 import pers.lbf.yeju.service.interfaces.product.constants.RelationshipCustomerHouseTypeConstants;
@@ -72,6 +77,13 @@ public class TradeServiceImpl implements ITradeService {
 
     @DubboReference
     private IHouseRelationshipService houseRelationshipService;
+
+    @DubboReference
+    private IPaymentAdvanceService paymentAdvanceService;
+
+    @DubboReference
+    private IAccountService accountService;
+
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -113,20 +125,43 @@ public class TradeServiceImpl implements ITradeService {
         if (!flag) {
             throw ServiceException.getInstance(TradeServiceStatusEnum.create_trade_fail_house_un_tradable);
         }
+
+        //更新房源状态
         IResult<Boolean> changeHouseStatusRpcResult = houseInfoService.updateStatusById(args.getHouseId(), HouseStatusEnum.pre_transaction);
         if (!changeHouseStatusRpcResult.isSuccess()) {
             throw ServiceException.getInstance(TradeServiceStatusEnum.update_house_status_failed);
         }
-        
+
         TradingInformationHouse trade = buildTrade(args, rpcResult.getData());
 
         tradeDao.insert(trade);
 
 
-        // 发布 订单创建成功事件 走支付流程
-        //tradeSender.send(trade);
+        //生成预支付单
+        CreatePaymentAdvanceArgs createPaymentAdvanceArgs = buildCreateDomainPaymentArgs(trade);
+        IResult<String> createPaymentAdvanceRpcResult = paymentAdvanceService.createPaymentAdvance(createPaymentAdvanceArgs);
+        if (!createPaymentAdvanceRpcResult.isSuccess()) {
+            throw ServiceException.getInstance(TradeServiceStatusEnum.create_domain_payment_failed);
+        }
 
-        return null;
+
+        return Result.ok(createPaymentAdvanceRpcResult.getData());
+    }
+
+    private CreatePaymentAdvanceArgs buildCreateDomainPaymentArgs(TradingInformationHouse trade) {
+        CreatePaymentAdvanceArgs createPaymentAdvanceArgs = new CreatePaymentAdvanceArgs();
+        createPaymentAdvanceArgs.setTradeId(trade.getTradeId());
+        Long tenantAccountId = accountService.findAccountIdBySubjectIdAndAccountType(
+                trade.getTenantId(), AccountOwnerTypeEnum.Customer_account).getData();
+        createPaymentAdvanceArgs.setTransferOutAccountId(tenantAccountId);
+        Long landlordAccountId = accountService.findAccountIdBySubjectIdAndAccountType(
+                trade.getLandlordId(), AccountOwnerTypeEnum.Customer_account).getData();
+        createPaymentAdvanceArgs.setTargetToAccountId(landlordAccountId);
+        createPaymentAdvanceArgs.setFree(trade.getFree());
+        createPaymentAdvanceArgs.setStatus(PaymentStatusEnum.Pending_payment.value);
+
+        createPaymentAdvanceArgs.setCreateTime(trade.getCreateTime());
+        return createPaymentAdvanceArgs;
     }
 
     private TradingInformationHouse buildTrade(HouseTradeCreateArgs args, HouseAboutTradeInfoBean houseTradeInfo) {

@@ -14,17 +14,15 @@
  * limitations under the License.
  *
  */
-package pers.lbf.yeju.provider.payment.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import pers.lbf.yeju.common.domain.entity.business.payment.Payment;
+package pers.lbf.yeju.service.interfaces.bill.status;
 
 /**
- * 交易支付信息表，记录平台支付信息(TableBusinessPayment)表数据库访问层
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
- * @since 2021-04-22 00:46:37
+ * @version 1.0
+ * @date 2021/4/28 20:40
  */
-public interface PaymentDao extends BaseMapper<Payment> {
-
+public enum BillStatus {
 }

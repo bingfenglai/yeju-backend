@@ -20,6 +20,7 @@ import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.auth.dto.AccountDetailsInfoBean;
 import pers.lbf.yeju.service.interfaces.auth.dto.SimpleAccountDTO;
+import pers.lbf.yeju.service.interfaces.auth.enums.AccountOwnerTypeEnum;
 
 /**
  * 账户服务接口类
@@ -89,4 +90,13 @@ public interface IAccountService {
      * @throws ServiceException
      */
     IResult<Boolean> isExitPhoneNumber(String phoneNumber) throws ServiceException;
+
+    /**
+     * 根据账户所有者id 查询账户id
+     *
+     * @param subjectId
+     * @return
+     * @throws ServiceException
+     */
+    IResult<Long> findAccountIdBySubjectIdAndAccountType(Long subjectId, AccountOwnerTypeEnum type) throws ServiceException;
 }

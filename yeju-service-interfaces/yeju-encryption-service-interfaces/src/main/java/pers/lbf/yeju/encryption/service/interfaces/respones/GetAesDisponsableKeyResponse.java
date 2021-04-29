@@ -15,16 +15,14 @@
  *
  */
 
-package pers.lbf.yeju.service.interfaces.payment;
+package pers.lbf.yeju.encryption.service.interfaces.respones;
 
 /**
- * 账单服务接口
+ * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/23 20:59
+ * @date 2021/4/29 15:05
  */
-public interface IBillService {
-    
-
+public class GetAesDisponsableKeyResponse {
 }

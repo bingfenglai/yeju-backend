@@ -50,6 +50,18 @@
         </dependency>
 
         <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-bill-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
+            <artifactId>yeju-account-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
         </dependency>

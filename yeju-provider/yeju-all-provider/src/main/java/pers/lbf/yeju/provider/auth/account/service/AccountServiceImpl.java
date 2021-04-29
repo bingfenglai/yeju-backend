@@ -285,6 +285,19 @@ public class AccountServiceImpl implements IAccountService {
         return Result.success();
     }
 
+    /**
+     * 根据账户所有者id 查询账户id
+     *
+     * @param subjectId
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public IResult<Long> findAccountIdBySubjectIdAndAccountType(Long subjectId, AccountOwnerTypeEnum type) throws ServiceException {
+        Long accountId = accountDao.selectIdBySubjectIdAndAccountType(subjectId, type.getValue());
+        return Result.ok(accountId);
+    }
+
 
     private QueryWrapper<Account> getAccountQueryWrapperByPrincipal(String principal) {
         SubjectTypeEnum accountType = SubjectUtils.getAccountType(principal);

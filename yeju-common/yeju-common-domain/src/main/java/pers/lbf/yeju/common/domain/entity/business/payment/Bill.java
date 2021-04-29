@@ -26,43 +26,41 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 交易支付信息表，记录平台支付信息(TableBusinessPayment)表实体类
+ * 账单表，记录平台支付信息(TableBusinessbill)表实体类
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @since 2021-04-22 00:45:47
  */
-@TableName("table_business_payment")
-public class Payment extends Model<Payment> {
+@TableName("table_business_bill")
+public class Bill extends Model<Bill> {
     /**
      * 交易流水号
      */
-    @TableId
+
     private Long tradeId;
     /**
      * 主键
      */
-    private Long paymentId;
+    @TableId
+    private Long billId;
     /**
      * 域支付id  对应第三方支付的预支付id
      */
-    private Long advancePayment;
+    private Long domainPaymentId;
     /**
      * 支付状态
      * 0支付工单已创建
-     * 1支付成功
-     * 2待生效
-     * 3生效
-     * 2支付失败
+     * 1支付成功  支付不成功的不算进账单里面
      */
-    private String paymentStatus;
+    private String billStatus;
     /**
      * 如果是第三方支付的话需要记录第三方流水号
      */
     private Long thirdPartySerialNumber;
     /**
-     * 支付方式0平台账户支付1支付宝支付2微信支付3网银
+     * 渠道0平台账户支付1支付宝支付2微信支付3网银
      */
-    private String paymentMode;
+    private String billMode;
     /**
      * 转出账户id
      */
@@ -116,7 +114,7 @@ public class Payment extends Model<Payment> {
      * 7交押金
      * 8系统代扣租金
      */
-    private String paymentType;
+    private String billType;
 
 
     public Long getTradeId() {
@@ -127,28 +125,28 @@ public class Payment extends Model<Payment> {
         this.tradeId = tradeId;
     }
 
-    public Long getPaymentId() {
-        return paymentId;
+    public Long getBillId() {
+        return billId;
     }
 
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
+    public void setBillId(Long billId) {
+        this.billId = billId;
     }
 
-    public Long getAdvancePayment() {
-        return advancePayment;
+    public Long getDomainPaymentId() {
+        return domainPaymentId;
     }
 
-    public void setAdvancePayment(Long advancePayment) {
-        this.advancePayment = advancePayment;
+    public void setDomainPaymentId(Long domainPaymentId) {
+        this.domainPaymentId = domainPaymentId;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public String getBillStatus() {
+        return billStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setBillStatus(String billStatus) {
+        this.billStatus = billStatus;
     }
 
     public Long getThirdPartySerialNumber() {
@@ -159,12 +157,12 @@ public class Payment extends Model<Payment> {
         this.thirdPartySerialNumber = thirdPartySerialNumber;
     }
 
-    public String getPaymentMode() {
-        return paymentMode;
+    public String getBillMode() {
+        return billMode;
     }
 
-    public void setPaymentMode(String paymentMode) {
-        this.paymentMode = paymentMode;
+    public void setBillMode(String billMode) {
+        this.billMode = billMode;
     }
 
     public Long getTransferOutAccountId() {
@@ -247,12 +245,12 @@ public class Payment extends Model<Payment> {
         this.isDelete = isDelete;
     }
 
-    public String getPaymentType() {
-        return paymentType;
+    public String getBillType() {
+        return billType;
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+    public void setBillType(String billType) {
+        this.billType = billType;
     }
 
     /**
@@ -262,6 +260,6 @@ public class Payment extends Model<Payment> {
      */
     @Override
     protected Serializable pkVal() {
-        return this.paymentId;
+        return this.billId;
     }
 }

@@ -38,18 +38,18 @@ public interface IEncryptionService {
      * @return
      * @throws ServiceException
      */
-    IResult<GetRsaPublicDisposableKeyResponse> getRsaPublicDisposableKey() throws ServiceException;
+    IResult<GetRsaPublicDisposableKeyResponse> getRsaPublicDisposableKey(String account) throws ServiceException;
 
     /**
      * 解密参数并反序列化为class返回
      *
      * @param ciphertext ，密文
-     * @param clazz      反序列化类
+     * @param obj        反序列化类
      * @param key        密钥在缓存中的key
      * @return 反序列化后的参数封装类
      * @throws ServiceException
      */
-    IResult<?> paramesRsaDecrypt(String ciphertext, Class<?> clazz, String key) throws ServiceException;
+    IResult<?> paramesRsaDecrypt(String ciphertext, Object obj, String key) throws ServiceException;
 
 
     /**
@@ -59,16 +59,16 @@ public interface IEncryptionService {
      * @return 经客户端公钥加密过的AES密钥
      * @throws ServiceException
      */
-    IResult<GetAesDisponsableKeyResponse> getAesDisponsableKey(String clientPublicKey) throws ServiceException;
+    IResult<GetAesDisponsableKeyResponse> getAesDisponsableKey(String clientPublicKey, String account) throws ServiceException;
 
     /**
      * AES解密参数
      *
      * @param ciphertext 密文
-     * @param clazz      参数封装类
-     * @param key        密钥在Redis中的Key值
+     * @param obj        参数封装类
+     * @param cacheKey   密钥在Redis中的Key值
      * @return 解密后的餐宿封装类
      * @throws ServiceException
      */
-    IResult<?> paramesAesDecrypt(String ciphertext, Class<?> clazz, String key) throws ServiceException;
+    IResult<?> paramesAesDecrypt(String ciphertext, Object obj, String cacheKey) throws ServiceException;
 }

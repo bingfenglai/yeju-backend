@@ -37,6 +37,9 @@ import java.util.Map;
  * @date 2020/12/8 16:13
  */
 public final class Rsa2Utils {
+    public static final String PUBLIC_KEY = "publicKey";
+    
+    public static final String PRIVATE_KEY = "privateKey";
     public static final String CHARSET = "UTF-8";
     //密钥算法
     public static final String ALGORITHM_RSA = "RSA";

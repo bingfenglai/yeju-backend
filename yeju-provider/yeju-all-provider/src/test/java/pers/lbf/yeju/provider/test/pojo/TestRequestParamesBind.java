@@ -15,7 +15,7 @@
  *
  */
 
-package pers.lbf.yeju.encryption.service.interfaces.respones;
+package pers.lbf.yeju.provider.test.pojo;
 
 import java.io.Serializable;
 
@@ -24,35 +24,34 @@ import java.io.Serializable;
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/29 15:05
+ * @date 2021/4/30 13:11
  */
-public class GetAesDisponsableKeyResponse implements Serializable {
+public class TestRequestParamesBind implements Serializable {
 
-    private String ivSting;
-    private String cacheKey;
-    private String aesKey;
+    private String username;
+    private String password;
 
-    public String getIvSting() {
-        return ivSting;
+    @Override
+    public String toString() {
+        return "TestRequestParamesBind{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
-    public void setIvSting(String ivSting) {
-        this.ivSting = ivSting;
+    public String getUsername() {
+        return username;
     }
 
-    public String getCacheKey() {
-        return cacheKey;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setCacheKey(String cacheKey) {
-        this.cacheKey = cacheKey;
+    public String getPassword() {
+        return password;
     }
 
-    public String getAesKey() {
-        return aesKey;
-    }
-
-    public void setAesKey(String aesKey) {
-        this.aesKey = aesKey;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

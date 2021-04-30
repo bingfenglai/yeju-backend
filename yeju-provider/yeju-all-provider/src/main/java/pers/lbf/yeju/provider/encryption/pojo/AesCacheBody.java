@@ -15,22 +15,35 @@
  *
  */
 
-package pers.lbf.yeju.provider.search.repository;
+package pers.lbf.yeju.provider.encryption.pojo;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import pers.lbf.yeju.provider.search.document.TestDocument;
+import java.io.Serializable;
 
 /**
  * TODO
  *
  * @author 赖柄沣 bingfengdev@aliyun.com
  * @version 1.0
- * @date 2021/4/26 21:22
+ * @date 2021/4/30 0:10
  */
-public interface TestElasticsearchRepository extends ElasticsearchRepository<TestDocument, String> {
+public class AesCacheBody implements Serializable {
 
-    Page<TestDocument> findByName(String name, Pageable pageable) throws RuntimeException;
+    private String ivString;
+    private String key;
 
+    public String getIvString() {
+        return ivString;
+    }
+
+    public void setIvString(String ivString) {
+        this.ivString = ivString;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }

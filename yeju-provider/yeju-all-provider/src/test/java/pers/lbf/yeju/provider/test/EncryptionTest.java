@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.util.AesUtils;
 import pers.lbf.yeju.common.util.Rsa2Utils;
 import pers.lbf.yeju.encryption.service.interfaces.IEncryptionService;
@@ -74,9 +73,10 @@ public class EncryptionTest {
                 log.error("encryptionService is null");
             }
 
-            IResult<?> result = encryptionService.paramesAesDecrypt(encrypt, new TestRequestParamesBind(), data.getCacheKey());
-
-            log.info("解密后 {}", result.getData());
+//            IResult<?> result = encryptionService.paramesAesDecrypt(encrypt, TestRequestParamesBind.class, data.getCacheKey());
+//            TestRequestParamesBind bind = (TestRequestParamesBind) result.getData();
+//
+            //  log.info("解密后 {}", bind.toString());
 
         } catch (Exception e) {
             e.printStackTrace();

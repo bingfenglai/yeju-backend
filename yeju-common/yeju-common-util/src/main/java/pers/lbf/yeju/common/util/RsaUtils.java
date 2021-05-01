@@ -17,8 +17,13 @@
 
 package pers.lbf.yeju.common.util;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -56,6 +61,7 @@ public class RsaUtils {
      * 签名算法
      */
     private static final String ALGORITHM_RSA_SIGN = "SHA256WithRSA";
+    private static final String RSA_ALGORITHM = "RSA";
 
 
     /**
@@ -193,6 +199,21 @@ public class RsaUtils {
 
     }
 
+
+    public static String encryptByPublicKey(String data, String key) throws NoSuchAlgorithmException,
+            InvalidKeySpecException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
+        //实例化密钥工厂
+        KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+        //初始化公钥,根据给定的编码密钥创建一个新的 X509EncodedKeySpec。
+        byte[] byteKey = Base64.getDecoder().decode(key.getBytes(StandardCharsets.UTF_8));
+        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(byteKey);
+        PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
+        //数据加密
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] bytes = cipher.doFinal(Base64.getDecoder().decode(data.getBytes(StandardCharsets.UTF_8)));
+        return Base64Util.encodeToString(bytes);
+    }
 
     /**
      * 构造器私有化

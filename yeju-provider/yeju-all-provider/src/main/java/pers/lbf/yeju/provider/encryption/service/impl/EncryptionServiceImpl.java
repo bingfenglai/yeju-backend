@@ -24,17 +24,19 @@ import org.springframework.data.redis.core.RedisTemplate;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.result.Result;
+import pers.lbf.yeju.common.core.status.enums.ServiceStatusEnum;
 import pers.lbf.yeju.common.util.AesUtils;
 import pers.lbf.yeju.common.util.Rsa2Utils;
+import pers.lbf.yeju.common.util.RsaUtils;
 import pers.lbf.yeju.encryption.service.interfaces.IEncryptionService;
 import pers.lbf.yeju.encryption.service.interfaces.respones.GetAesDisponsableKeyResponse;
 import pers.lbf.yeju.encryption.service.interfaces.respones.GetRsaPublicDisposableKeyResponse;
+import pers.lbf.yeju.encryption.service.interfaces.status.EncryptionServiceStatus;
 import pers.lbf.yeju.provider.encryption.config.EncryptionAesConfig;
 import pers.lbf.yeju.provider.encryption.config.EncryptionRsaConfig;
 import pers.lbf.yeju.provider.encryption.manage.EncryptionCacheKeyManager;
 import pers.lbf.yeju.provider.encryption.pojo.AesCacheBody;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -87,17 +89,22 @@ public class EncryptionServiceImpl implements IEncryptionService {
      * 解密参数并反序列化为class返回
      *
      * @param ciphertext ，json密文
-     * @param object     反序列化类
+     * @param clazz      反序列化类
      * @param key        密钥在缓存中的key
      * @return 反序列化后的参数封装类
      * @throws ServiceException
      */
     @Override
-    public IResult<?> paramesRsaDecrypt(String ciphertext, Object object, String key) throws ServiceException {
+    public IResult<?> paramesRsaDecrypt(String ciphertext, Class<?> clazz, String key) throws ServiceException {
+        Boolean hasKeyFlag = redisTemplate.hasKey(key);
+        if (hasKeyFlag == null || !hasKeyFlag) {
+            throw ServiceException.getInstance(EncryptionServiceStatus.keyHasExpired);
+        }
+
         String privateKey = (String) redisTemplate.opsForValue().get(key);
         String jsonString = Rsa2Utils.buildRSADecryptByPrivateKey(ciphertext, privateKey);
-        object = JSONObject.parse(jsonString);
-        return Result.ok(object);
+        Object obj = JSONObject.parseObject(jsonString, clazz);
+        return Result.ok(obj);
     }
 
     /**
@@ -114,7 +121,7 @@ public class EncryptionServiceImpl implements IEncryptionService {
         try {
             String key = AesUtils.generateKey(uuid16);
             log.debug("aes key {}", key);
-            String rsaKey = Rsa2Utils.buildRSAEncryptByPublicKey(key, clientPublicKey);
+            String rsaKey = RsaUtils.encryptByPublicKey(key, clientPublicKey);
 
             AesCacheBody aesCacheBody = new AesCacheBody();
             aesCacheBody.setIvString(uuid16);
@@ -122,41 +129,51 @@ public class EncryptionServiceImpl implements IEncryptionService {
             String aesCacheKey = cachedKeyManager.getAesCacheKey(account);
 
             redisTemplate.opsForValue().set(aesCacheKey, aesCacheBody, Long.valueOf(aesConfig.getKeyTimeout()), TimeUnit.MINUTES);
-
+            log.info("AES 密钥：{}", key);
+            log.info("AES iv: {}", uuid16);
             response.setAesKey(rsaKey);
             response.setIvSting(uuid16);
             response.setCacheKey(aesCacheKey);
             return Result.ok(response);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
+            log.error(String.valueOf(e));
+            throw ServiceException.getInstance(e.getMessage(), ServiceStatusEnum.UNKNOWN_ERROR.getCode());
         }
-        throw new ServiceException();
+
     }
 
     /**
      * AES解密参数
      *
      * @param ciphertext 密文
-     * @param obj        参数封装类
      * @param cacheKey   密钥在Redis中的Key值
      * @return 解密后的餐宿封装类
      * @throws ServiceException
      */
     @Override
-    public IResult<?> paramesAesDecrypt(String ciphertext, Object obj, String cacheKey) throws ServiceException {
+    public IResult<String> paramesAesDecrypt(String ciphertext, String cacheKey) throws ServiceException {
+        Boolean hasKeyFlag = redisTemplate.hasKey(cacheKey);
+        if (hasKeyFlag == null || !hasKeyFlag) {
+            throw ServiceException.getInstance(EncryptionServiceStatus.keyHasExpired);
+        }
         AesCacheBody body = (AesCacheBody) redisTemplate.opsForValue().get(cacheKey);
 
         try {
+            assert body != null;
             log.debug("cache body {} {}", body.toString(), body.getIvString().length());
             String data = AesUtils.decrypt(ciphertext, body.getKey(), body.getIvString());
             log.debug("data {}", data);
-            obj = JSONObject.parse(data);
-            return Result.ok(obj);
+
+
+            return Result.ok(data);
         } catch (Exception e) {
 
             e.printStackTrace();
+            throw ServiceException.getInstance(EncryptionServiceStatus.failedToDecryptEncryptedData);
         }
 
-        return null;
+
     }
+
+
 }

@@ -16,7 +16,9 @@
  */
 package pers.lbf.yeju.consumer.auth.converter;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
@@ -24,15 +26,21 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authentication.ServerFormLoginAuthenticationConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.common.core.exception.service.ServiceException;
 import pers.lbf.yeju.common.core.exception.service.rpc.RpcServiceException;
+import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
+import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.RequestStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
+import pers.lbf.yeju.consumer.auth.config.AuthenticationConfig;
 import pers.lbf.yeju.consumer.auth.config.VerificationCodeConfig;
+import pers.lbf.yeju.consumer.auth.pojo.LoginRequest;
 import pers.lbf.yeju.consumer.auth.pojo.LoginRequestToken;
 import pers.lbf.yeju.consumer.auth.util.HttpUtils;
+import pers.lbf.yeju.encryption.service.interfaces.IEncryptionService;
 import reactor.core.publisher.Mono;
 
 import java.net.InetAddress;
@@ -54,10 +62,22 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
     @Autowired
     private VerificationCodeConfig verificationCodeConfig;
 
+    @Autowired
+    private AuthenticationConfig authenticationConfig;
+
+    @DubboReference
+    private IEncryptionService encryptionService;
+
     public CustomServerFormLoginAuthenticationConverter() {
         super();
     }
 
+    /**
+     * 登录参数获取方法
+     *
+     * @param exchange
+     * @return
+     */
     @Override
     public Mono<Authentication> convert(ServerWebExchange exchange) {
 
@@ -79,10 +99,13 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
                 .getFormData()
                 .map(
                         data -> {
-                            String principal = data.getFirst("principal");
-                            String certificate = data.getFirst("certificate");
-                            String code = data.getFirst("verificationCode");
+
+                            LoginRequest loginRequest = doConvert(data);
+                            String principal = loginRequest.getPrincipal();
+                            String certificate = loginRequest.getCertificate();
+                            String code = loginRequest.getVerificationCode();
                             log.info("principal {}", principal);
+
                             // 账号判空
                             if (YejuStringUtils.isEmpty(principal)) {
                                 throw new RpcServiceException(AuthStatusEnum.accountCannotBeEmpty);
@@ -107,5 +130,81 @@ public class CustomServerFormLoginAuthenticationConverter extends ServerFormLogi
 
                             return new LoginRequestToken(principal, certificate, hostAddress, key, code);
                         });
+    }
+
+    /**
+     * 登录参数转换解析入口方法
+     *
+     * @param fromData
+     * @return
+     * @throws ServiceException
+     */
+    public LoginRequest doConvert(MultiValueMap<String, String> fromData) throws ServiceException {
+
+        //1. 判断是否启用加密
+        if (!authenticationConfig.getEnableFormEncryption()) {
+            return doConvertUnFormEncryption(fromData);
+        }
+
+        return doConvertFormEncryption(fromData);
+    }
+
+    /**
+     * 加密表单解析
+     *
+     * @param fromData
+     * @return
+     */
+    private LoginRequest doConvertFormEncryption(MultiValueMap<String, String> fromData) throws ServiceException {
+
+        //登录密文
+        String ciphertext = fromData.getFirst("fromData");
+        //解密密钥缓存key
+        String keyCacheKey = fromData.getFirst("keyCacheKey");
+
+        return loginRequestParamesDecrypt(ciphertext, keyCacheKey);
+
+    }
+
+    /**
+     * 从密文中获取登录参数
+     *
+     * @param ciphertext  密文
+     * @param keyCacheKey 密文缓存的key
+     * @return 登录参数封装类
+     * @throws ServiceException
+     */
+    private LoginRequest loginRequestParamesDecrypt(String ciphertext, String keyCacheKey) throws ServiceException {
+        if (YejuStringUtils.isEmpty(ciphertext)) {
+            throw ServiceException.getInstance("登录表单加密已使用，请先加密！", ParameStatusEnum.invalidParameter.getCode());
+        }
+
+        if (YejuStringUtils.isEmpty(keyCacheKey)) {
+            throw ServiceException.getInstance("密钥缓存key不存在", ParameStatusEnum.invalidParameter.getCode());
+        }
+
+        IResult<String> rpcResult = encryptionService.paramesAesDecrypt(ciphertext, keyCacheKey);
+
+        String jsonString = rpcResult.getData();
+
+
+        return JSONObject.parseObject(jsonString, LoginRequest.class);
+    }
+
+    /**
+     * 不加密表单解析
+     *
+     * @param fromData
+     * @return
+     */
+    private LoginRequest doConvertUnFormEncryption(MultiValueMap<String, String> fromData) throws ServiceException {
+        LoginRequest request = new LoginRequest();
+        String principal = fromData.getFirst("principal");
+        String certificate = fromData.getFirst("certificate");
+        String code = fromData.getFirst("verificationCode");
+        request.setPrincipal(principal);
+        request.setCertificate(certificate);
+        request.setVerificationCode(code);
+        return request;
     }
 }

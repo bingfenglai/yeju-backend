@@ -58,7 +58,7 @@ public enum ParameStatusEnum implements IStatus {
      */
     @Override
     public String getMessage() {
-        return null;
+        return this.message;
     }
 
     /**
@@ -68,6 +68,6 @@ public enum ParameStatusEnum implements IStatus {
      */
     @Override
     public String getCode() {
-        return null;
+        return this.code;
     }
 }

@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public final class Rsa2Utils {
     public static final String PUBLIC_KEY = "publicKey";
-    
+
     public static final String PRIVATE_KEY = "privateKey";
     public static final String CHARSET = "UTF-8";
     //密钥算法
@@ -263,6 +263,16 @@ public final class Rsa2Utils {
         byte[] bytes = FileUtils.readFile(privateKeyFilePath);
         assert bytes != null;
         return new String(bytes);
+    }
+
+    public static void main(String[] args) {
+        String key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodov2Lx6pDgu+T1mPGnRMZRmiKeLlFy16QPvw3Ij3+jV59kieQPDL+Vsj4TuBsq9LU5imwSvLbDl2RQ5OQW/F2Vbj1QSDish5i7wSVDDI7YWAgqyT8XUwOWTEMdbfSiPFILUSf8H3QHCZFpVCuAyraKq3DFPZkIpzdbvQU8X8NAngmEtMQNU8gPhTmOJ4M3cDqoVWrWFHlKute5lzwI5V3smglHjpHocC7g0PnptUmvOlraO73humH7u/KfACqawwZ+FA/HlowXRzXfzY/AbaltBwgezB0XRQYZoZRH/1exYsjSgyY40/TznaoDgzboFm1yB54Mh6t401/LG4Pd1KwIDAQAB";
+        // String s = Base64.getEncoder().encodeToString(k2.getBytes(StandardCharsets.UTF_8));
+        //buildRSAEncryptByPublicKey("ss", key);
+        System.out.println(key.length());
+        String k2 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodov2Lx6pDgu+T1mPGnRMZRmiKeLlFy16QPvw3Ij3+jV59kieQPDL+Vsj4TuBsq9LU5imwSvLbDl2RQ5OQW/F2Vbj1QSDish5i7wSVDDI7YWAgqyT8XUwOWTEMdbfSiPFILUSf8H3QHCZFpVCuAyraKq3DFPZkIpzdbvQU8X8NAngmEtMQNU8gPhTmOJ4M3cDqoVWrWFHlKute5lzwI5V3smglHjpHocC7g0PnptUmvOlraO73humH7u/KfACqawwZ+FA/HlowXRzXfzY/AbaltBwgezB0XRQYZoZRH/1exYsjSgyY40/TznaoDgzboFm1yB54Mh6t401/LG4Pd1KwIDAQAB";
+        buildRSAEncryptByPublicKey("ss", k2);
+        System.out.println(k2.length());
     }
 
 

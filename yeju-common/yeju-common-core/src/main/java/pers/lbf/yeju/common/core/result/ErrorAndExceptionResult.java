@@ -30,6 +30,8 @@ public class ErrorAndExceptionResult extends BaseResult<Object> implements IResu
 
     private String path;
 
+    private Boolean success = false;
+
     public static ErrorAndExceptionResult getInstance(IStatus statusEnum, String path) {
         return new ErrorAndExceptionResult(statusEnum, path);
     }
@@ -43,6 +45,7 @@ public class ErrorAndExceptionResult extends BaseResult<Object> implements IResu
         this.code = statusEnum.getCode();
         this.message = statusEnum.getMessage();
         this.path = path;
+
     }
 
     public ErrorAndExceptionResult(String code, String message, String path) {
@@ -86,5 +89,13 @@ public class ErrorAndExceptionResult extends BaseResult<Object> implements IResu
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 }

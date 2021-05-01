@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import pers.lbf.yeju.base.security.authorization.pojo.AuthorityInfoBean;
@@ -33,6 +34,9 @@ import pers.lbf.yeju.common.core.status.enums.AuthStatusEnum;
 import pers.lbf.yeju.common.core.status.enums.ParameStatusEnum;
 import pers.lbf.yeju.common.util.YejuStringUtils;
 import pers.lbf.yeju.consumer.auth.manager.AuthorizationTokenManager;
+import pers.lbf.yeju.consumer.auth.pojo.GetAesKeyRequest;
+import pers.lbf.yeju.encryption.service.interfaces.IEncryptionService;
+import pers.lbf.yeju.encryption.service.interfaces.respones.GetAesDisponsableKeyResponse;
 import pers.lbf.yeju.service.interfaces.session.ISessionService;
 import pers.lbf.yeju.service.interfaces.verificationcode.IVerificationCodeService;
 import pers.lbf.yeju.service.interfaces.verificationcode.pojo.VerityDTO;
@@ -69,6 +73,18 @@ public class AuthenticationController {
 
     @Autowired
     private AuthorizationTokenManager tokenManager;
+
+    @DubboReference
+    private IEncryptionService encryptionService;
+
+
+    @ApiOperation(value = "获取登录表单加密密钥 免认证接口", notes = "登录表单加密密钥 免认证接口说明", httpMethod = "GET")
+    @PostMapping("/aes/cbc")
+    public Mono<IResult<GetAesDisponsableKeyResponse>>
+    getAesKey(@RequestBody @Validated GetAesKeyRequest request) throws ServiceException {
+
+        return Mono.just(encryptionService.getAesDisponsableKey(request.getClientPublicKey(), request.getPrincipal()));
+    }
 
 
     @GetMapping("/login")

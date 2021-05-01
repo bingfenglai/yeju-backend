@@ -74,7 +74,7 @@ public class GrableExceptionHandlerV2 implements ErrorWebExceptionHandler {
         String path = request.getURI().getPath();
 
         ErrorAndExceptionResult result = ErrorAndExceptionResult.getInstance(DEFAULT_ERROR_CODE, DEFAULT_ERROR_MESSAGE, path);
-
+        result.setSuccess(false);
         doHandle(ex, result);
 
         log.error("\n服务请求异常 \n请求路径：{} \n请求方式：{} \n请求参数：{} \n异常信息：{}",

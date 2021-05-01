@@ -100,6 +100,12 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
+            <artifactId>yeju-encryption-service-interfaces</artifactId>
+            <version>${yeju.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pers.lbf</groupId>
             <artifactId>yeju-common-util</artifactId>
             <version>${yeju.version}</version>
         </dependency>

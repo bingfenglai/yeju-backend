@@ -16,6 +16,8 @@
  */
 package pers.lbf.yeju.common.util;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -24,6 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.util.Random;
 
 /**
@@ -48,7 +51,8 @@ public class AesUtils {
      */
     private static final String CIPHER_ALGORITHM_ECB = "AES/ECB/PKCS5Padding";
 
-    private static final String CIPHER_ALGORITHM_CBC = "AES/CBC/PKCS5Padding";
+    //    private static final String CIPHER_ALGORITHM_CBC = "AES/CBC/PKCS5Padding";
+    private static final String CIPHER_ALGORITHM_CBC = "AES/CBC/PKCS7Padding";
 
 
     /**
@@ -58,7 +62,7 @@ public class AesUtils {
 
     private static final int KEY_SIZE256 = 256;
 
-    private static final int KEY_SIZE192 = 192;
+    private static final int KEY_SIZE128 = 128;
 
     static {
         try {
@@ -83,7 +87,7 @@ public class AesUtils {
         KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM);
 
         // 初始化密钥生成器:AES要求密钥长度为128,192,256位
-        kg.init(KEY_SIZE256, new SecureRandom());
+        kg.init(KEY_SIZE128, new SecureRandom());
 
         // 生成密钥
         SecretKey secretKey = kg.generateKey();
@@ -104,8 +108,9 @@ public class AesUtils {
         KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM);
 
         // 初始化密钥生成器:AES要求密钥长度为128,192,256位
-        kg.init(KEY_SIZE256, new SecureRandom(password.getBytes(StandardCharsets.UTF_8)));
-
+        kg.init(KEY_SIZE128, new SecureRandom(password.getBytes(StandardCharsets.UTF_8)));
+        //kg.init(KEY_SIZE128);
+        Security.addProvider(new BouncyCastleProvider());
         // 生成密钥
         SecretKey secretKey = kg.generateKey();
 
@@ -117,6 +122,7 @@ public class AesUtils {
      * 转换密钥
      */
     private static Key toKey(byte[] key) throws Exception {
+
         return new SecretKeySpec(key, KEY_ALGORITHM);
     }
 
@@ -170,6 +176,7 @@ public class AesUtils {
 
         // 实例化Cipher对象，它用于完成实际的加密操作
         Cipher cipher;
+        Security.addProvider(new BouncyCastleProvider());
         if (ivString != null && ivString.length() == 16) {
             cipher = Cipher.getInstance(CIPHER_ALGORITHM_CBC);
             byte[] initParam = ivString.getBytes(StandardCharsets.UTF_8);
@@ -225,6 +232,7 @@ public class AesUtils {
         }
 
         Cipher cipher;
+        Security.addProvider(new BouncyCastleProvider());
         if (ivString != null && ivString.length() == 16) {
             cipher = Cipher.getInstance(CIPHER_ALGORITHM_CBC);
 
@@ -271,21 +279,25 @@ public class AesUtils {
         return uid.toString();
     }
 
-//    public static void main(String[] args) {
-//
-//        try {
-//            String s = "yeju/com";
-//            System.out.println(IV_STRING.length());
-//            String uuid16 = getUUID16();
-//            System.out.println(uuid16.length() + uuid16);
-//            String s1 = encrypt(s, null, uuid16);
-//            String decrypt = decrypt(s1, null, uuid16);
-//            System.out.println(decrypt);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
+    public static void main(String[] args) {
+
+        try {
+            String s = "yeju/com";
+            System.out.println(IV_STRING.length());
+            String uuid16 = getUUID16();
+            String key = generateKey(uuid16);
+            System.out.println("key 字节长度：" + key.getBytes(StandardCharsets.UTF_8).length);
+            System.out.println(uuid16.length() + uuid16);
+            String s1 = encrypt(s, key, uuid16);
+            System.out.println("明文：" + s);
+            System.out.println("密文：" + s1);
+            String decrypt = decrypt(s1, key, uuid16);
+            System.out.println(decrypt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

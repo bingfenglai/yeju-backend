@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "yeju.auth.multiple.logins")
 @RefreshScope
+@Deprecated
 public class AllowMultipleLoginsConfig {
     private boolean allow;
 

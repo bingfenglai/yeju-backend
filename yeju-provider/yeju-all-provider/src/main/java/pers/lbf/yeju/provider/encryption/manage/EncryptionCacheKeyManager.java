@@ -22,8 +22,6 @@ import org.springframework.stereotype.Component;
 import pers.lbf.yeju.provider.encryption.config.EncryptionAesConfig;
 import pers.lbf.yeju.provider.encryption.config.EncryptionRsaConfig;
 
-import java.util.Date;
-
 /**
  * 密钥缓存key管理类
  *
@@ -42,11 +40,11 @@ public class EncryptionCacheKeyManager {
 
 
     public String getRsaCacheKey(String account) {
-        return rsaConfig.getKeyPrefix() + ":" + account + ":" + new Date();
+        return rsaConfig.getKeyPrefix() + ":" + account + ":" + System.currentTimeMillis();
     }
 
     public String getAesCacheKey(String account) {
-        return aesConfig.getKeyPrefix() + ":" + account + ":" + new Date();
+        return aesConfig.getKeyPrefix() + ":" + account + ":" + System.currentTimeMillis();
     }
 
 

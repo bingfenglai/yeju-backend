@@ -26,7 +26,6 @@ import pers.lbf.yeju.service.interfaces.bill.IBillService;
 import pers.lbf.yeju.service.interfaces.bill.pojo.BillQueryArgs;
 import pers.lbf.yeju.service.interfaces.bill.pojo.CreateBillArgs;
 import pers.lbf.yeju.service.interfaces.bill.pojo.SimpleBillInfoBean;
-import pers.lbf.yeju.service.interfaces.bill.status.BillStatus;
 
 /**
  * TODO
@@ -42,7 +41,7 @@ public class BillServiceImpl implements IBillService {
     @Autowired
     private IBillDao BillDao;
 
-    
+
     /**
      * 订单创建 ---成功返回订单号，不成功抛出异常
      *
@@ -55,18 +54,6 @@ public class BillServiceImpl implements IBillService {
         return null;
     }
 
-    /**
-     * 更新订单状态
-     *
-     * @param billId
-     * @param billStatus
-     * @return
-     * @throws ServiceException
-     */
-    @Override
-    public IResult<Boolean> updateStatusById(Long billId, BillStatus billStatus) throws ServiceException {
-        return null;
-    }
 
     /**
      * 分页查询接口

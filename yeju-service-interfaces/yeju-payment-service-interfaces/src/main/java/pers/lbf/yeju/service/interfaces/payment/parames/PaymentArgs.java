@@ -17,7 +17,10 @@
 
 package pers.lbf.yeju.service.interfaces.payment.parames;
 
+import pers.lbf.yeju.common.core.args.ICreateArgs;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 支付业务参数封装类
@@ -26,5 +29,28 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2021/4/29 11:36
  */
-public class PaymentArgs implements Serializable {
+public class PaymentArgs implements ICreateArgs, Serializable {
+
+    /**
+     * 预支付单di
+     */
+    private Long paymentAdvanceId;
+
+    /**
+     * 账号
+     */
+    private Long accountNumber;
+
+    private String payment;
+
+
+    @Override
+    public void setCreateBy(String account) {
+
+    }
+
+    @Override
+    public void setCreateTime(Date date) {
+
+    }
 }

@@ -22,7 +22,6 @@ import pers.lbf.yeju.common.core.result.IResult;
 import pers.lbf.yeju.service.interfaces.bill.pojo.BillQueryArgs;
 import pers.lbf.yeju.service.interfaces.bill.pojo.CreateBillArgs;
 import pers.lbf.yeju.service.interfaces.bill.pojo.SimpleBillInfoBean;
-import pers.lbf.yeju.service.interfaces.bill.status.BillStatus;
 
 /**
  * 账单服务接口
@@ -33,26 +32,14 @@ import pers.lbf.yeju.service.interfaces.bill.status.BillStatus;
  */
 public interface IBillService {
 
-    
     /**
-     * 订单创建 ---成功返回订单号，不成功抛出异常
+     * 支付完工之后创建客户账单
      *
      * @param createBillArgs
      * @return
      * @throws ServiceException
      */
-
     IResult<String> createBill(CreateBillArgs createBillArgs) throws ServiceException;
-
-    /**
-     * 更新支付状态
-     *
-     * @param billId
-     * @param billStatus
-     * @return
-     * @throws ServiceException
-     */
-    IResult<Boolean> updateStatusById(Long billId, BillStatus billStatus) throws ServiceException;
 
     /**
      * 分页查询接口

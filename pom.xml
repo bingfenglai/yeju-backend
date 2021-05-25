@@ -22,7 +22,6 @@
         <module>yeju-provider</module>
         <module>yeju-api</module>
         <module>yeju-gateway</module>
-
     </modules>
 
     <properties>

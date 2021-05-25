@@ -127,13 +127,13 @@
 
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju-auth-service-interfaces</artifactId>
+            <artifactId>yeju-session-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 
         <dependency>
             <groupId>pers.lbf</groupId>
-            <artifactId>yeju-session-service-interfaces</artifactId>
+            <artifactId>yeju-account-service-interfaces</artifactId>
             <version>${yeju.version}</version>
         </dependency>
 

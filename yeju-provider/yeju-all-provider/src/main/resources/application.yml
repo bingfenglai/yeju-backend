@@ -1,19 +1,6 @@
 spring:
   application:
     name: yeju-provider
-  elasticsearch:
-    rest:
-      uris: http://192.168.1.101:9200
-  #      username: elastic
-  #      password: admin@2020
-  data:
-    elasticsearch:
-      client:
-        reactive:
-          #          password: admin@2020
-          #          use-ssl: true
-          #          username: elastic
-          endpoints: 192.168.1.101:9200
 
 dubbo:
   application:

@@ -59,7 +59,7 @@ public class HouseInfoSearchTest {
     private HouseInfoElasticsearchRepository houseInfoRepository;
 
 
-    //@Test
+    @Test
     public void test1() {
 
 
